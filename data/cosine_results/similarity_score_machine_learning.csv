@@ -1,0 +1,21 @@
+id,title,abstract,authors,year,source,category,similarity_score,rank,term_frequency
+40,Machine learning and deep learning: A review of methods and applications,"… machine learning and deep learning, their differences, applications, and their impact on various
+industries. Machine learning and deep learning … of machine learning and deep learning, …","K Sharifani, M Amini",2023,World Information Technology and …,machine learning,0.6231864187240687,1,7
+39,When machine learning meets privacy: A survey and outlook,"… problems and machine learning is … machine learning. The survey covers three categories
+of interactions between privacy and machine learning: (i) private machine learning, (ii) machine …","B Liu, M Ding, S Shaham, W Rahayu…",2021,ACM Computing …,machine learning,0.6098840116256358,2,6
+7,Machine learning and deep learning: C. Janiesch et al.,"… Deep learning is a machine learning concept based on … , deep learning models outperform
+shallow machine learning … fundamentals of machine learning and deep learning to generate …","C Janiesch, P Zschech, K Heinrich",2021,Electronic markets,machine learning,0.5976046029651276,3,9
+18,An overview of machine learning classification techniques,"… statistical learning and pattern recognition, machine learning now … between statistics and
+machine learning is evident, with … core of machine learning lies the concept of self-learning, a …","AFAH Alnuaimi, THK Albaldawi",2024,BIO Web of Conferences,machine learning,0.5638419151607241,4,7
+8,Machine learning foundations,"… knowledge about machine learning by exploring learning theories, … of machine learning
+algorithms: the supervised, the unsupervised, the reinforced, and the semi-supervised learning. …",T Jo,2021,"Supervised, Unsupervised, and Advanced Learning …",machine learning,0.5607673737456074,5,5
+38,Scientific machine learning benchmarks,"… frameworks, computer architectures and machine learning models… metrics for the application
+of machine learning methods to open, … Here, we introduce the concept of machine learning …","J Thiyagalingam, M Shankar, G Fox, T Hey",2022,Nature Reviews Physics,machine learning,0.5597552062245366,6,6
+35,Financial applications of machine learning: A literature review,"… of machine learning and deep learning in … on machine learning in finance. The study finally
+points out possible research directions which might lead to new inquiries in machine learning …","N Nazareth, YVR Reddy",2023,Expert Systems with Applications,machine learning,0.5578389440137956,7,7
+25,Machine learning in chemical engineering: A perspective,"… and application of machine learning with a focus on deep learning and probabilistic models.
+… algorithms of statistical machine learning, especially unsupervised deep learning, and its …","AM Schweidtmann, E Esche, A Fischer…",2021,Chemie Ingenieur …,machine learning,0.5326027301993467,8,4
+23,Machine learning and applications in microbiology,"… Applying machine learning to address biological problems is expected … machine learning
+practitioner. These key points are further reinforced with an evaluation of how machine learning …","SJ Goodswen, JLN Barratt, PJ Kennedy…",2021,FEMS microbiology …,machine learning,0.5234607190561181,9,6
+11,Using machine learning to detect misstatements,"… Intuitively, a machine learning algorithm can be taught to … Machine learning algorithms
+capture the relationship … We also examine a number of alternative machine learning approaches …","J Bertomeu, E Cheynel, E Floyd, W Pan",2021,Review of Accounting Studies,machine learning,0.5064211962949917,10,6
