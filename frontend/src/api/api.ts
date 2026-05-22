@@ -76,3 +76,51 @@ export function getUser() {
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 }
+export async function searchArticles(
+  query: string,
+  topK: number = 10,
+  yearStart?: number,
+  yearEnd?: number
+) {
+  try {
+    const params = new URLSearchParams({ query, top_k: topK.toString() });
+    if (yearStart) params.append("year_start", yearStart.toString());
+    if (yearEnd)   params.append("year_end",   yearEnd.toString());
+
+    const res  = await fetch(`${BASE_URL}/search?${params}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        status : "error",
+        message: data.message || "Pencarian gagal",
+      };
+    }
+    return data;
+  } catch (error) {
+    return {
+      status : "error",
+      message: "Gagal koneksi ke server",
+    };
+  }
+}
+
+export async function getStats() {
+  try {
+    const res  = await fetch(`${BASE_URL}/stats`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        status : "error",
+        message: "Gagal mengambil statistik",
+      };
+    }
+    return data;
+  } catch (error) {
+    return {
+      status : "error",
+      message: "Gagal koneksi ke server",
+    };
+  }
+}

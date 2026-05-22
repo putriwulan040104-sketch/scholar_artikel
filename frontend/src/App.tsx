@@ -8,6 +8,7 @@ import Navbar from "./components/navbar";
 import FavoritPage from "./pages/favorite/page";
 import LandingPage from "./pages/landing/page";
 import { Searchpage } from "./pages/search/search";
+import DetailPublicationPage from "./pages/detail/pages"; // ← tambah ini
 
 export function DashboardLayout({ children }: any) {
   return (
@@ -23,21 +24,13 @@ export function DashboardLayout({ children }: any) {
 
 function ProtectedRoute({ children }: any) {
   const token = localStorage.getItem("token");
-
-  if (!token) {
-    return <Navigate to="/login" replace />;
-  }
-
+  if (!token) return <Navigate to="/login" replace />;
   return children;
 }
 
 function PublicRoute({ children }: any) {
   const token = localStorage.getItem("token");
-
-  if (token) {
-    return <Navigate to="/search" replace />;
-  }
-
+  if (token) return <Navigate to="/search" replace />;
   return children;
 }
 
@@ -45,52 +38,24 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <LoginPage />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <RegisterPage />
-          </PublicRoute>
-        }
-      />
+      <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+      <Route path="/register" element={<PublicRoute><RegisterPage /></PublicRoute>} />
       <Route
         path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <Page />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
+        element={<ProtectedRoute><DashboardLayout><Page /></DashboardLayout></ProtectedRoute>}
       />
       <Route
         path="/search"
-        element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <Searchpage />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
+        element={<ProtectedRoute><DashboardLayout><Searchpage /></DashboardLayout></ProtectedRoute>}
       />
       <Route
         path="/favorite"
-        element={
-          <ProtectedRoute>
-            <DashboardLayout>
-              <FavoritPage />
-            </DashboardLayout>
-          </ProtectedRoute>
-        }
+        element={<ProtectedRoute><DashboardLayout><FavoritPage /></DashboardLayout></ProtectedRoute>}
       />
+      <Route
+        path="/detail/:id"
+        element={<ProtectedRoute><DashboardLayout><DetailPublicationPage /></DashboardLayout></ProtectedRoute>}
+      />  {/* ← dipindah ke DALAM Routes */}
     </Routes>
   );
 }

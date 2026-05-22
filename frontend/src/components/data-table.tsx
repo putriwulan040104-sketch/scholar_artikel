@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useNavigate } from "react-router-dom";
 import {
   closestCenter,
   DndContext,
@@ -34,11 +35,10 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import { toast } from "sonner"
 import { z } from "zod"
 
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Badge } from "@/components/ui/badge"
+// import { Badge } from "@/components/ui/badge"                        // ← dihapus: tidak dipakai setelah Tabs dihapus
 import { Button } from "@/components/ui/button"
 import {
   ChartContainer,
@@ -46,7 +46,6 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   Drawer,
   DrawerClose,
@@ -57,14 +56,12 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+// import {                                                              // ← dihapus: Columns button dihapus
+//   DropdownMenu,
+//   DropdownMenuCheckboxItem,
+//   DropdownMenuContent,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -84,30 +81,71 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+// import {                                                              // ← dihapus: Tabs dihapus
+//   Tabs,
+//   TabsContent,
+//   TabsList,
+//   TabsTrigger,
+// } from "@/components/ui/tabs"
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
-import { GripVerticalIcon, CircleCheckIcon, LoaderIcon, EllipsisVerticalIcon, Columns3Icon, ChevronDownIcon, PlusIcon, ChevronsLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronsRightIcon, TrendingUpIcon } from "lucide-react"
+  GripVerticalIcon,
+  // Columns3Icon,                                                      // ← dihapus: Columns button dihapus
+  // ChevronDownIcon,                                                    // ← dihapus: Columns button dihapus
+  // PlusIcon,                                                           // ← dihapus: Add Section diganti Jaringan Sitasi
+  ChevronsLeftIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronsRightIcon,
+  TrendingUpIcon,
+  Star,
+  FileText,
+  ExternalLink,
+  Network,                                                               // ← baru: icon Jaringan Sitasi
+} from "lucide-react"
 
+// ─── Schema ────────────────────────────────────────────────────────────────────
+// ✅ BENAR — gunakan .optional() untuk field opsional
 export const schema = z.object({
-  id: z.number(),
-  header: z.string(),
-  type: z.string(),
-  status: z.string(),
-  target: z.string(),
-  limit: z.string(),
-  reviewer: z.string(),
+  id              : z.number(),
+  rank            : z.number(),
+  title           : z.string(),
+  authors         : z.string(),
+  year            : z.number().optional(),
+  source          : z.string().optional(),
+  category        : z.string().optional(),
+  abstract        : z.string().optional(),
+  similarity_score: z.number(),
+  pdf_url         : z.string().nullable().optional(),
+  url             : z.string().nullable().optional(),
+  access_url      : z.string().nullable().optional(),
+  is_pdf          : z.union([z.boolean(), z.string()]).optional(),
+  scrape_status   : z.string().optional(),
+  favorite        : z.boolean().default(false),   // ← bukan favorite?: boolean
 })
 
-// Create a separate component for the drag handle
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({
-    id,
-  })
+// ─── Helper: cek apakah URL valid ──────────────────────────────────────────────
+function isValidUrl(url?: string | null): boolean {
+  if (!url) return false
+  const trimmed = url.trim()
+  return (
+    trimmed !== "" &&
+    trimmed !== "nan" &&
+    trimmed !== "None" &&
+    trimmed !== "null" &&
+    trimmed.startsWith("http")
+  )
+}
 
+// ─── Helper: cek apakah link langsung ke PDF ──────────────────────────────────
+function isPdfLink(url: string, isPdf?: boolean | string): boolean {
+  // is_pdf dari CSV bisa berupa string "True"
+  if (isPdf === true || isPdf === "True") return true
+  return url.toLowerCase().endsWith(".pdf") || url.toLowerCase().includes(".pdf")
+}
+
+// ─── DragHandle ────────────────────────────────────────────────────────────────
+function DragHandle({ id }: { id: number }) {
+  const { attributes, listeners } = useSortable({ id })
   return (
     <Button
       {...attributes}
@@ -122,6 +160,7 @@ function DragHandle({ id }: { id: number }) {
   )
 }
 
+// ─── Columns ───────────────────────────────────────────────────────────────────
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
     id: "drag",
@@ -129,183 +168,166 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     cell: ({ row }) => <DragHandle id={row.original.id} />,
   },
   {
-    id: "select",
-    header: ({ table }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      </div>
-    ),
+    accessorKey: "rank",
+    header: "Rank",
     cell: ({ row }) => (
-      <div className="flex items-center justify-center">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
+      <div className="font-bold text-slate-700 w-8 text-center">
+        {row.original.rank}
       </div>
     ),
-    enableSorting: false,
+  },
+  {
+    accessorKey: "title",
+    header: "Judul Artikel",
+    cell: ({ row }) => <TableCellViewer item={row.original} />,
     enableHiding: false,
   },
   {
-    accessorKey: "header",
-    header: "Header",
-    cell: ({ row }) => {
-      return <TableCellViewer item={row.original} />
-    },
-    enableHiding: false,
-  },
-  {
-    accessorKey: "type",
-    header: "Section Type",
+    accessorKey: "authors",
+    header: "Penulis",
     cell: ({ row }) => (
-      <div className="w-32">
-        <Badge variant="outline" className="px-1.5 text-muted-foreground">
-          {row.original.type}
-        </Badge>
+      <div className="text-slate-500 max-w-[200px] truncate text-sm">
+        {row.original.authors}
       </div>
     ),
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "similarity_score",
+    header: "Similarity",
     cell: ({ row }) => (
-      <Badge variant="outline" className="px-1.5 text-muted-foreground">
-        {row.original.status === "Done" ? (
-          <CircleCheckIcon className="fill-green-500 dark:fill-green-400" />
-        ) : (
-          <LoaderIcon
-          />
-        )}
-        {row.original.status}
-      </Badge>
+      <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-semibold">
+        {row.original.similarity_score.toFixed(4)}
+      </span>
     ),
   },
   {
-    accessorKey: "target",
-    header: () => <div className="w-full text-right">Target</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-target`} className="sr-only">
-          Target
-        </Label>
-        <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
-          defaultValue={row.original.target}
-          id={`${row.original.id}-target`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: "limit",
-    header: () => <div className="w-full text-right">Limit</div>,
-    cell: ({ row }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          toast.promise(new Promise((resolve) => setTimeout(resolve, 1000)), {
-            loading: `Saving ${row.original.header}`,
-            success: "Done",
-            error: "Error",
-          })
-        }}
-      >
-        <Label htmlFor={`${row.original.id}-limit`} className="sr-only">
-          Limit
-        </Label>
-        <Input
-          className="h-8 w-16 border-transparent bg-transparent text-right shadow-none hover:bg-input/30 focus-visible:border focus-visible:bg-background dark:bg-transparent dark:hover:bg-input/30 dark:focus-visible:bg-input/30"
-          defaultValue={row.original.limit}
-          id={`${row.original.id}-limit`}
-        />
-      </form>
-    ),
-  },
-  {
-    accessorKey: "reviewer",
-    header: "Reviewer",
+    id: "akses",
+    header: "Akses",
     cell: ({ row }) => {
-      const isAssigned = row.original.reviewer !== "Assign reviewer"
+      const { pdf_url, url, access_url, is_pdf } = row.original
 
-      if (isAssigned) {
-        return row.original.reviewer
+      // Prioritas: access_url → pdf_url → url
+      const pdfCandidate = isValidUrl(access_url)
+        ? access_url!
+        : isValidUrl(pdf_url)
+        ? pdf_url!
+        : null
+
+      const articleUrl = isValidUrl(url) ? url! : null
+
+      // Jika ada URL yang merupakan PDF langsung → tampilkan Download PDF
+      if (pdfCandidate && isPdfLink(pdfCandidate, is_pdf)) {
+        return (
+          <a
+            href={pdfCandidate}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-green-600 font-medium hover:text-green-800 hover:underline transition-colors"
+          >
+            <FileText className="h-3.5 w-3.5" />
+            Download PDF
+          </a>
+        )
       }
 
-      return (
-        <>
-          <Label htmlFor={`${row.original.id}-reviewer`} className="sr-only">
-            Reviewer
-          </Label>
-          <Select>
-            <SelectTrigger
-              className="w-38 **:data-[slot=select-value]:block **:data-[slot=select-value]:truncate"
-              size="sm"
-              id={`${row.original.id}-reviewer`}
-            >
-              <SelectValue placeholder="Assign reviewer" />
-            </SelectTrigger>
-            <SelectContent align="end">
-              <SelectGroup>
-                <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                <SelectItem value="Jamik Tashpulatov">
-                  Jamik Tashpulatov
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </>
-      )
+      // Jika tidak ada PDF tapi ada URL artikel → tampilkan Lihat Artikel
+      if (articleUrl) {
+        return (
+          <a
+            href={articleUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+          >
+            <ExternalLink className="h-3.5 w-3.5" />
+            Lihat Artikel
+          </a>
+        )
+      }
+
+      // Jika pdfCandidate ada tapi bukan PDF (misal halaman web berbayar) → Lihat Artikel
+      if (pdfCandidate) {
+        return (
+          <a
+            href={pdfCandidate}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+          >
+            <ExternalLink className="h-3.5 w-3.5" />
+            Lihat Artikel
+          </a>
+        )
+      }
+
+      return <span className="text-slate-400 text-xs">Tidak tersedia</span>
     },
   },
   {
-    id: "actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-            size="icon"
-          >
-            <EllipsisVerticalIcon
-            />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Make a copy</DropdownMenuItem>
-          <DropdownMenuItem>Favorite</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+  id: "favorite",
+  header: "Favorit",
+  cell: ({ row }) => {
+    // ── Cek apakah sudah ada di localStorage saat render ──
+    const isAlreadyFavorite = (): boolean => {
+      try {
+        const existing = JSON.parse(localStorage.getItem("favorites") || "[]")
+        return existing.some((item: { id: number }) => item.id === row.original.id)
+      } catch (_) {
+        return false
+      }
+    }
+
+    const [favorite, setFavorite] = React.useState(() => 
+      row.original.favorite || isAlreadyFavorite()
+    )
+
+    const toggleFavorite = () => {
+      const updated = !favorite
+      setFavorite(updated)
+
+      try {
+        const existing: z.infer<typeof schema>[] = JSON.parse(
+          localStorage.getItem("favorites") || "[]"
+        )
+
+        if (updated) {
+          // ── Tolak duplikat: cek id dulu sebelum push ──
+          const alreadyExists = existing.some((item) => item.id === row.original.id)
+          if (!alreadyExists) {
+            localStorage.setItem(
+              "favorites",
+              JSON.stringify([...existing, row.original])
+            )
+          }
+        } else {
+          localStorage.setItem(
+            "favorites",
+            JSON.stringify(existing.filter((item) => item.id !== row.original.id))
+          )
+        }
+      } catch (_) {}
+    }
+
+    return (
+      <button onClick={toggleFavorite} className="flex items-center justify-center">
+        <Star
+          className={`h-5 w-5 transition-colors ${
+            favorite
+              ? "fill-yellow-400 text-yellow-400"
+              : "text-slate-300 hover:text-slate-400"
+          }`}
+        />
+      </button>
+    )
   },
+},
 ]
 
+// ─── DraggableRow ──────────────────────────────────────────────────────────────
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   })
-
   return (
     <TableRow
       data-state={row.getIsSelected() && "selected"}
@@ -326,23 +348,19 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   )
 }
 
+// ─── DataTable ─────────────────────────────────────────────────────────────────
 export function DataTable({
   data: initialData,
 }: {
   data: z.infer<typeof schema>[]
 }) {
   const [data, setData] = React.useState(() => initialData)
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0,
-    pageSize: 10,
-  })
+  const [rowSelection, setRowSelection]         = React.useState({})
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+  const [columnFilters, setColumnFilters]       = React.useState<ColumnFiltersState>([])
+  const [sorting, setSorting]                   = React.useState<SortingState>([])
+  const [pagination, setPagination]             = React.useState({ pageIndex: 0, pageSize: 10 })
+
   const sortableId = React.useId()
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -358,13 +376,7 @@ export function DataTable({
   const table = useReactTable({
     data,
     columns,
-    state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
-      pagination,
-    },
+    state: { sorting, columnVisibility, rowSelection, columnFilters, pagination },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -392,20 +404,16 @@ export function DataTable({
   }
 
   return (
-    <Tabs
-      defaultValue="outline"
-      className="w-full flex-col justify-start gap-6"
-    >
+    // ── SEBELUM: pakai <Tabs> wrapper ──────────────────────────────────────────
+    // <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
+    // ── SESUDAH: ganti dengan <div> biasa ─────────────────────────────────────
+    <div className="w-full flex flex-col gap-6">
+
+      {/* ── SEBELUM: ada Select view + TabsList + Columns button + Add Section ──
       <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">
-          View
-        </Label>
+        <Label htmlFor="view-selector" className="sr-only">View</Label>
         <Select defaultValue="outline">
-          <SelectTrigger
-            className="flex w-fit @4xl/main:hidden"
-            size="sm"
-            id="view-selector"
-          >
+          <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
             <SelectValue placeholder="Select a view" />
           </SelectTrigger>
           <SelectContent>
@@ -417,6 +425,7 @@ export function DataTable({
             </SelectGroup>
           </SelectContent>
         </Select>
+
         <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
           <TabsTrigger value="outline">Outline</TabsTrigger>
           <TabsTrigger value="past-performance">
@@ -427,6 +436,7 @@ export function DataTable({
           </TabsTrigger>
           <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
         </TabsList>
+
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -439,38 +449,43 @@ export function DataTable({
             <DropdownMenuContent align="end" className="w-32">
               {table
                 .getAllColumns()
-                .filter(
-                  (column) =>
-                    typeof column.accessorFn !== "undefined" &&
-                    column.getCanHide()
-                )
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  )
-                })}
+                .filter((col) => typeof col.accessorFn !== "undefined" && col.getCanHide())
+                .map((col) => (
+                  <DropdownMenuCheckboxItem
+                    key={col.id}
+                    className="capitalize"
+                    checked={col.getIsVisible()}
+                    onCheckedChange={(value) => col.toggleVisibility(!!value)}
+                  >
+                    {col.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
           <Button variant="outline" size="sm">
-            <PlusIcon
-            />
+            <PlusIcon />
             <span className="hidden lg:inline">Add Section</span>
           </Button>
         </div>
       </div>
+      ── AKHIR SEBELUM ── */}
+
+      {/* ── SESUDAH: hanya tombol Jaringan Sitasi di kanan ── */}
+      <div className="flex items-center justify-end px-4 lg:px-6">
+        <Button variant="outline" size="sm">
+          <Network className="h-4 w-4" />
+          <span>Jaringan Sitasi</span>
+        </Button>
+      </div>
+
+      {/* ── SEBELUM: pakai <TabsContent value="outline"> ──────────────────────
       <TabsContent
         value="outline"
         className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
       >
+      ── SESUDAH: ganti dengan <div> biasa ── */}
+      <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
+
         <div className="overflow-hidden rounded-lg border">
           <DndContext
             collisionDetection={closestCenter}
@@ -483,37 +498,26 @@ export function DataTable({
               <TableHeader className="sticky top-0 z-10 bg-muted">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id} colSpan={header.colSpan}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      )
-                    })}
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    ))}
                   </TableRow>
                 ))}
               </TableHeader>
               <TableBody className="**:data-[slot=table-cell]:first:w-8">
                 {table.getRowModel().rows?.length ? (
-                  <SortableContext
-                    items={dataIds}
-                    strategy={verticalListSortingStrategy}
-                  >
+                  <SortableContext items={dataIds} strategy={verticalListSortingStrategy}>
                     {table.getRowModel().rows.map((row) => (
                       <DraggableRow key={row.id} row={row} />
                     ))}
                   </SortableContext>
                 ) : (
                   <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-24 text-center"
-                    >
+                    <TableCell colSpan={columns.length} className="h-24 text-center">
                       No results.
                     </TableCell>
                   </TableRow>
@@ -522,6 +526,8 @@ export function DataTable({
             </Table>
           </DndContext>
         </div>
+
+        {/* Pagination */}
         <div className="flex items-center justify-between px-4">
           <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
@@ -534,14 +540,10 @@ export function DataTable({
               </Label>
               <Select
                 value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value))
-                }}
+                onValueChange={(value) => table.setPageSize(Number(value))}
               >
                 <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                  <SelectValue
-                    placeholder={table.getState().pagination.pageSize}
-                  />
+                  <SelectValue placeholder={table.getState().pagination.pageSize} />
                 </SelectTrigger>
                 <SelectContent side="top">
                   <SelectGroup>
@@ -555,8 +557,7 @@ export function DataTable({
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
+              Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <Button
@@ -566,8 +567,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to first page</span>
-                <ChevronsLeftIcon
-                />
+                <ChevronsLeftIcon />
               </Button>
               <Button
                 variant="outline"
@@ -577,8 +577,7 @@ export function DataTable({
                 disabled={!table.getCanPreviousPage()}
               >
                 <span className="sr-only">Go to previous page</span>
-                <ChevronLeftIcon
-                />
+                <ChevronLeftIcon />
               </Button>
               <Button
                 variant="outline"
@@ -588,8 +587,7 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to next page</span>
-                <ChevronRightIcon
-                />
+                <ChevronRightIcon />
               </Button>
               <Button
                 variant="outline"
@@ -599,207 +597,180 @@ export function DataTable({
                 disabled={!table.getCanNextPage()}
               >
                 <span className="sr-only">Go to last page</span>
-                <ChevronsRightIcon
-                />
+                <ChevronsRightIcon />
               </Button>
             </div>
           </div>
         </div>
-      </TabsContent>
-      <TabsContent
-        value="past-performance"
-        className="flex flex-col px-4 lg:px-6"
-      >
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+
+      {/* </TabsContent> ← SEBELUM penutup TabsContent */}
+      </div>
+
+      {/* ── SEBELUM: Tab lain — dikomentari semua ─────────────────────────────
+      <TabsContent value="past-performance" className="flex flex-col px-4 lg:px-6">
+        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
       </TabsContent>
       <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
       </TabsContent>
-      <TabsContent
-        value="focus-documents"
-        className="flex flex-col px-4 lg:px-6"
-      >
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed"></div>
+      <TabsContent value="focus-documents" className="flex flex-col px-4 lg:px-6">
+        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
       </TabsContent>
-    </Tabs>
+      ── AKHIR SEBELUM ── */}
+
+    {/* </Tabs> ← SEBELUM penutup Tabs */}
+    </div>
   )
 }
 
+// ─── Chart (template asli dipertahankan) ──────────────────────────────────────
 const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
+  { month: "January",  desktop: 186, mobile: 80  },
   { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
+  { month: "March",    desktop: 237, mobile: 120 },
+  { month: "April",    desktop: 73,  mobile: 190 },
+  { month: "May",      desktop: 209, mobile: 130 },
+  { month: "June",     desktop: 214, mobile: 140 },
 ]
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--primary)",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "var(--primary)",
-  },
+  desktop: { label: "Desktop", color: "var(--primary)" },
+  mobile:  { label: "Mobile",  color: "var(--primary)" },
 } satisfies ChartConfig
 
+// ─── TableCellViewer (drawer detail artikel) ───────────────────────────────────
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
   const isMobile = useIsMobile()
+  const navigate = useNavigate();
+  // Tentukan URL akses terbaik
+  const pdfCandidate = isValidUrl(item.access_url)
+    ? item.access_url!
+    : isValidUrl(item.pdf_url)
+    ? item.pdf_url!
+    : null
+
+  const hasPdf = pdfCandidate !== null && isPdfLink(pdfCandidate, item.is_pdf)
+  const articleUrl = isValidUrl(item.url) ? item.url! : null
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
-        <Button variant="link" className="w-fit px-0 text-left text-foreground">
-          {item.header}
-        </Button>
+        <Button
+      variant="link"
+      className="w-fit px-0 text-left text-foreground leading-snug"
+      onClick={() => navigate(`/detail/${item.id}`)}
+    >
+      <span className="line-clamp-2 max-w-[350px] text-sm font-medium">
+        {item.title}
+      </span>
+    </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
-          <DrawerTitle>{item.header}</DrawerTitle>
-          <DrawerDescription>
-            Showing total visitors for the last 6 months
-          </DrawerDescription>
+          <DrawerTitle className="leading-snug">{item.title}</DrawerTitle>
+          <DrawerDescription>{item.authors}</DrawerDescription>
         </DrawerHeader>
+
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
           {!isMobile && (
             <>
               <ChartContainer config={chartConfig}>
-                <AreaChart
-                  accessibilityLayer
-                  data={chartData}
-                  margin={{
-                    left: 0,
-                    right: 10,
-                  }}
-                >
+                <AreaChart accessibilityLayer data={chartData} margin={{ left: 0, right: 10 }}>
                   <CartesianGrid vertical={false} />
                   <XAxis
                     dataKey="month"
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    tickFormatter={(v) => v.slice(0, 3)}
                     hide
                   />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="dot" />}
-                  />
-                  <Area
-                    dataKey="mobile"
-                    type="natural"
-                    fill="var(--color-mobile)"
-                    fillOpacity={0.6}
-                    stroke="var(--color-mobile)"
-                    stackId="a"
-                  />
-                  <Area
-                    dataKey="desktop"
-                    type="natural"
-                    fill="var(--color-desktop)"
-                    fillOpacity={0.4}
-                    stroke="var(--color-desktop)"
-                    stackId="a"
-                  />
+                  <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+                  <Area dataKey="mobile"  type="natural" fill="var(--color-mobile)"  fillOpacity={0.6} stroke="var(--color-mobile)"  stackId="a" />
+                  <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
                 </AreaChart>
               </ChartContainer>
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month{" "}
-                  <TrendingUpIcon className="size-4" />
+                  Trending up by 5.2% this month <TrendingUpIcon className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
-                  Showing total visitors for the last 6 months. This is just
-                  some random text to test the layout. It spans multiple lines
-                  and should wrap around.
+                  Showing total visitors for the last 6 months.
                 </div>
               </div>
               <Separator />
             </>
           )}
+
+          {/* Detail artikel */}
+          <div className="grid grid-cols-2 gap-4 py-2">
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground">Tahun</Label>
+              <span>{item.year ?? "-"}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground">Sumber</Label>
+              <span className="line-clamp-2">{item.source ?? "-"}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground">Kategori</Label>
+              <span>{item.category ?? "-"}</span>
+            </div>
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs text-muted-foreground">Similarity Score</Label>
+              <span className="inline-flex w-fit bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-semibold">
+                {item.similarity_score.toFixed(4)}
+              </span>
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* Form edit (template asli) */}
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <Label htmlFor="header">Header</Label>
-              <Input id="header" defaultValue={item.header} />
+              <Label htmlFor="title">Judul Artikel</Label>
+              <Input id="title" defaultValue={item.title} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
-                <Label htmlFor="type">Type</Label>
-                <Select defaultValue={item.type}>
-                  <SelectTrigger id="type" className="w-full">
-                    <SelectValue placeholder="Select a type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="Table of Contents">
-                        Table of Contents
-                      </SelectItem>
-                      <SelectItem value="Executive Summary">
-                        Executive Summary
-                      </SelectItem>
-                      <SelectItem value="Technical Approach">
-                        Technical Approach
-                      </SelectItem>
-                      <SelectItem value="Design">Design</SelectItem>
-                      <SelectItem value="Capabilities">Capabilities</SelectItem>
-                      <SelectItem value="Focus Documents">
-                        Focus Documents
-                      </SelectItem>
-                      <SelectItem value="Narrative">Narrative</SelectItem>
-                      <SelectItem value="Cover Page">Cover Page</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="authors">Penulis</Label>
+                <Input id="authors" defaultValue={item.authors} />
               </div>
               <div className="flex flex-col gap-3">
-                <Label htmlFor="status">Status</Label>
-                <Select defaultValue={item.status}>
-                  <SelectTrigger id="status" className="w-full">
-                    <SelectValue placeholder="Select a status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="Done">Done</SelectItem>
-                      <SelectItem value="In Progress">In Progress</SelectItem>
-                      <SelectItem value="Not Started">Not Started</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="similarity_score">Similarity Score</Label>
+                <Input id="similarity_score" defaultValue={item.similarity_score.toString()} />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="target">Target</Label>
-                <Input id="target" defaultValue={item.target} />
-              </div>
-              <div className="flex flex-col gap-3">
-                <Label htmlFor="limit">Limit</Label>
-                <Input id="limit" defaultValue={item.limit} />
-              </div>
-            </div>
-            <div className="flex flex-col gap-3">
-              <Label htmlFor="reviewer">Reviewer</Label>
-              <Select defaultValue={item.reviewer}>
-                <SelectTrigger id="reviewer" className="w-full">
-                  <SelectValue placeholder="Select a reviewer" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="Eddie Lake">Eddie Lake</SelectItem>
-                    <SelectItem value="Jamik Tashpulatov">
-                      Jamik Tashpulatov
-                    </SelectItem>
-                    <SelectItem value="Emily Whalen">Emily Whalen</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
             </div>
           </form>
         </div>
+
         <DrawerFooter>
+          {/* Tombol akses sesuai ketersediaan PDF */}
+          {hasPdf ? (
+            <a
+              href={pdfCandidate!}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 transition-colors"
+            >
+              <FileText className="w-4 h-4" />
+              Download PDF
+            </a>
+          ) : articleUrl ? (
+            
+            <a
+              href={articleUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+            >
+              <ExternalLink className="w-4 h-4" />
+              Lihat Artikel
+            </a>
+          ) : (
+            <Button disabled variant="outline">Tidak tersedia</Button>
+          )}
           <Button>Submit</Button>
           <DrawerClose asChild>
             <Button variant="outline">Done</Button>
