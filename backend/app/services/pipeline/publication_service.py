@@ -17,8 +17,22 @@ from app.services.extraction.openalex_service import (
 import app.services.processing.normalization_service as normalizer
 from app.utils.cleaner import clean_text
 
+
 SOURCE_TABLE = "scholar_articles"
 TARGET_TABLE = "publications"
+
+def _sanitize_for_postgres(value):
+    if isinstance(value, str):
+        return value.replace("\x00", "")
+    if isinstance(value, list):
+        return [_sanitize_for_postgres(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: _sanitize_for_postgres(val)
+            for key, val in value.items()
+        }
+
+    return value
 
 # GET ARTICLES
 def get_articles():
@@ -37,6 +51,7 @@ def get_articles():
                     supabase
                     .table(SOURCE_TABLE)
                     .select("id, title, authors, year, source, url, pdf_url")
+                    .order("id", desc=False)
                     .range(offset, offset + page_size - 1)
                     .execute()
                 )
@@ -70,18 +85,26 @@ def get_articles():
 
 # SAVE PUBLICATION
 def save_publication(data):
-    response = (
-        supabase
-        .table(TARGET_TABLE)
-        .upsert(data, on_conflict="article_url")
-        .execute()
-    )
+    try:
+        response = (
+            supabase
+            .table(TARGET_TABLE)
+            .upsert(data, on_conflict="article_id")
+            .execute()
+        )
+    except Exception:
+        response = (
+            supabase
+            .table(TARGET_TABLE)
+            .upsert(data, on_conflict="article_url")
+            .execute()
+        )
 
     return response
 
-
 def _build_minimal_publication(article):
     return {
+        "article_id": article.get("id"),
         "article_url": article.get("url"),
         "pdf_url": article.get("pdf_url"),
         "title": normalizer.normalize_title(article.get("title")),
@@ -94,7 +117,6 @@ def _build_minimal_publication(article):
         "raw_text": None,
     }
 
-
 def _build_publication_from_openalex(article, enrichment):
     title = enrichment.get("title") or article.get("title")
     authors = enrichment.get("authors") or article.get("authors")
@@ -102,6 +124,7 @@ def _build_publication_from_openalex(article, enrichment):
     journal = enrichment.get("journal") or article.get("source")
 
     return {
+        "article_id": article.get("id"),
         "article_url": article.get("url"),
         "pdf_url": article.get("pdf_url"),
         "title": normalizer.normalize_title(title),
@@ -124,11 +147,9 @@ def _build_publication_from_openalex(article, enrichment):
         ),
     }
 
-
 def _merge_openalex_missing_fields(publication, enrichment):
     if not enrichment:
         return publication
-
     if (
         not publication.get("reference_list")
         and enrichment.get("references")
@@ -136,7 +157,6 @@ def _merge_openalex_missing_fields(publication, enrichment):
         publication["reference_list"] = normalizer.normalize_reference(
             enrichment.get("references") or []
         )
-
     if (
         not publication.get("keywords")
         and enrichment.get("keywords")
@@ -144,7 +164,6 @@ def _merge_openalex_missing_fields(publication, enrichment):
         publication["keywords"] = normalizer.normalize_keywords(
             enrichment.get("keywords") or []
         )
-
     if (
         not publication.get("doi")
         and enrichment.get("doi")
@@ -159,11 +178,14 @@ def _merge_openalex_missing_fields(publication, enrichment):
 def process_articles():
     articles = get_articles()
     results = []
+    total = len(articles)
 
-    for article in articles:
+    for idx, article in enumerate(articles, start=1):
         try:
+            source_id = article.get("id")
             url = article.get("url")
             pdf_url = article.get("pdf_url")
+            print(f"[{idx}/{total}] Processing source_id={source_id} url={url}")
 
             content = None
             metadata = None
@@ -250,8 +272,6 @@ def process_articles():
                     )
                 )
 
-                # If parser got content but still missed references/keywords/DOI,
-                # use OpenAlex as enrichment fallback.
                 if (
                     not publication.get("reference_list")
                     or not publication.get("keywords")
@@ -269,6 +289,7 @@ def process_articles():
                     )
 
             try:
+                publication = _sanitize_for_postgres(publication)
                 save_publication(publication)
             except Exception as save_error:
                 results.append({
@@ -279,15 +300,14 @@ def process_articles():
                 continue
 
             results.append({
-                "title":
-                    publication["title"],
-
-                "status":
-                    "saved"
+                "source_id": source_id,
+                "title": publication["title"],
+                "status": "saved"
             })
 
         except Exception as e:
             results.append({
+                "source_id": article.get("id"),
                 "article_url":
                     article.get("url"),
                 "status":

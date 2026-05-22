@@ -11,7 +11,6 @@ def extract_article(url):
         metadata = trafilatura.extract_metadata(
             downloaded
         )
-
         content = trafilatura.extract(
             downloaded,
             include_comments=False,
@@ -24,7 +23,6 @@ def extract_article(url):
         }
 
     except Exception as e:
-
         print("Article Extraction Error:", e)
 
         return None

@@ -12,7 +12,6 @@ def extract_title_from_text(text):
 
         if not line:
             continue
-
         if len(line) < 15:
             continue
 
@@ -40,15 +39,13 @@ def extract_authors_from_text(text):
 
     for line in lines[1:15]:
         line = clean_text(line)
+
         if not line:
             continue
-
         if len(line) > 100:
             continue
-
         if "university" in line.lower():
             continue
-
         if "department" in line.lower():
             continue
         authors.append(line)
@@ -156,6 +153,7 @@ def build_publication(
 
     # NORMALIZATION
     return {
+        "article_id": article.get("id"),
         "article_url": article_url,
         "pdf_url": pdf_url,
         "title":

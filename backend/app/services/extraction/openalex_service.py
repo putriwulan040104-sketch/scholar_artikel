@@ -5,12 +5,10 @@ from urllib.parse import quote
 import requests
 
 OPENALEX_BASE_URL = "https://api.openalex.org"
-
 HEADERS = {
     "User-Agent": "paperCi/1.0 (openalex fallback)",
     "Accept": "application/json",
 }
-
 DOI_PATTERN = re.compile(
     r"(10\.\d{4,9}/[-._;()/:A-Z0-9]+)",
     re.I
@@ -37,7 +35,6 @@ def _clean_doi(value):
 
 def _extract_doi_candidates(article):
     candidates = []
-
     for raw_value in [
         article.get("url"),
         article.get("pdf_url"),
@@ -89,7 +86,6 @@ def _reconstruct_abstract(abstract_inverted_index):
 
 def _extract_authors(work):
     authors = []
-
     for authorship in work.get("authorships", []):
         author_obj = authorship.get("author", {})
         name = (author_obj.get("display_name") or "").strip()
@@ -111,7 +107,6 @@ def _extract_journal(work):
 
 def _extract_keywords(work):
     keywords = []
-
     for item in work.get("keywords", []) or []:
         display_name = (item.get("display_name") or "").strip()
         if display_name:
@@ -138,7 +133,6 @@ def _format_reference_citation(work):
 
     if not title:
         return None
-
     if authors:
         first_author = authors[0]
         author_part = (
@@ -150,7 +144,6 @@ def _format_reference_citation(work):
         author_part = "Unknown author"
 
     year_part = str(year) if year else "n.d."
-
     parts = [
         f"{author_part} ({year_part}). {title}."
     ]
@@ -175,7 +168,6 @@ def _extract_openalex_work_id(value):
 def _fetch_work_by_openalex_id(work_id):
     if not work_id:
         return None
-
     if work_id in _WORK_CACHE:
         return _WORK_CACHE[work_id]
 
@@ -205,7 +197,7 @@ def _extract_references(work):
         ref_work = _fetch_work_by_openalex_id(work_id)
         if not ref_work:
             continue
-
+        
         citation_text = _format_reference_citation(ref_work)
         if not citation_text:
             continue

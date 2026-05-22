@@ -62,7 +62,6 @@ def _normalize_pdf_artifacts(text):
     if not text:
         return ""
 
-    # Common mojibake from PDF extraction.
     replacements = {
         "â€¢": "•",
         "Ã¢â‚¬Â¢": "•",
@@ -170,7 +169,6 @@ def extract_reference(text):
     reference_text = None
 
     for pattern in patterns:
-
         match = re.search(
             pattern,
             text,
@@ -210,7 +208,6 @@ def extract_reference(text):
         reference_text
     )
 
-    # Normalized lines and remove pure page numbers.
     reference_text = re.sub(r"\n\s*\d+\s*\n", "\n", reference_text)
 
     lines = reference_text.split("\n")
@@ -245,7 +242,6 @@ def extract_reference(text):
                 references.append(
                     current_ref.strip()
                 )
-
             current_ref = line
 
         else:
@@ -256,8 +252,6 @@ def extract_reference(text):
             current_ref.strip()
         )
 
-    # Fallback heuristic: if marker-based parsing fails, rebuild candidates
-    # from dense lines that look like citations.
     if len(references) <= 1:
         dense = []
         for line in lines:

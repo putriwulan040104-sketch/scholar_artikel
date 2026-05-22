@@ -28,7 +28,6 @@ def extract_pdf_content(pdf_path):
         return text
 
     except Exception as e:
-
         print("PDF Extraction Error:", e)
 
         return None
