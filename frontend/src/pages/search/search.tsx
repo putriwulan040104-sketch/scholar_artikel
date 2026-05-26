@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -10,9 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { Input } from "@/components/ui/input";
-
 import {
   Select,
   SelectContent,
@@ -20,9 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Search, SlidersHorizontal } from "lucide-react";
-import { searchArticles } from "@/api/api";
+import { getUser, searchArticles } from "@/api/api";
 
 export interface SearchFilters {
   jenisArtikel: string;
@@ -38,12 +34,26 @@ export function Searchpage() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
-
+  const [user, setUser] = useState(() => getUser());
   const [yearStart, setYearStart] = useState<string>("");
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
   const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
+
+    useEffect(() => {
+    const syncUser = () => setUser(getUser());
+
+    window.addEventListener("user-updated", syncUser);
+    window.addEventListener("storage", syncUser);
+
+    return () => {
+      window.removeEventListener("user-updated", syncUser);
+      window.removeEventListener("storage", syncUser);
+    };
+  }, []);
+
+  const displayName = user?.name?.trim() || "User";
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -91,13 +101,12 @@ export function Searchpage() {
   return (
     <div className="flex flex-col gap-6">
 
-      {/* ===== KODE ZULFA - TIDAK DIUBAH ===== */}
       <div className="flex items-center justify-center">
         <Card className="w-full max-w-4xl shadow-md rounded-xl">
           <section className="mx-auto max-w-6xl px-8 py-10">
             <div className="text-center">
               <h1 className="md:text-xl text-3xl font-bold leading-tight">
-                Hai, <span className="text-black font-bold">User</span>
+                Hai, <span className="text-black font-bold">{displayName}</span>
               </h1>
 
               <p className="mx-auto mt-5 max-w-2xl text-md text-slate-500">
@@ -114,7 +123,7 @@ export function Searchpage() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) =>  {
                   if (e.key === "Enter") {
-                      e.preventDefault(); // ← tambah ini
+                      e.preventDefault();
                       handleSearch();
                     }
                   }}
@@ -216,19 +225,15 @@ export function Searchpage() {
                           min={0}
                         />
                       </div>
-
-                    </div>{/* end grid */}
-
+                    </div>
                     <div className="flex justify-center">
                       <Button onClick={handleSearch} className="px-16">
                         Terapkan Filter
                       </Button>
                     </div>
-
-                  </div>{/* end py-4 */}
+                  </div>
                 </DialogContent>
               </Dialog>
-              {/* ── End Dialog ── */}
 
               <button
                 onClick={handleSearch}
@@ -241,7 +246,6 @@ export function Searchpage() {
           </section>
         </Card>
       </div>
-      {/* ===== AKHIR KODE ZULFA ===== */}
 
       {/* ===== PESAN JIKA TIDAK ADA HASIL ===== */}
       {searched && !loading && (

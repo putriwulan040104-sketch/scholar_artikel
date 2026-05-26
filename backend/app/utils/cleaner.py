@@ -2,8 +2,9 @@ import re
 
 def clean_text(text):
   if not text:
-    return None
+    return ""
   
+  text = str(text)
   text = re.sub(r"\s+", " ", text)
 
   return text.strip()
@@ -11,6 +12,6 @@ def clean_text(text):
 def lowercase_text(text):
 
   if not text:
-    return None
+    return ""
 
-  return text.lower().strip()
+  return str(text).lower().strip()

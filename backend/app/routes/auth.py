@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.services.auth import register_user, login_user
+from app.services.auth import register_user, login_user, update_profile_user
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -44,5 +44,33 @@ def login():
 
   if result["status"] == "error":
     return jsonify(result), 401
+
+  return jsonify(result), 200
+
+
+@auth_bp.route("/profile", methods=["PUT"])
+def update_profile():
+  auth_header = request.headers.get("Authorization", "")
+  if not auth_header.startswith("Bearer "):
+    return jsonify({
+      "status": "error",
+      "message": "Token tidak ditemukan"
+    }), 401
+
+  token = auth_header.replace("Bearer ", "", 1).strip()
+  data = request.json or {}
+
+  result = update_profile_user(
+    token=token,
+    name=data.get("name"),
+    email=data.get("email"),
+    avatar_url=data.get("avatarUrl")
+  )
+
+  if result["status"] == "error":
+    status_code = 400
+    if "token" in (result.get("message") or "").lower():
+      status_code = 401
+    return jsonify(result), status_code
 
   return jsonify(result), 200
