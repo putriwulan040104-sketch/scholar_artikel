@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Star, Trash2, ExternalLink } from "lucide-react";
+import { Trash2, ExternalLink } from "lucide-react";
 
 const dummyData = [
   {

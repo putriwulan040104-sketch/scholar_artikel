@@ -76,3 +76,68 @@ export function getUser() {
   const user = localStorage.getItem("user");
   return user ? JSON.parse(user) : null;
 }
+
+export async function updateProfile(payload: {
+  name?: string;
+  email?: string;
+  avatarUrl?: string;
+}) {
+  const token = getToken();
+  if (!token) {
+    return {
+      status: "error",
+      message: "Token tidak ditemukan",
+    };
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/auth/profile`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      return {
+        status: "error",
+        message: data.message || "Gagal memperbarui profile",
+      };
+    }
+
+    if (data?.data) {
+      localStorage.setItem("user", JSON.stringify(data.data));
+      window.dispatchEvent(new Event("user-updated"));
+    }
+
+    return data;
+  } catch (_error) {
+    return {
+      status: "error",
+      message: "Gagal koneksi ke server",
+    };
+  }
+}
+
+export function updateUserLocal(payload: {
+  name?: string;
+  email?: string;
+  avatarUrl?: string;
+}) {
+  const user = getUser();
+  if (!user) {
+    return null;
+  }
+
+  const nextUser = {
+    ...user,
+    ...payload,
+  };
+
+  localStorage.setItem("user", JSON.stringify(nextUser));
+  window.dispatchEvent(new Event("user-updated"));
+  return nextUser;
+}

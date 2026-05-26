@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { getUser } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -6,13 +8,29 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, SlidersHorizontal } from "lucide-react";
 
 export function Searchpage() {
+  const [user, setUser] = useState(() => getUser());
+
+  useEffect(() => {
+    const syncUser = () => setUser(getUser());
+
+    window.addEventListener("user-updated", syncUser);
+    window.addEventListener("storage", syncUser);
+
+    return () => {
+      window.removeEventListener("user-updated", syncUser);
+      window.removeEventListener("storage", syncUser);
+    };
+  }, []);
+
+  const displayName = user?.name?.trim() || "User";
+
   return (
     <div className="flex items-center justify-center">
       <Card className="w-full max-w-4xl shadow-md rounded-xl">
         <section className="mx-auto max-w-6xl px-8 py-10">
           <div className="text-center">
             <h1 className="md:text-xl text-3xl font-bold leading-tight">
-              Hai, <span className="text-black font-bold">User</span>
+              Hai, <span className="text-black font-bold">{displayName}</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-md text-slate-500">
               Mau cari publikasi apa hari ini?
@@ -167,26 +185,6 @@ export function Searchpage() {
               Cari
             </button>
           </div>
-
-          {/* TAGS */}
-          {/* <p className="mx-auto mt-8 max-w-2xl text-md text-slate-500">
-            Coba pencarian lain
-          </p>
-          <div className="mt-4 flex flex-wrap justify-center gap-3">
-            {[
-              "Citation network machine learning",
-              "Bibliometric analysis",
-              "Information retrieval 2023-2026",
-              "Web scraping Google Scholar",
-            ].map((item) => (
-              <button
-                key={item}
-                className="rounded-full border bg-white px-5 py-2 text-sm text-slate-600 transition hover:border-indigo-400 hover:text-indigo-600"
-              >
-                {item}
-              </button>
-            ))}
-          </div> */}
         </section>
       </Card>
     </div>
