@@ -1,16 +1,4 @@
-// import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-// import { SidebarTrigger } from "@/components/ui/sidebar";
-// import { ChevronDown, User } from "lucide-react";
-import { useMemo, useState } from "react";
-import { useEffect, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 
@@ -142,6 +130,11 @@ export default function Page() {
   const [tableData, setTableData] = useState<Article[]>(
     Array.isArray(location.state?.results) ? location.state.results : []
   );
+  const [totalMatched, setTotalMatched] = useState<number>(
+    location.state?.total_matched ??
+    location.state?.total ??
+    (Array.isArray(location.state?.results) ? location.state.results.length : 0)
+  );
   const [totalOccurrences, setTotalOccurrences] = useState<number>(
     location.state?.total_occurrences ?? 0
   );
@@ -166,31 +159,24 @@ export default function Page() {
 
   const chips = buildChips(activeFilters);
   const openFilterEditor = () => {
-  // sinkronkan isi form dengan filter aktif saat ini
-  setJenisArtikel(activeFilters.jenisArtikel);
-  setYearStart(activeFilters.yearStart);
-  setYearEnd(activeFilters.yearEnd);
-  setJenisAnalisis(activeFilters.jenisAnalisis);
-  setJumlahKemunculan(activeFilters.jumlahKemunculan);
-  setOpen(true);
-};
-  const [jenisArtikel, setJenisArtikel] = useState(filters?.jenisArtikel ?? "");
-  const [yearStart, setYearStart] = useState(filters?.yearStart ?? "");
-  const [yearEnd, setYearEnd] = useState(filters?.yearEnd ?? "");
-  const [jenisAnalisis, setJenisAnalisis] = useState(filters?.jenisAnalisis ?? "");
-  const [jumlahKemunculan, setJumlahKemunculan] = useState(filters?.jumlahKemunculan ?? "");
-
-  const chips = filters ? buildChips(filters) : [];
+    // sinkronkan isi form dengan filter aktif saat ini
+    setJenisArtikel(activeFilters.jenisArtikel);
+    setYearStart(activeFilters.yearStart);
+    setYearEnd(activeFilters.yearEnd);
+    setJenisAnalisis(activeFilters.jenisAnalisis);
+    setJumlahKemunculan(activeFilters.jumlahKemunculan);
+    setOpen(true);
+  };
 
   useEffect(() => {
     try {
-      const ids = data
+      const ids = tableData
         .map((item) => Number(item.id))
         .filter((id) => Number.isFinite(id));
       localStorage.setItem("lastSearchPublicationIds", JSON.stringify(ids));
       localStorage.setItem("lastSearchQuery", query || "");
-      if (filters) {
-        localStorage.setItem("lastSearchFilters", JSON.stringify(filters));
+      if (activeFilters) {
+        localStorage.setItem("lastSearchFilters", JSON.stringify(activeFilters));
       } else {
         localStorage.removeItem("lastSearchFilters");
       }
@@ -198,7 +184,7 @@ export default function Page() {
     } catch (_error) {
       // no-op
     }
-  }, [data, query, filters]);
+  }, [tableData, query, activeFilters]);
 
   // Statistik cards: selalu sinkron dengan hasil tabel terbaru.
   const paperCount = tableData.length;
@@ -257,12 +243,15 @@ export default function Page() {
       const nextData = Array.isArray(res.data) ? res.data : [];
 
       const nextPaperCount = nextData.length;
+      const nextTotalMatched =
+        (res.total_matched ?? res.total ?? nextData.length);
       const nextTotalOccurrences = nextData.reduce(
         (acc, row) => acc + getOccurrenceValue(row as Article),
         0
       );
 
       setTableData(nextData);
+      setTotalMatched(nextTotalMatched);
       setTotalOccurrences(nextTotalOccurrences);
       setActiveFilters(newFilters);
 
@@ -272,6 +261,7 @@ export default function Page() {
           results: nextData,
           query,
           filters: newFilters,
+          total_matched: nextTotalMatched,
           total_occurrences: nextTotalOccurrences,
           paper_count: nextPaperCount,
         },
@@ -414,6 +404,7 @@ export default function Page() {
             jumlahKemunculan={activeFilters.jumlahKemunculan}
             totalOccurrences={cardTotalOccurrences}
             paperCount={paperCount}
+            totalMatched={totalMatched}
           />
 
           <div className="px-4 lg:px-6">
@@ -426,51 +417,3 @@ export default function Page() {
     </div>
   );
 }
-
-    {/* <header className="flex h-18 bg-primary items-center px-4">
-      <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1 [&_svg]:h-5 [&_svg]:w-5" />
-        <h1 className="text-black font-medium">Documents</h1>
-      </div>
-      <div className="ml-auto">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 rounded-full hover:bg-white/10 p-1 transition">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback>
-                  <User />
-                </AvatarFallback>
-              </Avatar>
-
-              <ChevronDown className="h-4 w-4 text-white/80" />
-            </button>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-500">
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    </header> */}
-
-    {/* <div className="flex-1">}
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <SectionCards />
-          <div className="px-4 lg:px-6">
-            <ChartBarLabel />
-          </div>
-          <DataTable data={data} />
-        </div>
-      </div>
-    </div>
-  </div>
-  */}

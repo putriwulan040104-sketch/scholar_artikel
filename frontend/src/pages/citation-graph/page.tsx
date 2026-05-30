@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as d3 from "d3";
-import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import {
   getCitationGraphData,
   searchArticles,
@@ -9,131 +9,41 @@ import {
   type CitationGraphNode,
 } from "@/api/api";
 import { Card } from "@/components/ui/card";
-
-type GraphNode = d3.SimulationNodeDatum & {
-  id: number;
-  articleId?: number | null;
-  title?: string | null;
-  year?: number | null;
-  doi?: string | null;
-  authors?: string[] | string | null;
-  referenceCount?: number;
-  degree: number;
-};
-
-type GraphLink = d3.SimulationLinkDatum<GraphNode> & {
-  source: number | string | GraphNode;
-  target: number | string | GraphNode;
-  weight: number;
-};
+import { Button } from "@/components/ui/button";
+import type {
+  FavoriteItem,
+  GraphLink,
+  GraphNode,
+  GraphTooltip,
+  QueryArticleLite,
+  StoredFilters,
+} from "./citation-graph.types";
+import {
+  buildPageItems,
+  formatAuthors,
+  getNodeRadius,
+  readFavorites,
+  writeFavorites,
+} from "./citation-graph.utils";
 
 const WIDTH = 1100;
 const HEIGHT = 620;
 const LIST_PAGE_SIZE = 5;
 const GRAPH_QUERY_TOP_K = 5000;
-const NODE_RADIUS_MIN = 5;
-const NODE_RADIUS_MAX = 18;
-
-type StoredFilters = {
-  yearStart?: string;
-  yearEnd?: string;
-};
-
-type FavoriteItem = {
-  id: number;
-  title: string;
-  authors: string;
-  year?: number;
-  similarity_score: number;
-  pdf_url?: string | null;
-  url?: string | null;
-  access_url?: string | null;
-  is_pdf?: boolean | string;
-};
-
-type GraphTooltip = {
-  visible: boolean;
-  x: number;
-  y: number;
-  title: string;
-  authors: string;
-  year: string;
-  citations: number;
-  references: number;
-};
-
-function readFavorites(): FavoriteItem[] {
-  try {
-    const raw = localStorage.getItem("favorites");
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (_error) {
-    return [];
-  }
-}
-
-function writeFavorites(items: FavoriteItem[]) {
-  localStorage.setItem("favorites", JSON.stringify(items));
-}
-
-function formatAuthors(raw: unknown): string {
-  if (Array.isArray(raw)) {
-    const names = raw
-      .map((v) => (typeof v === "string" ? v.trim() : ""))
-      .filter((v) => v);
-    return names.length ? names.join(", ") : "-";
-  }
-
-  if (typeof raw === "string") {
-    const s = raw.trim();
-    if (!s) return "-";
-    try {
-      const parsed = JSON.parse(s);
-      if (Array.isArray(parsed)) {
-        const names = parsed
-          .map((v) => (typeof v === "string" ? v.trim() : ""))
-          .filter((v) => v);
-        return names.length ? names.join(", ") : s;
-      }
-    } catch (_error) {
-    }
-    return s;
-  }
-
-  return "-";
-}
-
-function buildPageItems(current: number, total: number): Array<number | string> {
-  if (total <= 7) {
-    return Array.from({ length: total }, (_, i) => i + 1);
-  }
-
-  const items: Array<number | string> = [1];
-  const start = Math.max(2, current - 1);
-  const end = Math.min(total - 1, current + 1);
-
-  if (start > 2) items.push("...");
-  for (let p = start; p <= end; p += 1) items.push(p);
-  if (end < total - 1) items.push("...");
-
-  items.push(total);
-  return items;
-}
-
-function getNodeRadius(degree: number): number {
-  const safeDegree = Number.isFinite(degree) ? Math.max(0, degree) : 0;
-  const r = NODE_RADIUS_MIN + Math.sqrt(safeDegree) * 2.8;
-  return Math.max(NODE_RADIUS_MIN, Math.min(NODE_RADIUS_MAX, r));
-}
 
 export default function CitationGraphPage() {
+  const navigate = useNavigate();
   const location = useLocation();
   const svgRef = useRef<SVGSVGElement | null>(null);
   const graphWrapRef = useRef<HTMLDivElement | null>(null);
 
-  const stateIds = (location.state as { sourcePublicationIds?: number[] } | null)?.sourcePublicationIds || [];
+  const stateIds =
+    (location.state as { sourcePublicationIds?: number[] } | null)
+      ?.sourcePublicationIds || [];
   const [savedIds, setSavedIds] = useState<number[]>([]);
   const [queryMatchedIds, setQueryMatchedIds] = useState<number[]>([]);
+  const [queryArticles, setQueryArticles] = useState<QueryArticleLite[]>([]);
+  const [queryTotalMatched, setQueryTotalMatched] = useState<number>(0);
 
   useEffect(() => {
     try {
@@ -141,9 +51,7 @@ export default function CitationGraphPage() {
       const parsed = raw ? JSON.parse(raw) : [];
       if (Array.isArray(parsed)) {
         setSavedIds(
-          parsed
-            .map((id) => Number(id))
-            .filter((id) => Number.isFinite(id))
+          parsed.map((id) => Number(id)).filter((id) => Number.isFinite(id)),
         );
       } else {
         setSavedIds([]);
@@ -164,40 +72,95 @@ export default function CitationGraphPage() {
 
         let yearStart: number | undefined;
         let yearEnd: number | undefined;
+        let jenisArtikel: string | undefined;
+        let jenisAnalisis: string | undefined;
+        let jumlahKemunculan: string | undefined;
         const rawFilters = localStorage.getItem("lastSearchFilters");
         if (rawFilters) {
           const parsed = JSON.parse(rawFilters) as StoredFilters;
           if (parsed?.yearStart) yearStart = Number(parsed.yearStart);
           if (parsed?.yearEnd) yearEnd = Number(parsed.yearEnd);
+          if (parsed?.jenisArtikel) jenisArtikel = parsed.jenisArtikel;
+          if (parsed?.jenisAnalisis) jenisAnalisis = parsed.jenisAnalisis;
+          if (parsed?.jumlahKemunculan) {
+            jumlahKemunculan = parsed.jumlahKemunculan;
+          }
         }
 
-        const res = await searchArticles(query, GRAPH_QUERY_TOP_K, yearStart, yearEnd);
+        const res = await searchArticles(
+          query,
+          GRAPH_QUERY_TOP_K,
+          yearStart,
+          yearEnd,
+          jenisArtikel,
+          jenisAnalisis,
+          jumlahKemunculan,
+        );
         if (res.status !== "success" || !Array.isArray(res.data)) {
           setQueryMatchedIds([]);
+          setQueryArticles([]);
+          setQueryTotalMatched(0);
           return;
         }
 
         const ids = res.data
           .map((item: { id?: number | string }) => Number(item.id))
           .filter((id: number) => Number.isFinite(id));
+        const normalizedArticles: QueryArticleLite[] = res.data
+          .map(
+            (item: {
+              id?: number | string;
+              title?: string;
+              authors?: string[] | string;
+              year?: number | string;
+              doi?: string;
+            }) => ({
+              id: Number(item.id),
+              title: item.title || null,
+              authors: item.authors || null,
+              year:
+                item.year !== undefined && item.year !== null && item.year !== ""
+                  ? Number(item.year)
+                  : null,
+              doi: item.doi || null,
+            }),
+          )
+          .filter((item) => Number.isFinite(item.id));
 
         setQueryMatchedIds(ids);
+        setQueryArticles(normalizedArticles);
+        setQueryTotalMatched(
+          Number(
+            res.total_matched ?? res.total ?? normalizedArticles.length ?? 0,
+          ) || 0,
+        );
 
         // Simpan konteks terbaru agar sidebar / page lain sinkron
         localStorage.setItem("lastSearchPublicationIds", JSON.stringify(ids));
         window.dispatchEvent(new Event("search-context-updated"));
       } catch (_error) {
         setQueryMatchedIds([]);
+        setQueryArticles([]);
+        setQueryTotalMatched(0);
       }
     };
 
     run();
   }, [location.key]);
 
-  const activeIds = stateIds.length ? stateIds : (queryMatchedIds.length ? queryMatchedIds : savedIds);
+  const activeIds = stateIds.length
+    ? stateIds
+    : queryMatchedIds.length
+      ? queryMatchedIds
+      : savedIds;
   const filterIds = useMemo(
-    () => new Set((activeIds || []).map((id) => Number(id)).filter((id) => Number.isFinite(id))),
-    [activeIds]
+    () =>
+      new Set(
+        (activeIds || [])
+          .map((id) => Number(id))
+          .filter((id) => Number.isFinite(id)),
+      ),
+    [activeIds],
   );
 
   const [loading, setLoading] = useState(true);
@@ -232,8 +195,9 @@ export default function CitationGraphPage() {
         setLoading(false);
         return;
       }
-      setNodes(res.data.nodes || []);
-      setEdges(res.data.edges || []);
+      const graphData = res.data || { nodes: [], edges: [] };
+      setNodes(graphData.nodes || []);
+      setEdges(graphData.edges || []);
       setLoading(false);
     };
     run();
@@ -241,22 +205,47 @@ export default function CitationGraphPage() {
 
   const displayNodes = useMemo(() => {
     if (!filterIds.size) return [];
-    return nodes.filter((n) => {
+
+    const matchedGraphNodes = nodes.filter((n) => {
       const publicationId = Number(n.id);
       const articleId = Number(n.article_id);
       return filterIds.has(publicationId) || filterIds.has(articleId);
     });
-  }, [nodes, filterIds]);
+    const usedArticleIds = new Set(
+      matchedGraphNodes
+        .map((n) => Number(n.article_id))
+        .filter((id) => Number.isFinite(id)),
+    );
+    const usedNodeIds = new Set(
+      matchedGraphNodes
+        .map((n) => Number(n.id))
+        .filter((id) => Number.isFinite(id)),
+    );
+
+    const syntheticNodes: CitationGraphNode[] = queryArticles
+      .filter((a) => Number.isFinite(a.id))
+      .filter((a) => !usedArticleIds.has(a.id) && !usedNodeIds.has(a.id))
+      .map((a) => ({
+        // pakai negatif supaya tidak bentrok dengan id node graph
+        id: -Math.abs(a.id),
+        article_id: a.id,
+        title: a.title || `Publication ${a.id}`,
+        year: a.year ?? null,
+        doi: a.doi ?? null,
+        authors: a.authors ?? null,
+        reference_count: 0,
+      }));
+
+    return [...matchedGraphNodes, ...syntheticNodes];
+  }, [nodes, filterIds, queryArticles]);
 
   const displayEdges = useMemo(() => {
     if (!displayNodes.length) return [];
     const nodeIds = new Set(
-      displayNodes
-        .map((n) => Number(n.id))
-        .filter((id) => Number.isFinite(id))
+      displayNodes.map((n) => Number(n.id)).filter((id) => Number.isFinite(id)),
     );
     return edges.filter(
-      (e) => nodeIds.has(Number(e.source)) && nodeIds.has(Number(e.target))
+      (e) => nodeIds.has(Number(e.source)) && nodeIds.has(Number(e.target)),
     );
   }, [edges, displayNodes]);
 
@@ -304,7 +293,7 @@ export default function CitationGraphPage() {
           Number.isFinite(Number(e.source)) &&
           Number.isFinite(Number(e.target)) &&
           nodeIdSet.has(Number(e.source)) &&
-          nodeIdSet.has(Number(e.target))
+          nodeIdSet.has(Number(e.target)),
       );
 
     return { gNodes, gLinks, degreeById, inDegreeById, outDegreeById };
@@ -320,9 +309,10 @@ export default function CitationGraphPage() {
     const root = svg.append("g");
 
     svg.call(
-      d3.zoom<SVGSVGElement, unknown>()
+      d3
+        .zoom<SVGSVGElement, unknown>()
         .scaleExtent([0.35, 3])
-        .on("zoom", (event) => root.attr("transform", event.transform))
+        .on("zoom", (event) => root.attr("transform", event.transform)),
     );
 
     const link = root
@@ -368,18 +358,22 @@ export default function CitationGraphPage() {
         setTooltip((prev) => ({ ...prev, visible: false }));
       });
 
-    const simulation = d3.forceSimulation<GraphNode>(graphModel.gNodes)
+    const simulation = d3
+      .forceSimulation<GraphNode>(graphModel.gNodes)
       .force(
         "link",
         d3
           .forceLink<GraphNode, GraphLink>(graphModel.gLinks)
           .id((d) => d.id)
           .distance((d) => Math.max(70, 130 - d.weight * 10))
-          .strength(0.6)
+          .strength(0.6),
       )
       .force("charge", d3.forceManyBody().strength(-260))
       .force("center", d3.forceCenter(WIDTH / 2, HEIGHT / 2))
-      .force("collision", d3.forceCollide<GraphNode>((d) => getNodeRadius(d.degree) + 2))
+      .force(
+        "collision",
+        d3.forceCollide<GraphNode>((d) => getNodeRadius(d.degree) + 2),
+      )
       .on("tick", () => {
         link
           .attr("x1", (d) => (d.source as GraphNode).x || 0)
@@ -387,12 +381,11 @@ export default function CitationGraphPage() {
           .attr("x2", (d) => (d.target as GraphNode).x || 0)
           .attr("y2", (d) => (d.target as GraphNode).y || 0);
 
-        circles
-          .attr("cx", (d) => d.x || 0)
-          .attr("cy", (d) => d.y || 0);
+        circles.attr("cx", (d) => d.x || 0).attr("cy", (d) => d.y || 0);
       });
 
-    const drag = d3.drag<SVGCircleElement, GraphNode>()
+    const drag = d3
+      .drag<SVGCircleElement, GraphNode>()
       .on("start", (event, d) => {
         if (!event.active) simulation.alphaTarget(0.3).restart();
         d.fx = d.x;
@@ -424,10 +417,13 @@ export default function CitationGraphPage() {
         if (bIn !== aIn) return bIn - aIn;
         return b.degree - a.degree;
       }),
-    [graphModel]
+    [graphModel],
   );
 
-  const totalListPages = Math.max(1, Math.ceil(rankedNodes.length / LIST_PAGE_SIZE));
+  const totalListPages = Math.max(
+    1,
+    Math.ceil(rankedNodes.length / LIST_PAGE_SIZE),
+  );
 
   useEffect(() => {
     if (listPage > totalListPages) {
@@ -442,7 +438,7 @@ export default function CitationGraphPage() {
 
   const pageItems = useMemo(
     () => buildPageItems(listPage, totalListPages),
-    [listPage, totalListPages]
+    [listPage, totalListPages],
   );
 
   const toggleFavorite = (node: GraphNode) => {
@@ -450,7 +446,9 @@ export default function CitationGraphPage() {
     const exists = current.some((item) => Number(item.id) === Number(node.id));
 
     if (exists) {
-      const updated = current.filter((item) => Number(item.id) !== Number(node.id));
+      const updated = current.filter(
+        (item) => Number(item.id) !== Number(node.id),
+      );
       writeFavorites(updated);
       setFavoriteIds(new Set(updated.map((item) => Number(item.id))));
       return;
@@ -479,15 +477,27 @@ export default function CitationGraphPage() {
 
   return (
     <div className="space-y-4">
+      <Button
+        variant="ghost"
+        className="mb-6 gap-2 text-muted-foreground"
+        onClick={() => navigate(-1)}
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Kembali
+      </Button>
       <div>
         <h1 className="text-xl font-semibold">Jaringan Sitasi</h1>
-        <p className="text-sm text-muted-foreground">Visualisasi relasi sitasi antar publikasi.</p>
+        <p className="text-sm text-muted-foreground">
+          Visualisasi relasi sitasi antar publikasi.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Total Publikasi</p>
-          <p className="text-2xl font-semibold">{displayNodes.length}</p>
+          <p className="text-2xl font-semibold">
+            {queryTotalMatched > 0 ? queryTotalMatched : displayNodes.length}
+          </p>
         </Card>
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Total Relasi Sitasi</p>
@@ -496,7 +506,9 @@ export default function CitationGraphPage() {
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Rata-rata Degree</p>
           <p className="text-2xl font-semibold">
-            {displayNodes.length ? ((displayEdges.length * 2) / displayNodes.length).toFixed(2) : "0.00"}
+            {displayNodes.length
+              ? ((displayEdges.length * 2) / displayNodes.length).toFixed(2)
+              : "0.00"}
           </p>
         </Card>
       </div>
@@ -507,7 +519,9 @@ export default function CitationGraphPage() {
             Memuat graph data...
           </div>
         ) : error ? (
-          <div className="flex h-[620px] items-center justify-center text-sm text-red-500">{error}</div>
+          <div className="flex h-[620px] items-center justify-center text-sm text-red-500">
+            {error}
+          </div>
         ) : !displayNodes.length ? (
           <div className="flex h-[620px] items-center justify-center text-sm text-muted-foreground">
             {filterIds.size
@@ -516,14 +530,21 @@ export default function CitationGraphPage() {
           </div>
         ) : (
           <div ref={graphWrapRef} className="relative w-full overflow-auto">
-            <svg ref={svgRef} className="h-[620px] w-full min-w-[980px] cursor-grab active:cursor-grabbing" />
+            <svg
+              ref={svgRef}
+              className="h-[620px] w-full min-w-[980px] cursor-grab active:cursor-grabbing"
+            />
             {tooltip.visible && (
               <div
                 className="pointer-events-none absolute z-20 w-[280px] rounded-md border bg-white p-3 text-xs shadow-lg"
                 style={{ left: tooltip.x, top: tooltip.y }}
               >
-                <p className="line-clamp-2 text-sm font-semibold">{tooltip.title}</p>
-                <p className="mt-1 text-muted-foreground">Authors: {tooltip.authors}</p>
+                <p className="line-clamp-2 text-sm font-semibold">
+                  {tooltip.title}
+                </p>
+                <p className="mt-1 text-muted-foreground">
+                  Authors: {tooltip.authors}
+                </p>
                 <p className="text-muted-foreground">Year: {tooltip.year}</p>
               </div>
             )}
@@ -551,7 +572,8 @@ export default function CitationGraphPage() {
                         {n.title || `Publication ${n.id}`}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Authors: {formatAuthors(n.authors)} | Year: {n.year ?? "-"}
+                        Authors: {formatAuthors(n.authors)} | Year:{" "}
+                        {n.year ?? "-"}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         DOI: {n.doi || "-"}
@@ -564,7 +586,9 @@ export default function CitationGraphPage() {
                     >
                       <Star
                         className={`h-3.5 w-3.5 ${
-                          favoriteIds.has(n.id) ? "fill-yellow-400 text-yellow-400" : ""
+                          favoriteIds.has(n.id)
+                            ? "fill-yellow-400 text-yellow-400"
+                            : ""
                         }`}
                       />
                     </button>
@@ -599,7 +623,10 @@ export default function CitationGraphPage() {
 
             {pageItems.map((item, idx) =>
               item === "..." ? (
-                <span key={`ellipsis-${idx}`} className="px-1 text-sm text-muted-foreground">
+                <span
+                  key={`ellipsis-${idx}`}
+                  className="px-1 text-sm text-muted-foreground"
+                >
                   ...
                 </span>
               ) : (
@@ -615,12 +642,14 @@ export default function CitationGraphPage() {
                 >
                   {item}
                 </button>
-              )
+              ),
             )}
 
             <button
               type="button"
-              onClick={() => setListPage((p) => Math.min(totalListPages, p + 1))}
+              onClick={() =>
+                setListPage((p) => Math.min(totalListPages, p + 1))
+              }
               disabled={listPage >= totalListPages}
               className="inline-flex h-8 w-8 items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50"
             >

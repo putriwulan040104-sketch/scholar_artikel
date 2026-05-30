@@ -126,6 +126,8 @@ export interface SearchResult {
   status            : string;
   query?            : string;
   total?            : number;
+  total_matched?    : number;
+  displayed_count?  : number;
   total_occurrences?: number;  
   paper_count?      : number;  
   data?             : any[];
@@ -161,8 +163,17 @@ export async function searchArticles(
     const data = await res.json();
 
     if (!res.ok) return { status: "error", message: data.message || "Pencarian gagal" };
+    const list = Array.isArray(data?.data) ? data.data : [];
+    const normalizedTotalMatched = Number(
+      data?.total_matched ?? data?.total ?? data?.paper_count ?? list.length
+    );
 
-    return data; // sudah include total_occurrences & paper_count
+    return {
+      ...data,
+      total_matched: Number.isFinite(normalizedTotalMatched)
+        ? normalizedTotalMatched
+        : list.length,
+    }; // sudah include total_occurrences & paper_count
   } catch {
     return { status: "error", message: "Gagal koneksi ke server" };
   }

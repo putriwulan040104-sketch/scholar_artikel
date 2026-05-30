@@ -132,6 +132,7 @@ export function Searchpage() {
             results: res.data,
             query,
             filters: activeFilters,
+            total_matched: res.total_matched ?? res.total ?? res.data.length,
             total_occurrences: res.total_occurrences ?? 0,
             paper_count: res.paper_count ?? res.data.length,
           },

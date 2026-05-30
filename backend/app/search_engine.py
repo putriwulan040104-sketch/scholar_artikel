@@ -221,10 +221,13 @@ def search_articles(
     if jumlah_publikasi is not None and str(jumlah_publikasi).strip() != "":
         top_k = int(jumlah_publikasi)
 
-    results = results.head(int(top_k))
-
+    # Total hasil query setelah semua filter, sebelum dipotong top_k
+    total_matched = int(len(results))
     total_occurrences = int(results["term_frequency"].sum())
-    paper_count = int(len(results))
+
+    results = results.head(int(top_k))
+    displayed_count = int(len(results))
+    displayed_occurrences = int(results["term_frequency"].sum())
 
     results["occurrence"] = results["term_frequency"]
     results["jenis_analisis"] = jenis_analisis or ""
@@ -234,7 +237,10 @@ def search_articles(
     return {
         "articles": results.to_dict("records"),
         "total_occurrences": total_occurrences,
-        "paper_count": paper_count,
+        "paper_count": displayed_count,
+        "total_matched": total_matched,
+        "displayed_count": displayed_count,
+        "displayed_occurrences": displayed_occurrences,
     }
 
 

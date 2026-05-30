@@ -129,7 +129,9 @@ def search():
         return jsonify({
             'status'           : 'success',
             'query'            : query,
-            'total'            : len(result["articles"]),
+            'total'            : result.get("total_matched", len(result["articles"])),
+            'total_matched'    : result.get("total_matched", len(result["articles"])),
+            'displayed_count'  : result.get("displayed_count", len(result["articles"])),
             'total_occurrences': result["total_occurrences"],
             'paper_count'      : result["paper_count"],
             'data'             : result["articles"],  # ← ambil dari key "articles"

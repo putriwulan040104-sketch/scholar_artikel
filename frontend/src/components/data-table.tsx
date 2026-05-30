@@ -478,21 +478,22 @@ export function DataTable({
           <h2 className="text-lg font-semibold text-slate-700">
             Hasil pencarian 10 artikel teratas
           </h2>
-        <Button variant="outline" size="sm">
-      <div className="flex items-center justify-end px-4 lg:px-6">
-        <Button
-          size="sm"
-          onClick={() =>
-            navigate("/citation-graph", {
-              state: {
-                sourcePublicationIds: data.map((row) => Number(row.id)).filter((id) => Number.isFinite(id)),
-              },
-            })
-          }
-        >
-          <Network className="h-4 w-4" />
-          <span>Jaringan Sitasi</span>
-        </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() =>
+              navigate("/citation-graph", {
+                state: {
+                  sourcePublicationIds: data
+                    .map((row) => Number(row.id))
+                    .filter((id) => Number.isFinite(id)),
+                },
+              })
+            }
+          >
+            <Network className="h-4 w-4" />
+            <span>Jaringan Sitasi</span>
+          </Button>
         </div>
       </div>
 

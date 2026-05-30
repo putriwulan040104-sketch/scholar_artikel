@@ -100,7 +100,7 @@ export default function DetailPublicationPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] px-6 py-8">
+    <div className="min-h-screen px-6 py-8">
 
       {/* Back */}
       <Button

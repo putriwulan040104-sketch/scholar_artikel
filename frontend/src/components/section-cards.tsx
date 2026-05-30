@@ -11,7 +11,8 @@ interface SectionCardsProps {
   query?            : string;
   jumlahKemunculan? : string;
   totalOccurrences? : number;  // ← ganti dari tfData
-  paperCount?       : number;
+  paperCount?       : number;  // jumlah yang sedang ditampilkan di tabel
+  totalMatched?     : number;  // jumlah keseluruhan hasil query
 }
 
 export function SectionCards({
@@ -19,12 +20,15 @@ export function SectionCards({
   jumlahKemunculan: _jumlahKemunculan,
   totalOccurrences = 0,
   paperCount       = 0,
+  totalMatched     = 0,
 }: SectionCardsProps) {
 
 const safeTotalOccurrences = Number.isFinite(totalOccurrences)
     ? totalOccurrences
     : 0;
   const safePaperCount = Number.isFinite(paperCount) ? paperCount : 0;
+  const safeTotalMatched = Number.isFinite(totalMatched) ? totalMatched : 0;
+  const finalTotalMatched = safeTotalMatched > 0 ? safeTotalMatched : safePaperCount;
 
 
   return (
@@ -34,7 +38,7 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
           Hasil pencarian: "{_query}"
         </h1>
         <p className="text-sm text-slate-500 mt-1">
-          Total {safePaperCount} artikel ditemukan
+          Total {finalTotalMatched} artikel ditemukan
         </p>
       </div>
 
@@ -44,7 +48,7 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
           <CardHeader>
             <CardDescription>Jumlah Publikasi</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              {safePaperCount}
+              {finalTotalMatched}
             </CardTitle>
           </CardHeader>
         </Card>
