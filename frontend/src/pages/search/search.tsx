@@ -78,7 +78,6 @@ export function Searchpage() {
   }, []);
 
   useEffect(() => {
-  useEffect(() => {
     const syncUser = () => setUser(getUser());
 
     window.addEventListener("user-updated", syncUser);

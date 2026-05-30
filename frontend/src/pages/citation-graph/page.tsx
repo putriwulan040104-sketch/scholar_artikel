@@ -96,7 +96,6 @@ function formatAuthors(raw: unknown): string {
         return names.length ? names.join(", ") : s;
       }
     } catch (_error) {
-      // gunakan string apa adanya
     }
     return s;
   }
