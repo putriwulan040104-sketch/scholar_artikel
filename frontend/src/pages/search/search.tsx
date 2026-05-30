@@ -21,24 +21,24 @@ import { Search, SlidersHorizontal } from "lucide-react";
 import { getUser, searchArticles } from "@/api/api";
 
 export interface SearchFilters {
-  jenisArtikel: string;
-  yearStart: string;
-  yearEnd: string;
-  jenisAnalisis: string;
+  jenisArtikel    : string;
+  yearStart       : string;
+  yearEnd         : string;
+  jenisAnalisis   : string;
   jumlahKemunculan: string;
 }
 
 export function Searchpage() {
   const navigate = useNavigate();
 
-  const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [searched, setSearched] = useState(false);
+  const [query,           setQuery]           = useState("");
+  const [loading,         setLoading]         = useState(false);
+  const [noResult,        setNoResult]        = useState(false); // ← ganti nama dari searched
   const [user, setUser] = useState(() => getUser());
-  const [yearStart, setYearStart] = useState<string>("");
-  const [yearEnd, setYearEnd] = useState<string>("");
-  const [jenisArtikel, setJenisArtikel] = useState<string>("");
-  const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
+  const [yearStart,        setYearStart]        = useState<string>("");
+  const [yearEnd,          setYearEnd]          = useState<string>("");
+  const [jenisArtikel,     setJenisArtikel]     = useState<string>("");
+  const [jenisAnalisis,    setJenisAnalisis]    = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
 
     useEffect(() => {
@@ -59,7 +59,7 @@ export function Searchpage() {
     if (!query.trim()) return;
 
     setLoading(true);
-    setSearched(true);
+    setNoResult(false); // reset dulu sebelum search
 
     const activeFilters: SearchFilters = {
       jenisArtikel,
@@ -73,27 +73,32 @@ export function Searchpage() {
       const res = await searchArticles(
         query,
         10,
-        yearStart ? parseInt(yearStart) : undefined,
-        yearEnd ? parseInt(yearEnd) : undefined
+        yearStart        ? parseInt(yearStart) : undefined,
+        yearEnd          ? parseInt(yearEnd)   : undefined,
+        jenisArtikel     || undefined,
+        jenisAnalisis    || undefined,
+        jumlahKemunculan || undefined,
       );
 
-      // kalau ada hasil → pindah dashboard
+      // Ada hasil → navigasi ke dashboard
       if (res.status === "success" && res.data && res.data.length > 0) {
         navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
           state: {
-            results: res.data,
-            query: query,
-            filters: activeFilters,
+            results          : res.data,
+            query            : query,
+            filters          : activeFilters,
+            total_occurrences: res.total_occurrences ?? 0, // ← kirim ke dashboard
+            paper_count      : res.paper_count ?? res.data.length,
           },
         });
-      }
-
-      // kalau tidak ada hasil → tetap di halaman search
-      else {
+      } else {
+        // Tidak ada hasil → tampilkan pesan
+        setNoResult(true);
         setLoading(false);
       }
     } catch (error) {
       console.error(error);
+      setNoResult(true);
       setLoading(false);
     }
   };
@@ -101,6 +106,7 @@ export function Searchpage() {
   return (
     <div className="flex flex-col gap-6">
 
+      {/* ===== KODE ZULFA - TIDAK DIUBAH ===== */}
       <div className="flex items-center justify-center">
         <Card className="w-full max-w-4xl shadow-md rounded-xl">
           <section className="mx-auto max-w-6xl px-8 py-10">
@@ -108,7 +114,6 @@ export function Searchpage() {
               <h1 className="md:text-xl text-3xl font-bold leading-tight">
                 Hai, <span className="text-black font-bold">{displayName}</span>
               </h1>
-
               <p className="mx-auto mt-5 max-w-2xl text-md text-slate-500">
                 Mau cari publikasi apa hari ini?
               </p>
@@ -121,9 +126,9 @@ export function Searchpage() {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) =>  {
+                onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                      e.preventDefault();
+                      e.preventDefault(); // ← tambah ini
                       handleSearch();
                     }
                   }}
@@ -131,6 +136,7 @@ export function Searchpage() {
                   className="flex-1 border-none bg-transparent outline-none"
                 />
 
+              {/* Dialog Filter */}
               <Dialog>
                 <DialogTrigger asChild>
                   <button className="hover:bg-black/8 rounded-xl py-2 px-2">
@@ -148,7 +154,6 @@ export function Searchpage() {
                   <div className="space-y-8 py-4">
                     <div className="grid grid-cols-2 gap-4">
 
-                      {/* Jenis Artikel */}
                       <div className="flex flex-col gap-2">
                         <label className="text-sm">Jenis artikel</label>
                         <Select onValueChange={setJenisArtikel} value={jenisArtikel}>
@@ -162,7 +167,6 @@ export function Searchpage() {
                         </Select>
                       </div>
 
-                      {/* Tahun terbit */}
                       <div className="flex flex-col gap-2">
                         <label className="text-sm">Tahun terbit</label>
                         <div className="flex gap-2">
@@ -200,7 +204,6 @@ export function Searchpage() {
                         </div>
                       </div>
 
-                      {/* Jenis Analisis */}
                       <div className="flex flex-col gap-2">
                         <label className="text-sm">Jenis analisis</label>
                         <Select onValueChange={setJenisAnalisis} value={jenisAnalisis}>
@@ -214,7 +217,6 @@ export function Searchpage() {
                         </Select>
                       </div>
 
-                      {/* Jumlah Kemunculan */}
                       <div className="flex flex-col gap-2">
                         <label className="text-sm font-medium">Jumlah kemunculan</label>
                         <Input
@@ -225,7 +227,9 @@ export function Searchpage() {
                           min={0}
                         />
                       </div>
-                    </div>
+
+                    </div>{/* end grid */}
+
                     <div className="flex justify-center">
                       <Button onClick={handleSearch} className="px-16">
                         Terapkan Filter
@@ -237,7 +241,8 @@ export function Searchpage() {
 
               <button
                 onClick={handleSearch}
-                className="rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 px-5 py-2 font-medium text-white transition hover:opacity-90"
+                disabled={loading}
+                className="rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 px-5 py-2 font-medium text-white transition hover:opacity-90 disabled:opacity-60"
               >
                 {loading ? "Mencari..." : "Cari"}
               </button>
@@ -247,8 +252,8 @@ export function Searchpage() {
         </Card>
       </div>
 
-      {/* ===== PESAN JIKA TIDAK ADA HASIL ===== */}
-      {searched && !loading && (
+      {/* Pesan tidak ada hasil — hanya tampil jika benar-benar tidak ada hasil */}
+      {noResult && !loading && (
         <div className="flex items-center justify-center">
           <Card className="w-full max-w-4xl shadow-md rounded-xl p-6">
             <p className="text-center text-slate-400 py-8">
@@ -257,6 +262,7 @@ export function Searchpage() {
           </Card>
         </div>
       )}
+
     </div>
   );
 }

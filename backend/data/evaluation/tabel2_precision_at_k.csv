@@ -1,11 +1,11 @@
-Query,Kategori,Relevan@5,P@5,Relevan@10,P@10
-machine learning,Machine Learning,5,1.0,10,1.0
-deep learning,Machine Learning,4,0.8,8,0.8
-web development,Web Development,5,1.0,8,0.8
-web application,Web Development,4,0.8,8,0.8
-cyber security,Cyber Security,5,1.0,10,1.0
-network security,Cyber Security,4,0.8,7,0.7
-mobile application,Mobile Application,5,1.0,10,1.0
-android application,Mobile Application,4,0.8,7,0.7
-data mining,Machine Learning,4,0.8,7,0.7
-software security,Cyber Security,4,0.8,8,0.8
+Query,Kategori,Retrieved,Relevan@5,P@5,Relevan@10,P@10
+machine learning,Machine Learning,10,0,0.0,0,0.0
+deep learning,Machine Learning,10,0,0.0,0,0.0
+web development,Web Development,10,0,0.0,0,0.0
+web application,Web Development,10,0,0.0,0,0.0
+cyber security,Cyber Security,10,0,0.0,0,0.0
+network security,Cyber Security,10,0,0.0,0,0.0
+mobile application,Mobile Application,10,0,0.0,0,0.0
+android application,Mobile Application,10,0,0.0,0,0.0
+data mining,Machine Learning,10,0,0.0,0,0.0
+software security,Cyber Security,10,0,0.0,0,0.0

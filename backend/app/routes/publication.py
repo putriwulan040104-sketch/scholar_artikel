@@ -99,20 +99,45 @@ def graph_data():
 
 @publication_bp.route("/search", methods=["GET"])
 def search():
-    query      = request.args.get('query', '').strip()
-    top_k      = int(request.args.get('top_k', 10))
-    year_start = request.args.get('year_start')
-    year_end   = request.args.get('year_end')
+    query             = request.args.get('query', '').strip()
+    top_k             = int(request.args.get('top_k', 10))
+    year_start        = request.args.get('year_start')
+    year_end          = request.args.get('year_end')
+    jenis_artikel     = request.args.get('jenis_artikel')
+    jenis_analisis    = request.args.get('jenis_analisis')
+    jumlah_kemunculan = request.args.get('jumlah_kemunculan')
+    jumlah_publikasi  = request.args.get('jumlah_publikasi')
+    sumber_data       = request.args.get('sumber_data')
 
     if not query:
-        return jsonify({'status': 'error',
-                        'message': 'Query tidak boleh kosong'}), 400
+        return jsonify({'status': 'error', 'message': 'Query tidak boleh kosong'}), 400
+
     try:
-        results = search_articles(query, top_k, year_start, year_end)
-        return jsonify({'status': 'success', 'query': query,
-                        'total': len(results), 'data': results})
+        result = search_articles(
+            query,
+            top_k,
+            year_start,
+            year_end,
+            jenis_artikel     = jenis_artikel,
+            jenis_analisis    = jenis_analisis,
+            jumlah_publikasi  = jumlah_publikasi,
+            jumlah_kemunculan = jumlah_kemunculan,
+            sumber_data       = sumber_data,
+        )
+
+        # ← result sekarang dict, bukan list
+        return jsonify({
+            'status'           : 'success',
+            'query'            : query,
+            'total'            : len(result["articles"]),
+            'total_occurrences': result["total_occurrences"],
+            'paper_count'      : result["paper_count"],
+            'data'             : result["articles"],  # ← ambil dari key "articles"
+        })
+
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
+
 
 @publication_bp.route("/stats", methods=["GET"])
 def stats():
