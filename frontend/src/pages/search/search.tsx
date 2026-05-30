@@ -41,7 +41,15 @@ export function Searchpage() {
   const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
 
-    useEffect(() => {
+  useEffect(() => {
+    // Saat kembali ke Eksplorasi, reset konteks hasil pencarian
+    localStorage.removeItem("lastSearchPublicationIds");
+    localStorage.removeItem("lastSearchQuery");
+    localStorage.removeItem("lastSearchFilters");
+    window.dispatchEvent(new Event("search-context-updated"));
+  }, []);
+
+  useEffect(() => {
     const syncUser = () => setUser(getUser());
 
     window.addEventListener("user-updated", syncUser);
@@ -77,7 +85,6 @@ export function Searchpage() {
         yearEnd ? parseInt(yearEnd) : undefined
       );
 
-      // kalau ada hasil → pindah dashboard
       if (res.status === "success" && res.data && res.data.length > 0) {
         navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
           state: {

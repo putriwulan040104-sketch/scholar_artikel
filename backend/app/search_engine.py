@@ -39,6 +39,9 @@ with open(os.path.join(TFIDF_DIR, 'vectorizer.pkl'), 'rb') as f:
 tfidf_matrix = sp.load_npz(os.path.join(TFIDF_DIR, 'tfidf_matrix.npz'))
 stop_words   = get_stopwords()
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 print(f'✅ Model loaded: {len(doc_index)} dokumen, vocab {tfidf_matrix.shape[1]} term')
 
 def preprocess_query(query: str) -> str:

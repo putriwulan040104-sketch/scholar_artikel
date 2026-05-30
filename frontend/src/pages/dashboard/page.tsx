@@ -9,7 +9,7 @@
 // } from "@/components/ui/dropdown-menu";
 // import { SidebarTrigger } from "@/components/ui/sidebar";
 // import { ChevronDown, User } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 
@@ -117,6 +117,24 @@ export default function Page() {
   const [jumlahKemunculan, setJumlahKemunculan] = useState(filters?.jumlahKemunculan ?? "");
 
   const chips = filters ? buildChips(filters) : [];
+
+  useEffect(() => {
+    try {
+      const ids = data
+        .map((item) => Number(item.id))
+        .filter((id) => Number.isFinite(id));
+      localStorage.setItem("lastSearchPublicationIds", JSON.stringify(ids));
+      localStorage.setItem("lastSearchQuery", query || "");
+      if (filters) {
+        localStorage.setItem("lastSearchFilters", JSON.stringify(filters));
+      } else {
+        localStorage.removeItem("lastSearchFilters");
+      }
+      window.dispatchEvent(new Event("search-context-updated"));
+    } catch (_error) {
+      // no-op
+    }
+  }, [data, query, filters]);
 
   // ── Terapkan filter → search ulang → update state ──
   const handleApplyFilter = async () => {

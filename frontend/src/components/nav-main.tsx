@@ -14,6 +14,7 @@ export function NavMain({
     title: string;
     url: string;
     icon?: React.ReactNode;
+    disabled?: boolean;
     items?: {
       title: string;
       url: string;
@@ -40,15 +41,28 @@ export function NavMain({
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton
-                  tooltip={item.title}
+                  tooltip={item.disabled ? `${item.title} (lakukan pencarian dulu)` : item.title}
                   className="flex items-center gap-3 text-base py-2 pl-4"
+                  disabled={item.disabled}
                 >
-                  <Link to={item.url} className="flex items-center gap-3 w-full">
-                    <div className="flex h-5 w-5 items-center justify-center [&_svg]:h-4 [&_svg]:w-4">
-                      {item.icon}
+                  {item.disabled ? (
+                    <div
+                      aria-disabled="true"
+                      className="flex w-full cursor-not-allowed items-center gap-3 opacity-50"
+                    >
+                      <div className="flex h-5 w-5 items-center justify-center [&_svg]:h-4 [&_svg]:w-4">
+                        {item.icon}
+                      </div>
+                      <span>{item.title}</span>
                     </div>
-                    <span>{item.title}</span>
-                  </Link>
+                  ) : (
+                    <Link to={item.url} className="flex items-center gap-3 w-full">
+                      <div className="flex h-5 w-5 items-center justify-center [&_svg]:h-4 [&_svg]:w-4">
+                        {item.icon}
+                      </div>
+                      <span>{item.title}</span>
+                    </Link>
+                  )}
                 </SidebarMenuButton>
               </CollapsibleTrigger>
             </SidebarMenuItem>

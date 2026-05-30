@@ -66,6 +66,10 @@ export async function register(name: string, email: string, password: string) {
 export function logout() {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+  localStorage.removeItem("lastSearchPublicationIds");
+  localStorage.removeItem("lastSearchQuery");
+  localStorage.removeItem("lastSearchFilters");
+  window.dispatchEvent(new Event("search-context-updated"));
 }
 
 export function getToken() {
@@ -186,6 +190,74 @@ export async function getStats() {
   } catch (error) {
     return {
       status : "error",
+      message: "Gagal koneksi ke server",
+    };
+  }
+}
+
+export interface CitationGraphNode {
+  id: number;
+  article_id?: number | null;
+  title?: string | null;
+  year?: number | null;
+  doi?: string | null;
+  authors?: string[] | string | null;
+  reference_count?: number;
+}
+
+export interface CitationGraphEdge {
+  source: number;
+  target: number;
+  weight?: number;
+}
+
+export async function getCitationGraphData() {
+  const candidates = [
+    `${BASE_URL}/graph-data`,
+    `${BASE_URL}/publications/graph-data`,
+  ];
+
+  try {
+    let lastMessage = "Gagal mengambil data graph";
+    for (const url of candidates) {
+      const res = await fetch(url);
+      const raw = await res.text();
+      let data: any = null;
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch (_e) {
+        data = null;
+      }
+
+      if (!res.ok) {
+        // Coba candidate berikutnya jika 404.
+        if (res.status === 404) {
+          lastMessage = `Endpoint tidak ditemukan: ${url}`;
+          continue;
+        }
+        return {
+          status: "error",
+          message: data?.message || `HTTP ${res.status} saat ambil graph data`,
+        };
+      }
+
+      const result = data?.result || {};
+      return {
+        status: "success",
+        data: {
+          nodes: (result.nodes || []) as CitationGraphNode[],
+          edges: (result.edges || []) as CitationGraphEdge[],
+        },
+      };
+    }
+
+    return {
+      status: "error",
+      message: lastMessage,
+    };
+  } catch (_error) {
+    return {
+      status: "error",
       message: "Gagal koneksi ke server",
     };
   }

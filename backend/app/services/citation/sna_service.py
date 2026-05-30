@@ -9,14 +9,25 @@ def _load_publications():
     offset = 0
 
     while True:
-        response = (
-            supabase
-            .table(PUBLICATIONS_TABLE)
-            .select("id, title, year, doi")
-            .order("id", desc=False)
-            .range(offset, offset + page_size - 1)
-            .execute()
-        )
+        try:
+            response = (
+                supabase
+                .table(PUBLICATIONS_TABLE)
+                .select("id, article_id, title, year, doi, authors, reference_list")
+                .order("id", desc=False)
+                .range(offset, offset + page_size - 1)
+                .execute()
+            )
+        except Exception:
+            # Backward-compat: beberapa schema lama belum punya article_id
+            response = (
+                supabase
+                .table(PUBLICATIONS_TABLE)
+                .select("id, title, year, doi, authors, reference_list")
+                .order("id", desc=False)
+                .range(offset, offset + page_size - 1)
+                .execute()
+            )
 
         batch = response.data or []
         if not batch:
@@ -29,6 +40,40 @@ def _load_publications():
             break
 
     return all_rows
+
+
+def _reference_count(reference_value):
+    if reference_value is None:
+        return 0
+
+    if isinstance(reference_value, list):
+        return sum(
+            1 for item in reference_value
+            if isinstance(item, str) and item.strip()
+        )
+
+    if isinstance(reference_value, str):
+        val = reference_value.strip()
+        if not val:
+            return 0
+
+        # string JSON array
+        if val.startswith("[") and val.endswith("]"):
+            try:
+                import json
+                parsed = json.loads(val)
+                if isinstance(parsed, list):
+                    return sum(
+                        1 for item in parsed
+                        if isinstance(item, str) and item.strip()
+                    )
+            except Exception:
+                pass
+
+        # fallback: multi-line string
+        return sum(1 for line in val.splitlines() if line.strip())
+
+    return 0
 
 
 def _load_citations():
@@ -214,9 +259,12 @@ def build_graph_payload():
         data = pub_map[node_id]
         nodes.append({
             "id": node_id,
+            "article_id": data.get("article_id"),
             "title": data.get("title"),
             "year": data.get("year"),
             "doi": data.get("doi"),
+            "authors": data.get("authors"),
+            "reference_count": _reference_count(data.get("reference_list")),
         })
 
     edge_payload = []
