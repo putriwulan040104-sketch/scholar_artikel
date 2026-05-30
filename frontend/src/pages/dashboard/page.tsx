@@ -91,11 +91,21 @@ function buildChips(filters: SearchFilters): string[] {
   return chips;
 }
 
-function FilterChip({ label }: { label: string }) {
+function FilterChip({
+  label,
+  onClick,
+}: {
+  label: string;
+  onClick?: () => void;
+}) {
   return (
-    <span className="inline-flex items-center rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm whitespace-nowrap">
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm whitespace-nowrap hover:bg-slate-50 transition"
+    >
       {label}
-    </span>
+    </button>
   );
 }
 
@@ -154,6 +164,15 @@ export default function Page() {
   }
 
   const chips = buildChips(activeFilters);
+  const openFilterEditor = () => {
+  // sinkronkan isi form dengan filter aktif saat ini
+  setJenisArtikel(activeFilters.jenisArtikel);
+  setYearStart(activeFilters.yearStart);
+  setYearEnd(activeFilters.yearEnd);
+  setJenisAnalisis(activeFilters.jenisAnalisis);
+  setJumlahKemunculan(activeFilters.jumlahKemunculan);
+  setOpen(true);
+};
 
   // Statistik cards: selalu sinkron dengan hasil tabel terbaru.
   const paperCount = tableData.length;
@@ -248,7 +267,11 @@ export default function Page() {
             <div className="flex flex-wrap items-center gap-2">
               <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                  <button className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-500 shadow-sm hover:bg-slate-50 transition">
+                  <button
+                    type="button"
+                    onClick={openFilterEditor}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-500 shadow-sm hover:bg-slate-50 transition"
+                  >
                     <SlidersHorizontal className="h-3.5 w-3.5" />
                     Filter
                   </button>
@@ -355,7 +378,7 @@ export default function Page() {
 
               {chips.length > 0 && <span className="h-5 w-px bg-slate-300" />}
               {chips.map((chip) => (
-                <FilterChip key={chip} label={chip} />
+                <FilterChip key={chip} label={chip} onClick={openFilterEditor} />
               ))}
             </div>
           </div>
@@ -369,15 +392,6 @@ export default function Page() {
 
           <div className="px-4 lg:px-6">
             <ChartBarLabel key={chartKey} />
-          </div>
-
-          <div className="px-4 lg:px-6">
-            <h2 className="text-lg font-semibold text-slate-700">
-              Hasil pencarian: "{query}"
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">
-              Total {tableData.length} artikel ditemukan
-            </p>
           </div>
 
           <DataTable data={tableData} />

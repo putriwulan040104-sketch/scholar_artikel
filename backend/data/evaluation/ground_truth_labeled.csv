@@ -1,88 +1,88 @@
 query,kategori,rank,article_id,title,similarity_score,relevan
-machine learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,0.623235808945845,0
-machine learning,Machine Learning,2,39,When machine learning meets privacy: A survey and outlook,0.609889351410075,0
-machine learning,Machine Learning,3,7,Machine learning and deep learning: C. Janiesch et al.,0.5993801897901321,0
-machine learning,Machine Learning,4,18,An overview of machine learning classification techniques,0.5984379693814694,0
-machine learning,Machine Learning,5,38,Scientific machine learning benchmarks,0.5633910765681233,0
-machine learning,Machine Learning,6,35,Financial applications of machine learning: A literature review,0.5581016676491677,0
-machine learning,Machine Learning,7,25,Machine learning in chemical engineering: A perspective,0.532694783676555,0
-machine learning,Machine Learning,8,8,Machine learning foundations,0.527485417333958,0
-machine learning,Machine Learning,9,23,Machine learning and applications in microbiology,0.5235023559266654,0
-machine learning,Machine Learning,10,11,Using machine learning to detect misstatements,0.5064764488629261,0
-deep learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,0.7391029007441474,0
-deep learning,Machine Learning,2,7,Machine learning and deep learning: C. Janiesch et al.,0.7108122328076278,0
-deep learning,Machine Learning,3,43,Machine learning and deep learning applications-a vision,0.6892585977554605,0
-deep learning,Machine Learning,4,25,Machine learning in chemical engineering: A perspective,0.5153104189786353,0
-deep learning,Machine Learning,5,35,Financial applications of machine learning: A literature review,0.3401106329001344,0
-deep learning,Machine Learning,6,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.3378871446609963,0
-deep learning,Machine Learning,7,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.2812713319268808,0
-deep learning,Machine Learning,8,34,Machine learning at the network edge: A survey,0.2519055344270343,0
-deep learning,Machine Learning,9,18,An overview of machine learning classification techniques,0.2396308452701837,0
+machine learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,0.623235808945845,1
+machine learning,Machine Learning,2,39,When machine learning meets privacy: A survey and outlook,0.609889351410075,1
+machine learning,Machine Learning,3,7,Machine learning and deep learning: C. Janiesch et al.,0.5993801897901321,1
+machine learning,Machine Learning,4,18,An overview of machine learning classification techniques,0.5984379693814694,1
+machine learning,Machine Learning,5,38,Scientific machine learning benchmarks,0.5633910765681233,1
+machine learning,Machine Learning,6,35,Financial applications of machine learning: A literature review,0.5581016676491677,1
+machine learning,Machine Learning,7,25,Machine learning in chemical engineering: A perspective,0.532694783676555,1
+machine learning,Machine Learning,8,8,Machine learning foundations,0.527485417333958,1
+machine learning,Machine Learning,9,23,Machine learning and applications in microbiology,0.5235023559266654,1
+machine learning,Machine Learning,10,11,Using machine learning to detect misstatements,0.5064764488629261,1
+deep learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,0.7391029007441474,1
+deep learning,Machine Learning,2,7,Machine learning and deep learning: C. Janiesch et al.,0.7108122328076278,1
+deep learning,Machine Learning,3,43,Machine learning and deep learning applications-a vision,0.6892585977554605,1
+deep learning,Machine Learning,4,25,Machine learning in chemical engineering: A perspective,0.5153104189786353,1
+deep learning,Machine Learning,5,35,Financial applications of machine learning: A literature review,0.3401106329001344,1
+deep learning,Machine Learning,6,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.3378871446609963,1
+deep learning,Machine Learning,7,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.2812713319268808,1
+deep learning,Machine Learning,8,34,Machine learning at the network edge: A survey,0.2519055344270343,1
+deep learning,Machine Learning,9,18,An overview of machine learning classification techniques,0.2396308452701837,1
 deep learning,Machine Learning,10,3,What is machine learning?,0.2395213168736696,0
-web development,Web Development,1,54,Accessible web development: Opportunities to improve the education and practice of web development with a screen reader,0.516234492141231,0
-web development,Web Development,2,86,AI AND WEB DEVELOPMENT,0.5025393937897717,0
-web development,Web Development,3,70,The rise of disappearing frameworks in web development,0.4867405589428509,0
-web development,Web Development,4,59,Python for web development,0.4540079734280969,0
-web development,Web Development,5,71,Machine learning for web development: A fusion,0.423327693693344,0
-web development,Web Development,6,94,Current web development technologies: a comparative review,0.4141361646722525,0
-web development,Web Development,7,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,0.4122290628083931,0
-web development,Web Development,8,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,0.4093025643457612,0
-web development,Web Development,9,53,Web Developer and Tech Preneurs,0.4060375043697519,0
-web development,Web Development,10,83,Program Pelatihan Web Development untuk Komunitas Maya,0.3991261862527548,0
-web application,Web Development,1,67,Web accessibility and web developer attitudes towards accessibility in Mozambique,0.3083045160812964,0
+web development,Web Development,1,54,Accessible web development: Opportunities to improve the education and practice of web development with a screen reader,0.516234492141231,1
+web development,Web Development,2,86,AI AND WEB DEVELOPMENT,0.5025393937897717,1
+web development,Web Development,3,70,The rise of disappearing frameworks in web development,0.4867405589428509,1
+web development,Web Development,4,59,Python for web development,0.4540079734280969,1
+web development,Web Development,5,71,Machine learning for web development: A fusion,0.423327693693344,1
+web development,Web Development,6,94,Current web development technologies: a comparative review,0.4141361646722525,1
+web development,Web Development,7,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,0.4122290628083931,1
+web development,Web Development,8,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,0.4093025643457612,1
+web development,Web Development,9,53,Web Developer and Tech Preneurs,0.4060375043697519,1
+web development,Web Development,10,83,Program Pelatihan Web Development untuk Komunitas Maya,0.3991261862527548,1
+web application,Web Development,1,67,Web accessibility and web developer attitudes towards accessibility in Mozambique,0.3083045160812964,1
 web application,Web Development,2,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.3077975681090421,0
 web application,Web Development,3,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.2984995311732634,0
 web application,Web Development,4,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.2896325328249319,0
-web application,Web Development,5,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,0.2823698020030439,0
-web application,Web Development,6,51,An empirical study of web services topics in web developer discussions on stack overflow,0.2741327054556327,0
-web application,Web Development,7,80,Responsive web design and its impact on user experience,0.2714248781080381,0
+web application,Web Development,5,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,0.2823698020030439,1
+web application,Web Development,6,51,An empirical study of web services topics in web developer discussions on stack overflow,0.2741327054556327,1
+web application,Web Development,7,80,Responsive web design and its impact on user experience,0.2714248781080381,1
 web application,Web Development,8,195,User experience analysis on mobile application design using user experience questionnaire,0.2681481621203944,0
-web application,Web Development,9,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,0.2566068490389305,0
-web application,Web Development,10,91,Progressive web apps (PWAs): Enhancing user experience through modern web development,0.2479107439695736,0
-cyber security,Cyber Security,1,106,A systematic literature review on the cyber security,0.8091451798530449,0
-cyber security,Cyber Security,2,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.659827670019911,0
-cyber security,Cyber Security,3,132,The difference between cyber security vs information security,0.5946764516593551,0
-cyber security,Cyber Security,4,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.5927841583283529,0
-cyber security,Cyber Security,5,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.5736117338109537,0
-cyber security,Cyber Security,6,139,The role of cyber security in a digitalizing economy: a development perspective,0.5692452867292848,0
-cyber security,Cyber Security,7,119,Artificial intelligence-based cyber security in the context of industry 4.0—a survey,0.561738816861303,0
-cyber security,Cyber Security,8,149,Cyber security and the Leviathan,0.5410477646701544,0
-cyber security,Cyber Security,9,126,"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations",0.5397366764254056,0
-cyber security,Cyber Security,10,141,Evolution of the cyber security threat: an overview of the scale of cyber threat,0.5319119957287073,0
-network security,Cyber Security,1,150,Artificial intelligence in the cyber security environment,0.3346430122397161,0
-network security,Cyber Security,2,114,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.",0.3030091721197283,0
-network security,Cyber Security,3,106,A systematic literature review on the cyber security,0.2817074871871789,0
-network security,Cyber Security,4,132,The difference between cyber security vs information security,0.2752598904542554,0
-network security,Cyber Security,5,139,The role of cyber security in a digitalizing economy: a development perspective,0.2374122407649083,0
-network security,Cyber Security,6,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.2297219331290325,0
-network security,Cyber Security,7,130,"Cyber security techniques, architectures, and design",0.2177683806520506,0
-network security,Cyber Security,8,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.2063804368424659,0
-network security,Cyber Security,9,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.1997054721160329,0
-network security,Cyber Security,10,124,Artificial intelligence in cyber security,0.1892831758700424,0
-mobile application,Mobile Application,1,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.4752347485648869,0
-mobile application,Mobile Application,2,186,User interface design & evaluation of mobile applications,0.4291396878278073,0
-mobile application,Mobile Application,3,195,User experience analysis on mobile application design using user experience questionnaire,0.4269129800725006,0
-mobile application,Mobile Application,4,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,0.4230716321026952,0
-mobile application,Mobile Application,5,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.4033244657693537,0
-mobile application,Mobile Application,6,191,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,0.3980497472033892,0
-mobile application,Mobile Application,7,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.3795217983322617,0
-mobile application,Mobile Application,8,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.3487138517299541,0
-mobile application,Mobile Application,9,157,The role of mobile application acceptance in shaping e-customer service,0.3345117790140771,0
-mobile application,Mobile Application,10,192,Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,0.3162639199181988,0
-android application,Mobile Application,1,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.2777313014543557,0
-android application,Mobile Application,2,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.2026771185359263,0
-android application,Mobile Application,3,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.1965545901944527,0
-android application,Mobile Application,4,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.1907158901477195,0
-android application,Mobile Application,5,195,User experience analysis on mobile application design using user experience questionnaire,0.176568961129714,0
-android application,Mobile Application,6,186,User interface design & evaluation of mobile applications,0.1587611205412969,0
-android application,Mobile Application,7,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,0.1565162306983132,0
+web application,Web Development,9,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,0.2566068490389305,1
+web application,Web Development,10,91,Progressive web apps (PWAs): Enhancing user experience through modern web development,0.2479107439695736,1
+cyber security,Cyber Security,1,106,A systematic literature review on the cyber security,0.8091451798530449,1
+cyber security,Cyber Security,2,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.659827670019911,1
+cyber security,Cyber Security,3,132,The difference between cyber security vs information security,0.5946764516593551,1
+cyber security,Cyber Security,4,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.5927841583283529,1
+cyber security,Cyber Security,5,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.5736117338109537,1
+cyber security,Cyber Security,6,139,The role of cyber security in a digitalizing economy: a development perspective,0.5692452867292848,1
+cyber security,Cyber Security,7,119,Artificial intelligence-based cyber security in the context of industry 4.0—a survey,0.561738816861303,1
+cyber security,Cyber Security,8,149,Cyber security and the Leviathan,0.5410477646701544,1
+cyber security,Cyber Security,9,126,"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations",0.5397366764254056,1
+cyber security,Cyber Security,10,141,Evolution of the cyber security threat: an overview of the scale of cyber threat,0.5319119957287073,1
+network security,Cyber Security,1,150,Artificial intelligence in the cyber security environment,0.3346430122397161,1
+network security,Cyber Security,2,114,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.",0.3030091721197283,1
+network security,Cyber Security,3,106,A systematic literature review on the cyber security,0.2817074871871789,1
+network security,Cyber Security,4,132,The difference between cyber security vs information security,0.2752598904542554,1
+network security,Cyber Security,5,139,The role of cyber security in a digitalizing economy: a development perspective,0.2374122407649083,1
+network security,Cyber Security,6,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.2297219331290325,1
+network security,Cyber Security,7,130,"Cyber security techniques, architectures, and design",0.2177683806520506,1
+network security,Cyber Security,8,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.2063804368424659,1
+network security,Cyber Security,9,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.1997054721160329,1
+network security,Cyber Security,10,124,Artificial intelligence in cyber security,0.1892831758700424,1
+mobile application,Mobile Application,1,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.4752347485648869,1
+mobile application,Mobile Application,2,186,User interface design & evaluation of mobile applications,0.4291396878278073,1
+mobile application,Mobile Application,3,195,User experience analysis on mobile application design using user experience questionnaire,0.4269129800725006,1
+mobile application,Mobile Application,4,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,0.4230716321026952,1
+mobile application,Mobile Application,5,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.4033244657693537,1
+mobile application,Mobile Application,6,191,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,0.3980497472033892,1
+mobile application,Mobile Application,7,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.3795217983322617,1
+mobile application,Mobile Application,8,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.3487138517299541,1
+mobile application,Mobile Application,9,157,The role of mobile application acceptance in shaping e-customer service,0.3345117790140771,1
+mobile application,Mobile Application,10,192,Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,0.3162639199181988,1
+android application,Mobile Application,1,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.2777313014543557,1
+android application,Mobile Application,2,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.2026771185359263,1
+android application,Mobile Application,3,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.1965545901944527,1
+android application,Mobile Application,4,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.1907158901477195,1
+android application,Mobile Application,5,195,User experience analysis on mobile application design using user experience questionnaire,0.176568961129714,1
+android application,Mobile Application,6,186,User interface design & evaluation of mobile applications,0.1587611205412969,1
+android application,Mobile Application,7,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,0.1565162306983132,1
 android application,Mobile Application,8,72,Review on study and usage of mern stack for web development,0.1510896535265905,0
 android application,Mobile Application,9,179,Consistency analysis of data-usage purposes in mobile apps,0.1479243289627802,0
 android application,Mobile Application,10,191,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,0.1472593323098725,0
 data mining,Machine Learning,1,127,Cyber risk and cybersecurity: a systematic review of data availability,0.1840136990691283,0
-data mining,Machine Learning,2,47,Evolutionary machine learning: A survey,0.1687665140990157,0
+data mining,Machine Learning,2,47,Evolutionary machine learning: A survey,0.1687665140990157,1
 data mining,Machine Learning,3,179,Consistency analysis of data-usage purposes in mobile apps,0.1245649930843564,0
-data mining,Machine Learning,4,182,Text mining approach to explore determinants of grocery mobile app satisfaction using online customer reviews,0.1177723258105103,0
+data mining,Machine Learning,4,182,Text mining approach to explore determinants of grocery mobile app satisfaction using online customer reviews,0.1177723258105103,1
 data mining,Machine Learning,5,41,"Machine learning: Algorithms, real-world applications and research directions",0.0787481352367742,0
 data mining,Machine Learning,6,28,Machine learning: new ideas and tools in environmental science and engineering,0.0783884411721677,0
 data mining,Machine Learning,7,48,Machine learning in manufacturing and industry 4.0 applications,0.0775323361582703,0
@@ -90,12 +90,12 @@ data mining,Machine Learning,8,46,Machine Learning for industrial applications: 
 data mining,Machine Learning,9,150,Artificial intelligence in the cyber security environment,0.0730950272450958,0
 data mining,Machine Learning,10,4,Amnesiac machine learning,0.0720417031213339,0
 software security,Cyber Security,1,73,The role of APIs in modern web development: Enhancing system integrations,0.3013762755422635,0
-software security,Cyber Security,2,106,A systematic literature review on the cyber security,0.2659520126256423,0
-software security,Cyber Security,3,132,The difference between cyber security vs information security,0.2598650202462734,0
-software security,Cyber Security,4,139,The role of cyber security in a digitalizing economy: a development perspective,0.2241341324784801,0
-software security,Cyber Security,5,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.2168739321412682,0
-software security,Cyber Security,6,130,"Cyber security techniques, architectures, and design",0.2055889238121596,0
-software security,Cyber Security,7,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.1948378905113854,0
-software security,Cyber Security,8,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.1885362464872047,0
-software security,Cyber Security,9,124,Artificial intelligence in cyber security,0.1786968535392988,0
-software security,Cyber Security,10,149,Cyber security and the Leviathan,0.1778330335809031,0
+software security,Cyber Security,2,106,A systematic literature review on the cyber security,0.2659520126256423,1
+software security,Cyber Security,3,132,The difference between cyber security vs information security,0.2598650202462734,1
+software security,Cyber Security,4,139,The role of cyber security in a digitalizing economy: a development perspective,0.2241341324784801,1
+software security,Cyber Security,5,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.2168739321412682,1
+software security,Cyber Security,6,130,"Cyber security techniques, architectures, and design",0.2055889238121596,1
+software security,Cyber Security,7,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.1948378905113854,1
+software security,Cyber Security,8,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.1885362464872047,1
+software security,Cyber Security,9,124,Artificial intelligence in cyber security,0.1786968535392988,1
+software security,Cyber Security,10,149,Cyber security and the Leviathan,0.1778330335809031,1

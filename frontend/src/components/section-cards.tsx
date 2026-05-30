@@ -29,10 +29,14 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
 
   return (
     <>
-      <h1 className="px-4 lg:px-6 text-2xl font-normal tracking-tight">
-        Selamat Datang,{" "}
-        <span className="text-black font-bold">User</span>
-      </h1>
+      <div className="px-4 lg:px-6">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-800">
+          Hasil pencarian: "{_query}"
+        </h1>
+        <p className="text-sm text-slate-500 mt-1">
+          Total {safePaperCount} artikel ditemukan
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 gap-4 px-4 text-center *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-3 @5xl/main:grid-cols-3 dark:*:data-[slot=card]:bg-card">
 

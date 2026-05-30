@@ -24,8 +24,7 @@ import {
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
+  getFilteredRowModel, 
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
@@ -109,7 +108,7 @@ export const schema = z.object({
   id              : z.number(),
   rank            : z.number(),
   title           : z.string(),
-  authors         : z.string(),
+ authors: z.union([z.string(), z.array(z.string())]),
   year            : z.number().optional(),
   source          : z.string().optional(),
   category        : z.string().optional(),
@@ -142,6 +141,11 @@ function isPdfLink(url: string, isPdf?: boolean | string): boolean {
   if (isPdf === true || isPdf === "True") return true
   return url.toLowerCase().endsWith(".pdf") || url.toLowerCase().includes(".pdf")
 }
+function formatAuthors(authors: string | string[] | undefined): string {
+  if (!authors) return "-";
+  if (Array.isArray(authors)) return authors.join(", ");
+  return authors;
+}
 
 // ─── DragHandle ────────────────────────────────────────────────────────────────
 function DragHandle({ id }: { id: number }) {
@@ -163,11 +167,6 @@ function DragHandle({ id }: { id: number }) {
 // ─── Columns ───────────────────────────────────────────────────────────────────
 const columns: ColumnDef<z.infer<typeof schema>>[] = [
   {
-    id: "drag",
-    header: () => null,
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
-  },
-  {
     accessorKey: "rank",
     header: "Rank",
     cell: ({ row }) => (
@@ -187,7 +186,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     header: "Penulis",
     cell: ({ row }) => (
       <div className="text-slate-500 max-w-[200px] truncate text-sm">
-        {row.original.authors}
+        {formatAuthors(row.original.authors)}
       </div>
     ),
   },
@@ -359,11 +358,9 @@ export function DataTable({
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [columnFilters, setColumnFilters]       = React.useState<ColumnFiltersState>([])
   const [sorting, setSorting]                   = React.useState<SortingState>([])
-  const [pagination, setPagination]             = React.useState({ pageIndex: 0, pageSize: 10 })
 
   React.useEffect(() => {
     setData(initialData)
-    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
     setRowSelection({})
   }, [initialData])
   
@@ -382,17 +379,15 @@ export function DataTable({
   const table = useReactTable({
     data,
     columns,
-    state: { sorting, columnVisibility, rowSelection, columnFilters, pagination },
+    state: { sorting, columnVisibility, rowSelection, columnFilters,  },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
@@ -477,11 +472,16 @@ export function DataTable({
       ── AKHIR SEBELUM ── */}
 
       {/* ── SESUDAH: hanya tombol Jaringan Sitasi di kanan ── */}
-      <div className="flex items-center justify-end px-4 lg:px-6">
+      <div className="px-4 lg:px-6">
+        <div className="mt-1 mb-3 flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-slate-700">
+            Hasil ranking 10 artikel teratas
+          </h2>
         <Button variant="outline" size="sm">
           <Network className="h-4 w-4" />
           <span>Jaringan Sitasi</span>
         </Button>
+        </div>
       </div>
 
       {/* ── SEBELUM: pakai <TabsContent value="outline"> ──────────────────────
@@ -533,85 +533,10 @@ export function DataTable({
           </DndContext>
         </div>
 
-        {/* Pagination */}
-        <div className="flex items-center justify-between px-4">
-          <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
-          </div>
-          <div className="flex w-full items-center gap-8 lg:w-fit">
-            <div className="hidden items-center gap-2 lg:flex">
-              <Label htmlFor="rows-per-page" className="text-sm font-medium">
-                Rows per page
-              </Label>
-              <Select
-                value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => table.setPageSize(Number(value))}
-              >
-                <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                  <SelectValue placeholder={table.getState().pagination.pageSize} />
-                </SelectTrigger>
-                <SelectContent side="top">
-                  <SelectGroup>
-                    {[10, 20, 30, 40, 50].map((pageSize) => (
-                      <SelectItem key={pageSize} value={`${pageSize}`}>
-                        {pageSize}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-            </div>
-            <div className="ml-auto flex items-center gap-2 lg:ml-0">
-              <Button
-                variant="outline"
-                className="hidden h-8 w-8 p-0 lg:flex"
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to first page</span>
-                <ChevronsLeftIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                <span className="sr-only">Go to previous page</span>
-                <ChevronLeftIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="size-8"
-                size="icon"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to next page</span>
-                <ChevronRightIcon />
-              </Button>
-              <Button
-                variant="outline"
-                className="hidden size-8 lg:flex"
-                size="icon"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
-              >
-                <span className="sr-only">Go to last page</span>
-                <ChevronsRightIcon />
-              </Button>
-            </div>
-          </div>
-        </div>
-
+    
+        
       {/* </TabsContent> ← SEBELUM penutup TabsContent */}
       </div>
-
       {/* ── SEBELUM: Tab lain — dikomentari semua ─────────────────────────────
       <TabsContent value="past-performance" className="flex flex-col px-4 lg:px-6">
         <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
@@ -673,7 +598,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
       <DrawerContent>
         <DrawerHeader className="gap-1">
           <DrawerTitle className="leading-snug">{item.title}</DrawerTitle>
-          <DrawerDescription>{item.authors}</DrawerDescription>
+          <DrawerDescription>{formatAuthors(item.authors)}</DrawerDescription>
         </DrawerHeader>
 
         <div className="flex flex-col gap-4 overflow-y-auto px-4 text-sm">
@@ -741,7 +666,7 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="authors">Penulis</Label>
-                <Input id="authors" defaultValue={item.authors} />
+                <Input id="authors" defaultValue={formatAuthors(item.authors)} />
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="similarity_score">Similarity Score</Label>
