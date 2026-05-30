@@ -1,13 +1,12 @@
 # src/preprocessing/tokenizing.py
 
+import re
 from typing import List
 
 def tokenizing(text: str) -> List[str]:
-    """
-    Memecah teks menjadi token/kata
-    """
+        if not isinstance(text, str):
+            return []
+        # tokenizing.py (inti)
+        return re.findall(r'[a-z0-9]+', text.lower())
 
-    if not isinstance(text, str):
-        return []
-
-    return text.split()
+    

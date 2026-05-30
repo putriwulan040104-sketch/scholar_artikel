@@ -1,3 +1,4 @@
+from app.search_engine import search_articles
 from flask import Blueprint, jsonify, request
 import pandas as pd
 import os
@@ -12,6 +13,7 @@ COSINE_DIR = os.path.join(BASE_DIR, "data", "cosine_results")
 @search_bp.route("/results")
 def results():
     # Baca semua CSV di folder cosine_results lalu gabungkan
+    
     all_files = glob.glob(os.path.join(COSINE_DIR, "*.csv"))
     
     if not all_files:
@@ -21,3 +23,40 @@ def results():
     df = pd.concat(df_list, ignore_index=True)
     
     return jsonify(df.to_dict(orient="records"))
+@search_bp.route("", methods=["GET"])  # /api/search
+def search():
+    query = request.args.get("query", "").strip()
+    if not query:
+        return jsonify({"status": "error", "message": "Query wajib diisi"}), 400
+
+    top_k = request.args.get("top_k", 10, type=int)
+    year_start = request.args.get("year_start")
+    year_end = request.args.get("year_end")
+    jenis_artikel = request.args.get("jenis_artikel")
+    jenis_analisis = request.args.get("jenis_analisis")
+    jumlah_publikasi = request.args.get("jumlah_publikasi")
+    sumber_data = request.args.get("sumber_data")
+
+    jumlah_kemunculan = (
+        request.args.get("jumlah_kemunculan")
+        or request.args.get("jumlahKemunculan")
+    )
+
+    result = search_articles(
+        query=query,
+        top_k=top_k,
+        year_start=year_start,
+        year_end=year_end,
+        jenis_artikel=jenis_artikel,
+        jenis_analisis=jenis_analisis,
+        jumlah_kemunculan=jumlah_kemunculan,
+        jumlah_publikasi=jumlah_publikasi,
+        sumber_data=sumber_data,
+    )
+
+    return jsonify({
+        "status": "success",
+        "data": result["articles"],
+        "total_occurrences": result["total_occurrences"],
+        "paper_count": result["paper_count"],
+    })

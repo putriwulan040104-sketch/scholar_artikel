@@ -1,101 +1,101 @@
-Query,Kategori,Rank,Judul,Penulis,Tahun,Similarity Score,Relevan
-machine learning,Machine Learning,1,Machine learning and deep learning: A review of methods and applications,"K Sharifani, M Amini",2023,0.6232,Ya
-machine learning,Machine Learning,2,When machine learning meets privacy: A survey and outlook,"B Liu, M Ding, S Shaham, W Rahayu…",2021,0.6099,Ya
-machine learning,Machine Learning,3,Machine learning and deep learning: C. Janiesch et al.,"C Janiesch, P Zschech, K Heinrich",2021,0.5976,Ya
-machine learning,Machine Learning,4,An overview of machine learning classification techniques,"AFAH Alnuaimi, THK Albaldawi",2024,0.5638,Ya
-machine learning,Machine Learning,5,Machine learning foundations,T Jo,2021,0.5608,Ya
-machine learning,Machine Learning,6,Scientific machine learning benchmarks,"J Thiyagalingam, M Shankar, G Fox, T Hey",2022,0.5598,Ya
-machine learning,Machine Learning,7,Financial applications of machine learning: A literature review,"N Nazareth, YVR Reddy",2023,0.5578,Ya
-machine learning,Machine Learning,8,Machine learning in chemical engineering: A perspective,"AM Schweidtmann, E Esche, A Fischer…",2021,0.5326,Ya
-machine learning,Machine Learning,9,Machine learning and applications in microbiology,"SJ Goodswen, JLN Barratt, PJ Kennedy…",2021,0.5235,Ya
-machine learning,Machine Learning,10,Using machine learning to detect misstatements,"J Bertomeu, E Cheynel, E Floyd, W Pan",2021,0.5064,Ya
-deep learning,Machine Learning,1,Machine learning and deep learning: A review of methods and applications,"K Sharifani, M Amini",2023,0.739,Ya
-deep learning,Machine Learning,2,Machine learning and deep learning: C. Janiesch et al.,"C Janiesch, P Zschech, K Heinrich",2021,0.7087,Ya
-deep learning,Machine Learning,3,Machine learning and deep learning applications-a vision,"N Sharma, R Sharma, N Jindal",2021,0.6805,Ya
-deep learning,Machine Learning,4,Machine learning in chemical engineering: A perspective,"AM Schweidtmann, E Esche, A Fischer…",2021,0.5152,Ya
-deep learning,Machine Learning,5,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,"VH Sahin, I Oztel, G Yolcu Oztel",2022,0.3417,Tidak
-deep learning,Machine Learning,6,Financial applications of machine learning: A literature review,"N Nazareth, YVR Reddy",2023,0.34,Ya
-deep learning,Machine Learning,7,Machine learning at the network edge: A survey,"MGS Murshed, C Murphy, D Hou, N Khan…",2021,0.2546,Ya
-deep learning,Machine Learning,8,What is machine learning?,J Bell,2022,0.2382,Tidak
-deep learning,Machine Learning,9,Machine learning foundations,T Jo,2021,0.2348,Ya
-deep learning,Machine Learning,10,Amnesiac machine learning,"L Graves, V Nagisetty, V Ganesh",2021,0.2109,Ya
-web development,Web Development,1,Accessible web development: Opportunities to improve the education and practice of web development with a screen reader,"C Ferrari, A Hurst",2021,0.5223,Ya
-web development,Web Development,2,AI AND WEB DEVELOPMENT,RT Surampudi,2025,0.4932,Ya
-web development,Web Development,3,The rise of disappearing frameworks in web development,"J Vepsäläinen, A Hellas, P Vuorimaa",2023,0.4866,Ya
-web development,Web Development,4,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,"R Tóth, T Bisztray, L Erdődi",2024,0.4283,Ya
-web development,Web Development,5,Machine learning for web development: A fusion,"P Jain, PK Aggarwal, K Makar…",2021,0.4213,Ya
-web development,Web Development,6,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,"TCPB Pichiliani, EB Pizzolato",2021,0.4188,Ya
-web development,Web Development,7,Web Developer and Tech Preneurs,"S Rashid, RK Gupta",2024,0.4046,Tidak
-web development,Web Development,8,Study on mvc framework for web development in php,"S Khan, AT Khanam",2023,0.4032,Ya
-web development,Web Development,9,Program Pelatihan Web Development untuk Komunitas Maya,"A Sutedi, D Nursyaban, C Mutiara, D Sopiah…",2021,0.3991,Ya
-web development,Web Development,10,Python for web development,"U Patkar, P Singh, H Panse, S Bhavsar…",2022,0.3962,Tidak
-web application,Web Development,1,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"ME Karar, F Alsunaydi, S Albusaymi…",2021,0.3151,Ya
-web application,Web Development,2,Web accessibility and web developer attitudes towards accessibility in Mozambique,"S Gupta, T Gjøsæter, GA Giannoumis",2021,0.3073,Ya
-web application,Web Development,3,Deep learning methods for accurate skin cancer recognition and mobile application,"I Kousis, I Perikos, I Hatzilygeroudis, M Virvou",2022,0.2984,Tidak
-web application,Web Development,4,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,"R Tóth, T Bisztray, L Erdődi",2024,0.2934,Ya
-web application,Web Development,5,Towards a new learning experience through a mobile application with augmented reality in engineering education,"S Criollo-C, D Abad-Vásquez, M Martic-Nieto…",2021,0.2896,Ya
-web application,Web Development,6,An empirical study of web services topics in web developer discussions on stack overflow,"K Mahmood, G Rasool, F Sabir, A Athar",2023,0.2734,Ya
-web application,Web Development,7,Responsive web design and its impact on user experience,"N Bhanarkar, A Paul, A Mehta",2023,0.2712,Ya
-web application,Web Development,8,User experience analysis on mobile application design using user experience questionnaire,"ID Sabukunze, A Arakaza",2021,0.2691,Tidak
-web application,Web Development,9,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,"TCPB Pichiliani, EB Pizzolato",2021,0.2625,Ya
-web application,Web Development,10,Progressive web apps (PWAs): Enhancing user experience through modern web development,BR Cherukuri,2024,0.2476,Ya
-cyber security,Cyber Security,1,A systematic literature review on the cyber security,"Y Perwej, SQ Abbas, JP Dixit, N Akhtar…",2021,0.8096,Ya
-cyber security,Cyber Security,2,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"C Catal, A Ozcan, E Donmez, A Kasif",2023,0.6593,Ya
-cyber security,Cyber Security,3,The difference between cyber security vs information security,"LA Alexei, A Alexei",2022,0.5951,Ya
-cyber security,Cyber Security,4,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","Ö Aslan, SS Aktuğ, M Ozkan-Okay, AA Yilmaz, E Akin",2023,0.5903,Ya
-cyber security,Cyber Security,5,The role of cyber security in a digitalizing economy: a development perspective,"CI Erondu, UI Erondu",2023,0.5828,Ya
-cyber security,Cyber Security,6,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"MG Cains, L Flora, D Taber, Z King…",2022,0.5756,Ya
-cyber security,Cyber Security,7,Evolution of the cyber security threat: an overview of the scale of cyber threat,"T Fadziso, UR Thaduri, S Dekkati…",2023,0.5468,Ya
-cyber security,Cyber Security,8,Cyber resilience and cyber security issues of intelligent cloud computing systems,F Abdullayeva,2023,0.5115,Ya
-cyber security,Cyber Security,9,"Uniting cyber security and machine learning: Advantages, challenges and future research","M Wazid, AK Das, V Chamola, Y Park",2022,0.4903,Ya
-cyber security,Cyber Security,10,Deep reinforcement learning for cyber security,"TT Nguyen, VJ Reddi",2021,0.4846,Ya
-network security,Cyber Security,1,Artificial intelligence in the cyber security environment,J Jain,2021,0.3325,Ya
-network security,Cyber Security,2,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.","Z Zhang, H Ning, F Shi, F Farha, Y Xu…",2022,0.3026,Ya
-network security,Cyber Security,3,A systematic literature review on the cyber security,"Y Perwej, SQ Abbas, JP Dixit, N Akhtar…",2021,0.2807,Ya
-network security,Cyber Security,4,The difference between cyber security vs information security,"LA Alexei, A Alexei",2022,0.2751,Tidak
-network security,Cyber Security,5,The role of cyber security in a digitalizing economy: a development perspective,"CI Erondu, UI Erondu",2023,0.2424,Ya
-network security,Cyber Security,6,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"C Catal, A Ozcan, E Donmez, A Kasif",2023,0.2286,Ya
-network security,Cyber Security,7,"Cyber security techniques, architectures, and design","S Rani, A Kataria, M Chauhan",2022,0.2167,Tidak
-network security,Cyber Security,8,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","Ö Aslan, SS Aktuğ, M Ozkan-Okay, AA Yilmaz, E Akin",2023,0.2046,Ya
-network security,Cyber Security,9,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"MG Cains, L Flora, D Taber, Z King…",2022,0.1995,Ya
-network security,Cyber Security,10,Artificial intelligence in cyber security,"R Das, R Sandhane",2021,0.189,Tidak
-mobile application,Mobile Application,1,Deep learning methods for accurate skin cancer recognition and mobile application,"I Kousis, I Perikos, I Hatzilygeroudis, M Virvou",2022,0.4751,Ya
-mobile application,Mobile Application,2,User interface design & evaluation of mobile applications,N Samrgandi,2021,0.4286,Ya
-mobile application,Mobile Application,3,User experience analysis on mobile application design using user experience questionnaire,"ID Sabukunze, A Arakaza",2021,0.4285,Ya
-mobile application,Mobile Application,4,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,"S Min, KKF So, M Jeong",2021,0.4227,Ya
-mobile application,Mobile Application,5,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"ME Karar, F Alsunaydi, S Albusaymi…",2021,0.4128,Ya
-mobile application,Mobile Application,6,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"SVS Ramakrishnam Raju, B Dappuri…",2022,0.3937,Ya
-mobile application,Mobile Application,7,Towards a new learning experience through a mobile application with augmented reality in engineering education,"S Criollo-C, D Abad-Vásquez, M Martic-Nieto…",2021,0.3795,Ya
-mobile application,Mobile Application,8,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,"VH Sahin, I Oztel, G Yolcu Oztel",2022,0.3526,Ya
-mobile application,Mobile Application,9,The role of mobile application acceptance in shaping e-customer service,"LT Khrais, AM Alghamdi",2021,0.3175,Ya
-mobile application,Mobile Application,10,Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,Z Kayra,2024,0.3146,Ya
-android application,Mobile Application,1,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,"VH Sahin, I Oztel, G Yolcu Oztel",2022,0.2808,Ya
-android application,Mobile Application,2,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"ME Karar, F Alsunaydi, S Albusaymi…",2021,0.2075,Ya
-android application,Mobile Application,3,Deep learning methods for accurate skin cancer recognition and mobile application,"I Kousis, I Perikos, I Hatzilygeroudis, M Virvou",2022,0.1965,Tidak
-android application,Mobile Application,4,Towards a new learning experience through a mobile application with augmented reality in engineering education,"S Criollo-C, D Abad-Vásquez, M Martic-Nieto…",2021,0.1907,Ya
-android application,Mobile Application,5,User experience analysis on mobile application design using user experience questionnaire,"ID Sabukunze, A Arakaza",2021,0.1772,Ya
-android application,Mobile Application,6,Consistency analysis of data-usage purposes in mobile apps,"D Bui, Y Yao, KG Shin, JM Choi, J Shin",2021,0.1646,Tidak
-android application,Mobile Application,7,User interface design & evaluation of mobile applications,N Samrgandi,2021,0.1586,Ya
-android application,Mobile Application,8,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,"S Min, KKF So, M Jeong",2021,0.1564,Ya
-android application,Mobile Application,9,Review on study and usage of mern stack for web development,"SA Bafna, PD Dutonde, SS Mamidwar…",2022,0.1471,Ya
-android application,Mobile Application,10,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"SVS Ramakrishnam Raju, B Dappuri…",2022,0.1457,Tidak
-data mining,Machine Learning,1,Cyber risk and cybersecurity: a systematic review of data availability,"F Cremer, B Sheehan, M Fortmann…",2022,0.194,Ya
-data mining,Machine Learning,2,Evolutionary machine learning: A survey,"A Telikani, A Tahmassebi, W Banzhaf…",2021,0.1679,Ya
-data mining,Machine Learning,3,Text mining approach to explore determinants of grocery mobile app satisfaction using online customer reviews,"A Kumar, S Chakraborty, PK Bala",2023,0.1172,Ya
-data mining,Machine Learning,4,"Machine learning: Algorithms, real-world applications and research directions",IH Sarker,2021,0.0828,Tidak
-data mining,Machine Learning,5,Machine learning: new ideas and tools in environmental science and engineering,"S Zhong, K Zhang, M Bagheri, JG Burken…",2021,0.0805,Ya
-data mining,Machine Learning,6,Machine learning in manufacturing and industry 4.0 applications,"R Rai, MK Tiwari, D Ivanov, A Dolgui",2021,0.0798,Ya
-data mining,Machine Learning,7,Machine Learning for industrial applications: A comprehensive literature review,"M Bertolini, D Mezzogori, M Neroni…",2021,0.0755,Tidak
-data mining,Machine Learning,8,Artificial intelligence in the cyber security environment,J Jain,2021,0.0749,Ya
-data mining,Machine Learning,9,Amnesiac machine learning,"L Graves, V Nagisetty, V Ganesh",2021,0.0743,Tidak
-data mining,Machine Learning,10,Machine learning in environmental research: common pitfalls and best practices,"JJ Zhu, M Yang, ZJ Ren",2023,0.0725,Ya
-software security,Cyber Security,1,The role of APIs in modern web development: Enhancing system integrations,SP Bandaru,2025,0.3009,Ya
-software security,Cyber Security,2,A systematic literature review on the cyber security,"Y Perwej, SQ Abbas, JP Dixit, N Akhtar…",2021,0.265,Ya
-software security,Cyber Security,3,The difference between cyber security vs information security,"LA Alexei, A Alexei",2022,0.2597,Ya
-software security,Cyber Security,4,The role of cyber security in a digitalizing economy: a development perspective,"CI Erondu, UI Erondu",2023,0.2289,Ya
-software security,Cyber Security,5,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"C Catal, A Ozcan, E Donmez, A Kasif",2023,0.2158,Tidak
-software security,Cyber Security,6,"Cyber security techniques, architectures, and design","S Rani, A Kataria, M Chauhan",2022,0.2045,Ya
-software security,Cyber Security,7,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","Ö Aslan, SS Aktuğ, M Ozkan-Okay, AA Yilmaz, E Akin",2023,0.1932,Ya
-software security,Cyber Security,8,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"MG Cains, L Flora, D Taber, Z King…",2022,0.1884,Tidak
-software security,Cyber Security,9,Chatgpt as a full-stack web developer,"V Liukko, A Knappe, T Anttila, J Hakala, J Ketola…",2024,0.1805,Ya
-software security,Cyber Security,10,Artificial intelligence in cyber security,"R Das, R Sandhane",2021,0.1785,Ya
+Query,Kategori,Rank,Article ID,Judul,Penulis,Tahun,Similarity Score,Relevan
+machine learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,"K Sharifani, M Amini",2023,0.6232,Ya
+machine learning,Machine Learning,2,39,When machine learning meets privacy: A survey and outlook,"B Liu, M Ding, S Shaham, W Rahayu…",2021,0.6099,Ya
+machine learning,Machine Learning,3,7,Machine learning and deep learning: C. Janiesch et al.,"C Janiesch, P Zschech, K Heinrich",2021,0.5994,Ya
+machine learning,Machine Learning,4,18,An overview of machine learning classification techniques,"AFAH Alnuaimi, THK Albaldawi",2024,0.5984,Ya
+machine learning,Machine Learning,5,38,Scientific machine learning benchmarks,"J Thiyagalingam, M Shankar, G Fox, T Hey",2022,0.5634,Ya
+machine learning,Machine Learning,6,35,Financial applications of machine learning: A literature review,"N Nazareth, YVR Reddy",2023,0.5581,Ya
+machine learning,Machine Learning,7,25,Machine learning in chemical engineering: A perspective,"AM Schweidtmann, E Esche, A Fischer…",2021,0.5327,Ya
+machine learning,Machine Learning,8,8,Machine learning foundations,T Jo,2021,0.5275,Ya
+machine learning,Machine Learning,9,23,Machine learning and applications in microbiology,"SJ Goodswen, JLN Barratt, PJ Kennedy…",2021,0.5235,Ya
+machine learning,Machine Learning,10,11,Using machine learning to detect misstatements,"J Bertomeu, E Cheynel, E Floyd, W Pan",2021,0.5065,Ya
+deep learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,"K Sharifani, M Amini",2023,0.7391,Ya
+deep learning,Machine Learning,2,7,Machine learning and deep learning: C. Janiesch et al.,"C Janiesch, P Zschech, K Heinrich",2021,0.7108,Ya
+deep learning,Machine Learning,3,43,Machine learning and deep learning applications-a vision,"N Sharma, R Sharma, N Jindal",2021,0.6893,Ya
+deep learning,Machine Learning,4,25,Machine learning in chemical engineering: A perspective,"AM Schweidtmann, E Esche, A Fischer…",2021,0.5153,Ya
+deep learning,Machine Learning,5,35,Financial applications of machine learning: A literature review,"N Nazareth, YVR Reddy",2023,0.3401,Ya
+deep learning,Machine Learning,6,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,"VH Sahin, I Oztel, G Yolcu Oztel",2022,0.3379,Ya
+deep learning,Machine Learning,7,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"ME Karar, F Alsunaydi, S Albusaymi…",2021,0.2813,Ya
+deep learning,Machine Learning,8,34,Machine learning at the network edge: A survey,"MGS Murshed, C Murphy, D Hou, N Khan…",2021,0.2519,Ya
+deep learning,Machine Learning,9,18,An overview of machine learning classification techniques,"AFAH Alnuaimi, THK Albaldawi",2024,0.2396,Ya
+deep learning,Machine Learning,10,3,What is machine learning?,J Bell,2022,0.2395,Tidak
+web development,Web Development,1,54,Accessible web development: Opportunities to improve the education and practice of web development with a screen reader,"C Ferrari, A Hurst",2021,0.5162,Ya
+web development,Web Development,2,86,AI AND WEB DEVELOPMENT,RT Surampudi,2025,0.5025,Ya
+web development,Web Development,3,70,The rise of disappearing frameworks in web development,"J Vepsäläinen, A Hellas, P Vuorimaa",2023,0.4867,Ya
+web development,Web Development,4,59,Python for web development,"U Patkar, P Singh, H Panse, S Bhavsar…",2022,0.454,Ya
+web development,Web Development,5,71,Machine learning for web development: A fusion,"P Jain, PK Aggarwal, K Makar…",2021,0.4233,Ya
+web development,Web Development,6,94,Current web development technologies: a comparative review,"V Pathak, V Shrivastava, R Buri, S Gupta…",2023,0.4141,Ya
+web development,Web Development,7,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,"R Tóth, T Bisztray, L Erdődi",2024,0.4122,Ya
+web development,Web Development,8,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,"TCPB Pichiliani, EB Pizzolato",2021,0.4093,Ya
+web development,Web Development,9,53,Web Developer and Tech Preneurs,"S Rashid, RK Gupta",2024,0.406,Ya
+web development,Web Development,10,83,Program Pelatihan Web Development untuk Komunitas Maya,"A Sutedi, D Nursyaban, C Mutiara, D Sopiah…",2021,0.3991,Ya
+web application,Web Development,1,67,Web accessibility and web developer attitudes towards accessibility in Mozambique,"S Gupta, T Gjøsæter, GA Giannoumis",2021,0.3083,Ya
+web application,Web Development,2,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"ME Karar, F Alsunaydi, S Albusaymi…",2021,0.3078,Tidak
+web application,Web Development,3,159,Deep learning methods for accurate skin cancer recognition and mobile application,"I Kousis, I Perikos, I Hatzilygeroudis, M Virvou",2022,0.2985,Tidak
+web application,Web Development,4,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,"S Criollo-C, D Abad-Vásquez, M Martic-Nieto…",2021,0.2896,Tidak
+web application,Web Development,5,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,"R Tóth, T Bisztray, L Erdődi",2024,0.2824,Ya
+web application,Web Development,6,51,An empirical study of web services topics in web developer discussions on stack overflow,"K Mahmood, G Rasool, F Sabir, A Athar",2023,0.2741,Ya
+web application,Web Development,7,80,Responsive web design and its impact on user experience,"N Bhanarkar, A Paul, A Mehta",2023,0.2714,Ya
+web application,Web Development,8,195,User experience analysis on mobile application design using user experience questionnaire,"ID Sabukunze, A Arakaza",2021,0.2681,Tidak
+web application,Web Development,9,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,"TCPB Pichiliani, EB Pizzolato",2021,0.2566,Ya
+web application,Web Development,10,91,Progressive web apps (PWAs): Enhancing user experience through modern web development,BR Cherukuri,2024,0.2479,Ya
+cyber security,Cyber Security,1,106,A systematic literature review on the cyber security,"Y Perwej, SQ Abbas, JP Dixit, N Akhtar…",2021,0.8091,Ya
+cyber security,Cyber Security,2,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"C Catal, A Ozcan, E Donmez, A Kasif",2023,0.6598,Ya
+cyber security,Cyber Security,3,132,The difference between cyber security vs information security,"LA Alexei, A Alexei",2022,0.5947,Ya
+cyber security,Cyber Security,4,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","Ö Aslan, SS Aktuğ, M Ozkan-Okay, AA Yilmaz, E Akin",2023,0.5928,Ya
+cyber security,Cyber Security,5,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"MG Cains, L Flora, D Taber, Z King…",2022,0.5736,Ya
+cyber security,Cyber Security,6,139,The role of cyber security in a digitalizing economy: a development perspective,"CI Erondu, UI Erondu",2023,0.5692,Ya
+cyber security,Cyber Security,7,119,Artificial intelligence-based cyber security in the context of industry 4.0—a survey,"AJG De Azambuja, C Plesker, K Schützer, R Anderl…",2023,0.5617,Ya
+cyber security,Cyber Security,8,149,Cyber security and the Leviathan,J Da Silva,2022,0.541,Ya
+cyber security,Cyber Security,9,126,"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations","MK Hasan, AKMA Habib, Z Shukur, F Ibrahim…",2023,0.5397,Ya
+cyber security,Cyber Security,10,141,Evolution of the cyber security threat: an overview of the scale of cyber threat,"T Fadziso, UR Thaduri, S Dekkati…",2023,0.5319,Ya
+network security,Cyber Security,1,150,Artificial intelligence in the cyber security environment,J Jain,2021,0.3346,Ya
+network security,Cyber Security,2,114,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.","Z Zhang, H Ning, F Shi, F Farha, Y Xu…",2022,0.303,Ya
+network security,Cyber Security,3,106,A systematic literature review on the cyber security,"Y Perwej, SQ Abbas, JP Dixit, N Akhtar…",2021,0.2817,Ya
+network security,Cyber Security,4,132,The difference between cyber security vs information security,"LA Alexei, A Alexei",2022,0.2753,Ya
+network security,Cyber Security,5,139,The role of cyber security in a digitalizing economy: a development perspective,"CI Erondu, UI Erondu",2023,0.2374,Ya
+network security,Cyber Security,6,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"C Catal, A Ozcan, E Donmez, A Kasif",2023,0.2297,Ya
+network security,Cyber Security,7,130,"Cyber security techniques, architectures, and design","S Rani, A Kataria, M Chauhan",2022,0.2178,Ya
+network security,Cyber Security,8,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","Ö Aslan, SS Aktuğ, M Ozkan-Okay, AA Yilmaz, E Akin",2023,0.2064,Ya
+network security,Cyber Security,9,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"MG Cains, L Flora, D Taber, Z King…",2022,0.1997,Ya
+network security,Cyber Security,10,124,Artificial intelligence in cyber security,"R Das, R Sandhane",2021,0.1893,Ya
+mobile application,Mobile Application,1,159,Deep learning methods for accurate skin cancer recognition and mobile application,"I Kousis, I Perikos, I Hatzilygeroudis, M Virvou",2022,0.4752,Ya
+mobile application,Mobile Application,2,186,User interface design & evaluation of mobile applications,N Samrgandi,2021,0.4291,Ya
+mobile application,Mobile Application,3,195,User experience analysis on mobile application design using user experience questionnaire,"ID Sabukunze, A Arakaza",2021,0.4269,Ya
+mobile application,Mobile Application,4,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,"S Min, KKF So, M Jeong",2021,0.4231,Ya
+mobile application,Mobile Application,5,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"ME Karar, F Alsunaydi, S Albusaymi…",2021,0.4033,Ya
+mobile application,Mobile Application,6,191,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"SVS Ramakrishnam Raju, B Dappuri…",2022,0.398,Ya
+mobile application,Mobile Application,7,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,"S Criollo-C, D Abad-Vásquez, M Martic-Nieto…",2021,0.3795,Ya
+mobile application,Mobile Application,8,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,"VH Sahin, I Oztel, G Yolcu Oztel",2022,0.3487,Ya
+mobile application,Mobile Application,9,157,The role of mobile application acceptance in shaping e-customer service,"LT Khrais, AM Alghamdi",2021,0.3345,Ya
+mobile application,Mobile Application,10,192,Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,Z Kayra,2024,0.3163,Ya
+android application,Mobile Application,1,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,"VH Sahin, I Oztel, G Yolcu Oztel",2022,0.2777,Ya
+android application,Mobile Application,2,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"ME Karar, F Alsunaydi, S Albusaymi…",2021,0.2027,Ya
+android application,Mobile Application,3,159,Deep learning methods for accurate skin cancer recognition and mobile application,"I Kousis, I Perikos, I Hatzilygeroudis, M Virvou",2022,0.1966,Ya
+android application,Mobile Application,4,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,"S Criollo-C, D Abad-Vásquez, M Martic-Nieto…",2021,0.1907,Ya
+android application,Mobile Application,5,195,User experience analysis on mobile application design using user experience questionnaire,"ID Sabukunze, A Arakaza",2021,0.1766,Ya
+android application,Mobile Application,6,186,User interface design & evaluation of mobile applications,N Samrgandi,2021,0.1588,Ya
+android application,Mobile Application,7,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,"S Min, KKF So, M Jeong",2021,0.1565,Ya
+android application,Mobile Application,8,72,Review on study and usage of mern stack for web development,"SA Bafna, PD Dutonde, SS Mamidwar…",2022,0.1511,Tidak
+android application,Mobile Application,9,179,Consistency analysis of data-usage purposes in mobile apps,"D Bui, Y Yao, KG Shin, JM Choi, J Shin",2021,0.1479,Tidak
+android application,Mobile Application,10,191,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"SVS Ramakrishnam Raju, B Dappuri…",2022,0.1473,Tidak
+data mining,Machine Learning,1,127,Cyber risk and cybersecurity: a systematic review of data availability,"F Cremer, B Sheehan, M Fortmann…",2022,0.184,Tidak
+data mining,Machine Learning,2,47,Evolutionary machine learning: A survey,"A Telikani, A Tahmassebi, W Banzhaf…",2021,0.1688,Ya
+data mining,Machine Learning,3,179,Consistency analysis of data-usage purposes in mobile apps,"D Bui, Y Yao, KG Shin, JM Choi, J Shin",2021,0.1246,Tidak
+data mining,Machine Learning,4,182,Text mining approach to explore determinants of grocery mobile app satisfaction using online customer reviews,"A Kumar, S Chakraborty, PK Bala",2023,0.1178,Ya
+data mining,Machine Learning,5,41,"Machine learning: Algorithms, real-world applications and research directions",IH Sarker,2021,0.0787,Tidak
+data mining,Machine Learning,6,28,Machine learning: new ideas and tools in environmental science and engineering,"S Zhong, K Zhang, M Bagheri, JG Burken…",2021,0.0784,Tidak
+data mining,Machine Learning,7,48,Machine learning in manufacturing and industry 4.0 applications,"R Rai, MK Tiwari, D Ivanov, A Dolgui",2021,0.0775,Tidak
+data mining,Machine Learning,8,46,Machine Learning for industrial applications: A comprehensive literature review,"M Bertolini, D Mezzogori, M Neroni…",2021,0.0734,Tidak
+data mining,Machine Learning,9,150,Artificial intelligence in the cyber security environment,J Jain,2021,0.0731,Tidak
+data mining,Machine Learning,10,4,Amnesiac machine learning,"L Graves, V Nagisetty, V Ganesh",2021,0.072,Tidak
+software security,Cyber Security,1,73,The role of APIs in modern web development: Enhancing system integrations,SP Bandaru,2025,0.3014,Tidak
+software security,Cyber Security,2,106,A systematic literature review on the cyber security,"Y Perwej, SQ Abbas, JP Dixit, N Akhtar…",2021,0.266,Ya
+software security,Cyber Security,3,132,The difference between cyber security vs information security,"LA Alexei, A Alexei",2022,0.2599,Ya
+software security,Cyber Security,4,139,The role of cyber security in a digitalizing economy: a development perspective,"CI Erondu, UI Erondu",2023,0.2241,Ya
+software security,Cyber Security,5,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"C Catal, A Ozcan, E Donmez, A Kasif",2023,0.2169,Ya
+software security,Cyber Security,6,130,"Cyber security techniques, architectures, and design","S Rani, A Kataria, M Chauhan",2022,0.2056,Ya
+software security,Cyber Security,7,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","Ö Aslan, SS Aktuğ, M Ozkan-Okay, AA Yilmaz, E Akin",2023,0.1948,Ya
+software security,Cyber Security,8,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"MG Cains, L Flora, D Taber, Z King…",2022,0.1885,Ya
+software security,Cyber Security,9,124,Artificial intelligence in cyber security,"R Das, R Sandhane",2021,0.1787,Ya
+software security,Cyber Security,10,149,Cyber security and the Leviathan,J Da Silva,2022,0.1778,Ya
