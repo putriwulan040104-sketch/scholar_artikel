@@ -47,6 +47,34 @@ def _format_authors(value):
 
     return s
 
+def _format_keywords(value):
+    if value is None:
+        return []
+
+    if isinstance(value, list):
+        return [str(x).strip() for x in value if str(x).strip()]
+
+    s = str(value).strip()
+    if not s:
+        return []
+
+    # Handle stringified list: "['A', 'B']"
+    if s.startswith("[") and s.endswith("]"):
+        try:
+            arr = ast.literal_eval(s)
+            if isinstance(arr, list):
+                return [str(x).strip() for x in arr if str(x).strip()]
+        except Exception:
+            pass
+
+    # Fallback split by common separators
+    if ";" in s:
+        return [x.strip() for x in s.split(";") if x.strip()]
+    if "," in s:
+        return [x.strip() for x in s.split(",") if x.strip()]
+
+    return [s]
+
 
 def _clean_cell(val):
     if pd.isna(val):
@@ -72,12 +100,21 @@ def _is_direct_pdf(url):
 
 
 def _load_doc_index_from_supabase():
-    res = (
-        supabase.table("cleaned_papers_results")
-        .select("id,title,authors,year,source,category,abstract,pdf_url,url,scrape_status,cleaned_text")
-        .order("id")
-        .execute()
-    )
+    try:
+        res = (
+            supabase.table("cleaned_papers_results")
+            .select("id,title,authors,year,source,category,abstract,keywords,pdf_url,url,scrape_status,cleaned_text")
+            .order("id")
+            .execute()
+        )
+    except Exception:
+        # Backward compatibility: beberapa schema lama belum punya kolom keywords
+        res = (
+            supabase.table("cleaned_papers_results")
+            .select("id,title,authors,year,source,category,abstract,pdf_url,url,scrape_status,cleaned_text")
+            .order("id")
+            .execute()
+        )
 
     rows = res.data or []
     if not rows:
@@ -88,7 +125,7 @@ def _load_doc_index_from_supabase():
     # Pastikan kolom wajib ada
     required_cols = [
         "id", "title", "authors", "year",
-        "source", "category", "abstract",
+        "source", "category", "abstract", "keywords",
         "pdf_url", "url", "scrape_status"
     ]
     for c in required_cols:
@@ -287,17 +324,55 @@ def get_article_by_id(article_id: int):
     url = _clean_cell(r.get("url"))
     access_url = pdf_url if pdf_url else url
 
+    # Enrichment dari tabel publications (hasil ekstraksi) berdasarkan article_id
+    publication_data = None
+    try:
+        pub_res = (
+            supabase.table("publications")
+            .select("keywords,journal,doi,article_url,pdf_url")
+            .eq("article_id", article_id)
+            .limit(1)
+            .execute()
+        )
+        if pub_res.data:
+            publication_data = pub_res.data[0]
+    except Exception:
+        publication_data = None
+
+    pub_keywords = _format_keywords(
+        publication_data.get("keywords") if publication_data else None
+    )
+    pub_journal = _clean_cell(
+        publication_data.get("journal") if publication_data else None
+    )
+    pub_doi = _clean_cell(
+        publication_data.get("doi") if publication_data else None
+    )
+    pub_article_url = _clean_cell(
+        publication_data.get("article_url") if publication_data else None
+    )
+    pub_pdf_url = _clean_cell(
+        publication_data.get("pdf_url") if publication_data else None
+    )
+
+    final_pdf_url = pub_pdf_url or pdf_url
+    final_url = pub_article_url or url
+    final_access_url = final_pdf_url or final_url
+
     return {
         "id": int(r["id"]),
         "title": _clean_cell(r.get("title")) or "",
         "authors": _format_authors(r.get("authors")) or "",
+        "keywords": pub_keywords or _format_keywords(r.get("keywords")),
         "year": int(r["year"]) if pd.notna(r.get("year")) else None,
         "source": _clean_cell(r.get("source")) or "",
+        "journal": pub_journal or _clean_cell(r.get("source")) or "",
         "category": _clean_cell(r.get("category")) or "",
         "abstract": _clean_cell(r.get("abstract")) or "",
-        "pdf_url": pdf_url,
-        "url": url,
-        "access_url": access_url,
-        "is_pdf": isinstance(access_url, str) and ".pdf" in access_url.lower(),
+        "doi": pub_doi,
+        "pdf_url": final_pdf_url,
+        "url": final_url,
+        "access_url": final_access_url,
+        "is_pdf": isinstance(final_access_url, str) and ".pdf" in final_access_url.lower(),
         "similarity_score": 0.0,
     }

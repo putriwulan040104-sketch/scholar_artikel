@@ -10,10 +10,18 @@ import {
 interface SectionCardsProps {
   query?            : string;
   jumlahKemunculan? : string;
-  totalOccurrences? : number;  // ← ganti dari tfData
-  paperCount?       : number;  // jumlah yang sedang ditampilkan di tabel
-  totalMatched?     : number;  // jumlah keseluruhan hasil query
+  totalOccurrences? : number;
+  paperCount?       : number;
+  totalMatched?     : number;
+  sumberData?       : string;
 }
+
+const SUMBER_DATA_LABEL: Record<string, string> = {
+  scopus: "Scopus",
+  wos: "Web of Science",
+  semantic: "Semantic Scholar",
+  crossref: "CrossRef",
+};
 
 export function SectionCards({
   query: _query,
@@ -21,6 +29,7 @@ export function SectionCards({
   totalOccurrences = 0,
   paperCount       = 0,
   totalMatched     = 0,
+  sumberData       = "",
 }: SectionCardsProps) {
 
 const safeTotalOccurrences = Number.isFinite(totalOccurrences)
@@ -29,6 +38,9 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
   const safePaperCount = Number.isFinite(paperCount) ? paperCount : 0;
   const safeTotalMatched = Number.isFinite(totalMatched) ? totalMatched : 0;
   const finalTotalMatched = safeTotalMatched > 0 ? safeTotalMatched : safePaperCount;
+  const sumberDataLabel = sumberData
+    ? (SUMBER_DATA_LABEL[sumberData] ?? sumberData)
+    : "Semua Sumber";
 
 
   return (
@@ -65,8 +77,8 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
         <Card className="@container/card">
           <CardHeader>
             <CardDescription>Sumber Data</CardDescription>
-            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-              {safePaperCount > 0 ? 1 : 0}
+            <CardTitle className="text-2xl font-semibold @[250px]/card:text-3xl">
+              {sumberDataLabel}
             </CardTitle>
           </CardHeader>
         </Card>

@@ -49,7 +49,7 @@ interface SearchFilters {
   jenisArtikel: string;
   yearStart: string;
   yearEnd: string;
-  jenisAnalisis: string;
+  sumberData: string;
   jumlahKemunculan: string;
 }
 
@@ -58,10 +58,13 @@ const JENIS_ARTIKEL_LABEL: Record<string, string> = {
   close: "Close Source",
 };
 
-const JENIS_ANALISIS_LABEL: Record<string, string> = {
-  co: "Co-citation",
-  bib: "Bibliographic",
+const SUMBER_DATA_LABEL: Record<string, string> = {
+  scopus: "Scopus",
+  wos: "Web of Science",
+  semantic: "Semantic Scholar",
+  crossref: "CrossRef",
 };
+const TREND_TOP_K = 5000;
 
 function buildChips(filters: SearchFilters): string[] {
   const chips: string[] = [];
@@ -71,8 +74,8 @@ function buildChips(filters: SearchFilters): string[] {
   if (filters.yearStart || filters.yearEnd) {
     chips.push(`Tahun: ${filters.yearStart || "—"} – ${filters.yearEnd || "—"}`);
   }
-  if (filters.jenisAnalisis) {
-    chips.push(JENIS_ANALISIS_LABEL[filters.jenisAnalisis] ?? filters.jenisAnalisis);
+  if (filters.sumberData) {
+    chips.push(SUMBER_DATA_LABEL[filters.sumberData] ?? filters.sumberData);
   }
   if (filters.jumlahKemunculan) {
     chips.push(`Kemunculan ≥ ${filters.jumlahKemunculan}`);
@@ -123,11 +126,14 @@ export default function Page() {
     jenisArtikel: "",
     yearStart: "",
     yearEnd: "",
-    jenisAnalisis: "",
+    sumberData: "",
     jumlahKemunculan: "",
   };
 
   const [tableData, setTableData] = useState<Article[]>(
+    Array.isArray(location.state?.results) ? location.state.results : []
+  );
+  const [trendData, setTrendData] = useState<Article[]>(
     Array.isArray(location.state?.results) ? location.state.results : []
   );
   const [totalMatched, setTotalMatched] = useState<number>(
@@ -146,7 +152,7 @@ export default function Page() {
   const [jenisArtikel, setJenisArtikel] = useState(initFilters.jenisArtikel);
   const [yearStart, setYearStart] = useState(initFilters.yearStart);
   const [yearEnd, setYearEnd] = useState(initFilters.yearEnd);
-  const [jenisAnalisis, setJenisAnalisis] = useState(initFilters.jenisAnalisis);
+  const [sumberData, setSumberData] = useState(initFilters.sumberData);
   const [jumlahKemunculan, setJumlahKemunculan] = useState(initFilters.jumlahKemunculan);
 
   if (!location.state?.results && tableData.length === 0) {
@@ -163,7 +169,7 @@ export default function Page() {
     setJenisArtikel(activeFilters.jenisArtikel);
     setYearStart(activeFilters.yearStart);
     setYearEnd(activeFilters.yearEnd);
-    setJenisAnalisis(activeFilters.jenisAnalisis);
+    setSumberData(activeFilters.sumberData);
     setJumlahKemunculan(activeFilters.jumlahKemunculan);
     setOpen(true);
   };
@@ -186,6 +192,51 @@ export default function Page() {
     }
   }, [tableData, query, activeFilters]);
 
+  useEffect(() => {
+    const run = async () => {
+      if (!query.trim()) {
+        setTrendData([]);
+        return;
+      }
+
+      const yearStartNum = activeFilters.yearStart
+        ? Number(activeFilters.yearStart)
+        : undefined;
+      const yearEndNum = activeFilters.yearEnd
+        ? Number(activeFilters.yearEnd)
+        : undefined;
+      const minOcc = activeFilters.jumlahKemunculan?.trim()
+        ? Number(activeFilters.jumlahKemunculan)
+        : undefined;
+      const safeMinOcc =
+        typeof minOcc === "number" && !Number.isNaN(minOcc)
+          ? minOcc
+          : undefined;
+
+      try {
+        const res = await searchArticles(
+          query,
+          TREND_TOP_K,
+          yearStartNum,
+          yearEndNum,
+          activeFilters.jenisArtikel || undefined,
+          activeFilters.sumberData || undefined,
+          safeMinOcc
+        );
+
+        if (res.status === "success" && Array.isArray(res.data)) {
+          setTrendData(res.data as Article[]);
+        } else {
+          setTrendData([]);
+        }
+      } catch (_error) {
+        setTrendData([]);
+      }
+    };
+
+    run();
+  }, [query, activeFilters]);
+
   // Statistik cards: selalu sinkron dengan hasil tabel terbaru.
   const paperCount = tableData.length;
 
@@ -202,9 +253,9 @@ export default function Page() {
     activeFilters.jenisArtikel,
     activeFilters.yearStart,
     activeFilters.yearEnd,
-    activeFilters.jenisAnalisis,
+    activeFilters.sumberData,
     activeFilters.jumlahKemunculan,
-    tableData.length,
+    trendData.length,
     cardTotalOccurrences,
   ].join("|");
 
@@ -216,7 +267,7 @@ export default function Page() {
     jenisArtikel,
     yearStart,
     yearEnd,
-    jenisAnalisis,
+    sumberData,
     jumlahKemunculan,
   };
 
@@ -235,7 +286,7 @@ export default function Page() {
       yearStart ? parseInt(yearStart) : undefined,
       yearEnd ? parseInt(yearEnd) : undefined,
       jenisArtikel || undefined,
-      jenisAnalisis || undefined,
+      sumberData || undefined,
       safeMinOccurrence
     );
 
@@ -353,14 +404,16 @@ export default function Page() {
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="text-sm">Jenis analisis</label>
-                        <Select onValueChange={setJenisAnalisis} value={jenisAnalisis}>
+                        <label className="text-sm">Sumber data</label>
+                        <Select onValueChange={setSumberData} value={sumberData}>
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Co-citation" />
+                            <SelectValue placeholder="Pilih sumber data" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="co">Co-citation</SelectItem>
-                            <SelectItem value="bib">Bibliographic</SelectItem>
+                            <SelectItem value="scopus">Scopus</SelectItem>
+                            <SelectItem value="wos">Web of Science</SelectItem>
+                            <SelectItem value="semantic">Semantic Scholar</SelectItem>
+                            <SelectItem value="crossref">CrossRef</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -405,10 +458,17 @@ export default function Page() {
             totalOccurrences={cardTotalOccurrences}
             paperCount={paperCount}
             totalMatched={totalMatched}
+            sumberData={activeFilters.sumberData}
           />
 
           <div className="px-4 lg:px-6">
-            <ChartBarLabel key={chartKey} />
+            <ChartBarLabel
+              key={chartKey}
+              articles={trendData}
+              yearStart={activeFilters.yearStart}
+              yearEnd={activeFilters.yearEnd}
+              onOpenCitationGraph={() => navigate("/citation-graph")}
+            />
           </div>
 
           <DataTable data={tableData} />

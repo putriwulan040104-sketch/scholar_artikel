@@ -11,6 +11,7 @@ interface FavoriteItem {
   title: string;
   authors: string;
   abstract?: string;
+  keywords?: string[] | string;
   journal?: string;
   year?: number;
   similarity_score: number;
@@ -27,6 +28,33 @@ export default function DetailPublicationPage() {
   const [article, setArticle] = useState<FavoriteItem | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const parseKeywords = (value?: string[] | string): string[] => {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value.map((v) => String(v).trim()).filter(Boolean);
+    }
+
+    const raw = String(value).trim();
+    if (!raw) return [];
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed.map((v) => String(v).trim()).filter(Boolean);
+      }
+    } catch (_error) {
+      // ignore JSON parse error
+    }
+
+    if (raw.includes(";")) {
+      return raw.split(";").map((v) => v.trim()).filter(Boolean);
+    }
+    if (raw.includes(",")) {
+      return raw.split(",").map((v) => v.trim()).filter(Boolean);
+    }
+    return [raw];
+  };
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -85,7 +113,7 @@ export default function DetailPublicationPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-muted-foreground">Memuat artikel...</p>
       </div>
     );

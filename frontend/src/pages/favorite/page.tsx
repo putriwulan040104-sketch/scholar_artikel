@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2,Info} from "lucide-react";
+import { Trash2,Info, ChevronRight, ChevronLeft} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -28,7 +28,10 @@ interface FavoriteItem {
 export default function FavoritPage() {
   const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
   const [confirmId, setConfirmId] = useState<number | null>(null);
+  const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  const PAGE_SIZE = 10;
+
   useEffect(() => {
     try {
       const stored = localStorage.getItem("favorites");
@@ -45,6 +48,20 @@ export default function FavoritPage() {
     setConfirmId(null);
   };
 
+  const totalPages = Math.max(1, Math.ceil(favorites.length / PAGE_SIZE));
+  const pagedFavorites = favorites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const goToPage = (next: number) => {
+    const safe = Math.max(1, Math.min(totalPages, next));
+    setPage(safe);
+  };
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages);
+    }
+  }, [page, totalPages]);
+
   const confirmItem = favorites.find((f) => f.id === confirmId);
 
   return (
@@ -52,7 +69,7 @@ export default function FavoritPage() {
 
       {/* HEADER */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Favorit</h1>
+        <h1 className="text-xl font-semibold">Artikel Favorit</h1>
         <span className="text-sm text-muted-foreground">
           {favorites.length} artikel tersimpan
         </span>
@@ -60,7 +77,7 @@ export default function FavoritPage() {
 
       {/* LIST DATA */}
       <div className="grid gap-4">
-        {favorites.map((item) => (
+        {pagedFavorites.map((item) => (
           <Card key={item.id} className="hover:shadow-md transition">
 
             {/* ── Header: judul (kiri) + score + trash (kanan) ── */}
@@ -125,6 +142,40 @@ export default function FavoritPage() {
         ))}
       </div>
 
+      {favorites.length > 0 && totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => goToPage(page - 1)}
+            disabled={page <= 1}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <Button
+              key={p}
+              variant={p === page ? "default" : "outline"}
+              size="sm"
+              onClick={() => goToPage(p)}
+              className="min-w-8"
+            >
+              {p}
+            </Button>
+          ))}
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => goToPage(page + 1)}
+            disabled={page >= totalPages}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
       {/* EMPTY STATE */}
       {favorites.length === 0 && (
         <div className="text-center text-muted-foreground py-10">
@@ -158,7 +209,6 @@ export default function FavoritPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
     </div>
   );
 }

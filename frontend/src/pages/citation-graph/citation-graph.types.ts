@@ -21,7 +21,7 @@ export type StoredFilters = {
   yearStart?: string;
   yearEnd?: string;
   jenisArtikel?: string;
-  jenisAnalisis?: string;
+  sumberData?: string;
   jumlahKemunculan?: string;
 };
 

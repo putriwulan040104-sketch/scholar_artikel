@@ -140,10 +140,9 @@ export async function searchArticles(
   yearStart?       : number,
   yearEnd?         : number,
   jenisArtikel?    : string,
-  jenisAnalisis?   : string,
+  sumberData?      : string,
   jumlahKemunculan?: number | string, 
   jumlahPublikasi? : string,
-  sumberData?      : string,
 ): Promise<SearchResult> {
   try {
     const params = new URLSearchParams({ query, top_k: topK.toString() });
@@ -151,13 +150,12 @@ export async function searchArticles(
     if (yearStart)        params.append("year_start",        yearStart.toString());
     if (yearEnd)          params.append("year_end",          yearEnd.toString());
     if (jenisArtikel)     params.append("jenis_artikel",     jenisArtikel);
-    if (jenisAnalisis)    params.append("jenis_analisis",    jenisAnalisis);
+    if (sumberData)       params.append("sumber_data",       sumberData);
     if (jumlahKemunculan !== undefined && jumlahKemunculan !== null && String(jumlahKemunculan).trim() !== "") {
       params.append("jumlah_kemunculan", String(jumlahKemunculan));
     }
 
     if (jumlahPublikasi)  params.append("jumlah_publikasi",  jumlahPublikasi);
-    if (sumberData)       params.append("sumber_data",       sumberData);
 
     const res  = await fetch(`${BASE_URL}/search?${params}`);
     const data = await res.json();
@@ -208,10 +206,13 @@ export interface CitationGraphEdge {
   weight?: number;
 }
 
-export async function getCitationGraphData() {
+export async function getCitationGraphData(articleIds?: number[]) {
+  const query = articleIds && articleIds.length
+    ? `?article_ids=${encodeURIComponent(articleIds.join(","))}`
+    : "";
   const candidates = [
-    `${BASE_URL}/graph-data`,
-    `${BASE_URL}/publications/graph-data`,
+    `${BASE_URL}/graph-data${query}`,
+    `${BASE_URL}/publications/graph-data${query}`,
   ];
 
   try {

@@ -73,7 +73,7 @@ export default function CitationGraphPage() {
         let yearStart: number | undefined;
         let yearEnd: number | undefined;
         let jenisArtikel: string | undefined;
-        let jenisAnalisis: string | undefined;
+        let sumberData: string | undefined;
         let jumlahKemunculan: string | undefined;
         const rawFilters = localStorage.getItem("lastSearchFilters");
         if (rawFilters) {
@@ -81,7 +81,7 @@ export default function CitationGraphPage() {
           if (parsed?.yearStart) yearStart = Number(parsed.yearStart);
           if (parsed?.yearEnd) yearEnd = Number(parsed.yearEnd);
           if (parsed?.jenisArtikel) jenisArtikel = parsed.jenisArtikel;
-          if (parsed?.jenisAnalisis) jenisAnalisis = parsed.jenisAnalisis;
+          if (parsed?.sumberData) sumberData = parsed.sumberData;
           if (parsed?.jumlahKemunculan) {
             jumlahKemunculan = parsed.jumlahKemunculan;
           }
@@ -93,7 +93,7 @@ export default function CitationGraphPage() {
           yearStart,
           yearEnd,
           jenisArtikel,
-          jenisAnalisis,
+          sumberData,
           jumlahKemunculan,
         );
         if (res.status !== "success" || !Array.isArray(res.data)) {
@@ -153,14 +153,23 @@ export default function CitationGraphPage() {
     : queryMatchedIds.length
       ? queryMatchedIds
       : savedIds;
+  const activeArticleIds = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          (activeIds || [])
+            .map((id) => Number(id))
+            .filter((id) => Number.isFinite(id)),
+        ),
+      ),
+    [activeIds],
+  );
   const filterIds = useMemo(
     () =>
       new Set(
-        (activeIds || [])
-          .map((id) => Number(id))
-          .filter((id) => Number.isFinite(id)),
+        activeArticleIds,
       ),
-    [activeIds],
+    [activeArticleIds],
   );
 
   const [loading, setLoading] = useState(true);
@@ -189,7 +198,14 @@ export default function CitationGraphPage() {
     const run = async () => {
       setLoading(true);
       setError("");
-      const res = await getCitationGraphData();
+      if (!activeArticleIds.length) {
+        setNodes([]);
+        setEdges([]);
+        setLoading(false);
+        return;
+      }
+
+      const res = await getCitationGraphData(activeArticleIds);
       if (res.status === "error") {
         setError(res.message || "Gagal memuat graph.");
         setLoading(false);
@@ -201,15 +217,19 @@ export default function CitationGraphPage() {
       setLoading(false);
     };
     run();
-  }, []);
+  }, [activeArticleIds]);
 
   const displayNodes = useMemo(() => {
     if (!filterIds.size) return [];
 
     const matchedGraphNodes = nodes.filter((n) => {
-      const publicationId = Number(n.id);
       const articleId = Number(n.article_id);
-      return filterIds.has(publicationId) || filterIds.has(articleId);
+      if (Number.isFinite(articleId)) {
+        return filterIds.has(articleId);
+      }
+
+      const publicationId = Number(n.id);
+      return filterIds.has(publicationId);
     });
     const usedArticleIds = new Set(
       matchedGraphNodes

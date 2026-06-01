@@ -248,9 +248,41 @@ def build_sna_metrics(top_n=10):
     }
 
 
-def build_graph_payload():
+def build_graph_payload(article_ids=None):
     publications = _load_publications()
     citations = _load_citations()
+    requested_ids = set()
+    if article_ids:
+        for raw_id in article_ids:
+            try:
+                requested_ids.add(int(raw_id))
+            except Exception:
+                continue
+
+    if requested_ids:
+        filtered_publications = []
+        for row in publications:
+            pub_id = row.get("id")
+            article_id = row.get("article_id")
+
+            keep = False
+            if pub_id is not None:
+                try:
+                    keep = int(pub_id) in requested_ids
+                except Exception:
+                    keep = False
+
+            if not keep and article_id is not None:
+                try:
+                    keep = int(article_id) in requested_ids
+                except Exception:
+                    keep = False
+
+            if keep:
+                filtered_publications.append(row)
+
+        publications = filtered_publications
+
     pub_map = {int(p["id"]): p for p in publications if p.get("id") is not None}
     node_ids, edges, _out_adj, _in_adj = _build_graph(publications, citations)
 

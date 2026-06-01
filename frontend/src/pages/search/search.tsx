@@ -30,7 +30,7 @@ export interface SearchFilters {
   jenisArtikel: string;
   yearStart: string;
   yearEnd: string;
-  jenisAnalisis: string;
+  sumberData: string;
   jumlahKemunculan: string;
 }
 
@@ -54,7 +54,7 @@ export function Searchpage() {
   const [yearStart, setYearStart] = useState<string>("");
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
-  const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
+  const [sumberData, setSumberData] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
 
   const [searchHistory, setSearchHistory] = useState<string[]>(() => {
@@ -110,7 +110,7 @@ export function Searchpage() {
       jenisArtikel,
       yearStart,
       yearEnd,
-      jenisAnalisis,
+      sumberData,
       jumlahKemunculan,
     };
 
@@ -121,7 +121,7 @@ export function Searchpage() {
         yearStart ? parseInt(yearStart) : undefined,
         yearEnd ? parseInt(yearEnd) : undefined,
         jenisArtikel || undefined,
-        jenisAnalisis || undefined,
+        sumberData || undefined,
         jumlahKemunculan || undefined
       );
 
@@ -244,14 +244,16 @@ export function Searchpage() {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <label className="text-sm">Jenis analisis</label>
-                      <Select onValueChange={setJenisAnalisis} value={jenisAnalisis}>
+                      <label className="text-sm">Sumber data</label>
+                      <Select onValueChange={setSumberData} value={sumberData}>
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Co-citation" />
+                          <SelectValue placeholder="Pilih sumber data" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="co">Co-citation</SelectItem>
-                          <SelectItem value="bib">Bibliographic</SelectItem>
+                          <SelectItem value="scopus">Scopus</SelectItem>
+                          <SelectItem value="wos">Web of Science</SelectItem>
+                          <SelectItem value="semantic">Semantic Scholar</SelectItem>
+                          <SelectItem value="crossref">CrossRef</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

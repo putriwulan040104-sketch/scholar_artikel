@@ -353,7 +353,6 @@ export function DataTable({
 }: {
   data: z.infer<typeof schema>[]
 }) {
-  const navigate = useNavigate()
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection]         = React.useState({})
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -474,26 +473,10 @@ export function DataTable({
 
       {/* ── SESUDAH: hanya tombol Jaringan Sitasi di kanan ── */}
       <div className="px-4 lg:px-6">
-        <div className="mt-1 mb-3 flex items-center justify-between">
+        <div className="mt-6 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-700">
             Hasil pencarian 10 artikel teratas
           </h2>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              navigate("/citation-graph", {
-                state: {
-                  sourcePublicationIds: data
-                    .map((row) => Number(row.id))
-                    .filter((id) => Number.isFinite(id)),
-                },
-              })
-            }
-          >
-            <Network className="h-4 w-4" />
-            <span>Jaringan Sitasi</span>
-          </Button>
         </div>
       </div>
 
@@ -504,7 +487,6 @@ export function DataTable({
       >
       ── SESUDAH: ganti dengan <div> biasa ── */}
       <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
-
         <div className="overflow-hidden rounded-lg border">
           <DndContext
             collisionDetection={closestCenter}

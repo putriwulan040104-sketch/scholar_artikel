@@ -85,7 +85,21 @@ def sna_summary():
 )
 def graph_data():
     try:
-        payload = build_graph_payload()
+        raw_ids = (request.args.get("article_ids") or "").strip()
+        article_ids = None
+        if raw_ids:
+            parsed = []
+            for token in raw_ids.split(","):
+                token = token.strip()
+                if not token:
+                    continue
+                try:
+                    parsed.append(int(token))
+                except Exception:
+                    continue
+            article_ids = parsed if parsed else None
+
+        payload = build_graph_payload(article_ids=article_ids)
     except Exception as e:
         return jsonify({
             "message": "Build graph data failed",
