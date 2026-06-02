@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trash2,Info, ChevronRight, ChevronLeft} from "lucide-react";
+import { Trash2, Info, ChevronRight, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -30,6 +30,7 @@ export default function FavoritPage() {
   const [confirmId, setConfirmId] = useState<number | null>(null);
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
+
   const PAGE_SIZE = 10;
 
   useEffect(() => {
@@ -48,8 +49,16 @@ export default function FavoritPage() {
     setConfirmId(null);
   };
 
+  const handleGoToDetail = (id: number) => {
+    navigate(`/detail/${id}`);
+  };
+
   const totalPages = Math.max(1, Math.ceil(favorites.length / PAGE_SIZE));
-  const pagedFavorites = favorites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const pagedFavorites = favorites.slice(
+    (page - 1) * PAGE_SIZE,
+    page * PAGE_SIZE
+  );
 
   const goToPage = (next: number) => {
     const safe = Math.max(1, Math.min(totalPages, next));
@@ -66,7 +75,6 @@ export default function FavoritPage() {
 
   return (
     <div className="p-6 space-y-6">
-
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Artikel Favorit</h1>
@@ -79,48 +87,27 @@ export default function FavoritPage() {
       <div className="grid gap-4">
         {pagedFavorites.map((item) => (
           <Card key={item.id} className="hover:shadow-md transition">
-
-            {/* ── Header: judul (kiri) + score + trash (kanan) ── */}
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between gap-4">
-
-                {/* Judul */}
+                {/* JUDUL */}
                 <CardTitle className="text-base leading-snug flex-1">
-                  {item.title}
+                  <button
+                    type="button"
+                    onClick={() => handleGoToDetail(item.id)}
+                    className="text-left font-semibold hover:underline hover:text-primary transition-colors"
+                  >
+                    {item.title}
+                  </button>
                 </CardTitle>
 
-                    {/* Similarity Score */}
-                <div className="shrink-0">
-                  <span className="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap">
-                    {item.similarity_score?.toFixed(4) ?? "—"}
-                  </span>
-                </div>
-
-              </div>
-            </CardHeader>
-
-            {/* ── Content: penulis + tahun ── */}
-            <CardContent className="pt-0">
-              <div className="flex items-end justify-between gap-4">
-
-                {/* LEFT */}
-                <div className="text-sm text-muted-foreground space-y-1">
-                  <p>{item.authors}</p>
-
-                  <p className="text-xs">
-                    {item.year ?? "-"}
-                  </p>
-                </div>
-
-                {/* RIGHT */}
-                <div className="flex items-center gap-2">
-
+                {/* RIGHT ICONS */}
+                <div className="flex items-center gap-2 shrink-0">
                   {/* DETAIL */}
                   <Button
                     variant="outline"
                     size="icon"
                     className="h-8 w-8"
-                    onClick={() => navigate(`/detail/${item.id}`)}
+                    onClick={() => handleGoToDetail(item.id)}
                   >
                     <Info className="w-4 h-4" />
                   </Button>
@@ -134,14 +121,21 @@ export default function FavoritPage() {
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </Button>
-
                 </div>
+              </div>
+            </CardHeader>
+
+            <CardContent className="pt-0">
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p>{item.authors}</p>
+                <p className="text-xs">{item.year ?? "-"}</p>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
 
+      {/* PAGINATION */}
       {favorites.length > 0 && totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <Button
@@ -183,12 +177,13 @@ export default function FavoritPage() {
         </div>
       )}
 
-      {/* Dialog konfirmasi hapus */}
+      {/* DIALOG KONFIRMASI HAPUS */}
       <Dialog open={confirmId !== null} onOpenChange={() => setConfirmId(null)}>
         <DialogContent className="max-w-sm rounded-2xl">
           <DialogHeader>
             <DialogTitle>Hapus artikel dari Favorit?</DialogTitle>
           </DialogHeader>
+
           <p className="text-sm text-muted-foreground">
             Artikel{" "}
             <span className="font-medium text-foreground">
@@ -196,10 +191,12 @@ export default function FavoritPage() {
             </span>{" "}
             akan dihapus dari daftar favorit kamu.
           </p>
+
           <DialogFooter className="flex gap-2 mt-2">
             <Button variant="outline" onClick={() => setConfirmId(null)}>
               No
             </Button>
+
             <Button
               variant="destructive"
               onClick={() => confirmId !== null && handleDelete(confirmId)}

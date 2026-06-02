@@ -1,7 +1,6 @@
-import { useMemo, useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SlidersHorizontal } from "lucide-react";
-
+import { SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { SectionCards } from "@/components/section-cards";
 import { DataTable } from "@/components/data-table";
 import { ChartBarLabel } from "@/components/bar-chart";
@@ -38,8 +36,6 @@ interface Article {
   url?: string | null;
   access_url?: string | null;
   is_pdf?: boolean | string;
-
-  // kemungkinan field kemunculan dari backend
   jumlah_kemunculan?: number | string;
   occurrence?: number | string;
   occurrences?: number | string;
@@ -53,6 +49,8 @@ interface SearchFilters {
   jumlahKemunculan: string;
 }
 
+type FilterKey = keyof SearchFilters | "year";
+
 const JENIS_ARTIKEL_LABEL: Record<string, string> = {
   open: "Open Source",
   close: "Close Source",
@@ -60,37 +58,75 @@ const JENIS_ARTIKEL_LABEL: Record<string, string> = {
 
 const TREND_TOP_K = 5000;
 
-function buildChips(filters: SearchFilters): string[] {
-  const chips: string[] = [];
+function buildChips(filters: SearchFilters): { key: FilterKey; label: string }[] {
+  const chips: { key: FilterKey; label: string }[] = [];
+
   if (filters.jenisArtikel) {
-    chips.push(JENIS_ARTIKEL_LABEL[filters.jenisArtikel] ?? filters.jenisArtikel);
+    chips.push({
+      key: "jenisArtikel",
+      label: JENIS_ARTIKEL_LABEL[filters.jenisArtikel] ?? filters.jenisArtikel,
+    });
   }
+
   if (filters.yearStart || filters.yearEnd) {
-    chips.push(`Tahun: ${filters.yearStart || "—"} – ${filters.yearEnd || "—"}`);
+    chips.push({
+      key: "year",
+      label: `Tahun: ${filters.yearStart || "-"} - ${filters.yearEnd || "-"}`,
+    });
   }
+
   if (filters.kategori) {
-    chips.push(filters.kategori);
+    chips.push({
+      key: "kategori",
+      label: filters.kategori,
+    });
   }
+
   if (filters.jumlahKemunculan) {
-    chips.push(`Kemunculan ≥ ${filters.jumlahKemunculan}`);
+    chips.push({
+      key: "jumlahKemunculan",
+      label: `Kemunculan >= ${filters.jumlahKemunculan}`,
+    });
   }
+
   return chips;
 }
 
 function FilterChip({
   label,
   onClick,
+  onRemove,
 }: {
   label: string;
   onClick?: () => void;
+  onRemove?: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm whitespace-nowrap hover:bg-slate-50 transition"
+      className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm whitespace-nowrap hover:bg-slate-50 transition"
     >
-      {label}
+      <span>{label}</span>
+      <span
+        role="button"
+        tabIndex={0}
+        onClick={(event) => {
+          event.stopPropagation();
+          onRemove?.();
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            event.stopPropagation();
+            onRemove?.();
+          }
+        }}
+        className="rounded-full p-0.5 text-slate-400 hover:bg-slate-100 hover:text-red-500"
+        aria-label={`Hapus filter ${label}`}
+      >
+        <X className="h-3.5 w-3.5" />
+      </span>
     </button>
   );
 }
@@ -133,8 +169,8 @@ export default function Page() {
   );
   const [totalMatched, setTotalMatched] = useState<number>(
     location.state?.total_matched ??
-    location.state?.total ??
-    (Array.isArray(location.state?.results) ? location.state.results.length : 0)
+      location.state?.total ??
+      (Array.isArray(location.state?.results) ? location.state.results.length : 0)
   );
   const [totalOccurrences, setTotalOccurrences] = useState<number>(
     location.state?.total_occurrences ?? 0
@@ -143,17 +179,38 @@ export default function Page() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState<SearchFilters>(initFilters);
-
   const [jenisArtikel, setJenisArtikel] = useState(initFilters.jenisArtikel);
   const [yearStart, setYearStart] = useState(initFilters.yearStart);
   const [yearEnd, setYearEnd] = useState(initFilters.yearEnd);
   const [kategori, setKategori] = useState(initFilters.kategori);
-  const [jumlahKemunculan, setJumlahKemunculan] = useState(initFilters.jumlahKemunculan);
+  const [jumlahKemunculan, setJumlahKemunculan] = useState(
+    initFilters.jumlahKemunculan
+  );
   const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
 
   const chips = buildChips(activeFilters);
+
+  const paperCount = tableData.length;
+
+  const sumOccurrencesFromRows = useMemo(() => {
+    return tableData.reduce((acc, row) => acc + getOccurrenceValue(row), 0);
+  }, [tableData]);
+
+  const cardTotalOccurrences =
+    sumOccurrencesFromRows > 0 ? sumOccurrencesFromRows : totalOccurrences;
+
+  const chartKey = [
+    query,
+    activeFilters.jenisArtikel,
+    activeFilters.yearStart,
+    activeFilters.yearEnd,
+    activeFilters.kategori,
+    activeFilters.jumlahKemunculan,
+    trendData.length,
+    cardTotalOccurrences,
+  ].join("|");
+
   const openFilterEditor = () => {
-    // sinkronkan isi form dengan filter aktif saat ini
     setJenisArtikel(activeFilters.jenisArtikel);
     setYearStart(activeFilters.yearStart);
     setYearEnd(activeFilters.yearEnd);
@@ -173,6 +230,140 @@ export default function Page() {
     loadCategories();
   }, []);
 
+  const fetchWithFilters = async (filters: SearchFilters, topK = 10) => {
+    if (!query.trim()) return null;
+
+    const minOccurrence =
+      filters.jumlahKemunculan.trim() !== ""
+        ? Number(filters.jumlahKemunculan)
+        : undefined;
+
+    const safeMinOccurrence =
+      typeof minOccurrence === "number" && !Number.isNaN(minOccurrence)
+        ? minOccurrence
+        : undefined;
+
+    return searchArticles(
+      query,
+      topK,
+      filters.yearStart ? parseInt(filters.yearStart) : undefined,
+      filters.yearEnd ? parseInt(filters.yearEnd) : undefined,
+      filters.jenisArtikel || undefined,
+      filters.kategori || undefined,
+      safeMinOccurrence
+    );
+  };
+
+  const handleApplyFilter = async () => {
+    if (!query.trim()) return;
+
+    setLoading(true);
+
+    const newFilters: SearchFilters = {
+      jenisArtikel,
+      yearStart,
+      yearEnd,
+      kategori,
+      jumlahKemunculan,
+    };
+
+    try {
+      const res = await fetchWithFilters(newFilters);
+
+      if (res?.status === "success" && res.data) {
+        const nextData = Array.isArray(res.data) ? res.data : [];
+        const nextTotalMatched = res.total_matched ?? res.total ?? nextData.length;
+        const nextTotalOccurrences = nextData.reduce(
+          (acc, row) => acc + getOccurrenceValue(row as Article),
+          0
+        );
+
+        setTableData(nextData);
+        setTotalMatched(nextTotalMatched);
+        setTotalOccurrences(nextTotalOccurrences);
+        setActiveFilters(newFilters);
+
+        navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
+          replace: true,
+          state: {
+            results: nextData,
+            query,
+            filters: newFilters,
+            total_matched: nextTotalMatched,
+            total_occurrences: nextTotalOccurrences,
+            paper_count: nextData.length,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
+
+  const handleRemoveFilter = async (key: FilterKey) => {
+    const nextFilters: SearchFilters = { ...activeFilters };
+
+    if (key === "jenisArtikel") {
+      nextFilters.jenisArtikel = "";
+      setJenisArtikel("");
+    }
+
+    if (key === "year") {
+      nextFilters.yearStart = "";
+      nextFilters.yearEnd = "";
+      setYearStart("");
+      setYearEnd("");
+    }
+
+    if (key === "kategori") {
+      nextFilters.kategori = "";
+      setKategori("");
+    }
+
+    if (key === "jumlahKemunculan") {
+      nextFilters.jumlahKemunculan = "";
+      setJumlahKemunculan("");
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetchWithFilters(nextFilters);
+
+      if (res?.status === "success" && res.data) {
+        const nextData = Array.isArray(res.data) ? res.data : [];
+        const nextTotalMatched = res.total_matched ?? res.total ?? nextData.length;
+        const nextTotalOccurrences = nextData.reduce(
+          (acc, row) => acc + getOccurrenceValue(row as Article),
+          0
+        );
+
+        setTableData(nextData);
+        setTotalMatched(nextTotalMatched);
+        setTotalOccurrences(nextTotalOccurrences);
+        setActiveFilters(nextFilters);
+
+        navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
+          replace: true,
+          state: {
+            results: nextData,
+            query,
+            filters: nextFilters,
+            total_matched: nextTotalMatched,
+            total_occurrences: nextTotalOccurrences,
+            paper_count: nextData.length,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     try {
       const ids = tableData
@@ -180,11 +371,7 @@ export default function Page() {
         .filter((id) => Number.isFinite(id));
       localStorage.setItem("lastSearchPublicationIds", JSON.stringify(ids));
       localStorage.setItem("lastSearchQuery", query || "");
-      if (activeFilters) {
-        localStorage.setItem("lastSearchFilters", JSON.stringify(activeFilters));
-      } else {
-        localStorage.removeItem("lastSearchFilters");
-      }
+      localStorage.setItem("lastSearchFilters", JSON.stringify(activeFilters));
       window.dispatchEvent(new Event("search-context-updated"));
     } catch (_error) {
       // no-op
@@ -198,32 +385,9 @@ export default function Page() {
         return;
       }
 
-      const yearStartNum = activeFilters.yearStart
-        ? Number(activeFilters.yearStart)
-        : undefined;
-      const yearEndNum = activeFilters.yearEnd
-        ? Number(activeFilters.yearEnd)
-        : undefined;
-      const minOcc = activeFilters.jumlahKemunculan?.trim()
-        ? Number(activeFilters.jumlahKemunculan)
-        : undefined;
-      const safeMinOcc =
-        typeof minOcc === "number" && !Number.isNaN(minOcc)
-          ? minOcc
-          : undefined;
-
       try {
-        const res = await searchArticles(
-          query,
-          TREND_TOP_K,
-          yearStartNum,
-          yearEndNum,
-          activeFilters.jenisArtikel || undefined,
-          activeFilters.kategori || undefined,
-          safeMinOcc
-        );
-
-        if (res.status === "success" && Array.isArray(res.data)) {
+        const res = await fetchWithFilters(activeFilters, TREND_TOP_K);
+        if (res?.status === "success" && Array.isArray(res.data)) {
           setTrendData(res.data as Article[]);
         } else {
           setTrendData([]);
@@ -235,95 +399,6 @@ export default function Page() {
 
     run();
   }, [query, activeFilters]);
-
-  // Statistik cards: selalu sinkron dengan hasil tabel terbaru.
-  const paperCount = tableData.length;
-
-  const sumOccurrencesFromRows = useMemo(() => {
-    return tableData.reduce((acc, row) => acc + getOccurrenceValue(row), 0);
-  }, [tableData]);
-
-  const cardTotalOccurrences =
-    sumOccurrencesFromRows > 0 ? sumOccurrencesFromRows : totalOccurrences;
-
-  // Force chart re-mount saat filter/data berubah agar tidak menampilkan state awal.
-  const chartKey = [
-    query,
-    activeFilters.jenisArtikel,
-    activeFilters.yearStart,
-    activeFilters.yearEnd,
-    activeFilters.kategori,
-    activeFilters.jumlahKemunculan,
-    trendData.length,
-    cardTotalOccurrences,
-  ].join("|");
-
-  const handleApplyFilter = async () => {
-  if (!query.trim()) return;
-  setLoading(true);
-
-  const newFilters: SearchFilters = {
-    jenisArtikel,
-    yearStart,
-    yearEnd,
-    kategori,
-    jumlahKemunculan,
-  };
-
-  const minOccurrence =
-    jumlahKemunculan.trim() !== "" ? Number(jumlahKemunculan) : undefined;
-
-  const safeMinOccurrence =
-    typeof minOccurrence === "number" && !Number.isNaN(minOccurrence)
-      ? minOccurrence
-      : undefined;
-
-  try {
-    const res = await searchArticles(
-      query,
-      10,
-      yearStart ? parseInt(yearStart) : undefined,
-      yearEnd ? parseInt(yearEnd) : undefined,
-      jenisArtikel || undefined,
-      kategori || undefined,
-      safeMinOccurrence
-    );
-
-    if (res.status === "success" && res.data) {
-      const nextData = Array.isArray(res.data) ? res.data : [];
-
-      const nextPaperCount = nextData.length;
-      const nextTotalMatched =
-        (res.total_matched ?? res.total ?? nextData.length);
-      const nextTotalOccurrences = nextData.reduce(
-        (acc, row) => acc + getOccurrenceValue(row as Article),
-        0
-      );
-
-      setTableData(nextData);
-      setTotalMatched(nextTotalMatched);
-      setTotalOccurrences(nextTotalOccurrences);
-      setActiveFilters(newFilters);
-
-      navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
-        replace: true,
-        state: {
-          results: nextData,
-          query,
-          filters: newFilters,
-          total_matched: nextTotalMatched,
-          total_occurrences: nextTotalOccurrences,
-          paper_count: nextPaperCount,
-        },
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
-    setOpen(false);
-  }
-};
 
   if (!location.state?.results && tableData.length === 0) {
     return (
@@ -362,7 +437,10 @@ export default function Page() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="flex flex-col gap-2">
                         <label className="text-sm">Jenis artikel</label>
-                        <Select onValueChange={setJenisArtikel} value={jenisArtikel}>
+                        <Select
+                          onValueChange={setJenisArtikel}
+                          value={jenisArtikel}
+                        >
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Jenis artikel" />
                           </SelectTrigger>
@@ -433,7 +511,9 @@ export default function Page() {
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="text-sm font-medium">Jumlah kemunculan</label>
+                        <label className="text-sm font-medium">
+                          Jumlah kemunculan
+                        </label>
                         <Input
                           type="number"
                           placeholder="Contoh: 5"
@@ -451,7 +531,11 @@ export default function Page() {
                     </div>
 
                     <div className="flex justify-center">
-                      <Button onClick={handleApplyFilter} className="px-16" disabled={loading}>
+                      <Button
+                        onClick={handleApplyFilter}
+                        className="px-16"
+                        disabled={loading}
+                      >
                         {loading ? "Menerapkan..." : "Terapkan Filter"}
                       </Button>
                     </div>
@@ -460,8 +544,14 @@ export default function Page() {
               </Dialog>
 
               {chips.length > 0 && <span className="h-5 w-px bg-slate-300" />}
+
               {chips.map((chip) => (
-                <FilterChip key={chip} label={chip} onClick={openFilterEditor} />
+                <FilterChip
+                  key={chip.key}
+                  label={chip.label}
+                  onClick={openFilterEditor}
+                  onRemove={() => handleRemoveFilter(chip.key)}
+                />
               ))}
             </div>
           </div>

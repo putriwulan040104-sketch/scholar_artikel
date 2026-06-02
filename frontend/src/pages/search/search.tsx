@@ -34,11 +34,16 @@ export interface SearchFilters {
   jumlahKemunculan: string;
 }
 
-const POPULAR_QUERIES = [
-  "Web Development",
-  "Mobile Application",
-  "Cyber Security",
-  "Machine Learning",
+const popularSearches = [
+  "Web Accessibility",
+  "Frontend Development",
+  "Android Application",
+  "Artificial Intelligence",
+  "Data Mining",
+  "Information System",
+  "Machine Learning Classification",
+  "Deep Learning",
+  "E-Learning",
 ];
 
 const HISTORY_STORAGE_KEY = "search_history";
@@ -57,6 +62,19 @@ export function Searchpage() {
   const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
   const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
+
+  const [openRequestDialog, setOpenRequestDialog] = useState(false);
+  const [requestForm, setRequestForm] = useState({
+    nama: "",
+    email: "",
+    kataKunci: "",
+    judulArtikel: "",
+    keterangan: "",
+  });
+
+  const [requestLoading, setRequestLoading] = useState(false);
+  const [requestNotif, setRequestNotif] = useState("");
+  const [requestNotifType, setRequestNotifType] = useState<"success" | "error">("success");
 
   const [searchHistory, setSearchHistory] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
@@ -112,6 +130,54 @@ export function Searchpage() {
     window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
   };
 
+  const handleChangeRequest = (
+    key: "nama" | "email" | "kataKunci" | "judulArtikel" | "keterangan",
+    value: string
+  ) => {
+    setRequestForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSubmitRequest = async () => {
+    try {
+      setRequestLoading(true);
+      setRequestNotif("");
+
+      const res = await fetch("http://127.0.0.1:5000/api/request-article", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestForm),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || data?.status === "error") {
+        setRequestNotifType("error");
+        setRequestNotif(data?.message || "Gagal mengirim permintaan.");
+        return;
+      }
+
+      setRequestNotifType(data?.email_sent === false ? "error" : "success");
+      setRequestNotif(data?.message || "pesan email terkirim");
+
+      setOpenRequestDialog(false);
+      setRequestForm({
+        nama: "",
+        email: "",
+        kataKunci: "",
+        judulArtikel: "",
+        keterangan: "",
+      });
+    } catch (error: any) {
+      setRequestNotifType("error");
+      setRequestNotif(error?.message || "Gagal mengirim permintaan.");
+    } finally {
+      setRequestLoading(false);
+      setTimeout(() => setRequestNotif(""), 5000);
+    }
+  };
+
   const handleSearch = async () => {
     if (!query.trim()) return;
 
@@ -162,6 +228,18 @@ export function Searchpage() {
 
   return (
     <div className="flex flex-col gap-6">
+      {requestNotif && (
+        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100]">
+          <div
+            className={`rounded-lg px-4 py-2 text-sm font-medium shadow-md ${
+              requestNotifType === "success" ? "bg-emerald-600 text-white" : "bg-red-600 text-white"
+            }`}
+          >
+            {requestNotif}
+          </div>
+        </div>
+      )}
+
       {/* Header + Search tanpa card kotak */}
       <div className="flex items-center justify-center">
         <section className="w-full max-w-4xl px-2 py-4">
@@ -308,16 +386,19 @@ export function Searchpage() {
           </div>
 
           <div className="mt-6">
-            <p className="text-sm text-slate-500 mb-3">Coba pencarian populer</p>
-            <div className="flex flex-wrap gap-2">
-              {POPULAR_QUERIES.map((item) => (
+            <p className="text-sm text-slate-500 mb-3">Coba pencarian lainnya</p>
+            <div className="flex flex-wrap gap-3">
+              {popularSearches.map((keyword) => (
                 <button
-                  key={item}
+                  key={keyword}
                   type="button"
-                  onClick={() => setQuery(item)}
-                  className="rounded-full border px-4 py-2 text-sm text-slate-600 transition hover:bg-slate-50"
+                  onClick={() => {
+                    setQuery(keyword);
+                    setNoResult(false);
+                  }}
+                  className="px-5 py-2 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition"
                 >
-                  {item}
+                  {keyword}
                 </button>
               ))}
             </div>
@@ -325,13 +406,17 @@ export function Searchpage() {
         </section>
       </div>
 
-      {noResult && !loading && (
+      {noResult && !loading && query.trim() !== "" && (
         <div className="text-center">
           <p className="text-slate-500 font-medium">
-            Data tidak ditemukan untuk "{query}"
+            Artikel "{query}" belum tersedia dalam sistem. Silakan kirim permintaan kepada developer.
           </p>
           <button
             type="button"
+            onClick={() => {
+              setRequestForm((prev) => ({ ...prev, kataKunci: query }));
+              setOpenRequestDialog(true);
+            }}
             className="mt-3 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 px-6 py-2 font-medium text-white transition hover:opacity-90"
           >
             Request
@@ -395,6 +480,78 @@ export function Searchpage() {
           </div>
         </Card>
       </div>
+
+      <Dialog open={openRequestDialog} onOpenChange={setOpenRequestDialog}>
+        <DialogContent className="max-w-xl min-h-[470px] rounded-2xl border border-black shadow-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Kirim Permintaan</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-2">
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Nama</label>
+              <Input
+                value={requestForm.nama}
+                onChange={(e) => handleChangeRequest("nama", e.target.value)}
+                placeholder="Nama lengkap"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Email</label>
+              <Input
+                type="email"
+                value={requestForm.email}
+                onChange={(e) => handleChangeRequest("email", e.target.value)}
+                placeholder="email@contoh.com"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Kata Kunci Pencarian</label>
+              <Input
+                value={requestForm.kataKunci}
+                onChange={(e) => handleChangeRequest("kataKunci", e.target.value)}
+                placeholder="Contoh: web accessibility"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Judul Artikel (Opsional)</label>
+              <Input
+                value={requestForm.judulArtikel}
+                onChange={(e) => handleChangeRequest("judulArtikel", e.target.value)}
+                placeholder="Jika ada judul spesifik"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm">Keterangan Tambahan (Opsional)</label>
+              <textarea
+                value={requestForm.keterangan}
+                onChange={(e) => handleChangeRequest("keterangan", e.target.value)}
+                placeholder="Tambahkan detail permintaan..."
+                className="min-h-[110px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+
+            <div className="flex justify-center pt-2">
+              <Button
+                onClick={handleSubmitRequest}
+                className="px-10"
+                disabled={
+                  requestLoading ||
+                  !requestForm.nama.trim() ||
+                  !requestForm.email.trim() ||
+                  !requestForm.kataKunci.trim()
+                }
+              >
+                {requestLoading ? "Mengirim..." : "Kirim Permintaan"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
