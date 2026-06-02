@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,8 +38,6 @@ interface Article {
   url?: string | null;
   access_url?: string | null;
   is_pdf?: boolean | string;
-
-  // kemungkinan field kemunculan dari backend
   jumlah_kemunculan?: number | string;
   occurrence?: number | string;
   occurrences?: number | string;
@@ -53,6 +51,8 @@ interface SearchFilters {
   jumlahKemunculan: string;
 }
 
+type FilterKey = keyof SearchFilters | "year";
+
 const JENIS_ARTIKEL_LABEL: Record<string, string> = {
   open: "Open Source",
   close: "Close Source",
@@ -64,39 +64,78 @@ const SUMBER_DATA_LABEL: Record<string, string> = {
   semantic: "Semantic Scholar",
   crossref: "CrossRef",
 };
+
 const TREND_TOP_K = 5000;
 
-function buildChips(filters: SearchFilters): string[] {
-  const chips: string[] = [];
+function buildChips(filters: SearchFilters): { key: FilterKey; label: string }[] {
+  const chips: { key: FilterKey; label: string }[] = [];
+
   if (filters.jenisArtikel) {
-    chips.push(JENIS_ARTIKEL_LABEL[filters.jenisArtikel] ?? filters.jenisArtikel);
+    chips.push({
+      key: "jenisArtikel",
+      label: JENIS_ARTIKEL_LABEL[filters.jenisArtikel] ?? filters.jenisArtikel,
+    });
   }
+
   if (filters.yearStart || filters.yearEnd) {
-    chips.push(`Tahun: ${filters.yearStart || "—"} – ${filters.yearEnd || "—"}`);
+    chips.push({
+      key: "year",
+      label: `Tahun: ${filters.yearStart || "—"} – ${filters.yearEnd || "—"}`,
+    });
   }
+
   if (filters.sumberData) {
-    chips.push(SUMBER_DATA_LABEL[filters.sumberData] ?? filters.sumberData);
+    chips.push({
+      key: "sumberData",
+      label: SUMBER_DATA_LABEL[filters.sumberData] ?? filters.sumberData,
+    });
   }
+
   if (filters.jumlahKemunculan) {
-    chips.push(`Kemunculan ≥ ${filters.jumlahKemunculan}`);
+    chips.push({
+      key: "jumlahKemunculan",
+      label: `Kemunculan ≥ ${filters.jumlahKemunculan}`,
+    });
   }
+
   return chips;
 }
 
 function FilterChip({
   label,
   onClick,
+  onRemove,
 }: {
   label: string;
   onClick?: () => void;
+  onRemove?: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm whitespace-nowrap hover:bg-slate-50 transition"
+      className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-700 shadow-sm whitespace-nowrap hover:bg-slate-50 transition"
     >
-      {label}
+      <span>{label}</span>
+      <span
+        role="button"
+        tabIndex={0}
+        onClick={(event) => {
+          event.stopPropagation();
+          onRemove?.();
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            event.stopPropagation();
+            onRemove?.();
+          }
+        }}
+        className="rounded-full p-0.5 text-slate-400 hover:bg-slate-100 hover:text-red-500"
+        aria-label={`Hapus filter ${label}`}
+      >
+        <X className="h-3.5 w-3.5" />
+      </span>
     </button>
   );
 }
@@ -138,8 +177,8 @@ export default function Page() {
   );
   const [totalMatched, setTotalMatched] = useState<number>(
     location.state?.total_matched ??
-    location.state?.total ??
-    (Array.isArray(location.state?.results) ? location.state.results.length : 0)
+      location.state?.total ??
+      (Array.isArray(location.state?.results) ? location.state.results.length : 0)
   );
   const [totalOccurrences, setTotalOccurrences] = useState<number>(
     location.state?.total_occurrences ?? 0
@@ -153,7 +192,9 @@ export default function Page() {
   const [yearStart, setYearStart] = useState(initFilters.yearStart);
   const [yearEnd, setYearEnd] = useState(initFilters.yearEnd);
   const [sumberData, setSumberData] = useState(initFilters.sumberData);
-  const [jumlahKemunculan, setJumlahKemunculan] = useState(initFilters.jumlahKemunculan);
+  const [jumlahKemunculan, setJumlahKemunculan] = useState(
+    initFilters.jumlahKemunculan
+  );
 
   if (!location.state?.results && tableData.length === 0) {
     return (
@@ -164,14 +205,117 @@ export default function Page() {
   }
 
   const chips = buildChips(activeFilters);
+
   const openFilterEditor = () => {
-    // sinkronkan isi form dengan filter aktif saat ini
     setJenisArtikel(activeFilters.jenisArtikel);
     setYearStart(activeFilters.yearStart);
     setYearEnd(activeFilters.yearEnd);
     setSumberData(activeFilters.sumberData);
     setJumlahKemunculan(activeFilters.jumlahKemunculan);
     setOpen(true);
+  };
+
+  const fetchWithFilters = async (filters: SearchFilters) => {
+    if (!query.trim()) return;
+
+    setLoading(true);
+
+    const minOccurrence =
+      filters.jumlahKemunculan.trim() !== ""
+        ? Number(filters.jumlahKemunculan)
+        : undefined;
+
+    const safeMinOccurrence =
+      typeof minOccurrence === "number" && !Number.isNaN(minOccurrence)
+        ? minOccurrence
+        : undefined;
+
+    try {
+      const res = await searchArticles(
+        query,
+        10,
+        filters.yearStart ? parseInt(filters.yearStart) : undefined,
+        filters.yearEnd ? parseInt(filters.yearEnd) : undefined,
+        filters.jenisArtikel || undefined,
+        filters.sumberData || undefined,
+        safeMinOccurrence
+      );
+
+      if (res.status === "success" && res.data) {
+        const nextData = Array.isArray(res.data) ? res.data : [];
+
+        const nextPaperCount = nextData.length;
+        const nextTotalMatched = res.total_matched ?? res.total ?? nextData.length;
+        const nextTotalOccurrences = nextData.reduce(
+          (acc, row) => acc + getOccurrenceValue(row as Article),
+          0
+        );
+
+        setTableData(nextData);
+        setTotalMatched(nextTotalMatched);
+        setTotalOccurrences(nextTotalOccurrences);
+        setActiveFilters(filters);
+
+        navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
+          replace: true,
+          state: {
+            results: nextData,
+            query,
+            filters,
+            total_matched: nextTotalMatched,
+            total_occurrences: nextTotalOccurrences,
+            paper_count: nextPaperCount,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
+
+  const handleApplyFilter = async () => {
+    const newFilters: SearchFilters = {
+      jenisArtikel,
+      yearStart,
+      yearEnd,
+      sumberData,
+      jumlahKemunculan,
+    };
+
+    await fetchWithFilters(newFilters);
+  };
+
+  const handleRemoveFilter = async (key: FilterKey) => {
+    const nextFilters: SearchFilters = {
+      ...activeFilters,
+    };
+
+    if (key === "jenisArtikel") {
+      nextFilters.jenisArtikel = "";
+      setJenisArtikel("");
+    }
+
+    if (key === "year") {
+      nextFilters.yearStart = "";
+      nextFilters.yearEnd = "";
+      setYearStart("");
+      setYearEnd("");
+    }
+
+    if (key === "sumberData") {
+      nextFilters.sumberData = "";
+      setSumberData("");
+    }
+
+    if (key === "jumlahKemunculan") {
+      nextFilters.jumlahKemunculan = "";
+      setJumlahKemunculan("");
+    }
+
+    await fetchWithFilters(nextFilters);
   };
 
   useEffect(() => {
@@ -209,9 +353,7 @@ export default function Page() {
         ? Number(activeFilters.jumlahKemunculan)
         : undefined;
       const safeMinOcc =
-        typeof minOcc === "number" && !Number.isNaN(minOcc)
-          ? minOcc
-          : undefined;
+        typeof minOcc === "number" && !Number.isNaN(minOcc) ? minOcc : undefined;
 
       try {
         const res = await searchArticles(
@@ -237,7 +379,6 @@ export default function Page() {
     run();
   }, [query, activeFilters]);
 
-  // Statistik cards: selalu sinkron dengan hasil tabel terbaru.
   const paperCount = tableData.length;
 
   const sumOccurrencesFromRows = useMemo(() => {
@@ -247,7 +388,6 @@ export default function Page() {
   const cardTotalOccurrences =
     sumOccurrencesFromRows > 0 ? sumOccurrencesFromRows : totalOccurrences;
 
-  // Force chart re-mount saat filter/data berubah agar tidak menampilkan state awal.
   const chartKey = [
     query,
     activeFilters.jenisArtikel,
@@ -258,73 +398,6 @@ export default function Page() {
     trendData.length,
     cardTotalOccurrences,
   ].join("|");
-
-  const handleApplyFilter = async () => {
-  if (!query.trim()) return;
-  setLoading(true);
-
-  const newFilters: SearchFilters = {
-    jenisArtikel,
-    yearStart,
-    yearEnd,
-    sumberData,
-    jumlahKemunculan,
-  };
-
-  const minOccurrence =
-    jumlahKemunculan.trim() !== "" ? Number(jumlahKemunculan) : undefined;
-
-  const safeMinOccurrence =
-    typeof minOccurrence === "number" && !Number.isNaN(minOccurrence)
-      ? minOccurrence
-      : undefined;
-
-  try {
-    const res = await searchArticles(
-      query,
-      10,
-      yearStart ? parseInt(yearStart) : undefined,
-      yearEnd ? parseInt(yearEnd) : undefined,
-      jenisArtikel || undefined,
-      sumberData || undefined,
-      safeMinOccurrence
-    );
-
-    if (res.status === "success" && res.data) {
-      const nextData = Array.isArray(res.data) ? res.data : [];
-
-      const nextPaperCount = nextData.length;
-      const nextTotalMatched =
-        (res.total_matched ?? res.total ?? nextData.length);
-      const nextTotalOccurrences = nextData.reduce(
-        (acc, row) => acc + getOccurrenceValue(row as Article),
-        0
-      );
-
-      setTableData(nextData);
-      setTotalMatched(nextTotalMatched);
-      setTotalOccurrences(nextTotalOccurrences);
-      setActiveFilters(newFilters);
-
-      navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
-        replace: true,
-        state: {
-          results: nextData,
-          query,
-          filters: newFilters,
-          total_matched: nextTotalMatched,
-          total_occurrences: nextTotalOccurrences,
-          paper_count: nextPaperCount,
-        },
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setLoading(false);
-    setOpen(false);
-  }
-};
 
   return (
     <div className="flex flex-1 flex-col">
@@ -355,7 +428,10 @@ export default function Page() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="flex flex-col gap-2">
                         <label className="text-sm">Jenis artikel</label>
-                        <Select onValueChange={setJenisArtikel} value={jenisArtikel}>
+                        <Select
+                          onValueChange={setJenisArtikel}
+                          value={jenisArtikel}
+                        >
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Jenis artikel" />
                           </SelectTrigger>
@@ -412,14 +488,18 @@ export default function Page() {
                           <SelectContent>
                             <SelectItem value="scopus">Scopus</SelectItem>
                             <SelectItem value="wos">Web of Science</SelectItem>
-                            <SelectItem value="semantic">Semantic Scholar</SelectItem>
+                            <SelectItem value="semantic">
+                              Semantic Scholar
+                            </SelectItem>
                             <SelectItem value="crossref">CrossRef</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="text-sm font-medium">Jumlah kemunculan</label>
+                        <label className="text-sm font-medium">
+                          Jumlah kemunculan
+                        </label>
                         <Input
                           type="number"
                           placeholder="Contoh: 5"
@@ -437,7 +517,11 @@ export default function Page() {
                     </div>
 
                     <div className="flex justify-center">
-                      <Button onClick={handleApplyFilter} className="px-16" disabled={loading}>
+                      <Button
+                        onClick={handleApplyFilter}
+                        className="px-16"
+                        disabled={loading}
+                      >
                         {loading ? "Menerapkan..." : "Terapkan Filter"}
                       </Button>
                     </div>
@@ -446,8 +530,14 @@ export default function Page() {
               </Dialog>
 
               {chips.length > 0 && <span className="h-5 w-px bg-slate-300" />}
+
               {chips.map((chip) => (
-                <FilterChip key={chip} label={chip} onClick={openFilterEditor} />
+                <FilterChip
+                  key={chip.key}
+                  label={chip.label}
+                  onClick={openFilterEditor}
+                  onRemove={() => handleRemoveFilter(chip.key)}
+                />
               ))}
             </div>
           </div>

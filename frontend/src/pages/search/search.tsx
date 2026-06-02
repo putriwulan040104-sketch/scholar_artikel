@@ -34,11 +34,16 @@ export interface SearchFilters {
   jumlahKemunculan: string;
 }
 
-const POPULAR_QUERIES = [
-  "Web Development",
-  "Mobile Application",
-  "Cyber Security",
-  "Machine Learning",
+const popularSearches = [
+  "Web Accessibility",
+  "Frontend Development",
+  "Android Application",
+  "Artificial Intelligence",
+  "Data Mining",
+  "Information System",
+  "Machine Learning Classification",
+  "Deep Learning",
+  "E-Learning",
 ];
 
 const HISTORY_STORAGE_KEY = "search_history";
@@ -362,16 +367,19 @@ export function Searchpage() {
           </div>
 
           <div className="mt-6">
-            <p className="text-sm text-slate-500 mb-3">Coba pencarian populer</p>
-            <div className="flex flex-wrap gap-2">
-              {POPULAR_QUERIES.map((item) => (
+            <p className="text-sm text-slate-500 mb-3">Coba pencarian lainnya</p>
+            <div className="flex flex-wrap gap-3">
+              {popularSearches.map((keyword) => (
                 <button
-                  key={item}
+                  key={keyword}
                   type="button"
-                  onClick={() => setQuery(item)}
-                  className="rounded-full border px-4 py-2 text-sm text-slate-600 transition hover:bg-slate-50"
+                  onClick={() => {
+                    setQuery(keyword);
+                    setNoResult(false);
+                  }}
+                  className="px-5 py-2 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition"
                 >
-                  {item}
+                  {keyword}
                 </button>
               ))}
             </div>
@@ -379,7 +387,7 @@ export function Searchpage() {
         </section>
       </div>
 
-      {noResult && !loading && (
+      {noResult && !loading && query.trim() !== "" && (
         <div className="text-center">
           <p className="text-slate-500 font-medium">
             Artikel "{query}" belum tersedia dalam sistem. Silakan kirim permintaan kepada developer.
