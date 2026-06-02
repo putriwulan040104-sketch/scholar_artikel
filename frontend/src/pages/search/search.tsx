@@ -24,13 +24,13 @@ import {
   Filter,
   Network,
 } from "lucide-react";
-import { getUser, searchArticles } from "@/api/api";
+import { getCategoryOptions, getUser, searchArticles, type CategoryOption } from "@/api/api";
 
 export interface SearchFilters {
   jenisArtikel: string;
   yearStart: string;
   yearEnd: string;
-  sumberData: string;
+  kategori: string;
   jumlahKemunculan: string;
 }
 
@@ -54,8 +54,9 @@ export function Searchpage() {
   const [yearStart, setYearStart] = useState<string>("");
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
-  const [sumberData, setSumberData] = useState<string>("");
+  const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
+  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
 
   const [searchHistory, setSearchHistory] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
@@ -75,6 +76,17 @@ export function Searchpage() {
     localStorage.removeItem("lastSearchQuery");
     localStorage.removeItem("lastSearchFilters");
     window.dispatchEvent(new Event("search-context-updated"));
+  }, []);
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const res = await getCategoryOptions();
+      if (res.status === "success" && Array.isArray(res.data)) {
+        setCategoryOptions(res.data);
+      }
+    };
+
+    loadCategories();
   }, []);
 
   useEffect(() => {
@@ -110,7 +122,7 @@ export function Searchpage() {
       jenisArtikel,
       yearStart,
       yearEnd,
-      sumberData,
+      kategori,
       jumlahKemunculan,
     };
 
@@ -121,7 +133,7 @@ export function Searchpage() {
         yearStart ? parseInt(yearStart) : undefined,
         yearEnd ? parseInt(yearEnd) : undefined,
         jenisArtikel || undefined,
-        sumberData || undefined,
+        kategori || undefined,
         jumlahKemunculan || undefined
       );
 
@@ -244,16 +256,23 @@ export function Searchpage() {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <label className="text-sm">Sumber data</label>
-                      <Select onValueChange={setSumberData} value={sumberData}>
+                      <label className="text-sm">Kategori penelitian</label>
+                      <Select onValueChange={setKategori} value={kategori}>
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Pilih sumber data" />
+                          <SelectValue placeholder="Pilih kategori" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="scopus">Scopus</SelectItem>
-                          <SelectItem value="wos">Web of Science</SelectItem>
-                          <SelectItem value="semantic">Semantic Scholar</SelectItem>
-                          <SelectItem value="crossref">CrossRef</SelectItem>
+                          {categoryOptions.length === 0 ? (
+                            <SelectItem value="category-empty" disabled>
+                              Kategori belum tersedia
+                            </SelectItem>
+                          ) : (
+                            categoryOptions.map((category) => (
+                              <SelectItem key={category.value} value={category.value}>
+                                {category.label}
+                              </SelectItem>
+                            ))
+                          )}
                         </SelectContent>
                       </Select>
                     </div>

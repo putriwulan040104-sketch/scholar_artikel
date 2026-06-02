@@ -13,15 +13,8 @@ interface SectionCardsProps {
   totalOccurrences? : number;
   paperCount?       : number;
   totalMatched?     : number;
-  sumberData?       : string;
+  kategori?         : string;
 }
-
-const SUMBER_DATA_LABEL: Record<string, string> = {
-  scopus: "Scopus",
-  wos: "Web of Science",
-  semantic: "Semantic Scholar",
-  crossref: "CrossRef",
-};
 
 export function SectionCards({
   query: _query,
@@ -29,7 +22,7 @@ export function SectionCards({
   totalOccurrences = 0,
   paperCount       = 0,
   totalMatched     = 0,
-  sumberData       = "",
+  kategori         = "",
 }: SectionCardsProps) {
 
 const safeTotalOccurrences = Number.isFinite(totalOccurrences)
@@ -38,9 +31,7 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
   const safePaperCount = Number.isFinite(paperCount) ? paperCount : 0;
   const safeTotalMatched = Number.isFinite(totalMatched) ? totalMatched : 0;
   const finalTotalMatched = safeTotalMatched > 0 ? safeTotalMatched : safePaperCount;
-  const sumberDataLabel = sumberData
-    ? (SUMBER_DATA_LABEL[sumberData] ?? sumberData)
-    : "Semua Sumber";
+  const kategoriLabel = kategori ? kategori : "Semua Kategori";
 
 
   return (
@@ -76,9 +67,9 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
 
         <Card className="@container/card">
           <CardHeader>
-            <CardDescription>Sumber Data</CardDescription>
+            <CardDescription>Kategori Penelitian</CardDescription>
             <CardTitle className="text-2xl font-semibold @[250px]/card:text-3xl">
-              {sumberDataLabel}
+              {kategoriLabel}
             </CardTitle>
           </CardHeader>
         </Card>

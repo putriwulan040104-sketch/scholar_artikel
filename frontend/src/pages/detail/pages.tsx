@@ -127,6 +127,8 @@ export default function DetailPublicationPage() {
     );
   }
 
+  const keywordList = parseKeywords(article.keywords);
+
   return (
     <div className="min-h-screen px-6 py-8">
 
@@ -187,6 +189,27 @@ export default function DetailPublicationPage() {
           <p className="text-[16px] leading-8 text-muted-foreground">
             {article.abstract || "Abstrak tidak tersedia."}
           </p>
+        </div>
+
+        {/* Keywords */}
+        <div className="mt-8">
+          <h3 className="text-xl font-bold mb-4">Keywords</h3>
+          {keywordList.length > 0 ? (
+            <div className="flex flex-wrap gap-2">
+              {keywordList.map((keyword) => (
+                <span
+                  key={keyword}
+                  className="rounded-full border bg-slate-50 px-3 py-1 text-sm text-slate-700"
+                >
+                  {keyword}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-[15px] text-muted-foreground">
+              Keywords tidak tersedia.
+            </p>
+          )}
         </div>
 
         {/* Actions */}

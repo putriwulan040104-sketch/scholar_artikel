@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Camera, ChevronDown, User } from "lucide-react";
 import { getUser, logout, updateProfile, updateUserLocal } from "@/api/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -18,6 +18,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useMemo(() => getUser(), []);
 
   const [profileOpen, setProfileOpen] = useState(false);
@@ -29,6 +30,18 @@ export default function Navbar() {
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
   const userInitial = (name || "U").charAt(0).toUpperCase();
+
+  const pageTitle = useMemo(() => {
+    const pathname = location.pathname;
+
+    if (pathname.startsWith("/dashboard")) return "Dashboard";
+    if (pathname.startsWith("/search")) return "Eksplorasi";
+    if (pathname.startsWith("/citation-graph")) return "Jaringan Sitasi";
+    if (pathname.startsWith("/favorite")) return "Artikel Tersimpan";
+    if (pathname.startsWith("/detail")) return "Detail Publikasi";
+
+    return "Dashboard";
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logout();
@@ -82,10 +95,10 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="flex h-18 bg-primary items-center px-4">
+      <header className="sticky top-0 z-40 flex h-18 shrink-0 items-center border-b border-white/10 bg-primary px-4 shadow-sm">
         <div className="flex items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1 rounded-md p-1 transition hover:bg-white/20 [&_svg]:h-5 [&_svg]:w-5 [&_svg]:text-white " />
-          <h1 className="text-white font-medium">Dashboard</h1>
+          <h1 className="text-white font-medium">{pageTitle}</h1>
         </div>
         <div className="ml-auto">
           <DropdownMenu>

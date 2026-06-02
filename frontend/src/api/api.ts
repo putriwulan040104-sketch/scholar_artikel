@@ -140,7 +140,7 @@ export async function searchArticles(
   yearStart?       : number,
   yearEnd?         : number,
   jenisArtikel?    : string,
-  sumberData?      : string,
+  kategori?        : string,
   jumlahKemunculan?: number | string, 
   jumlahPublikasi? : string,
 ): Promise<SearchResult> {
@@ -150,7 +150,7 @@ export async function searchArticles(
     if (yearStart)        params.append("year_start",        yearStart.toString());
     if (yearEnd)          params.append("year_end",          yearEnd.toString());
     if (jenisArtikel)     params.append("jenis_artikel",     jenisArtikel);
-    if (sumberData)       params.append("sumber_data",       sumberData);
+    if (kategori)         params.append("kategori",          kategori);
     if (jumlahKemunculan !== undefined && jumlahKemunculan !== null && String(jumlahKemunculan).trim() !== "") {
       params.append("jumlah_kemunculan", String(jumlahKemunculan));
     }
@@ -185,6 +185,52 @@ export async function getStats() {
     const data = await res.json();
     if (!res.ok) return { status: "error", message: "Gagal mengambil statistik" };
     return data;
+  } catch {
+    return { status: "error", message: "Gagal koneksi ke server" };
+  }
+}
+
+export interface CategoryOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
+export async function getCategoryOptions(): Promise<{
+  status: string;
+  data?: CategoryOption[];
+  message?: string;
+}> {
+  const candidates = [
+    `${BASE_URL}/categories`,
+    `${BASE_URL}/search/categories`,
+    `${BASE_URL}/publications/categories`,
+  ];
+
+  try {
+    let lastMessage = "Gagal mengambil kategori";
+    for (const url of candidates) {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          lastMessage = `Endpoint tidak ditemukan: ${url}`;
+          continue;
+        }
+        return {
+          status: "error",
+          message: data?.message || `HTTP ${res.status} saat ambil kategori`,
+        };
+      }
+
+      return {
+        status: "success",
+        data: Array.isArray(data?.data) ? data.data : [],
+      };
+    }
+
+    return { status: "error", message: lastMessage };
   } catch {
     return { status: "error", message: "Gagal koneksi ke server" };
   }

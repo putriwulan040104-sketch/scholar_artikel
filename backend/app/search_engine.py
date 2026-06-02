@@ -169,7 +169,7 @@ if len(doc_index) != tfidf_matrix.shape[0]:
         "Rebuild TF-IDF dari dataset Supabase yang sama, atau samakan urutan/datanya."
     )
 
-print(f"✅ Model loaded: {len(doc_index)} dokumen, vocab {tfidf_matrix.shape[1]} term")
+print(f"Model loaded: {len(doc_index)} dokumen, vocab {tfidf_matrix.shape[1]} term")
 
 
 def preprocess_query(query: str) -> str:
@@ -181,14 +181,6 @@ def preprocess_query(query: str) -> str:
     return " ".join(stemming(tokens))
 
 
-SUMBER_MAP = {
-    "scopus": "Scopus",
-    "wos": "Web of Science",
-    "semantic": "Semantic Scholar",
-    "crossref": "CrossRef",
-}
-
-
 def search_articles(
     query,
     top_k=10,
@@ -198,7 +190,7 @@ def search_articles(
     jenis_analisis=None,
     jumlah_publikasi=None,
     jumlah_kemunculan=None,
-    sumber_data=None,
+    kategori=None,
 ):
     processed = preprocess_query(query)
     query_terms = processed.split()
@@ -221,11 +213,10 @@ def search_articles(
     if year_end is not None and str(year_end).strip() != "":
         results = results[results["year"] <= int(year_end)]
 
-    if sumber_data and sumber_data in SUMBER_MAP:
-        label = SUMBER_MAP[sumber_data]
-        mask = results["source"].astype(str).str.lower().str.contains(label.lower(), na=False)
-        if mask.any():
-            results = results[mask]
+    if kategori is not None and str(kategori).strip() != "":
+        selected_category = str(kategori).strip().lower()
+        category_values = results["category"].astype(str).str.strip().str.lower()
+        results = results[category_values == selected_category]
 
     # URL clean
     results["pdf_url"] = results["pdf_url"].apply(_clean_cell)
@@ -311,6 +302,24 @@ def get_stats():
         "per_kategori": per_kategori,
         "top_kemunculan": kemunculan,
     }
+
+
+def get_category_options():
+    if "category" not in doc_index.columns:
+        return []
+
+    category_values = doc_index["category"].dropna().astype(str).str.strip()
+    category_values = category_values[category_values != ""]
+    counts = category_values.value_counts().sort_index()
+
+    return [
+        {
+            "value": str(category),
+            "label": str(category),
+            "count": int(count),
+        }
+        for category, count in counts.items()
+    ]
 
 
 def get_article_by_id(article_id: int):

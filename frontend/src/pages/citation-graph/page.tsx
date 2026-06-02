@@ -73,7 +73,7 @@ export default function CitationGraphPage() {
         let yearStart: number | undefined;
         let yearEnd: number | undefined;
         let jenisArtikel: string | undefined;
-        let sumberData: string | undefined;
+        let kategori: string | undefined;
         let jumlahKemunculan: string | undefined;
         const rawFilters = localStorage.getItem("lastSearchFilters");
         if (rawFilters) {
@@ -81,7 +81,7 @@ export default function CitationGraphPage() {
           if (parsed?.yearStart) yearStart = Number(parsed.yearStart);
           if (parsed?.yearEnd) yearEnd = Number(parsed.yearEnd);
           if (parsed?.jenisArtikel) jenisArtikel = parsed.jenisArtikel;
-          if (parsed?.sumberData) sumberData = parsed.sumberData;
+          if (parsed?.kategori) kategori = parsed.kategori;
           if (parsed?.jumlahKemunculan) {
             jumlahKemunculan = parsed.jumlahKemunculan;
           }
@@ -93,7 +93,7 @@ export default function CitationGraphPage() {
           yearStart,
           yearEnd,
           jenisArtikel,
-          sumberData,
+          kategori,
           jumlahKemunculan,
         );
         if (res.status !== "success" || !Array.isArray(res.data)) {
@@ -188,6 +188,7 @@ export default function CitationGraphPage() {
   });
   const [nodes, setNodes] = useState<CitationGraphNode[]>([]);
   const [edges, setEdges] = useState<CitationGraphEdge[]>([]);
+  const [selectedNodeId, setSelectedNodeId] = useState<number | null>(null);
 
   useEffect(() => {
     const favorites = readFavorites();
@@ -328,12 +329,12 @@ export default function CitationGraphPage() {
 
     const root = svg.append("g");
 
-    svg.call(
-      d3
-        .zoom<SVGSVGElement, unknown>()
-        .scaleExtent([0.35, 3])
-        .on("zoom", (event) => root.attr("transform", event.transform)),
-    );
+    const zoomBehavior = d3
+      .zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.35, 3])
+      .on("zoom", (event) => root.attr("transform", event.transform));
+
+    svg.call(zoomBehavior);
 
     const link = root
       .append("g")
@@ -344,7 +345,7 @@ export default function CitationGraphPage() {
       .join("line")
       .attr("stroke-width", (d) => Math.min(3, 0.8 + d.weight * 0.35));
 
-    const node = root
+    root
       .append("g")
       .attr("stroke", "#ffffff")
       .attr("stroke-width", 1.2)
@@ -353,6 +354,8 @@ export default function CitationGraphPage() {
       .join("circle")
       .attr("r", (d) => getNodeRadius(d.degree))
       .attr("fill", "#1d4ed8")
+      .attr("stroke", "#ffffff")
+      .attr("stroke-width", 1.2)
       .append("title")
       .text((d) => d.title || `Publication ${d.id}`);
 
@@ -423,11 +426,35 @@ export default function CitationGraphPage() {
 
     circles.call(drag);
 
+    if (selectedNodeId !== null) {
+      const selectedNode = graphModel.gNodes.find((n) => n.id === selectedNodeId);
+      if (selectedNode) {
+        const focusNode = () => {
+          const x = selectedNode.x ?? WIDTH / 2;
+          const y = selectedNode.y ?? HEIGHT / 2;
+          const scale = 1.6;
+          const transform = d3.zoomIdentity
+            .translate(WIDTH / 2 - x * scale, HEIGHT / 2 - y * scale)
+            .scale(scale);
+
+          svg
+            .transition()
+            .duration(650)
+            .call(
+              zoomBehavior.transform,
+              transform,
+            );
+        };
+
+        window.setTimeout(focusNode, 350);
+      }
+    }
+
     return () => {
       simulation.stop();
       setTooltip((prev) => ({ ...prev, visible: false }));
     };
-  }, [graphModel]);
+  }, [graphModel, selectedNodeId]);
 
   const rankedNodes = useMemo(
     () =>
@@ -493,6 +520,14 @@ export default function CitationGraphPage() {
     const updated = [...current, payload];
     writeFavorites(updated);
     setFavoriteIds(new Set(updated.map((item) => Number(item.id))));
+  };
+
+  const focusNodeFromList = (node: GraphNode) => {
+    setSelectedNodeId(node.id);
+    graphWrapRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
   };
 
   return (
@@ -584,7 +619,16 @@ export default function CitationGraphPage() {
               return (
                 <div
                   key={n.id}
-                  className="rounded-lg border bg-white px-4 py-3"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => focusNodeFromList(n)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      focusNodeFromList(n);
+                    }
+                  }}
+                  className="rounded-lg border bg-white px-4 py-3 text-left transition hover:border-blue-300 hover:bg-blue-50/40"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-1">
@@ -601,7 +645,10 @@ export default function CitationGraphPage() {
                     </div>
                     <button
                       type="button"
-                      onClick={() => toggleFavorite(n)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        toggleFavorite(n);
+                      }}
                       className="inline-flex h-6 w-6 items-center justify-center rounded-md border text-slate-500 hover:bg-slate-50"
                     >
                       <Star

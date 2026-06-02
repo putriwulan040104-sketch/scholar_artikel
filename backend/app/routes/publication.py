@@ -11,7 +11,7 @@ from app.services.citation.sna_service import (
 )
 from flask import Blueprint, jsonify, request 
 
-from app.search_engine import search_articles, get_stats
+from app.search_engine import search_articles, get_category_options, get_stats
 
 publication_bp = Blueprint(
     "publication", __name__
@@ -121,7 +121,7 @@ def search():
     jenis_analisis    = request.args.get('jenis_analisis')
     jumlah_kemunculan = request.args.get('jumlah_kemunculan')
     jumlah_publikasi  = request.args.get('jumlah_publikasi')
-    sumber_data       = request.args.get('sumber_data')
+    kategori          = request.args.get('kategori')
 
     if not query:
         return jsonify({'status': 'error', 'message': 'Query tidak boleh kosong'}), 400
@@ -136,7 +136,7 @@ def search():
             jenis_analisis    = jenis_analisis,
             jumlah_publikasi  = jumlah_publikasi,
             jumlah_kemunculan = jumlah_kemunculan,
-            sumber_data       = sumber_data,
+            kategori          = kategori,
         )
 
         # ← result sekarang dict, bukan list
@@ -158,6 +158,16 @@ def search():
 @publication_bp.route("/stats", methods=["GET"])
 def stats():
     return jsonify({'status': 'success', 'data': get_stats()})
+
+
+@publication_bp.route("/categories", methods=["GET"])
+def publication_categories():
+    return jsonify({
+        "status": "success",
+        "data": get_category_options(),
+    })
+
+
 from app.search_engine import search_articles, get_stats, get_article_by_id  # ← tambah import
 
 @publication_bp.route("/detail/<int:id>", methods=["GET"])  # ← ganti nama route

@@ -1,4 +1,4 @@
-from app.search_engine import search_articles
+from app.search_engine import search_articles, get_category_options
 from flask import Blueprint, jsonify, request
 import pandas as pd
 import os
@@ -23,6 +23,14 @@ def results():
     df = pd.concat(df_list, ignore_index=True)
     
     return jsonify(df.to_dict(orient="records"))
+
+@search_bp.route("/categories", methods=["GET"])  # /api/search/categories
+def categories():
+    return jsonify({
+        "status": "success",
+        "data": get_category_options(),
+    })
+
 @search_bp.route("", methods=["GET"])  # /api/search
 def search():
     query = request.args.get("query", "").strip()
@@ -35,7 +43,7 @@ def search():
     jenis_artikel = request.args.get("jenis_artikel")
     jenis_analisis = request.args.get("jenis_analisis")
     jumlah_publikasi = request.args.get("jumlah_publikasi")
-    sumber_data = request.args.get("sumber_data")
+    kategori = request.args.get("kategori")
 
     jumlah_kemunculan = (
         request.args.get("jumlah_kemunculan")
@@ -51,7 +59,7 @@ def search():
         jenis_analisis=jenis_analisis,
         jumlah_kemunculan=jumlah_kemunculan,
         jumlah_publikasi=jumlah_publikasi,
-        sumber_data=sumber_data,
+        kategori=kategori,
     )
 
     return jsonify({

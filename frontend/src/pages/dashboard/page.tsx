@@ -22,7 +22,7 @@ import {
 import { SectionCards } from "@/components/section-cards";
 import { DataTable } from "@/components/data-table";
 import { ChartBarLabel } from "@/components/bar-chart";
-import { searchArticles } from "@/api/api";
+import { getCategoryOptions, searchArticles, type CategoryOption } from "@/api/api";
 
 interface Article {
   rank: number;
@@ -49,7 +49,7 @@ interface SearchFilters {
   jenisArtikel: string;
   yearStart: string;
   yearEnd: string;
-  sumberData: string;
+  kategori: string;
   jumlahKemunculan: string;
 }
 
@@ -58,12 +58,6 @@ const JENIS_ARTIKEL_LABEL: Record<string, string> = {
   close: "Close Source",
 };
 
-const SUMBER_DATA_LABEL: Record<string, string> = {
-  scopus: "Scopus",
-  wos: "Web of Science",
-  semantic: "Semantic Scholar",
-  crossref: "CrossRef",
-};
 const TREND_TOP_K = 5000;
 
 function buildChips(filters: SearchFilters): string[] {
@@ -74,8 +68,8 @@ function buildChips(filters: SearchFilters): string[] {
   if (filters.yearStart || filters.yearEnd) {
     chips.push(`Tahun: ${filters.yearStart || "—"} – ${filters.yearEnd || "—"}`);
   }
-  if (filters.sumberData) {
-    chips.push(SUMBER_DATA_LABEL[filters.sumberData] ?? filters.sumberData);
+  if (filters.kategori) {
+    chips.push(filters.kategori);
   }
   if (filters.jumlahKemunculan) {
     chips.push(`Kemunculan ≥ ${filters.jumlahKemunculan}`);
@@ -122,12 +116,13 @@ export default function Page() {
     new URLSearchParams(location.search).get("query") ||
     "";
 
-  const initFilters: SearchFilters = location.state?.filters ?? {
+  const initFilters: SearchFilters = {
     jenisArtikel: "",
     yearStart: "",
     yearEnd: "",
-    sumberData: "",
+    kategori: "",
     jumlahKemunculan: "",
+    ...(location.state?.filters ?? {}),
   };
 
   const [tableData, setTableData] = useState<Article[]>(
@@ -152,16 +147,9 @@ export default function Page() {
   const [jenisArtikel, setJenisArtikel] = useState(initFilters.jenisArtikel);
   const [yearStart, setYearStart] = useState(initFilters.yearStart);
   const [yearEnd, setYearEnd] = useState(initFilters.yearEnd);
-  const [sumberData, setSumberData] = useState(initFilters.sumberData);
+  const [kategori, setKategori] = useState(initFilters.kategori);
   const [jumlahKemunculan, setJumlahKemunculan] = useState(initFilters.jumlahKemunculan);
-
-  if (!location.state?.results && tableData.length === 0) {
-    return (
-      <div className="p-6 text-center text-slate-500">
-        Data tidak ditemukan. Silakan lakukan pencarian ulang.
-      </div>
-    );
-  }
+  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
 
   const chips = buildChips(activeFilters);
   const openFilterEditor = () => {
@@ -169,10 +157,21 @@ export default function Page() {
     setJenisArtikel(activeFilters.jenisArtikel);
     setYearStart(activeFilters.yearStart);
     setYearEnd(activeFilters.yearEnd);
-    setSumberData(activeFilters.sumberData);
+    setKategori(activeFilters.kategori);
     setJumlahKemunculan(activeFilters.jumlahKemunculan);
     setOpen(true);
   };
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const res = await getCategoryOptions();
+      if (res.status === "success" && Array.isArray(res.data)) {
+        setCategoryOptions(res.data);
+      }
+    };
+
+    loadCategories();
+  }, []);
 
   useEffect(() => {
     try {
@@ -220,7 +219,7 @@ export default function Page() {
           yearStartNum,
           yearEndNum,
           activeFilters.jenisArtikel || undefined,
-          activeFilters.sumberData || undefined,
+          activeFilters.kategori || undefined,
           safeMinOcc
         );
 
@@ -253,7 +252,7 @@ export default function Page() {
     activeFilters.jenisArtikel,
     activeFilters.yearStart,
     activeFilters.yearEnd,
-    activeFilters.sumberData,
+    activeFilters.kategori,
     activeFilters.jumlahKemunculan,
     trendData.length,
     cardTotalOccurrences,
@@ -267,7 +266,7 @@ export default function Page() {
     jenisArtikel,
     yearStart,
     yearEnd,
-    sumberData,
+    kategori,
     jumlahKemunculan,
   };
 
@@ -286,7 +285,7 @@ export default function Page() {
       yearStart ? parseInt(yearStart) : undefined,
       yearEnd ? parseInt(yearEnd) : undefined,
       jenisArtikel || undefined,
-      sumberData || undefined,
+      kategori || undefined,
       safeMinOccurrence
     );
 
@@ -325,6 +324,14 @@ export default function Page() {
     setOpen(false);
   }
 };
+
+  if (!location.state?.results && tableData.length === 0) {
+    return (
+      <div className="p-6 text-center text-slate-500">
+        Data tidak ditemukan. Silakan lakukan pencarian ulang.
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-1 flex-col">
@@ -404,16 +411,23 @@ export default function Page() {
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="text-sm">Sumber data</label>
-                        <Select onValueChange={setSumberData} value={sumberData}>
+                        <label className="text-sm">Kategori penelitian</label>
+                        <Select onValueChange={setKategori} value={kategori}>
                           <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Pilih sumber data" />
+                            <SelectValue placeholder="Pilih kategori" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="scopus">Scopus</SelectItem>
-                            <SelectItem value="wos">Web of Science</SelectItem>
-                            <SelectItem value="semantic">Semantic Scholar</SelectItem>
-                            <SelectItem value="crossref">CrossRef</SelectItem>
+                            {categoryOptions.length === 0 ? (
+                              <SelectItem value="category-empty" disabled>
+                                Kategori belum tersedia
+                              </SelectItem>
+                            ) : (
+                              categoryOptions.map((category) => (
+                                <SelectItem key={category.value} value={category.value}>
+                                  {category.label}
+                                </SelectItem>
+                              ))
+                            )}
                           </SelectContent>
                         </Select>
                       </div>
@@ -458,7 +472,7 @@ export default function Page() {
             totalOccurrences={cardTotalOccurrences}
             paperCount={paperCount}
             totalMatched={totalMatched}
-            sumberData={activeFilters.sumberData}
+            kategori={activeFilters.kategori}
           />
 
           <div className="px-4 lg:px-6">
