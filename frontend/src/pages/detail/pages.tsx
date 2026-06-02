@@ -56,12 +56,21 @@ export default function DetailPublicationPage() {
     return [raw];
   };
 
+  const isPdfFlag = (value?: boolean | string) => {
+    if (typeof value === "boolean") return value;
+    return String(value).toLowerCase() === "true";
+  };
+
+  const isPdfUrl = (value?: string | null) => {
+    if (!value) return false;
+    return value.toLowerCase().includes(".pdf");
+  };
+
   useEffect(() => {
     const fetchDetail = async () => {
       try {
         setLoading(true);
 
-        // Ambil similarity_score dari localStorage favorites dulu
         const stored = localStorage.getItem("favorites");
         const favorites: FavoriteItem[] = stored ? JSON.parse(stored) : [];
         const fromFavorite = favorites.find((f) => f.id === Number(id));
@@ -71,7 +80,6 @@ export default function DetailPublicationPage() {
         const result = await response.json();
 
         if (result.status === "success") {
-          // Gunakan score dari favorite jika ada, fallback ke backend
           setArticle({
             ...result.data,
             similarity_score: savedScore || result.data.similarity_score,
@@ -106,9 +114,20 @@ export default function DetailPublicationPage() {
     }
   };
 
+  const pdfLink =
+    article?.pdf_url ||
+    (isPdfFlag(article?.is_pdf) ? article?.access_url || article?.url : null) ||
+    (isPdfUrl(article?.access_url) ? article?.access_url : null) ||
+    (isPdfUrl(article?.url) ? article?.url : null);
+
+  const sourceLink = !pdfLink ? article?.url || article?.access_url : null;
+
   const handleOpenPDF = () => {
-    const link = article?.pdf_url || article?.access_url || article?.url;
-    if (link) window.open(link, "_blank");
+    if (pdfLink) window.open(pdfLink, "_blank");
+  };
+
+  const handleOpenSource = () => {
+    if (sourceLink) window.open(sourceLink, "_blank");
   };
 
   if (loading) {
@@ -129,7 +148,6 @@ export default function DetailPublicationPage() {
 
   return (
     <div className="min-h-screen px-6 py-8">
-
       {/* Back */}
       <Button
         variant="ghost"
@@ -145,15 +163,14 @@ export default function DetailPublicationPage() {
 
       {/* Card */}
       <Card className="rounded-2xl border bg-white shadow-sm p-8 max-w-5xl">
-
         {/* Header */}
         <div className="flex items-start justify-between gap-6">
-
           {/* LEFT - Title, Authors, Journal */}
           <div className="space-y-4 flex-1">
             <h2 className="text-3xl font-bold leading-tight">
               {article.title}
             </h2>
+
             <div className="space-y-1 text-[15px]">
               <p>
                 <span className="font-semibold">Authors:</span>{" "}
@@ -166,11 +183,8 @@ export default function DetailPublicationPage() {
             </div>
           </div>
 
-          {/* RIGHT - Score atas, Year bawah */}
+          {/* RIGHT - Year */}
           <div className="flex flex-col items-end gap-3 shrink-0">
-            <span className="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap">
-              {article.similarity_score?.toFixed(4) ?? "—"}
-            </span>
             <div className="text-sm text-muted-foreground">
               Year:{" "}
               <span className="font-semibold text-black">
@@ -178,7 +192,6 @@ export default function DetailPublicationPage() {
               </span>
             </div>
           </div>
-
         </div>
 
         {/* Abstract */}
@@ -191,7 +204,6 @@ export default function DetailPublicationPage() {
 
         {/* Actions */}
         <div className="flex items-center justify-end gap-3 mt-10">
-
           {/* Favorite */}
           <Button
             variant={isFavorite ? "default" : "outline"}
@@ -202,29 +214,28 @@ export default function DetailPublicationPage() {
             {isFavorite ? "Tersimpan" : "Tambah Favorit"}
           </Button>
 
-          {/* PDF */}
-          <Button
-            onClick={handleOpenPDF}
-            className="bg-[#5d9ce2] hover:bg-[#4d8ed8] rounded-xl px-8 gap-2"
-          >
-            <FileText className="w-4 h-4" />
-            PDF
-          </Button>
+          {/* PDF hanya muncul jika artikel bisa di-download */}
+          {pdfLink && (
+            <Button
+              onClick={handleOpenPDF}
+              className="bg-[#5d9ce2] hover:bg-[#4d8ed8] rounded-xl px-8 gap-2"
+            >
+              <FileText className="w-4 h-4" />
+              PDF
+            </Button>
+          )}
 
-          {/* Source */}
-          {(article.url || article.access_url) && (
+          {/* Source hanya muncul jika PDF tidak tersedia */}
+          {sourceLink && (
             <Button
               variant="outline"
-              onClick={() =>
-                window.open(article.url || article.access_url || "", "_blank")
-              }
+              onClick={handleOpenSource}
               className="rounded-xl gap-2"
             >
               <ExternalLink className="w-4 h-4" />
               Source
             </Button>
           )}
-
         </div>
       </Card>
     </div>
