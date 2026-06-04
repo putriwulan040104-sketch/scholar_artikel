@@ -11,7 +11,7 @@ def create_app():
     CORS(app)
 
     # register semua blueprint di sini
-    app.register_blueprint(auth_bp, url_prefix="/api")
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(publication_bp, url_prefix="/api")
     app.register_blueprint(search_bp, url_prefix="/api")
     app.register_blueprint(request_bp, url_prefix="/api")

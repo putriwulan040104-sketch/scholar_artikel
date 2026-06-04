@@ -471,21 +471,16 @@ export default function CitationGraphPage() {
     1,
     Math.ceil(rankedNodes.length / LIST_PAGE_SIZE),
   );
-
-  useEffect(() => {
-    if (listPage > totalListPages) {
-      setListPage(totalListPages);
-    }
-  }, [listPage, totalListPages]);
+  const clampedListPage = Math.min(listPage, totalListPages);
 
   const pagedNodes = useMemo(() => {
-    const start = (listPage - 1) * LIST_PAGE_SIZE;
+    const start = (clampedListPage - 1) * LIST_PAGE_SIZE;
     return rankedNodes.slice(start, start + LIST_PAGE_SIZE);
-  }, [rankedNodes, listPage]);
+  }, [rankedNodes, clampedListPage]);
 
   const pageItems = useMemo(
-    () => buildPageItems(listPage, totalListPages),
-    [listPage, totalListPages],
+    () => buildPageItems(clampedListPage, totalListPages),
+    [clampedListPage, totalListPages],
   );
 
   const toggleFavorite = (node: GraphNode) => {
@@ -682,7 +677,7 @@ export default function CitationGraphPage() {
             <button
               type="button"
               onClick={() => setListPage((p) => Math.max(1, p - 1))}
-              disabled={listPage <= 1}
+              disabled={clampedListPage <= 1}
               className="inline-flex h-8 w-8 items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4" />
@@ -702,7 +697,7 @@ export default function CitationGraphPage() {
                   type="button"
                   onClick={() => setListPage(Number(item))}
                   className={`inline-flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-sm ${
-                    listPage === item
+                    clampedListPage === item
                       ? "bg-blue-500 text-white border-blue-500"
                       : "bg-white hover:bg-slate-50"
                   }`}
@@ -717,7 +712,7 @@ export default function CitationGraphPage() {
               onClick={() =>
                 setListPage((p) => Math.min(totalListPages, p + 1))
               }
-              disabled={listPage >= totalListPages}
+              disabled={clampedListPage >= totalListPages}
               className="inline-flex h-8 w-8 items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50"
             >
               <ChevronRight className="h-4 w-4" />
