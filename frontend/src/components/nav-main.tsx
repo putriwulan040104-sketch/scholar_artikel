@@ -4,7 +4,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { GalleryVerticalEnd } from "lucide-react";
+import { LogoIcon } from "@/components/logo";
 import { Link, useLocation } from "react-router-dom";
 
 export function NavMain({
@@ -25,14 +25,17 @@ export function NavMain({
 
   return (
     <>
-      <SidebarMenu className="bg-primary py-5 px-4">
-        <SidebarMenuItem className="mr-4">
-          <a href="/search" className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center -ml-1">
-              <GalleryVerticalEnd className="size-6 text-white" />
+      <SidebarMenu className="bg-primary px-4 py-5 group-data-[collapsible=icon]:px-2">
+        <SidebarMenuItem className="min-w-0">
+          <a
+            href="/search"
+            className="flex min-w-0 items-center gap-3 group-data-[collapsible=icon]:justify-center"
+          >
+            <div className="flex h-8 w-10 shrink-0 items-center justify-center group-data-[collapsible=icon]:w-8">
+              <LogoIcon className="h-8 w-8 brightness-0 invert" />
             </div>
-            <div className="flex flex-colleading-none">
-              <span className="text-white text-lg font-semibold">PaperCitation</span>
+            <div className="min-w-0 group-data-[collapsible=icon]:hidden">
+              <span className="truncate text-lg font-semibold text-white">PaperCitation</span>
             </div>
           </a>
         </SidebarMenuItem>

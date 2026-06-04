@@ -1,115 +1,117 @@
-import { Logo } from '@/components/logo'
-import { Menu, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import React from 'react'
-import { cn } from '@/lib/utils'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Logo } from "@/components/logo";
 
 const menuItems = [
-    { name: 'Beranda', href: '#link' },
-    { name: 'Alur Kerja', href: '#link' },
-    { name: 'Tentang', href: '#link' },
-]
+  { name: "Beranda", href: "#beranda" },
+  { name: "Alur kerja", href: "#demo" },
+  { name: "Tentang", href: "#tentang" },
+];
+
+function PaperCitationLogo({ className }: { className?: string }) {
+  return <Logo className={className} />;
+}
 
 export const HeroHeader = () => {
-    const [menuState, setMenuState] = React.useState(false)
-    const [isScrolled, setIsScrolled] = React.useState(false)
+  const [menuState, setMenuState] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
 
-    React.useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50)
-        }
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
-    return (
-        <header>
-            <nav
-                data-state={menuState && 'active'}
-                className={cn('fixed z-20 w-full transition-all duration-300', isScrolled && 'bg-background/75 border-b border-black/5 backdrop-blur-lg')}>
-                <div className="mx-auto max-w-5xl px-6">
-                    <div className="relative flex flex-wrap items-center justify-between gap-6 py-6 lg:gap-0">
-                        <div className="flex w-full justify-between gap-6 lg:w-auto">
-                            <Link
-                                to="/"
-                                aria-label="home"
-                                className="flex items-center space-x-2">
-                                <Logo />
-                            </Link>
+  React.useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 24);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-                            <button
-                                onClick={() => setMenuState(!menuState)}
-                                aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
-                                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
-                                <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
-                                <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
-                            </button>
-                        </div>
+  return (
+    <header>
+      <nav
+        data-state={menuState && "active"}
+        className={cn(
+          "fixed top-0 z-50 w-full border-b border-transparent bg-white/90 transition-all duration-300",
+          isScrolled && "border-slate-100 shadow-sm backdrop-blur",
+        )}
+      >
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex min-h-[76px] flex-wrap items-center justify-between gap-4">
+            <Link to="/" aria-label="PaperCitation beranda">
+              <PaperCitationLogo />
+            </Link>
 
-                        <div className="absolute inset-0 m-auto hidden size-fit lg:block">
-                            <ul className="flex gap-1">
-                                {menuItems.map((item, index) => (
-                                    <li key={index}>
-                                        <Button
-                                            asChild
-                                            variant="ghost"
-                                            size="sm">
-                                            <Link
-                                                to={item.href}
-                                                className="text-base">
-                                                <span>{item.name}</span>
-                                            </Link>
-                                        </Button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+            <button
+              onClick={() => setMenuState(!menuState)}
+              aria-label={menuState ? "Tutup menu" : "Buka menu"}
+              className="relative z-20 -mr-2 rounded-md p-2 lg:hidden"
+            >
+              <Menu className="size-6 data-[state=active]:hidden" />
+              <X className={cn("absolute inset-0 m-auto size-6", !menuState && "hidden")} />
+            </button>
 
-                        <div className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
-                            <div className="lg:hidden">
-                                <ul className="space-y-6 text-base">
-                                    {menuItems.map((item, index) => (
-                                        <li key={index}>
-                                            <Link
-                                                to={item.href}
-                                                className="text-muted-foreground hover:text-accent-foreground block duration-150">
-                                                <span>{item.name}</span>
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                <Button
-                                    asChild
-                                    variant="ghost"
-                                    size="sm"
-                                    className={cn(isScrolled && 'lg:hidden')}>
-                                    <Link to="/login">
-                                        <span>Masuk</span>
-                                    </Link>
-                                </Button>
-                                <Button
-                                    asChild
-                                    size="sm"
-                                    className={cn(isScrolled && 'lg:hidden')}>
-                                    <Link to="/register">
-                                        <span>Daftar</span>
-                                    </Link>
-                                </Button>
-                                <Button
-                                    asChild
-                                    size="sm"
-                                    className={cn(isScrolled ? 'lg:inline-flex' : 'hidden')}>
-                                    <Link to="/login">
-                                        <span>Mulai Sekarang</span>
-                                    </Link>
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
+            <div className="hidden items-center gap-10 text-sm font-semibold text-slate-900 lg:flex">
+              {menuItems.map((item, index) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "border-b-2 border-transparent py-2 transition hover:border-primary hover:text-primary",
+                    index === 0 && "border-primary text-primary",
+                  )}
+                >
+                  {item.name}
+                </a>
+              ))}
+            </div>
+
+            <div className="hidden items-center gap-3 lg:flex">
+              <Link
+                to="/login"
+                className="rounded-lg border border-primary px-5 py-2 text-sm font-bold text-primary transition hover:bg-primary/10"
+              >
+                Masuk
+              </Link>
+              <Link
+                to="/register"
+                className="rounded-lg bg-primary px-5 py-2 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-primary/90"
+              >
+                Daftar
+              </Link>
+            </div>
+
+            {menuState && (
+              <div className="w-full rounded-2xl border bg-white p-4 shadow-xl lg:hidden">
+                <div className="grid gap-2">
+                  {menuItems.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setMenuState(false)}
+                      className="rounded-lg px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-primary/10 hover:text-primary"
+                    >
+                      {item.name}
+                    </a>
+                  ))}
                 </div>
-            </nav>
-        </header>
-    )
-}
+                <div className="mt-4 grid grid-cols-2 gap-3">
+                  <Link
+                    to="/login"
+                    className="rounded-lg border border-primary px-4 py-2 text-center text-sm font-bold text-primary"
+                  >
+                    Masuk
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="rounded-lg bg-primary px-4 py-2 text-center text-sm font-bold text-primary-foreground"
+                  >
+                    Daftar
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
+};
