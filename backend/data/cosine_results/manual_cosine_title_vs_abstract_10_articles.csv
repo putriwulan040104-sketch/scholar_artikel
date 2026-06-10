@@ -1,0 +1,11 @@
+article_id,title,dot_product,norm_abstract,norm_title,cosine_similarity,interpretation,overlap_terms
+1,Machine learning for microbiologists,0.11509356856193916,0.3655384048502378,0.8049635877572837,0.3911486250103251,Relevan Sedang,"learning, machine, microbiologists"
+2,What is machine learning?,0.0220857637000932,0.34886252082703884,0.5433124962336084,0.11652212942128384,Rendah,"learning, machine"
+3,Amnesiac machine learning,0.008135732690762468,0.38289781316858834,0.8049635877572837,0.026395965328952477,Rendah,"learning, machine"
+4,Designing nanotheranostics with machine learning,0.006711979469879038,0.4005513525256635,0.8339078351158286,0.02009436851207124,Rendah,"learning, machine"
+5,A guide to machine learning for biologists,0.015792892870303617,0.4352859985899502,0.7838884406651763,0.0462841967638641,Rendah,"learning, machine"
+6,Machine learning and deep learning: C. Janiesch et al.,0.05370684588415756,0.36342552314587334,0.540767193720179,0.2732775067253249,Rendah,"deep, learning, machine"
+7,Financial machine learning,0.08287556103833633,0.36894580520557835,0.6552015341254774,0.34283803629352655,Relevan Sedang,"financial, learning, machine"
+8,Machine learning foundations,0.031273731102883756,0.42220091335926113,0.8049635877572837,0.09202043746191109,Rendah,"learning, machine"
+9,Open-environment machine learning,0.08010758932397047,0.39977855474955587,0.5721283709904613,0.3502359197977602,Relevan Sedang,"learning, machine, open"
+10,Using machine learning to detect misstatements,0.01695657971337862,0.3793082744235811,0.6165482254322199,0.07250682480092788,Rendah,"learning, machine"

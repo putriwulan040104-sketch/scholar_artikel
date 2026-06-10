@@ -1,63 +1,112 @@
 Judul Artikel,Jumlah Kemunculan
-A new mobile application of agricultural pests recognition using deep learning i,4
-Human monkeypox classification from skin lesion images with deep pre-trained net,3
-Deep learning methods for accurate skin cancer recognition and mobile applicatio,3
-Towards a new learning experience through a mobile application with augmented re,3
-User experience analysis on mobile application design using user experience ques,3
-A systematic literature review on the cyber security,3
-Analysis of cyber security knowledge gaps based on cyber security body of knowle,3
-The difference between cyber security vs information security,3
-"A comprehensive review of cyber security vulnerabilities, threats, attacks, and ",3
-Defining cyber security and cyber security risk within a multidisciplinary conte,3
+A new mobile application of agricultural pests recognition using deep learning in cloud computing system,5
+Early web application attack detection using network traffic analysis,5
+DeepCrop: Deep learning-based crop disease prediction with web application,4
+Deep learning methods for accurate skin cancer recognition and mobile application,4
+A systematic literature review on the cyber security,4
+"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",4
+A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,4
+Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,4
+A multi-objective active learning platform and web app for reaction optimization,4
+Machine learning based diabetes prediction and development of smart web application,4
+"Machine learning: Algorithms, real-world applications and research directions",3
+Amnesiac machine learning,3
+Securing web applications against XSS and SQLi attacks using a novel deep learning approach,3
+Artificial intelligence in the cyber security environment,3
+Open Lab: A web application for running and sharing online experiments,3
+Towards a new learning experience through a mobile application with augmented reality in engineering education,3
+CLC-Pred 2.0: a freely available web application for in silico prediction of human cell line cytotoxicity and molecular mechanisms of action for druglike …,3
+From prompt injections to sql injection attacks: How protected is your llm-integrated web application?,3
+Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,3
+ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application,3
+Performance of Area under the Concentration-Time Curve Estimations of Vancomycin with Limited Sampling by a Newly Developed Web Application: Oda et al.,3
+User interface design & evaluation of mobile applications,3
+A survey on web application penetration testing,3
+Artificial intelligence in cyber security,3
+Analysis of cyber security knowledge gaps based on cyber security body of knowledge,3
 The role of cyber security in a digitalizing economy: a development perspective,3
-Machine learning and deep learning: A review of methods and applications,2
+Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,3
+The difference between cyber security vs information security,3
+A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments,3
+Cyber resilience and cyber security issues of intelligent cloud computing systems,3
+Cyber security and the Leviathan,3
+A comprehensive survey of recent internet measurement techniques for cyber security,3
+"Uniting cyber security and machine learning: Advantages, challenges and future research",3
 Machine learning and deep learning: C. Janiesch et al.,2
+When machine learning meets privacy: A survey and outlook,2
 An overview of machine learning classification techniques,2
+"Impact of machine learning on management, healthcare and agriculture",2
 Financial applications of machine learning: A literature review,2
+Scientific machine learning benchmarks,2
 Machine learning in chemical engineering: A perspective,2
-Llms in web development: Evaluating llm-generated php code unveiling vulnerabili,2
-Cognitive disabilities and web accessibility: a survey into the Brazilian web de,2
-Cyber security and the Leviathan,2
-Artificial intelligence in the cyber security environment,2
-"Cyber security techniques, architectures, and design",2
-Artificial intelligence in cyber security,2
-User interface design & evaluation of mobile applications,2
-Consumer adoption of the Uber mobile application: Insights from diffusion of inn,2
-Design and implementation of smart hydroponics farming using IoT‐Based AI contro,2
+Machine learning and deep learning applications-a vision,2
+Machine learning foundations,2
+Machine learning for chemical reactions,2
+What is machine learning?,2
+Front-end deep learning web apps development and deployment: a review,2
+Machine learning at the network edge: A survey,2
+Deep reinforcement learning for cyber security,2
 Consistency analysis of data-usage purposes in mobile apps,2
-When machine learning meets privacy: A survey and outlook,1
-Scientific machine learning benchmarks,1
-Machine learning foundations,1
+Enhancing user engagement: The role of gamification in mobile apps,2
+A geometric morphometric method and web application for identifying honey bee species (Apis spp.) using only forewings,2
+Meta‐analytic structural equation modeling made easy: A tutorial and web application for one‐stage MASEM,2
+… detection and quantification of floating marine macro-litter in aerial images: Introducing a novel deep learning approach connected to a web application in R,2
+"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations",2
+Development of interactive biological web applications with R/Shiny,2
+A comparative study of web application security parameters: Current trends and future directions,2
+RETRACTED ARTICLE: Analysis of security issues of cloud-based web applications,2
+A systematic literature review on the characteristics and effectiveness of web application vulnerability scanners,2
+Signature-based and machine-learning-based web application firewalls: A short survey,2
+"ATON: An open-source framework for creating immersive, collaborative and liquid web-apps for cultural heritage",2
+Toward an SDN-based web application firewall: Defending against SQL injection attacks,2
+BEST: a web application for comprehensive biomarker exploration on large-scale data in solid tumors,2
+The recent trends in cyber security: A review,2
+"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.",2
+"Cyber security techniques, architectures, and design",2
+Research on machine learning with algorithms and development,1
 Machine learning and applications in microbiology,1
 Using machine learning to detect misstatements,1
-Machine learning and deep learning applications-a vision,1
-Machine learning at the network edge: A survey,1
-What is machine learning?,1
-Accessible web development: Opportunities to improve the education and practice ,1
-AI AND WEB DEVELOPMENT,1
-The rise of disappearing frameworks in web development,1
-Python for web development,1
-Machine learning for web development: A fusion,1
-Current web development technologies: a comparative review,1
-Web Developer and Tech Preneurs,1
-Program Pelatihan Web Development untuk Komunitas Maya,1
-Web accessibility and web developer attitudes towards accessibility in Mozambiqu,1
-An empirical study of web services topics in web developer discussions on stack ,1
-Responsive web design and its impact on user experience,1
-Progressive web apps (PWAs): Enhancing user experience through modern web develo,1
-Artificial intelligence-based cyber security in the context of industry 4.0—a su,1
-"Review on cyber-physical and cyber-security system in smart grid: Standards, pro",1
-Evolution of the cyber security threat: an overview of the scale of cyber threat,1
-"Artificial intelligence in cyber security: Research advances, challenges, and op",1
-The role of mobile application acceptance in shaping e-customer service,1
-Enhancing English vocabulary learning through mobile apps: A new paradigm in edu,1
-Review on study and usage of mern stack for web development,1
-Cyber risk and cybersecurity: a systematic review of data availability,1
+A survey of human-in-the-loop for machine learning,1
+Human-in-the-loop machine learning: a state of the art,1
+A survey on dataset quality in machine learning,1
+Causality for machine learning,1
+Machine learning for microbiologists,1
+A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture,1
 Evolutionary machine learning: A survey,1
-Text mining approach to explore determinants of grocery mobile app satisfaction ,1
-"Machine learning: Algorithms, real-world applications and research directions",1
+Text mining approach to explore determinants of grocery mobile app satisfaction using online customer reviews,1
+Cyber risk and cybersecurity: a systematic review of data availability,1
+SuperPlotsOfData—a web app for the transparent display and quantitative comparison of continuous data from different conditions,1
+iDEP web application for RNA-seq data analysis,1
+MiBiOmics: an interactive web application for multi-omics data exploration and integration,1
 Machine learning: new ideas and tools in environmental science and engineering,1
 Machine learning in manufacturing and industry 4.0 applications,1
 Machine Learning for industrial applications: A comprehensive literature review,1
-Amnesiac machine learning,1
-The role of APIs in modern web development: Enhancing system integrations,1
+"Cyber security awareness, knowledge and behavior: A comparative study",1
+Machine learning in environmental research: common pitfalls and best practices,1
+Open-environment machine learning,1
+Applying machine learning to study fluid mechanics,1
+Splendor: Static detection of stored xss in modern web applications,1
+Web application development with streamlit,1
+Artificial intelligence-based cyber security in the context of industry 4.0—a survey,1
+Artificial intelligence predictions in cyber security: Analysis and early detection of cyber attacks,1
+Evaluating the cyber security readiness of organizations and its influence on performance,1
+"A comprehensive review on cyber-attacks in power systems: Impact analysis, detection, and cyber security",1
+The role of cyber security in advancing sustainable digitalization: Opportunities and challenges,1
+"Cyber security: State of the art, challenges and future directions",1
+Meta-DiSc 2.0: a web application for meta-analysis of diagnostic test accuracy data,1
+OMLT: Optimization & machine learning toolkit,1
+Cyber security threats on digital banking,1
+Learning from cyber security incidents: A systematic review and future research agenda,1
+Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,1
+Augmented reality technology adoption: Case of a mobile application in Turkey,1
+A study of mobile app use for teaching and research in higher education,1
+The role of mobile application acceptance in shaping e-customer service,1
+What works best to engage participants in mobile app interventions and e-health: a scoping review,1
+Customers' perceived value and dining choice through mobile apps in Indonesia,1
+A survey of performance optimization for mobile applications,1
+Determinants of mobile apps adoption among young adults: theoretical extension and analysis,1
+The impact of mobile application features on children's language and literacy learning: a systematic review,1
+Features and Functionalities of Medical Mobile Applications for the Endemic Phase of COVID‐19: Review and Content Analysis,1
+Mobile apps for SME business sustainability during COVID-19 and onwards,1
+Design guidelines of mobile apps for older adults: systematic review and thematic analysis,1
+Faster segment anything: Towards lightweight sam for mobile applications,1

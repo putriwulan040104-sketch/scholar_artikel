@@ -2,8 +2,8 @@ import { BarChart3, Bookmark, FileText, Network, Search } from "lucide-react";
 
 const demoSteps = [
   {
-    title: "Masukkan Kata Kunci",
-    description: "Ketik topik atau kata kunci penelitian yang ingin Anda cari.",
+    title: "Masukkan Topik Penelitian",
+    description: "Ketik topik penelitian yang ingin Anda cari.",
     icon: Search,
     accent: "bg-primary",
     preview: "search",
