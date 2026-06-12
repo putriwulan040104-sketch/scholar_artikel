@@ -20,6 +20,7 @@ import {
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { login } from "@/api/api";
+import { PasswordInput } from "@/components/password-input";
 
 export function LoginForm({
   className,
@@ -73,9 +74,8 @@ export function LoginForm({
               </Field>
               <Field>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input
+                <PasswordInput
                   id="password"
-                  type="password"
                   placeholder="password"
                   value={password}
                   onChange={(e) => {

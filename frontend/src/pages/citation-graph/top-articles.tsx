@@ -1,0 +1,173 @@
+import { useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import type { GraphModel, GraphNode } from "./citation-graph.types";
+import { buildPageItems, formatAuthors } from "./citation-graph.utils";
+
+const LIST_PAGE_SIZE = 5;
+
+interface TopArticlesProps {
+  graphModel: GraphModel;
+  favoriteIds: Set<number>;
+  onFocusNode: (node: GraphNode) => void;
+  onToggleFavorite: (node: GraphNode) => void;
+}
+
+export default function TopArticles({
+  graphModel,
+  favoriteIds,
+  onFocusNode,
+  onToggleFavorite,
+}: TopArticlesProps) {
+  const [page, setPage] = useState(1);
+
+  const rankedNodes = useMemo(
+    () =>
+      [...graphModel.gNodes].sort((left, right) => {
+        const leftCitations = graphModel.inDegreeById.get(left.id) || 0;
+        const rightCitations = graphModel.inDegreeById.get(right.id) || 0;
+        if (rightCitations !== leftCitations) {
+          return rightCitations - leftCitations;
+        }
+        return right.degree - left.degree;
+      }),
+    [graphModel],
+  );
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(rankedNodes.length / LIST_PAGE_SIZE),
+  );
+  const activePage = Math.min(page, totalPages);
+  const pagedNodes = useMemo(() => {
+    const start = (activePage - 1) * LIST_PAGE_SIZE;
+    return rankedNodes.slice(start, start + LIST_PAGE_SIZE);
+  }, [activePage, rankedNodes]);
+  const pageItems = useMemo(
+    () => buildPageItems(activePage, totalPages),
+    [activePage, totalPages],
+  );
+
+  return (
+    <Card className="p-4">
+      <h2 className="mb-4 text-2xl font-semibold">Artikel Teratas</h2>
+      {!pagedNodes.length ? (
+        <p className="text-sm text-muted-foreground">Belum ada data.</p>
+      ) : (
+        <div className="space-y-3">
+          {pagedNodes.map((node) => {
+            const citationCount =
+              graphModel.inDegreeById.get(node.id) || 0;
+            const referenceCount = Number(node.referenceCount || 0);
+
+            return (
+              <div
+                key={node.id}
+                role="button"
+                tabIndex={0}
+                onClick={() => onFocusNode(node)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    onFocusNode(node);
+                  }
+                }}
+                className="rounded-lg border bg-white px-4 py-3 text-left transition hover:border-blue-300 hover:bg-blue-50/40"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1">
+                    <p className="line-clamp-2 text-base font-semibold">
+                      {node.title || `Publication ${node.id}`}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Authors: {formatAuthors(node.authors)} | Year:{" "}
+                      {node.year ?? "-"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      DOI: {node.doi || "-"}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onToggleFavorite(node);
+                    }}
+                    className="inline-flex h-6 w-6 items-center justify-center rounded-md border text-slate-500 hover:bg-slate-50"
+                  >
+                    <Star
+                      className={`h-3.5 w-3.5 ${
+                        favoriteIds.has(node.id)
+                          ? "fill-yellow-400 text-yellow-400"
+                          : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-indigo-600">
+                  <span className="inline-flex items-center gap-1">
+                    <Quote className="h-3 w-3" />
+                    {citationCount} Sitasi
+                  </span>
+                  <span className="inline-flex items-center gap-1">
+                    <Quote className="h-3 w-3" />
+                    {referenceCount} Referensi
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
+          <button
+            type="button"
+            onClick={() => setPage((current) => Math.max(1, current - 1))}
+            disabled={activePage <= 1}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+
+          {pageItems.map((item, index) =>
+            item === "..." ? (
+              <span
+                key={`ellipsis-${index}`}
+                className="px-1 text-sm text-muted-foreground"
+              >
+                ...
+              </span>
+            ) : (
+              <button
+                key={`page-${item}`}
+                type="button"
+                onClick={() => setPage(Number(item))}
+                className={`inline-flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-sm ${
+                  activePage === item
+                    ? "border-blue-500 bg-blue-500 text-white"
+                    : "bg-white hover:bg-slate-50"
+                }`}
+              >
+                {item}
+              </button>
+            ),
+          )}
+
+          <button
+            type="button"
+            onClick={() =>
+              setPage((current) => Math.min(totalPages, current + 1))
+            }
+            disabled={activePage >= totalPages}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md border disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+    </Card>
+  );
+}

@@ -1,5 +1,10 @@
 from flask import Blueprint, request, jsonify
-from app.services.auth import register_user, login_user, update_profile_user
+from app.services.auth import (
+  register_user,
+  login_user,
+  logout_user,
+  update_profile_user,
+)
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -44,6 +49,23 @@ def login():
 
   if result["status"] == "error":
     return jsonify(result), 401
+
+  return jsonify(result), 200
+
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+  auth_header = request.headers.get("Authorization", "")
+  if not auth_header.startswith("Bearer "):
+    return jsonify({
+      "status": "error",
+      "message": "Token tidak ditemukan"
+    }), 401
+
+  token = auth_header.replace("Bearer ", "", 1).strip()
+  result = logout_user(token)
+  if result["status"] == "error":
+    return jsonify(result), 400
 
   return jsonify(result), 200
 

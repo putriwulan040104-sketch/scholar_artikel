@@ -17,6 +17,24 @@ export type GraphLink = d3.SimulationLinkDatum<GraphNode> & {
   weight: number;
 };
 
+export type GraphModel = {
+  gNodes: GraphNode[];
+  gLinks: GraphLink[];
+  degreeById: Map<number, number>;
+  inDegreeById: Map<number, number>;
+  outDegreeById: Map<number, number>;
+};
+
+export type GraphRelation = {
+  node: GraphNode;
+  weight: number;
+};
+
+export type SelectedRelations = {
+  outgoing: GraphRelation[];
+  incoming: GraphRelation[];
+};
+
 export type StoredFilters = {
   yearStart?: string;
   yearEnd?: string;

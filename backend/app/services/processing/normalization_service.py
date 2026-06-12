@@ -5,32 +5,32 @@ from app.utils.cleaner import (
 )
 
 # NORMALISASI TITLE
-def normalize_title(title):
-    if not title:
-        return None
+# def normalize_title(title):
+#     if not title:
+#         return None
 
-    title = clean_text(title)
-    title = lowercase_text(title)
+#     title = clean_text(title)
+#     title = lowercase_text(title)
 
-    return title.title()
+#     return title.title()
 
 # NORMALISASI AUTHORS
-def normalize_authors(authors):
-    if not authors:
-        return []
-    if isinstance(authors, str):
-        authors = [authors]
+# def normalize_authors(authors):
+#     if not authors:
+#         return []
+#     if isinstance(authors, str):
+#         authors = [authors]
 
-    normalized = []
+#     normalized = []
 
-    for author in authors:
-        author = clean_text(author)
-        author = re.sub(r"\d+", "", author)
-        author = re.sub(r"[^\w\s.,]", "", author)
-        author = lowercase_text(author)
-        normalized.append(author.title())
+#     for author in authors:
+#         author = clean_text(author)
+#         author = re.sub(r"\d+", "", author)
+#         author = re.sub(r"[^\w\s.,]", "", author)
+#         author = lowercase_text(author)
+#         normalized.append(author.title())
 
-    return list(set(normalized))
+#     return list(set(normalized))
 
 # NORMALISASI KEYWORDS
 def normalize_keywords(keywords):

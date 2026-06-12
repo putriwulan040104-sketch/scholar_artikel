@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "@/api/api";
 import { useState } from "react";
+import { PasswordInput } from "@/components/password-input";
 
 export function SignupForm({
   className,
@@ -83,9 +84,8 @@ export function SignupForm({
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <Input
+                    <PasswordInput
                       id="password"
-                      type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
@@ -95,7 +95,7 @@ export function SignupForm({
                     <FieldLabel htmlFor="confirm-password">
                       Konfirmasi Password
                     </FieldLabel>
-                    <Input id="confirm-password" type="password" required />
+                    <PasswordInput id="confirm-password" required />
                   </Field>
                 </Field>
               </Field>

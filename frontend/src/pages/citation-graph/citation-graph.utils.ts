@@ -1,4 +1,4 @@
-import type { FavoriteItem } from "./citation-graph.types";
+import type { FavoriteItem, GraphLink } from "./citation-graph.types";
 
 const NODE_RADIUS_MIN = 5;
 const NODE_RADIUS_MAX = 18;
@@ -8,7 +8,7 @@ export function readFavorites(): FavoriteItem[] {
     const raw = localStorage.getItem("favorites");
     const parsed = raw ? JSON.parse(raw) : [];
     return Array.isArray(parsed) ? parsed : [];
-  } catch (_error) {
+  } catch {
     return [];
   }
 }
@@ -36,7 +36,9 @@ export function formatAuthors(raw: unknown): string {
           .filter((v) => v);
         return names.length ? names.join(", ") : s;
       }
-    } catch (_error) {}
+    } catch {
+      return s;
+    }
     return s;
   }
 
@@ -67,4 +69,17 @@ export function getNodeRadius(degree: number): number {
   const safeDegree = Number.isFinite(degree) ? Math.max(0, degree) : 0;
   const r = NODE_RADIUS_MIN + Math.sqrt(safeDegree) * 2.8;
   return Math.max(NODE_RADIUS_MIN, Math.min(NODE_RADIUS_MAX, r));
+}
+
+export function getLinkNodeId(
+  value: GraphLink["source"] | GraphLink["target"],
+) {
+  return typeof value === "object" ? Number(value.id) : Number(value);
+}
+
+export function shortTitle(title?: string | null, maxLength = 34) {
+  const value = title || "Artikel tanpa judul";
+  return value.length > maxLength
+    ? `${value.slice(0, maxLength - 1)}…`
+    : value;
 }

@@ -170,7 +170,6 @@ export default function FavoritPage() {
         </div>
       )}
 
-      {/* EMPTY STATE */}
       {favorites.length === 0 && (
         <div className="text-center text-muted-foreground py-10">
           Belum ada artikel favorit
@@ -194,14 +193,14 @@ export default function FavoritPage() {
 
           <DialogFooter className="flex gap-2 mt-2">
             <Button variant="outline" onClick={() => setConfirmId(null)}>
-              No
+              Tidak
             </Button>
 
             <Button
               variant="destructive"
               onClick={() => confirmId !== null && handleDelete(confirmId)}
             >
-              Yes
+              Ya
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -5,6 +5,9 @@ from app.routes.auth import auth_bp
 from app.routes.publication import publication_bp
 from app.routes.search import search_bp
 from app.routes.request import request_bp
+from app.routes.users import users_bp
+from app.routes.admin_publications import admin_publications_bp
+from app.routes.activity_logs import activity_logs_bp
 
 def create_app():
     app = Flask(__name__)
@@ -15,5 +18,8 @@ def create_app():
     app.register_blueprint(publication_bp, url_prefix="/api")
     app.register_blueprint(search_bp, url_prefix="/api")
     app.register_blueprint(request_bp, url_prefix="/api")
+    app.register_blueprint(users_bp, url_prefix="/api")
+    app.register_blueprint(admin_publications_bp, url_prefix="/api")
+    app.register_blueprint(activity_logs_bp, url_prefix="/api")
 
     return app

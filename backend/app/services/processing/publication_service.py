@@ -265,17 +265,17 @@ def process_articles():
                         if openalex_enrichment
                         else None
                     ),
-                    html_doi=(
-                        openalex_enrichment.get("doi")
-                        if openalex_enrichment
-                        else None
-                    )
+                    # html_doi=(
+                    #     openalex_enrichment.get("doi")
+                    #     if openalex_enrichment
+                    #     else None
+                    # )
                 )
 
                 if (
                     not publication.get("reference_list")
                     or not publication.get("keywords")
-                    or not publication.get("doi")
+                    # or not publication.get("doi")
                 ):
                     if not openalex_enrichment:
                         openalex_enrichment = fetch_openalex_enrichment(article)

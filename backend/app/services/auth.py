@@ -1,21 +1,41 @@
 import os
-import bcrypt
 import jwt
 import datetime
 from app.db import supabase
+from app.services.activity.activity_log_service import log_activity
+from app.utils.hash import hash_password, verify_password
 
 SECRET_KEY = os.getenv("SECRET_KEY")
+
+
+def _user_payload(user):
+    return {
+        "id": user.get("id"),
+        "name": user.get("name"),
+        "email": user.get("email"),
+        "avatarUrl": user.get("avatar_url"),
+        "role": user.get("role") or "user",
+    }
+
 
 def register_user(name, email, password):
     try:
         existing = supabase.table("users").select("id").eq("email", email).execute()
         if existing.data:
+            log_activity(
+                action="register",
+                entity_type="user",
+                description=f"Registrasi gagal untuk {email}: email sudah terdaftar.",
+                new_data={"name": name, "email": email},
+                status="failed",
+                user_name=email,
+            )
             return {
                 "status": "error",
                 "message": "Email sudah terdaftar"
             }
         
-        hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+        hashed = hash_password(password)
 
         response = supabase.table("users").insert({
             "name": name,
@@ -32,7 +52,7 @@ def register_user(name, email, password):
             latest = (
                 supabase
                 .table("users")
-                .select("id, name, email, avatar_url")
+                .select("id, name, email, avatar_url, role")
                 .eq("email", email)
                 .single()
                 .execute()
@@ -44,16 +64,28 @@ def register_user(name, email, password):
                 "status": "error",
                 "message": "Gagal mengambil data user setelah register"
             }
+        normalized_user = _user_payload(user)
+        log_activity(
+            actor=user,
+            action="register",
+            entity_type="user",
+            entity_id=user.get("id"),
+            description=f"Akun {user.get('name') or email} berhasil didaftarkan.",
+            new_data=normalized_user,
+        )
         return {
             "status": "success",
-            "data": {
-                "id": user["id"],
-                "name": user["name"],
-                "email": user["email"],
-                "avatarUrl": user.get("avatar_url"),
-            }
+            "data": normalized_user
         }
     except Exception as e:
+        log_activity(
+            action="register",
+            entity_type="user",
+            description=f"Registrasi gagal untuk {email}.",
+            new_data={"name": name, "email": email},
+            status="failed",
+            user_name=email,
+        )
         return {
             "status": "error",
             "message": str(e)
@@ -64,6 +96,13 @@ def login_user(email, password):
         response = supabase.table("users").select("*").eq("email", email).execute()
 
         if not response.data:
+            log_activity(
+                action="login",
+                entity_type="auth",
+                description=f"Login gagal untuk {email}.",
+                status="failed",
+                user_name=email,
+            )
             return {
                 "status": "error",
                 "message": "Email atau password salah"
@@ -71,8 +110,16 @@ def login_user(email, password):
 
         user = response.data[0]
 
-        is_valid = bcrypt.checkpw(password.encode("utf-8"), user["password"].encode("utf-8"))
+        is_valid = verify_password(password, user["password"])
         if not is_valid:
+            log_activity(
+                actor=user,
+                action="login",
+                entity_type="auth",
+                entity_id=user.get("id"),
+                description=f"Login gagal untuk {email}.",
+                status="failed",
+            )
             return {
                 "status": "error",
                 "message": "Email atau password salah"
@@ -84,17 +131,26 @@ def login_user(email, password):
             "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
         }, SECRET_KEY, algorithm="HS256")
 
+        log_activity(
+            actor=user,
+            action="login",
+            entity_type="auth",
+            entity_id=user.get("id"),
+            description=f"{user.get('name') or email} berhasil login.",
+        )
         return {
             "status": "success",
             "token": token,
-            "data": {
-                "id": user["id"],
-                "name": user["name"],
-                "email": user["email"],
-                "avatarUrl": user.get("avatar_url"),
-            }
+            "data": _user_payload(user)
         }
     except Exception as e:
+        log_activity(
+            action="login",
+            entity_type="auth",
+            description=f"Login gagal untuk {email}.",
+            status="failed",
+            user_name=email,
+        )
         return {
             "status": "error",
             "message": str(e)
@@ -135,7 +191,7 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
         existing_response = (
             supabase
             .table("users")
-            .select("id, name, email, avatar_url")
+            .select("id, name, email, avatar_url, role")
             .eq("id", user_id)
             .execute()
         )
@@ -190,7 +246,6 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
                 .execute()
             )
         except Exception as update_error:
-            # Fallback saat kolom avatar_url belum ada di DB.
             if "avatar_url" in update_payload:
                 update_payload.pop("avatar_url", None)
                 update_response = (
@@ -205,12 +260,11 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
 
         user = (update_response.data or [None])[0]
         if not user:
-            # Beberapa konfigurasi PostgREST bisa return kosong;
             # lakukan re-fetch untuk memastikan update berhasil.
             latest = (
                 supabase
                 .table("users")
-                .select("id, name, email, avatar_url")
+                .select("id, name, email, avatar_url, role")
                 .eq("id", user_id)
                 .single()
                 .execute()
@@ -223,17 +277,67 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
                 "message": "Gagal memperbarui profile"
             }
 
+        normalized_user = _user_payload(user)
+        log_activity(
+            actor=current_user,
+            action="update_profile",
+            entity_type="user",
+            entity_id=user_id,
+            description=f"{normalized_user.get('name') or user_id} memperbarui profil.",
+            old_data=_user_payload(current_user),
+            new_data=normalized_user,
+        )
         return {
             "status": "success",
-            "data": {
-                "id": user.get("id"),
-                "name": user.get("name"),
-                "email": user.get("email"),
-                "avatarUrl": user.get("avatar_url"),
-            }
+            "data": normalized_user
         }
     except Exception as e:
+        log_activity(
+            actor={"id": user_id, "email": payload.get("email")},
+            action="update_profile",
+            entity_type="user",
+            entity_id=user_id,
+            description=f"Gagal memperbarui profil user ID {user_id}.",
+            status="failed",
+        )
         return {
             "status": "error",
             "message": str(e)
+        }
+
+
+def logout_user(token):
+    payload = _decode_token(token)
+    if not payload or payload.get("_token_error"):
+        return {
+            "status": "error",
+            "message": "Token tidak valid",
+        }
+
+    user_id = payload.get("user_id")
+    try:
+        response = (
+            supabase
+            .table("users")
+            .select("id, name, email, role")
+            .eq("id", user_id)
+            .single()
+            .execute()
+        )
+        user = response.data if response else {"id": user_id}
+        log_activity(
+            actor=user,
+            action="logout",
+            entity_type="auth",
+            entity_id=user_id,
+            description=f"{user.get('name') or user_id} logout.",
+        )
+        return {
+            "status": "success",
+            "message": "Logout berhasil",
+        }
+    except Exception as error:
+        return {
+            "status": "error",
+            "message": str(error),
         }
