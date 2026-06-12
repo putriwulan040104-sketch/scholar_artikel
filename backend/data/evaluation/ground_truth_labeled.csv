@@ -1,101 +1,441 @@
-query,kategori,rank,article_id,title,similarity_score,relevan
-machine learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,0.623235808945845,1
-machine learning,Machine Learning,2,39,When machine learning meets privacy: A survey and outlook,0.609889351410075,1
-machine learning,Machine Learning,3,7,Machine learning and deep learning: C. Janiesch et al.,0.5993801897901321,1
-machine learning,Machine Learning,4,18,An overview of machine learning classification techniques,0.5984379693814694,1
-machine learning,Machine Learning,5,38,Scientific machine learning benchmarks,0.5633910765681233,1
-machine learning,Machine Learning,6,35,Financial applications of machine learning: A literature review,0.5581016676491677,1
-machine learning,Machine Learning,7,25,Machine learning in chemical engineering: A perspective,0.532694783676555,1
-machine learning,Machine Learning,8,8,Machine learning foundations,0.527485417333958,1
-machine learning,Machine Learning,9,23,Machine learning and applications in microbiology,0.5235023559266654,1
-machine learning,Machine Learning,10,11,Using machine learning to detect misstatements,0.5064764488629261,1
-deep learning,Machine Learning,1,40,Machine learning and deep learning: A review of methods and applications,0.7391029007441474,1
-deep learning,Machine Learning,2,7,Machine learning and deep learning: C. Janiesch et al.,0.7108122328076278,1
-deep learning,Machine Learning,3,43,Machine learning and deep learning applications-a vision,0.6892585977554605,1
-deep learning,Machine Learning,4,25,Machine learning in chemical engineering: A perspective,0.5153104189786353,1
-deep learning,Machine Learning,5,35,Financial applications of machine learning: A literature review,0.3401106329001344,1
-deep learning,Machine Learning,6,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.3378871446609963,1
-deep learning,Machine Learning,7,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.2812713319268808,1
-deep learning,Machine Learning,8,34,Machine learning at the network edge: A survey,0.2519055344270343,1
-deep learning,Machine Learning,9,18,An overview of machine learning classification techniques,0.2396308452701837,1
-deep learning,Machine Learning,10,3,What is machine learning?,0.2395213168736696,0
-web development,Web Development,1,54,Accessible web development: Opportunities to improve the education and practice of web development with a screen reader,0.516234492141231,1
-web development,Web Development,2,86,AI AND WEB DEVELOPMENT,0.5025393937897717,1
-web development,Web Development,3,70,The rise of disappearing frameworks in web development,0.4867405589428509,1
-web development,Web Development,4,59,Python for web development,0.4540079734280969,1
-web development,Web Development,5,71,Machine learning for web development: A fusion,0.423327693693344,1
-web development,Web Development,6,94,Current web development technologies: a comparative review,0.4141361646722525,1
-web development,Web Development,7,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,0.4122290628083931,1
-web development,Web Development,8,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,0.4093025643457612,1
-web development,Web Development,9,53,Web Developer and Tech Preneurs,0.4060375043697519,1
-web development,Web Development,10,83,Program Pelatihan Web Development untuk Komunitas Maya,0.3991261862527548,1
-web application,Web Development,1,67,Web accessibility and web developer attitudes towards accessibility in Mozambique,0.3083045160812964,1
-web application,Web Development,2,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.3077975681090421,0
-web application,Web Development,3,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.2984995311732634,0
-web application,Web Development,4,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.2896325328249319,0
-web application,Web Development,5,66,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,0.2823698020030439,1
-web application,Web Development,6,51,An empirical study of web services topics in web developer discussions on stack overflow,0.2741327054556327,1
-web application,Web Development,7,80,Responsive web design and its impact on user experience,0.2714248781080381,1
-web application,Web Development,8,195,User experience analysis on mobile application design using user experience questionnaire,0.2681481621203944,0
-web application,Web Development,9,97,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,0.2566068490389305,1
-web application,Web Development,10,91,Progressive web apps (PWAs): Enhancing user experience through modern web development,0.2479107439695736,1
-cyber security,Cyber Security,1,106,A systematic literature review on the cyber security,0.8091451798530449,1
-cyber security,Cyber Security,2,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.659827670019911,1
-cyber security,Cyber Security,3,132,The difference between cyber security vs information security,0.5946764516593551,1
-cyber security,Cyber Security,4,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.5927841583283529,1
-cyber security,Cyber Security,5,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.5736117338109537,1
-cyber security,Cyber Security,6,139,The role of cyber security in a digitalizing economy: a development perspective,0.5692452867292848,1
-cyber security,Cyber Security,7,119,Artificial intelligence-based cyber security in the context of industry 4.0—a survey,0.561738816861303,1
-cyber security,Cyber Security,8,149,Cyber security and the Leviathan,0.5410477646701544,1
-cyber security,Cyber Security,9,126,"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations",0.5397366764254056,1
-cyber security,Cyber Security,10,141,Evolution of the cyber security threat: an overview of the scale of cyber threat,0.5319119957287073,1
-network security,Cyber Security,1,150,Artificial intelligence in the cyber security environment,0.3346430122397161,1
-network security,Cyber Security,2,114,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.",0.3030091721197283,1
-network security,Cyber Security,3,106,A systematic literature review on the cyber security,0.2817074871871789,1
-network security,Cyber Security,4,132,The difference between cyber security vs information security,0.2752598904542554,1
-network security,Cyber Security,5,139,The role of cyber security in a digitalizing economy: a development perspective,0.2374122407649083,1
-network security,Cyber Security,6,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.2297219331290325,1
-network security,Cyber Security,7,130,"Cyber security techniques, architectures, and design",0.2177683806520506,1
-network security,Cyber Security,8,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.2063804368424659,1
-network security,Cyber Security,9,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.1997054721160329,1
-network security,Cyber Security,10,124,Artificial intelligence in cyber security,0.1892831758700424,1
-mobile application,Mobile Application,1,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.4752347485648869,1
-mobile application,Mobile Application,2,186,User interface design & evaluation of mobile applications,0.4291396878278073,1
-mobile application,Mobile Application,3,195,User experience analysis on mobile application design using user experience questionnaire,0.4269129800725006,1
-mobile application,Mobile Application,4,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,0.4230716321026952,1
-mobile application,Mobile Application,5,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.4033244657693537,1
-mobile application,Mobile Application,6,191,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,0.3980497472033892,1
-mobile application,Mobile Application,7,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.3795217983322617,1
-mobile application,Mobile Application,8,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.3487138517299541,1
-mobile application,Mobile Application,9,157,The role of mobile application acceptance in shaping e-customer service,0.3345117790140771,1
-mobile application,Mobile Application,10,192,Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,0.3162639199181988,1
-android application,Mobile Application,1,197,Human monkeypox classification from skin lesion images with deep pre-trained network using mobile application,0.2777313014543557,1
-android application,Mobile Application,2,181,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,0.2026771185359263,1
-android application,Mobile Application,3,159,Deep learning methods for accurate skin cancer recognition and mobile application,0.1965545901944527,1
-android application,Mobile Application,4,166,Towards a new learning experience through a mobile application with augmented reality in engineering education,0.1907158901477195,1
-android application,Mobile Application,5,195,User experience analysis on mobile application design using user experience questionnaire,0.176568961129714,1
-android application,Mobile Application,6,186,User interface design & evaluation of mobile applications,0.1587611205412969,1
-android application,Mobile Application,7,176,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,0.1565162306983132,1
-android application,Mobile Application,8,72,Review on study and usage of mern stack for web development,0.1510896535265905,0
-android application,Mobile Application,9,179,Consistency analysis of data-usage purposes in mobile apps,0.1479243289627802,0
-android application,Mobile Application,10,191,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,0.1472593323098725,0
-data mining,Machine Learning,1,127,Cyber risk and cybersecurity: a systematic review of data availability,0.1840136990691283,0
-data mining,Machine Learning,2,47,Evolutionary machine learning: A survey,0.1687665140990157,1
-data mining,Machine Learning,3,179,Consistency analysis of data-usage purposes in mobile apps,0.1245649930843564,0
-data mining,Machine Learning,4,182,Text mining approach to explore determinants of grocery mobile app satisfaction using online customer reviews,0.1177723258105103,1
-data mining,Machine Learning,5,41,"Machine learning: Algorithms, real-world applications and research directions",0.0787481352367742,0
-data mining,Machine Learning,6,28,Machine learning: new ideas and tools in environmental science and engineering,0.0783884411721677,0
-data mining,Machine Learning,7,48,Machine learning in manufacturing and industry 4.0 applications,0.0775323361582703,0
-data mining,Machine Learning,8,46,Machine Learning for industrial applications: A comprehensive literature review,0.0734402049181714,0
-data mining,Machine Learning,9,150,Artificial intelligence in the cyber security environment,0.0730950272450958,0
-data mining,Machine Learning,10,4,Amnesiac machine learning,0.0720417031213339,0
-software security,Cyber Security,1,73,The role of APIs in modern web development: Enhancing system integrations,0.3013762755422635,0
-software security,Cyber Security,2,106,A systematic literature review on the cyber security,0.2659520126256423,1
-software security,Cyber Security,3,132,The difference between cyber security vs information security,0.2598650202462734,1
-software security,Cyber Security,4,139,The role of cyber security in a digitalizing economy: a development perspective,0.2241341324784801,1
-software security,Cyber Security,5,111,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,0.2168739321412682,1
-software security,Cyber Security,6,130,"Cyber security techniques, architectures, and design",0.2055889238121596,1
-software security,Cyber Security,7,129,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",0.1948378905113854,1
-software security,Cyber Security,8,137,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,0.1885362464872047,1
-software security,Cyber Security,9,124,Artificial intelligence in cyber security,0.1786968535392988,1
-software security,Cyber Security,10,149,Cyber security and the Leviathan,0.1778330335809031,1
+query,kategori_query,rank,article_id,article_category,title,abstract,similarity_score,threshold_relevan,relevan
+machine learning,Machine Learning,1,6,machine learning,Machine learning and deep learning: C. Janiesch et al.,"… Deep learning is a machine learning concept based on … , deep learning models outperform
+shallow machine learning … fundamentals of machine learning and deep learning to generate …",0.4690637634059891,1,1
+machine learning,Machine Learning,2,37,machine learning,When machine learning meets privacy: A survey and outlook,"… problems and machine learning is … machine learning. The survey covers three categories
+of interactions between privacy and machine learning: (i) private machine learning, (ii) machine …",0.46701502693041774,1,1
+machine learning,Machine Learning,3,17,machine learning,An overview of machine learning classification techniques,"… statistical learning and pattern recognition, machine learning now … between statistics and
+machine learning is evident, with … core of machine learning lies the concept of self-learning, a …",0.4464583976938805,1,1
+machine learning,Machine Learning,4,50,machine learning,"Impact of machine learning on management, healthcare and agriculture","… Machine learning and deep learning are two of the most often … Machine learning models
+for the complexity and diversity of … This article discusses machine learning and artificial …",0.4450174616102004,1,1
+machine learning,Machine Learning,5,33,machine learning,Financial applications of machine learning: A literature review,"… of machine learning and deep learning in … on machine learning in finance. The study finally
+points out possible research directions which might lead to new inquiries in machine learning …",0.4178788886444453,1,1
+machine learning,Machine Learning,6,36,machine learning,Scientific machine learning benchmarks,"… frameworks, computer architectures and machine learning models… metrics for the application
+of machine learning methods to open, … Here, we introduce the concept of machine learning …",0.4164912781935106,1,1
+machine learning,Machine Learning,7,15,machine learning,Research on machine learning with algorithms and development,"… This study provides a relatively systematic introduction to machine learning. Firstly, it … of
+machine learning, and then focuses on the analysis of classical algorithms in machine learning. …",0.40908405128625147,1,1
+machine learning,Machine Learning,8,23,machine learning,Machine learning in chemical engineering: A perspective,"… and application of machine learning with a focus on deep learning and probabilistic models.
+… algorithms of statistical machine learning, especially unsupervised deep learning, and its …",0.4056591067118907,1,1
+machine learning,Machine Learning,9,21,machine learning,Machine learning and applications in microbiology,"… Applying machine learning to address biological problems is expected … machine learning
+practitioner. These key points are further reinforced with an evaluation of how machine learning …",0.38660337645883497,1,1
+machine learning,Machine Learning,10,40,machine learning,Machine learning and deep learning applications-a vision,"… Deep learning had been analysed and implemented in … survey for machine learning along
+with deep learning applications in … , for machine learning along with deep neural learning are …",0.3827207620661209,1,1
+machine learning,Machine Learning,11,8,machine learning,Machine learning foundations,"… knowledge about machine learning by exploring learning theories, … of machine learning
+algorithms: the supervised, the unsupervised, the reinforced, and the semi-supervised learning. …",0.37686717593364294,1,1
+machine learning,Machine Learning,12,10,machine learning,Using machine learning to detect misstatements,"… Intuitively, a machine learning algorithm can be taught to … Machine learning algorithms
+capture the relationship … We also examine a number of alternative machine learning approaches …",0.36450170943183724,1,1
+machine learning,Machine Learning,13,38,machine learning,"Machine learning: Algorithms, real-world applications and research directions","… learning methods, can intelligently analyze the data on a large scale. In this paper, we present
+a comprehensive view on these machine learning … different machine learning techniques …",0.3556726740975019,1,1
+machine learning,Machine Learning,14,34,machine learning,Machine learning for chemical reactions,"… Machine learning (ML) … using machine-learned neural network potentials. This review
+provides an overview of the questions that can and have been addressed using machine learning …",0.35423950145959077,1,1
+machine learning,Machine Learning,15,19,machine learning,A survey of human-in-the-loop for machine learning,"… posed by machine learning … machine learning. Human-in-the-loop is an area that we see
+as increasingly important in future research due to the knowledge learned by machine learning …",0.3516791079563625,1,1
+machine learning,Machine Learning,16,24,machine learning,Human-in-the-loop machine learning: a state of the art,"… Researchers are defining new types of interactions between humans and machine learning
+… machine learning (HITL-ML) (Munro 2020). The idea is not only to make machine learning …",0.3500002452069716,1,1
+machine learning,Machine Learning,17,14,machine learning,A survey on dataset quality in machine learning,"… of dataset quality in machine learning, including the definition of … of machine learning,
+which can help improve the accuracy, efficiency, and generalization ability of machine learning …",0.34518702526503586,1,1
+machine learning,Machine Learning,18,25,machine learning,Causality for machine learning,"… for Machine Learning In spite of all recent successes, if we compare what machine learning
+… This shortcoming is not too surprising since machine learning often disregards information …",0.3449930135921896,1,1
+machine learning,Machine Learning,19,1,machine learning,Machine learning for microbiologists,"… how to evaluate a machine learning model and how … machine learning-based work. The
+topics presented in this work will allow microbiologists to grasp the potential of machine learning …",0.3428471579010775,1,1
+machine learning,Machine Learning,20,2,machine learning,What is machine learning?,"… that one can employ in machine learning (ML). The required … of two learning types: supervised
+or unsupervised learning. … skills through either automated learning or learning via human …",0.3422806890887676,1,1
+deep learning,Machine Learning,1,6,machine learning,Machine learning and deep learning: C. Janiesch et al.,"… Deep learning is a machine learning concept based on … , deep learning models outperform
+shallow machine learning … fundamentals of machine learning and deep learning to generate …",0.6272731457853866,1,1
+deep learning,Machine Learning,2,40,machine learning,Machine learning and deep learning applications-a vision,"… Deep learning had been analysed and implemented in … survey for machine learning along
+with deep learning applications in … , for machine learning along with deep neural learning are …",0.6028670654096162,1,1
+deep learning,Machine Learning,3,23,machine learning,Machine learning in chemical engineering: A perspective,"… and application of machine learning with a focus on deep learning and probabilistic models.
+… algorithms of statistical machine learning, especially unsupervised deep learning, and its …",0.4257341885372151,1,1
+deep learning,Machine Learning,4,155,web application,Front-end deep learning web apps development and deployment: a review,"… of these deep-learning web apps to raise awareness of the … web applications divided into
+seven categories to show deep learning potential on the front end. These include web apps for …",0.34394773520200117,1,1
+deep learning,Machine Learning,5,50,machine learning,"Impact of machine learning on management, healthcare and agriculture","… Machine learning and deep learning are two of the most often … Machine learning models
+for the complexity and diversity of … This article discusses machine learning and artificial …",0.26349969556548186,0,0
+deep learning,Machine Learning,6,85,mobile application,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"… mobile application to automatically classify pests using a deep-learning solution for supporting
+specialists and farmers. The developed application … our developed application for on-line …",0.24860779264123453,0,0
+deep learning,Machine Learning,7,33,machine learning,Financial applications of machine learning: A literature review,"… of machine learning and deep learning in … on machine learning in finance. The study finally
+points out possible research directions which might lead to new inquiries in machine learning …",0.24743065034491074,0,0
+deep learning,Machine Learning,8,32,machine learning,Machine learning at the network edge: A survey,"… This section describes the low-power hardware that have been used in edge machine
+learning systems. High performance from a deep learning application is only achievable when an …",0.19144303426417542,0,0
+deep learning,Machine Learning,9,3,machine learning,Amnesiac machine learning,"… It gives EU residents the ability to request deletion of their personal data, including training
+records used to train machine learning models. Unfortunately, Deep Neural Network models …",0.15522930684768652,0,0
+deep learning,Machine Learning,10,114,cyber security,Deep reinforcement learning for cyber security,"… , and especially high-dimensional cyber defense problems. This article presents a … for cyber
+security. We touch on different vital aspects, including DRL-based security methods for cyber…",0.1468746592681351,0,0
+deep learning,Machine Learning,11,2,machine learning,What is machine learning?,"… that one can employ in machine learning (ML). The required … of two learning types: supervised
+or unsupervised learning. … skills through either automated learning or learning via human …",0.14004955705958816,0,0
+deep learning,Machine Learning,12,17,machine learning,An overview of machine learning classification techniques,"… statistical learning and pattern recognition, machine learning now … between statistics and
+machine learning is evident, with … core of machine learning lies the concept of self-learning, a …",0.13679875282748272,0,0
+deep learning,Machine Learning,13,157,web application,DeepCrop: Deep learning-based crop disease prediction with web application,"… a smart web application for real-life crop disease prediction. The proposed web application
+aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …",0.1359839867113224,0,0
+deep learning,Machine Learning,14,61,mobile application,Deep learning methods for accurate skin cancer recognition and mobile application,"… to be used in a mobile application. To be able to build an effective mobile application, it is …
+for our mobile application to be able to classify skin lesions using a common smartphone. …",0.12685874480821405,0,0
+deep learning,Machine Learning,15,8,machine learning,Machine learning foundations,"… knowledge about machine learning by exploring learning theories, … of machine learning
+algorithms: the supervised, the unsupervised, the reinforced, and the semi-supervised learning. …",0.1215821752048769,0,0
+deep learning,Machine Learning,16,172,web application,Securing web applications against XSS and SQLi attacks using a novel deep learning approach,"… all web application attacks, SQL injection and XSS attacks are common, which may lead to
+severe damage to Web application data or web … for securing web applications from both cross-…",0.11126721877104866,0,0
+deep learning,Machine Learning,17,175,web application,A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture,"Cotton is known as ‘white gold’ in the agricultural industry. Agriculture is the primary source
+of economic income in Bangladesh and the country's economy is heavily dependent on …",0.1080458154776239,0,0
+deep learning,Machine Learning,18,38,machine learning,"Machine learning: Algorithms, real-world applications and research directions","… learning methods, can intelligently analyze the data on a large scale. In this paper, we present
+a comprehensive view on these machine learning … different machine learning techniques …",0.10254309729988338,0,0
+deep learning,Machine Learning,19,37,machine learning,When machine learning meets privacy: A survey and outlook,"… problems and machine learning is … machine learning. The survey covers three categories
+of interactions between privacy and machine learning: (i) private machine learning, (ii) machine …",0.10207972757232102,0,0
+deep learning,Machine Learning,20,36,machine learning,Scientific machine learning benchmarks,"… frameworks, computer architectures and machine learning models… metrics for the application
+of machine learning methods to open, … Here, we introduce the concept of machine learning …",0.10200039225584201,0,0
+data mining,Machine Learning,1,44,machine learning,Evolutionary machine learning: A survey,"… vectors pruning, and ensemble learning). This article … learning, clustering, association rule
+mining, and ensemble methods. For each category, we discuss evolutionary machine learning …",0.19407451079794374,0,0
+data mining,Machine Learning,2,86,mobile application,Text mining approach to explore determinants of grocery mobile app satisfaction using online customer reviews,"… for grocery mobile apps in the highly competitive app market. … satisfaction for grocery
+mobile apps using online reviews. … to business managers of grocery mobile apps for decision-…",0.13234838054705456,0,0
+data mining,Machine Learning,3,124,cyber security,Cyber risk and cybersecurity: a systematic review of data availability,"… cybersecurity and cyber risk management with a particular focus on data availability. From a
+preliminary search resulting in 5219 cyber … We posit that the lack of available data on cyber …",0.10938836545853184,0,0
+data mining,Machine Learning,4,190,web application,SuperPlotsOfData—a web app for the transparent display and quantitative comparison of continuous data from different conditions,"… To simplify the plotting of data from discrete conditions as a superplot, the SuperPlotsOfData
+web app was generated. The tool offers easy and open access to state-of-the-art data …",0.09387017741706583,0,0
+data mining,Machine Learning,5,161,web application,iDEP web application for RNA-seq data analysis,"… Through an example, we demonstrate how this web application democratizes access to
+high-throughput technologies and help biologists pinpoint molecular pathways from large data. …",0.0799463329818126,0,0
+data mining,Machine Learning,6,83,mobile application,Consistency analysis of data-usage purposes in mobile apps,"… Our analysis of 23.1k Android apps has also shown PurPliance to detect contradictions in …
+69.66% of apps, indicating the prevalence of inconsistencies of data practices in mobile apps. …",0.07080432376256211,0,0
+data mining,Machine Learning,7,163,web application,MiBiOmics: an interactive web application for multi-omics data exploration and integration,"… Here, we present MiBiOmics, a web-based and standalone application that facilitates
+multi-omics data visualization, exploration, integration, and analysis by providing easy access to …",0.06256826349581537,0,0
+data mining,Machine Learning,8,38,machine learning,"Machine learning: Algorithms, real-world applications and research directions","… learning methods, can intelligently analyze the data on a large scale. In this paper, we present
+a comprehensive view on these machine learning … different machine learning techniques …",0.04953930581487196,0,0
+data mining,Machine Learning,9,26,machine learning,Machine learning: new ideas and tools in environmental science and engineering,"… Machine learning has the potential to revolutionize data analysis and modeling in the …
+shortcomings, challenges, and opportunities for applications of machine learning in the ESE field. …",0.04623203468438318,0,0
+data mining,Machine Learning,10,45,machine learning,Machine learning in manufacturing and industry 4.0 applications,"… learning from data, detect prevalent underlying patterns and make informed decisions.
+Industries have been successful in the application of machine learning mainly … Machine learning …",0.0456690572559144,0,0
+data mining,Machine Learning,11,106,cyber security,A systematic literature review on the cyber security,"… of cyber security kinds, why cyber security is important, cyber security framework, cyber
+security tools, and cyber security … Cyber security safeguards the data and integrity of computing …",0.042764469881507186,0,0
+data mining,Machine Learning,12,43,machine learning,Machine Learning for industrial applications: A comprehensive literature review,"Abstract Machine Learning (ML) is a branch of artificial intelligence that studies algorithms
+able to learn autonomously, directly from the input data. Over the last decade, ML techniques …",0.04272120322820192,0,0
+data mining,Machine Learning,13,146,cyber security,Artificial intelligence in the cyber security environment,"… comprehend network safety or areas of cyber security issues. … to foresee and distinguish
+data security dangers and failures. … Cyber security Digital protection measures are related with …",0.04258913491906706,0,0
+data mining,Machine Learning,14,126,cyber security,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","… In summary, cyber security ensures the security of virtual life on cyber networks. The … under
+the name of cyber security [4]. The primary purpose of cyber security is to secure the data of …",0.0415315826894434,0,0
+data mining,Machine Learning,15,3,machine learning,Amnesiac machine learning,"… It gives EU residents the ability to request deletion of their personal data, including training
+records used to train machine learning models. Unfortunately, Deep Neural Network models …",0.03930049143656857,0,0
+data mining,Machine Learning,16,138,cyber security,"Cyber security awareness, knowledge and behavior: A comparative study","… security. As rates of data usage and internet consumption continue to increase, cyber …
+This study focuses on the relationships between cyber security awareness, knowledge and …",0.03898954245662412,0,0
+data mining,Machine Learning,17,47,machine learning,Machine learning in environmental research: common pitfalls and best practices,"… Machine learning (ML) is increasingly used in environmental research to process large data
+… By analyzing good examples on supervised learning and reference modeling paradigms, …",0.038641492551946516,0,0
+data mining,Machine Learning,18,9,machine learning,Open-environment machine learning,"… open learning or open ML for short. Note that the name ‘open-world machine learning’ was
+used to refer to machine learning with unseen class [1] or outof-distribution (OOD) data [2]. In …",0.036723379193394905,0,0
+data mining,Machine Learning,19,63,mobile application,Enhancing user engagement: The role of gamification in mobile apps,"… users’ engagement with their mobile apps. However, more … Data from 276 users of a mobile
+gamified app were analyzed … help developers design more effective gamified mobile apps. …",0.03613118705286687,0,0
+data mining,Machine Learning,20,39,machine learning,Applying machine learning to study fluid mechanics,"… This paper provides a short overview of how to use machine learning to build data-driven
+models in fluid mechanics. The process of machine learning is broken down into five stages: (1…",0.03600720189172146,0,0
+website application,Web Application,1,198,web application,A geometric morphometric method and web application for identifying honey bee species (Apis spp.) using only forewings,"… We also developed a web application that can be used to identify the Apis species using an
+… s3-website. us-east-2.amazonaws.com/. Our data and web application are useful for field …",0.2162311456497613,0,0
+website application,Web Application,2,177,web application,Open Lab: A web application for running and sharing online experiments,"… as a web application on a desktop computer (the “Install app” link is displayed in the top
+navigation bar). Progressive web application technology makes the application accessible via …",0.046064912279943866,0,0
+website application,Web Application,3,61,mobile application,Deep learning methods for accurate skin cancer recognition and mobile application,"… to be used in a mobile application. To be able to build an effective mobile application, it is …
+for our mobile application to be able to classify skin lesions using a common smartphone. …",0.04556021319143831,0,0
+website application,Web Application,4,85,mobile application,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"… mobile application to automatically classify pests using a deep-learning solution for supporting
+specialists and farmers. The developed application … our developed application for on-line …",0.044642661611192846,0,0
+website application,Web Application,5,157,web application,DeepCrop: Deep learning-based crop disease prediction with web application,"… a smart web application for real-life crop disease prediction. The proposed web application
+aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …",0.04243902740971958,0,0
+website application,Web Application,6,69,mobile application,Towards a new learning experience through a mobile application with augmented reality in engineering education,"… The application of augmented reality (AR) in education … effect of an augmented reality mobile
+application (NetAR) that … established to work with the application for three weeks for three …",0.039677384456491424,0,0
+website application,Web Application,7,199,web application,CLC-Pred 2.0: a freely available web application for in silico prediction of human cell line cytotoxicity and molecular mechanisms of action for druglike …,"… In 2018, we developed the first freely available web application (… Here, we present a new
+version of this web application: CLC-… extension of the capabilities of the initial web application. …",0.03634953256218337,0,0
+website application,Web Application,8,180,web application,A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,"… an institutional web application to corroborate the efficiency of this approach. Despite the
+web application's sensitivity, this study has used various versions of three web applications of …",0.03521804499033187,0,0
+website application,Web Application,9,179,web application,From prompt injections to sql injection attacks: How protected is your llm-integrated web application?,"… If an application remains vulnerable to these threats, the … -integrated applications, and what
+is their impact on application security? To study this question, we focus on web applications …",0.03519595219234867,0,0
+website application,Web Application,10,80,mobile application,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,"… Uber mobile application are … mobile application was introduced. By comparing it to the
+previous methods that the users have been utilizing, the overall evaluation of mobile applications’ …",0.03330975581059904,0,0
+website application,Web Application,11,174,web application,ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application,"… for CKD classification and to develop a web-based application for CKD prediction. The proposed
+… Additionally, we present a real-time web-based application to operationalize the model, …",0.03320597897431964,0,0
+website application,Web Application,12,182,web application,Early web application attack detection using network traffic analysis,"… data used by the web application. Unlike the main trends in web application attack detection …
+to detect malicious activities towards web applications by exploring web traffic as if it is …",0.032646647093284846,0,0
+website application,Web Application,13,188,web application,Performance of Area under the Concentration-Time Curve Estimations of Vancomycin with Limited Sampling by a Newly Developed Web Application: Oda et al.,"… The aim of this study was to validate a newly developed web application, PAT, for AUC … the
+web application using only the trough concentration. Our newly developed web application is …",0.03235002287506349,0,0
+website application,Web Application,14,181,web application,Meta‐analytic structural equation modeling made easy: A tutorial and web application for one‐stage MASEM,"… application webMASEM is created using the package Shiny (Version 1.4.0.2) which facilitates
+the creation of web applications … The application consists of four main tabs and a “Home” …",0.0321859648026151,0,0
+website application,Web Application,15,90,mobile application,User interface design & evaluation of mobile applications,"… different mobile application designs for student projects besides the evaluation of mobile
+application … of the interface design of the mobile application for student projects to solve design …",0.032142130108062994,0,0
+website application,Web Application,16,98,mobile application,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"… of mobile application integrated … mobile application, which is connected over IoT environment.
+In this manner, the farmer can continuously track the status of his field using the mobile app…",0.030142111336532496,0,0
+website application,Web Application,17,184,web application,A multi-objective active learning platform and web app for reaction optimization,"… We developed EDBOWebApp, a web application that makes the Bayesian optimizer more
+… This web application can be accessed at https://www.edbowebapp.com/ through a web …",0.02693958117579111,0,0
+website application,Web Application,18,186,web application,… detection and quantification of floating marine macro-litter in aerial images: Introducing a novel deep learning approach connected to a web application in R,"… FMML in aerial images, and a web-oriented application that allows users to identify FMML
+… The Shiny package of R was then used to develop a user-friendly application to identify and …",0.026107439071584665,0,0
+website application,Web Application,19,166,web application,Machine learning based diabetes prediction and development of smart web application,"… We integrate this model in a web application using python flask web development framework.
+The results of this study suggest that an appropriate preprocessing pipeline on clinical …",0.02591840578040049,0,0
+website application,Web Application,20,152,web application,A survey on web application penetration testing,"… Due to their nature, web applications and services are prone to security risks because they …
+the Internet and web applications become more widespread, every web application needs an …",0.025862521974089822,0,0
+web system,Web Application,1,120,cyber security,Artificial intelligence in cyber security,"… For security preparation, the instance of a cyber security device specialist is one. This skilled
+system enables substantially the collection and instruction of security initiatives to optimize …",0.19028170066044214,0,0
+web system,Web Application,2,85,mobile application,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"… mobile application to automatically classify pests using a deep-learning solution for supporting
+specialists and farmers. The developed application … our developed application for on-line …",0.16723423811232693,0,0
+web system,Web Application,3,98,mobile application,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"… of mobile application integrated … mobile application, which is connected over IoT environment.
+In this manner, the farmer can continuously track the status of his field using the mobile app…",0.1505523444028738,0,0
+web system,Web Application,4,123,cyber security,"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations","… cyber security principles, standards, and protocols. Finally, we discuss some challenges for
+SG cyber-physical systems, cyber-attacks, and cyber security … of the cyber security systems …",0.1446181397124651,0,0
+web system,Web Application,5,165,web application,Development of interactive biological web applications with R/Shiny,"… web techniques used to build biological web applications in recent studies To get a full picture
+of the web techniques utilized to build biological web applications … issues of web servers …",0.11615455537993916,0,0
+web system,Web Application,6,182,web application,Early web application attack detection using network traffic analysis,"… data used by the web application. Unlike the main trends in web application attack detection …
+to detect malicious activities towards web applications by exploring web traffic as if it is …",0.10238363752097338,0,0
+web system,Web Application,7,184,web application,A multi-objective active learning platform and web app for reaction optimization,"… We developed EDBOWebApp, a web application that makes the Bayesian optimizer more
+… This web application can be accessed at https://www.edbowebapp.com/ through a web …",0.10138274743575865,0,0
+web system,Web Application,8,153,web application,A comparative study of web application security parameters: Current trends and future directions,"… in the use of web applications. Businesses, industries, … web applications. This mammoth
+rise in their usage has also resulted in many security issues that make these web applications …",0.09911152425051431,0,0
+web system,Web Application,9,195,web application,RETRACTED ARTICLE: Analysis of security issues of cloud-based web applications,"… In this research, we analyze the security issues in web applications hosted on Cloud and …
+vectors in a web application hosted on Cloud; Top 10 web application/Web sites chosen during …",0.09863136981805853,0,0
+web system,Web Application,10,152,web application,A survey on web application penetration testing,"… Due to their nature, web applications and services are prone to security risks because they …
+the Internet and web applications become more widespread, every web application needs an …",0.09732940969799278,0,0
+web system,Web Application,11,172,web application,Securing web applications against XSS and SQLi attacks using a novel deep learning approach,"… all web application attacks, SQL injection and XSS attacks are common, which may lead to
+severe damage to Web application data or web … for securing web applications from both cross-…",0.09399089915770875,0,0
+web system,Web Application,12,180,web application,A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,"… an institutional web application to corroborate the efficiency of this approach. Despite the
+web application's sensitivity, this study has used various versions of three web applications of …",0.08835826949540909,0,0
+web system,Web Application,13,167,web application,A systematic literature review on the characteristics and effectiveness of web application vulnerability scanners,"… web applications. Theses scanners have the capability of automatically evaluating the security
+of web applications … analysts discover vulnerabilities in web applications. However, these …",0.08759739630435405,0,0
+web system,Web Application,14,170,web application,Signature-based and machine-learning-based web application firewalls: A short survey,"… web applications typically relied on the simple common gateway interface, CGI, protocol
+which spawned C or Perl programs. Attacks were concentrated at underlying web … web server …",0.08597633992641981,0,0
+web system,Web Application,15,168,web application,"ATON: An open-source framework for creating immersive, collaborative and liquid web-apps for cultural heritage","… Web browsers are available on virtually all computing … applications (web-apps) from any
+device, anywhere, as long as internet (or local network) connection is present. Web applications …",0.08166244484647675,0,0
+web system,Web Application,16,189,web application,Toward an SDN-based web application firewall: Defending against SQL injection attacks,"… Web attacks pose a significant threat to enterprises, as attackers often target web applications
+… the severity of these threats, such as web application firewalls (WAFs). On the other hand, …",0.08015063466792303,0,0
+web system,Web Application,17,156,web application,BEST: a web application for comprehensive biomarker exploration on large-scale data in solid tumors,"… Currently, several open-access web servers that allow users … Although these web applications
+are valuable and broadly … (BEST), a web-based application for comprehensive biomarker …",0.07769495767983693,0,0
+web system,Web Application,18,193,web application,Splendor: Static detection of stored xss in modern web applications,"… ties in web applications. It mainly applies string analysis [22… 32] to reconstruct all SQL queries
+in web applications and … and flexibility, modern web applications make extensive use of OO …",0.07762565391449676,0,0
+web system,Web Application,19,155,web application,Front-end deep learning web apps development and deployment: a review,"… of these deep-learning web apps to raise awareness of the … web applications divided into
+seven categories to show deep learning potential on the front end. These include web apps for …",0.07747824202421835,0,0
+web system,Web Application,20,166,web application,Machine learning based diabetes prediction and development of smart web application,"… We integrate this model in a web application using python flask web development framework.
+The results of this study suggest that an appropriate preprocessing pipeline on clinical …",0.0731547895091214,0,0
+web application,Web Application,1,182,web application,Early web application attack detection using network traffic analysis,"… data used by the web application. Unlike the main trends in web application attack detection …
+to detect malicious activities towards web applications by exploring web traffic as if it is …",0.3335905954621685,1,1
+web application,Web Application,2,184,web application,A multi-objective active learning platform and web app for reaction optimization,"… We developed EDBOWebApp, a web application that makes the Bayesian optimizer more
+… This web application can be accessed at https://www.edbowebapp.com/ through a web …",0.31413807370712366,1,1
+web application,Web Application,3,180,web application,A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,"… an institutional web application to corroborate the efficiency of this approach. Despite the
+web application's sensitivity, this study has used various versions of three web applications of …",0.3090595119885323,1,1
+web application,Web Application,4,152,web application,A survey on web application penetration testing,"… Due to their nature, web applications and services are prone to security risks because they …
+the Internet and web applications become more widespread, every web application needs an …",0.3015786615661872,1,1
+web application,Web Application,5,195,web application,RETRACTED ARTICLE: Analysis of security issues of cloud-based web applications,"… In this research, we analyze the security issues in web applications hosted on Cloud and …
+vectors in a web application hosted on Cloud; Top 10 web application/Web sites chosen during …",0.2898608613580471,0,0
+web application,Web Application,6,177,web application,Open Lab: A web application for running and sharing online experiments,"… as a web application on a desktop computer (the “Install app” link is displayed in the top
+navigation bar). Progressive web application technology makes the application accessible via …",0.2879526546376966,0,0
+web application,Web Application,7,172,web application,Securing web applications against XSS and SQLi attacks using a novel deep learning approach,"… all web application attacks, SQL injection and XSS attacks are common, which may lead to
+severe damage to Web application data or web … for securing web applications from both cross-…",0.2762233054243014,0,0
+web application,Web Application,8,153,web application,A comparative study of web application security parameters: Current trends and future directions,"… in the use of web applications. Businesses, industries, … web applications. This mammoth
+rise in their usage has also resulted in many security issues that make these web applications …",0.2675289734271558,0,0
+web application,Web Application,9,165,web application,Development of interactive biological web applications with R/Shiny,"… web techniques used to build biological web applications in recent studies To get a full picture
+of the web techniques utilized to build biological web applications … issues of web servers …",0.26715645449258024,0,0
+web application,Web Application,10,199,web application,CLC-Pred 2.0: a freely available web application for in silico prediction of human cell line cytotoxicity and molecular mechanisms of action for druglike …,"… In 2018, we developed the first freely available web application (… Here, we present a new
+version of this web application: CLC-… extension of the capabilities of the initial web application. …",0.26655050020672133,0,0
+web application,Web Application,11,157,web application,DeepCrop: Deep learning-based crop disease prediction with web application,"… a smart web application for real-life crop disease prediction. The proposed web application
+aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …",0.2652871784191231,0,0
+web application,Web Application,12,189,web application,Toward an SDN-based web application firewall: Defending against SQL injection attacks,"… Web attacks pose a significant threat to enterprises, as attackers often target web applications
+… the severity of these threats, such as web application firewalls (WAFs). On the other hand, …",0.24834961191931654,0,0
+web application,Web Application,13,166,web application,Machine learning based diabetes prediction and development of smart web application,"… We integrate this model in a web application using python flask web development framework.
+The results of this study suggest that an appropriate preprocessing pipeline on clinical …",0.24614476978542993,0,0
+web application,Web Application,14,174,web application,ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application,"… for CKD classification and to develop a web-based application for CKD prediction. The proposed
+… Additionally, we present a real-time web-based application to operationalize the model, …",0.24349887554447058,0,0
+web application,Web Application,15,156,web application,BEST: a web application for comprehensive biomarker exploration on large-scale data in solid tumors,"… Currently, several open-access web servers that allow users … Although these web applications
+are valuable and broadly … (BEST), a web-based application for comprehensive biomarker …",0.2407406088276111,0,0
+web application,Web Application,16,188,web application,Performance of Area under the Concentration-Time Curve Estimations of Vancomycin with Limited Sampling by a Newly Developed Web Application: Oda et al.,"… The aim of this study was to validate a newly developed web application, PAT, for AUC … the
+web application using only the trough concentration. Our newly developed web application is …",0.2372221641171252,0,0
+web application,Web Application,17,167,web application,A systematic literature review on the characteristics and effectiveness of web application vulnerability scanners,"… web applications. Theses scanners have the capability of automatically evaluating the security
+of web applications … analysts discover vulnerabilities in web applications. However, these …",0.23644920896344665,0,0
+web application,Web Application,18,170,web application,Signature-based and machine-learning-based web application firewalls: A short survey,"… web applications typically relied on the simple common gateway interface, CGI, protocol
+which spawned C or Perl programs. Attacks were concentrated at underlying web … web server …",0.23207353668985592,0,0
+web application,Web Application,19,179,web application,From prompt injections to sql injection attacks: How protected is your llm-integrated web application?,"… If an application remains vulnerable to these threats, the … -integrated applications, and what
+is their impact on application security? To study this question, we focus on web applications …",0.20731699578556415,0,0
+web application,Web Application,20,151,web application,Web application development with streamlit,"… web applications of their own, from the most basic use cases to crafting complex and distributed
+applications on … should be able to interface their web applications with robust server-side …",0.2007411275715164,0,0
+cyber security,Cyber Security,1,106,cyber security,A systematic literature review on the cyber security,"… of cyber security kinds, why cyber security is important, cyber security framework, cyber
+security tools, and cyber security … Cyber security safeguards the data and integrity of computing …",0.7214234485877206,1,1
+cyber security,Cyber Security,2,111,cyber security,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"… gap between cyber security education and … in cyber security graduates who join the cyber
+security workforce. We designed and performed an opinion survey by using the Cyber Security …",0.5174118533833865,1,1
+cyber security,Cyber Security,3,126,cyber security,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","… In summary, cyber security ensures the security of virtual life on cyber networks. The … under
+the name of cyber security [4]. The primary purpose of cyber security is to secure the data of …",0.5004464435770992,1,1
+cyber security,Cyber Security,4,116,cyber security,Artificial intelligence-based cyber security in the context of industry 4.0—a survey,"… technology has increased the cyber-attack surface. In this … of cyber criminals, to develop
+knowledge for cyber security … based cyber-attacks and to analyze them for deriving cyber security …",0.4701393492584729,1,1
+cyber security,Cyber Security,5,135,cyber security,The role of cyber security in a digitalizing economy: a development perspective,"… , cyber security and information security are not the same thing. (Spremić, 2018) in an article
+titled “Cyber security … the transition from information security to cyber security, primarily as a …",0.453087470854433,1,1
+cyber security,Cyber Security,6,133,cyber security,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"… cyber security risk. We used this expert elicitation process to develop comprehensive definitions
+of cyber security (cybersecurity) and cyber security … significant cyber security risk factors. …",0.45173798312890984,1,1
+cyber security,Cyber Security,7,129,cyber security,The difference between cyber security vs information security,"… differences between cyber security and information security, … of security, which are part of
+the umbrella term: cyber security… a difference between cyber security and information security, …",0.44512207862582676,1,1
+cyber security,Cyber Security,8,104,cyber security,A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments,"… cyber-security methods. In addition, emerging trends and recent developments of cyber security
+and security … review study presented for IT and cyber security researchers will be useful. …",0.4327419716590182,1,1
+cyber security,Cyber Security,9,121,cyber security,Cyber resilience and cyber security issues of intelligent cloud computing systems,"… It is necessary to provide the cyber security of cloud computing according to the … the cyber
+security of this technology is to accurately identify its threats. In this paper, a new cyber security …",0.43064117830784177,1,1
+cyber security,Cyber Security,10,123,cyber security,"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations","… cyber security principles, standards, and protocols. Finally, we discuss some challenges for
+SG cyber-physical systems, cyber-attacks, and cyber security … of the cyber security systems …",0.42642455690344194,1,1
+cyber security,Cyber Security,11,145,cyber security,Cyber security and the Leviathan,"… and of cyber security in Western society. Our findings indicate that cyber security within these
+… We conclude by suggesting implications for cyber-security practitioners, in particular, the …",0.41624336116524285,1,1
+cyber security,Cyber Security,12,147,cyber security,A comprehensive survey of recent internet measurement techniques for cyber security,"… approaches for cyber security must be conducted … cyber security, ranging from threats within
+specific application domains to threats themselves. We provide a taxonomy of cyber security-…",0.4062232929559892,1,1
+cyber security,Cyber Security,13,143,cyber security,"Uniting cyber security and machine learning: Advantages, challenges and future research","… to the machine learning models, improves the performance of the cyber security … cyber
+security and ML. We also discuss the advantages, issues and challenges of uniting cyber security …",0.3909298337189553,1,1
+cyber security,Cyber Security,14,140,cyber security,Artificial intelligence predictions in cyber security: Analysis and early detection of cyber attacks,"… cyber security solutions by addressing the dynamic and constantly-evolving landscape of
+cyber … to applied ML to Predictions Cyber Security of Early Detection of Cyber Attacks."" The aim …",0.3832610804333995,1,1
+cyber security,Cyber Security,15,118,cyber security,Evaluating the cyber security readiness of organizations and its influence on performance,"… their cyber security to prevent and combat cyber-attacks, but studies of factors impacting the
+cyber security … set of factors influencing the cyber security readiness of organizations and the …",0.37288123364307174,1,1
+cyber security,Cyber Security,16,101,cyber security,The recent trends in cyber security: A review,"… advanced cyber security standards along with challenges faced by the cyber security domain…
+new researchers to get acquainted with the recent advancements in Cyber security domain. …",0.36906199502403503,1,1
+cyber security,Cyber Security,17,125,cyber security,"A comprehensive review on cyber-attacks in power systems: Impact analysis, detection, and cyber security","… detection and mitigation of these vulnerable cyber-attacks using advanced computation …
+cyber security challenges such as smart meter security, end-users privacy, electricity theft cyber-…",0.36769147018443715,1,1
+cyber security,Cyber Security,18,114,cyber security,Deep reinforcement learning for cyber security,"… , and especially high-dimensional cyber defense problems. This article presents a … for cyber
+security. We touch on different vital aspects, including DRL-based security methods for cyber…",0.3660927995205404,1,1
+cyber security,Cyber Security,19,141,cyber security,The role of cyber security in advancing sustainable digitalization: Opportunities and challenges,"… integration of cyber security and sustainable digitalization. The paper argues that cyber security
+is … The paper examines the various risks associated with cyber security, such as privacy …",0.35658012825816454,1,1
+cyber security,Cyber Security,20,102,cyber security,"Cyber security: State of the art, challenges and future directions","… shifting cyber threats. This article provides an overview of the state of the art in cyber
+security, … Moreover, we address the future direction of cyber security, presenting the possible …",0.35446376961357245,1,1
+network security,Cyber Security,1,146,cyber security,Artificial intelligence in the cyber security environment,"… comprehend network safety or areas of cyber security issues. … to foresee and distinguish
+data security dangers and failures. … Cyber security Digital protection measures are related with …",0.2658329733614132,0,0
+network security,Cyber Security,2,113,cyber security,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.","… cyber security mentioned in this paper includes threats from outside2 and within systems (known
+as network security … systems, so the goal of cyber security is to protect threats as much …",0.24374752906674546,0,0
+network security,Cyber Security,3,34,machine learning,Machine learning for chemical reactions,"… Machine learning (ML) … using machine-learned neural network potentials. This review
+provides an overview of the questions that can and have been addressed using machine learning …",0.18233714210236987,0,0
+network security,Cyber Security,4,106,cyber security,A systematic literature review on the cyber security,"… of cyber security kinds, why cyber security is important, cyber security framework, cyber
+security tools, and cyber security … Cyber security safeguards the data and integrity of computing …",0.1739217733369033,0,0
+network security,Cyber Security,5,32,machine learning,Machine learning at the network edge: A survey,"… This section describes the low-power hardware that have been used in edge machine
+learning systems. High performance from a deep learning application is only achievable when an …",0.16789586828825864,0,0
+network security,Cyber Security,6,3,machine learning,Amnesiac machine learning,"… It gives EU residents the ability to request deletion of their personal data, including training
+records used to train machine learning models. Unfortunately, Deep Neural Network models …",0.15397226396651695,0,0
+network security,Cyber Security,7,129,cyber security,The difference between cyber security vs information security,"… differences between cyber security and information security, … of security, which are part of
+the umbrella term: cyber security… a difference between cyber security and information security, …",0.14801043244695936,0,0
+network security,Cyber Security,8,182,web application,Early web application attack detection using network traffic analysis,"… data used by the web application. Unlike the main trends in web application attack detection …
+to detect malicious activities towards web applications by exploring web traffic as if it is …",0.13834658570649896,0,0
+network security,Cyber Security,9,168,web application,"ATON: An open-source framework for creating immersive, collaborative and liquid web-apps for cultural heritage","… Web browsers are available on virtually all computing … applications (web-apps) from any
+device, anywhere, as long as internet (or local network) connection is present. Web applications …",0.13793366667892848,0,0
+network security,Cyber Security,10,135,cyber security,The role of cyber security in a digitalizing economy: a development perspective,"… , cyber security and information security are not the same thing. (Spremić, 2018) in an article
+titled “Cyber security … the transition from information security to cyber security, primarily as a …",0.13374991791938012,0,0
+network security,Cyber Security,11,111,cyber security,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"… gap between cyber security education and … in cyber security graduates who join the cyber
+security workforce. We designed and performed an opinion survey by using the Cyber Security …",0.12473837281299607,0,0
+network security,Cyber Security,12,126,cyber security,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","… In summary, cyber security ensures the security of virtual life on cyber networks. The … under
+the name of cyber security [4]. The primary purpose of cyber security is to secure the data of …",0.12064832810392394,0,0
+network security,Cyber Security,13,127,cyber security,"Cyber security techniques, architectures, and design","… Consequently, cyber security is the security of all related networks. It is also related to the
+security … concerned spheres where every security is a critical issue, which are discussed below: …",0.11765421827062089,0,0
+network security,Cyber Security,14,133,cyber security,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"… cyber security risk. We used this expert elicitation process to develop comprehensive definitions
+of cyber security (cybersecurity) and cyber security … significant cyber security risk factors. …",0.10890562437805602,0,0
+network security,Cyber Security,15,104,cyber security,A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments,"… cyber-security methods. In addition, emerging trends and recent developments of cyber security
+and security … review study presented for IT and cyber security researchers will be useful. …",0.10432603938170006,0,0
+network security,Cyber Security,16,145,cyber security,Cyber security and the Leviathan,"… and of cyber security in Western society. Our findings indicate that cyber security within these
+… We conclude by suggesting implications for cyber-security practitioners, in particular, the …",0.10034853130334523,0,0
+network security,Cyber Security,17,147,cyber security,A comprehensive survey of recent internet measurement techniques for cyber security,"… approaches for cyber security must be conducted … cyber security, ranging from threats within
+specific application domains to threats themselves. We provide a taxonomy of cyber security-…",0.0979328792541615,0,0
+network security,Cyber Security,18,120,cyber security,Artificial intelligence in cyber security,"… For security preparation, the instance of a cyber security device specialist is one. This skilled
+system enables substantially the collection and instruction of security initiatives to optimize …",0.09576379122080181,0,0
+network security,Cyber Security,19,143,cyber security,"Uniting cyber security and machine learning: Advantages, challenges and future research","… to the machine learning models, improves the performance of the cyber security … cyber
+security and ML. We also discuss the advantages, issues and challenges of uniting cyber security …",0.0942459107252516,0,0
+network security,Cyber Security,20,121,cyber security,Cyber resilience and cyber security issues of intelligent cloud computing systems,"… It is necessary to provide the cyber security of cloud computing according to the … the cyber
+security of this technology is to accurately identify its threats. In this paper, a new cyber security …",0.09127079534905538,0,0
+software security,Cyber Security,1,196,web application,Meta-DiSc 2.0: a web application for meta-analysis of diagnostic test accuracy data,"… and an enhanced web-based interface to improve user experience. Our objective was to
+develop a new version of the Meta-DiSc software as a web application (app) to summarize DTA …",0.18757041508159855,0,0
+software security,Cyber Security,2,22,machine learning,OMLT: Optimization & machine learning toolkit,"… The optimization and machine learning toolkit (OMLT) is an open-source software package
+… models, which have been trained using machine learning, into larger optimization problems. …",0.18596415976687428,0,0
+software security,Cyber Security,3,106,cyber security,A systematic literature review on the cyber security,"… of cyber security kinds, why cyber security is important, cyber security framework, cyber
+security tools, and cyber security … Cyber security safeguards the data and integrity of computing …",0.13063643147390636,0,0
+software security,Cyber Security,4,129,cyber security,The difference between cyber security vs information security,"… differences between cyber security and information security, … of security, which are part of
+the umbrella term: cyber security… a difference between cyber security and information security, …",0.1111738590563104,0,0
+software security,Cyber Security,5,135,cyber security,The role of cyber security in a digitalizing economy: a development perspective,"… , cyber security and information security are not the same thing. (Spremić, 2018) in an article
+titled “Cyber security … the transition from information security to cyber security, primarily as a …",0.1004624760412807,0,0
+software security,Cyber Security,6,111,cyber security,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"… gap between cyber security education and … in cyber security graduates who join the cyber
+security workforce. We designed and performed an opinion survey by using the Cyber Security …",0.0936937082661055,0,0
+software security,Cyber Security,7,126,cyber security,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions","… In summary, cyber security ensures the security of virtual life on cyber networks. The … under
+the name of cyber security [4]. The primary purpose of cyber security is to secure the data of …",0.090621586615604,0,0
+software security,Cyber Security,8,127,cyber security,"Cyber security techniques, architectures, and design","… Consequently, cyber security is the security of all related networks. It is also related to the
+security … concerned spheres where every security is a critical issue, which are discussed below: …",0.08837264551663092,0,0
+software security,Cyber Security,9,133,cyber security,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,"… cyber security risk. We used this expert elicitation process to develop comprehensive definitions
+of cyber security (cybersecurity) and cyber security … significant cyber security risk factors. …",0.08180138612448334,0,0
+software security,Cyber Security,10,104,cyber security,A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments,"… cyber-security methods. In addition, emerging trends and recent developments of cyber security
+and security … review study presented for IT and cyber security researchers will be useful. …",0.07836156010341067,0,0
+software security,Cyber Security,11,145,cyber security,Cyber security and the Leviathan,"… and of cyber security in Western society. Our findings indicate that cyber security within these
+… We conclude by suggesting implications for cyber-security practitioners, in particular, the …",0.07537396716696802,0,0
+software security,Cyber Security,12,146,cyber security,Artificial intelligence in the cyber security environment,"… comprehend network safety or areas of cyber security issues. … to foresee and distinguish
+data security dangers and failures. … Cyber security Digital protection measures are related with …",0.07434332580699642,0,0
+software security,Cyber Security,13,147,cyber security,A comprehensive survey of recent internet measurement techniques for cyber security,"… approaches for cyber security must be conducted … cyber security, ranging from threats within
+specific application domains to threats themselves. We provide a taxonomy of cyber security-…",0.07355951830680894,0,0
+software security,Cyber Security,14,120,cyber security,Artificial intelligence in cyber security,"… For security preparation, the instance of a cyber security device specialist is one. This skilled
+system enables substantially the collection and instruction of security initiatives to optimize …",0.07193026904839686,0,0
+software security,Cyber Security,15,143,cyber security,"Uniting cyber security and machine learning: Advantages, challenges and future research","… to the machine learning models, improves the performance of the cyber security … cyber
+security and ML. We also discuss the advantages, issues and challenges of uniting cyber security …",0.07079015595307776,0,0
+software security,Cyber Security,16,121,cyber security,Cyber resilience and cyber security issues of intelligent cloud computing systems,"… It is necessary to provide the cyber security of cloud computing according to the … the cyber
+security of this technology is to accurately identify its threats. In this paper, a new cyber security …",0.06855548200448276,0,0
+software security,Cyber Security,17,113,cyber security,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.","… cyber security mentioned in this paper includes threats from outside2 and within systems (known
+as network security … systems, so the goal of cyber security is to protect threats as much …",0.06816687086978855,0,0
+software security,Cyber Security,18,144,cyber security,Cyber security threats on digital banking,"… the problem of security in internet banking … cyber security, which is usually unknown to
+most people [8]. This problem is also important since this is associated with the financial security …",0.0677857843915228,0,0
+software security,Cyber Security,19,101,cyber security,The recent trends in cyber security: A review,"… advanced cyber security standards along with challenges faced by the cyber security domain…
+new researchers to get acquainted with the recent advancements in Cyber security domain. …",0.06683029518511434,0,0
+software security,Cyber Security,20,149,cyber security,Learning from cyber security incidents: A systematic review and future research agenda,"… Cyber security incidents are now prevalent in many organisations. Arguably, those who can
+learn from security … on organisational learning from cyber security incidents and identifying …",0.06520369844109397,0,0
+mobile application,Mobile Application,1,61,mobile application,Deep learning methods for accurate skin cancer recognition and mobile application,"… to be used in a mobile application. To be able to build an effective mobile application, it is …
+for our mobile application to be able to classify skin lesions using a common smartphone. …",0.33128397403482157,1,1
+mobile application,Mobile Application,2,80,mobile application,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,"… Uber mobile application are … mobile application was introduced. By comparing it to the
+previous methods that the users have been utilizing, the overall evaluation of mobile applications’ …",0.28929270154853304,0,0
+mobile application,Mobile Application,3,90,mobile application,User interface design & evaluation of mobile applications,"… different mobile application designs for student projects besides the evaluation of mobile
+application … of the interface design of the mobile application for student projects to solve design …",0.2791519609257311,0,0
+mobile application,Mobile Application,4,92,mobile application,Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,"… This study explores the effectiveness of mobile applications … perception and usage of mobile
+application patterns used in … This paper outlines a survey on preferences for mobile apps …",0.2619859857545235,0,0
+mobile application,Mobile Application,5,98,mobile application,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"… of mobile application integrated … mobile application, which is connected over IoT environment.
+In this manner, the farmer can continuously track the status of his field using the mobile app…",0.26178194966375323,0,0
+mobile application,Mobile Application,6,67,mobile application,Augmented reality technology adoption: Case of a mobile application in Turkey,"… ) technology has become widespread in mobile devices. As with user … of applications in
+mobile augmented reality (MAR) applications. In this study, the factors affecting the use of mobile …",0.24613208619532437,0,0
+mobile application,Mobile Application,7,54,mobile application,A study of mobile app use for teaching and research in higher education,"… discusses mobile app use as opposed to mobile … mobile app use in academia, we identify
+library studies that have been conducted on the selection, use or development of mobile apps (…",0.24394575744048966,0,0
+mobile application,Mobile Application,8,57,mobile application,The role of mobile application acceptance in shaping e-customer service,"… This study focused on examining the role of mobile application (app) … the role of mobile app
+acceptance in shaping e-customer service. The multiple features associated with mobile app …",0.23474521601671805,0,0
+mobile application,Mobile Application,9,85,mobile application,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"… mobile application to automatically classify pests using a deep-learning solution for supporting
+specialists and farmers. The developed application … our developed application for on-line …",0.2299531599192101,0,0
+mobile application,Mobile Application,10,71,mobile application,What works best to engage participants in mobile app interventions and e-health: a scoping review,"… articles that featured the terms engagement, mobile app/mobile health, and adult. After
+applying … the shift toward mobile interventions and the benefits of using mobile apps, this review …",0.22106454139814508,0,0
+mobile application,Mobile Application,11,96,mobile application,Customers' perceived value and dining choice through mobile apps in Indonesia,"… with mobile applications (hereafter, “app” or “apps”). For example, mobile apps such as “…
+Alibaba-owned mobile app “Taobao” have gained popularity in mobile commerce (hereafter…",0.21742354937595593,0,0
+mobile application,Mobile Application,12,52,mobile application,A survey of performance optimization for mobile applications,"… Finally, we explain how the function and performance of mobile applications can affect
+users. 2.1 Mobile Devices Mobile devices are embedded systems that consist of hardware and …",0.21553769570017015,0,0
+mobile application,Mobile Application,13,69,mobile application,Towards a new learning experience through a mobile application with augmented reality in engineering education,"… The application of augmented reality (AR) in education … effect of an augmented reality mobile
+application (NetAR) that … established to work with the application for three weeks for three …",0.2043771496548044,0,0
+mobile application,Mobile Application,14,59,mobile application,Determinants of mobile apps adoption among young adults: theoretical extension and analysis,"… Mobile applications (apps) are now the most essential part of daily life. In this context, this …
+to use mobile apps. b) analyze the factors determining the usage of mobile applications in an …",0.20211115496173784,0,0
+mobile application,Mobile Application,15,82,mobile application,The impact of mobile application features on children's language and literacy learning: a systematic review,"… Mobile touchscreen applications present new opportunities … on the impact of features of
+mobile applications on children’s … four features of mobile touchscreen applications: inbuilt …",0.20200759323679385,0,0
+mobile application,Mobile Application,16,63,mobile application,Enhancing user engagement: The role of gamification in mobile apps,"… users’ engagement with their mobile apps. However, more … Data from 276 users of a mobile
+gamified app were analyzed … help developers design more effective gamified mobile apps. …",0.18887625451249965,0,0
+mobile application,Mobile Application,17,62,mobile application,Features and Functionalities of Medical Mobile Applications for the Endemic Phase of COVID‐19: Review and Content Analysis,"… mobile applications to aid users in choosing a suitable app … of their current or future mobile
+applications to improve quality. … features of COVID-19 mobile applications available in Apple’…",0.1840218270700168,0,0
+mobile application,Mobile Application,18,65,mobile application,Mobile apps for SME business sustainability during COVID-19 and onwards,"… mobile apps to improve their business efficiency during the pandemic. We aim to recognize
+effective measures and actions taken by SMEs that have turned to mobile-app-… mobile-app-…",0.17883435418915575,0,0
+mobile application,Mobile Application,19,56,mobile application,Design guidelines of mobile apps for older adults: systematic review and thematic analysis,"… on a specific mobile app and were … mobile apps and how to better design such apps with
+these users in mind. Conclusions: The compiled guidelines support the design of mobile apps …",0.17705471577046963,0,0
+mobile application,Mobile Application,20,68,mobile application,Faster segment anything: Towards lightweight sam for mobile applications,"… edge devices, like mobile phones. In this work, we aim to make SAM mobile-friendly by …
+smaller, making it more suitable for mobile applications. Moreover, we show that MobileSAM can …",0.17502209147792208,0,0
+android application,Mobile Application,1,83,mobile application,Consistency analysis of data-usage purposes in mobile apps,"… Our analysis of 23.1k Android apps has also shown PurPliance to detect contradictions in …
+69.66% of apps, indicating the prevalence of inconsistencies of data practices in mobile apps. …",0.22950799152475312,0,0
+android application,Mobile Application,2,177,web application,Open Lab: A web application for running and sharing online experiments,"… as a web application on a desktop computer (the “Install app” link is displayed in the top
+navigation bar). Progressive web application technology makes the application accessible via …",0.046064912279943866,0,0
+android application,Mobile Application,3,61,mobile application,Deep learning methods for accurate skin cancer recognition and mobile application,"… to be used in a mobile application. To be able to build an effective mobile application, it is …
+for our mobile application to be able to classify skin lesions using a common smartphone. …",0.04556021319143831,0,0
+android application,Mobile Application,4,85,mobile application,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,"… mobile application to automatically classify pests using a deep-learning solution for supporting
+specialists and farmers. The developed application … our developed application for on-line …",0.044642661611192846,0,0
+android application,Mobile Application,5,157,web application,DeepCrop: Deep learning-based crop disease prediction with web application,"… a smart web application for real-life crop disease prediction. The proposed web application
+aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …",0.04243902740971958,0,0
+android application,Mobile Application,6,69,mobile application,Towards a new learning experience through a mobile application with augmented reality in engineering education,"… The application of augmented reality (AR) in education … effect of an augmented reality mobile
+application (NetAR) that … established to work with the application for three weeks for three …",0.039677384456491424,0,0
+android application,Mobile Application,7,199,web application,CLC-Pred 2.0: a freely available web application for in silico prediction of human cell line cytotoxicity and molecular mechanisms of action for druglike …,"… In 2018, we developed the first freely available web application (… Here, we present a new
+version of this web application: CLC-… extension of the capabilities of the initial web application. …",0.03634953256218337,0,0
+android application,Mobile Application,8,180,web application,A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,"… an institutional web application to corroborate the efficiency of this approach. Despite the
+web application's sensitivity, this study has used various versions of three web applications of …",0.03521804499033187,0,0
+android application,Mobile Application,9,179,web application,From prompt injections to sql injection attacks: How protected is your llm-integrated web application?,"… If an application remains vulnerable to these threats, the … -integrated applications, and what
+is their impact on application security? To study this question, we focus on web applications …",0.03519595219234867,0,0
+android application,Mobile Application,10,80,mobile application,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,"… Uber mobile application are … mobile application was introduced. By comparing it to the
+previous methods that the users have been utilizing, the overall evaluation of mobile applications’ …",0.03330975581059904,0,0
+android application,Mobile Application,11,174,web application,ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application,"… for CKD classification and to develop a web-based application for CKD prediction. The proposed
+… Additionally, we present a real-time web-based application to operationalize the model, …",0.03320597897431964,0,0
+android application,Mobile Application,12,182,web application,Early web application attack detection using network traffic analysis,"… data used by the web application. Unlike the main trends in web application attack detection …
+to detect malicious activities towards web applications by exploring web traffic as if it is …",0.032646647093284846,0,0
+android application,Mobile Application,13,188,web application,Performance of Area under the Concentration-Time Curve Estimations of Vancomycin with Limited Sampling by a Newly Developed Web Application: Oda et al.,"… The aim of this study was to validate a newly developed web application, PAT, for AUC … the
+web application using only the trough concentration. Our newly developed web application is …",0.03235002287506349,0,0
+android application,Mobile Application,14,181,web application,Meta‐analytic structural equation modeling made easy: A tutorial and web application for one‐stage MASEM,"… application webMASEM is created using the package Shiny (Version 1.4.0.2) which facilitates
+the creation of web applications … The application consists of four main tabs and a “Home” …",0.0321859648026151,0,0
+android application,Mobile Application,15,90,mobile application,User interface design & evaluation of mobile applications,"… different mobile application designs for student projects besides the evaluation of mobile
+application … of the interface design of the mobile application for student projects to solve design …",0.032142130108062994,0,0
+android application,Mobile Application,16,98,mobile application,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,"… of mobile application integrated … mobile application, which is connected over IoT environment.
+In this manner, the farmer can continuously track the status of his field using the mobile app…",0.030142111336532496,0,0
+android application,Mobile Application,17,198,web application,A geometric morphometric method and web application for identifying honey bee species (Apis spp.) using only forewings,"… We also developed a web application that can be used to identify the Apis species using an
+… s3-website. us-east-2.amazonaws.com/. Our data and web application are useful for field …",0.026987786898576574,0,0
+android application,Mobile Application,18,184,web application,A multi-objective active learning platform and web app for reaction optimization,"… We developed EDBOWebApp, a web application that makes the Bayesian optimizer more
+… This web application can be accessed at https://www.edbowebapp.com/ through a web …",0.02693958117579111,0,0
+android application,Mobile Application,19,186,web application,… detection and quantification of floating marine macro-litter in aerial images: Introducing a novel deep learning approach connected to a web application in R,"… FMML in aerial images, and a web-oriented application that allows users to identify FMML
+… The Shiny package of R was then used to develop a user-friendly application to identify and …",0.026107439071584665,0,0
+android application,Mobile Application,20,166,web application,Machine learning based diabetes prediction and development of smart web application,"… We integrate this model in a web application using python flask web development framework.
+The results of this study suggest that an appropriate preprocessing pipeline on clinical …",0.02591840578040049,0,0

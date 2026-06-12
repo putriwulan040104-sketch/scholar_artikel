@@ -1,13 +1,41 @@
 Kategori,Judul Artikel,Jumlah Kemunculan
-Machine Learning,Machine learning and deep learning: A review of methods and applications,2
-Machine Learning,Machine learning and deep learning: C. Janiesch et al.,2
-Machine Learning,An overview of machine learning classification techniques,2
-Web Development,Llms in web development: Evaluating llm-generated php code unveiling vulnerabilities and limitations,2
-Web Development,Cognitive disabilities and web accessibility: a survey into the Brazilian web development community,2
-Web Development,Accessible web development: Opportunities to improve the education and practice of web development with a screen reader,1
 Cyber Security,A systematic literature review on the cyber security,3
 Cyber Security,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,3
+Cyber Security,"A comprehensive review of cyber security vulnerabilities, threats, attacks, and solutions",3
+Cyber Security,The role of cyber security in a digitalizing economy: a development perspective,3
+Cyber Security,Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation,3
 Cyber Security,The difference between cyber security vs information security,3
+Cyber Security,A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments,3
+Cyber Security,Cyber resilience and cyber security issues of intelligent cloud computing systems,3
+Cyber Security,Cyber security and the Leviathan,3
+Cyber Security,A comprehensive survey of recent internet measurement techniques for cyber security,3
+Machine Learning,"Machine learning: Algorithms, real-world applications and research directions",3
+Machine Learning,Machine learning and deep learning: C. Janiesch et al.,2
+Machine Learning,When machine learning meets privacy: A survey and outlook,2
+Machine Learning,An overview of machine learning classification techniques,2
+Machine Learning,"Impact of machine learning on management, healthcare and agriculture",2
+Machine Learning,Financial applications of machine learning: A literature review,2
+Machine Learning,Scientific machine learning benchmarks,2
+Machine Learning,Machine learning in chemical engineering: A perspective,2
+Machine Learning,Machine learning and deep learning applications-a vision,2
+Machine Learning,Machine learning foundations,2
 Mobile Application,Deep learning methods for accurate skin cancer recognition and mobile application,2
+Mobile Application,Consumer adoption of the Uber mobile application: Insights from diffusion of innovation theory and technology acceptance model,2
 Mobile Application,User interface design & evaluation of mobile applications,2
-Mobile Application,User experience analysis on mobile application design using user experience questionnaire,2
+Mobile Application,Design and implementation of smart hydroponics farming using IoT‐Based AI controller with mobile application system,2
+Mobile Application,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,2
+Mobile Application,Towards a new learning experience through a mobile application with augmented reality in engineering education,2
+Mobile Application,Enhancing English vocabulary learning through mobile apps: A new paradigm in educational technology,1
+Mobile Application,Augmented reality technology adoption: Case of a mobile application in Turkey,1
+Mobile Application,A study of mobile app use for teaching and research in higher education,1
+Mobile Application,The role of mobile application acceptance in shaping e-customer service,1
+Web Application,A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,3
+Web Application,Early web application attack detection using network traffic analysis,3
+Web Application,A multi-objective active learning platform and web app for reaction optimization,3
+Web Application,Machine learning based diabetes prediction and development of smart web application,3
+Web Application,A survey on web application penetration testing,3
+Web Application,Open Lab: A web application for running and sharing online experiments,2
+Web Application,A new mobile application of agricultural pests recognition using deep learning in cloud computing system,2
+Web Application,DeepCrop: Deep learning-based crop disease prediction with web application,2
+Web Application,CLC-Pred 2.0: a freely available web application for in silico prediction of human cell line cytotoxicity and molecular mechanisms of action for druglike …,2
+Web Application,From prompt injections to sql injection attacks: How protected is your llm-integrated web application?,2

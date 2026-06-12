@@ -23,6 +23,7 @@ import {
   Lightbulb,
   Filter,
   Network,
+  Loader2,
 } from "lucide-react";
 import { getCategoryOptions, getUser, searchArticles, type CategoryOption } from "@/api/api";
 
@@ -35,15 +36,16 @@ export interface SearchFilters {
 }
 
 const popularSearches = [
-  "Web Accessibility",
-  "Frontend Development",
-  "Android Application",
-  "Artificial Intelligence",
-  "Data Mining",
-  "Information System",
-  "Machine Learning Classification",
+  "Machine Learning",
   "Deep Learning",
-  "E-Learning",
+  "Data Mining",
+  "Web Application",
+  "Website Application",
+  "Web System",
+  "Cyber Security",
+  "Network Security",
+  "Mobile Application",
+  "Android Application",
 ];
 
 const HISTORY_STORAGE_KEY = "search_history";
@@ -178,6 +180,7 @@ export function Searchpage() {
     }
   };
 
+  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   const handleSearch = async () => {
     if (!query.trim()) return;
 
@@ -191,6 +194,8 @@ export function Searchpage() {
       kategori,
       jumlahKemunculan,
     };
+    const startedAt = Date.now();
+    const minLoadingTime = 1800;
 
     try {
       const res = await searchArticles(
@@ -202,6 +207,11 @@ export function Searchpage() {
         kategori || undefined,
         jumlahKemunculan || undefined
       );
+
+      const elapsed = Date.now() - startedAt;
+      if (elapsed < minLoadingTime) {
+        await wait(minLoadingTime - elapsed);
+      }
 
       if (res.status === "success" && res.data && res.data.length > 0) {
         saveHistory(query);
@@ -221,6 +231,11 @@ export function Searchpage() {
       }
     } catch (error) {
       console.error(error);
+
+      const elapsed = Date.now() - startedAt;
+      if (elapsed < minLoadingTime) {
+        await wait(minLoadingTime - elapsed);
+      }
       setNoResult(true);
       setLoading(false);
     }
@@ -379,11 +394,19 @@ export function Searchpage() {
             <button
               onClick={handleSearch}
               disabled={loading}
-              className="rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 px-5 py-2 font-medium text-white transition hover:opacity-90 disabled:opacity-60"
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 px-5 py-2 font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
             >
+              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               {loading ? "Mencari..." : "Cari"}
             </button>
           </div>
+
+          {loading && (
+            <div className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-blue-600">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Artikel sedang dicari...</span>
+            </div>
+          )}
 
           <div className="mt-6">
             <p className="text-sm text-slate-500 mb-3">Coba pencarian lainnya</p>
