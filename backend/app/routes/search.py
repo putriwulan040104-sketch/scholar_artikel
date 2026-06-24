@@ -11,9 +11,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 COSINE_DIR = os.path.join(BASE_DIR, "data", "cosine_results")
 
 @search_bp.route("/results")
-def results():
-    # Baca semua CSV di folder cosine_results lalu gabungkan
-    
+def results():    
     all_files = glob.glob(os.path.join(COSINE_DIR, "*.csv"))
     
     if not all_files:

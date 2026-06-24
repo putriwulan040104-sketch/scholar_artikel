@@ -17,7 +17,7 @@ sys.path.insert(0, BASE_DIR)
 from app.db import supabase
 from src.preprocessing.clean_text import clean_text
 from src.preprocessing.tokenizing import tokenizing
-from src.preprocessing.stopwords_id import get_stopwords
+from src.preprocessing.stopwords import get_stopwords
 from src.preprocessing.stemming import stemming
 
 TFIDF_DIR = os.path.join(BASE_DIR, "data", "tfidf")
