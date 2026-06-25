@@ -17,6 +17,7 @@ import {
   Star,
   UsersRound,
   Waypoints,
+  List,
 } from "lucide-react"
 
 function hasSearchContext(): boolean {
@@ -68,6 +69,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           url: "/citation-graph",
           icon: <Waypoints />,
           disabled: !graphEnabled,
+        },
+        {
+          title: "Daftar Artikel",
+          url: "/daftar-artikel",
+          icon: <List />,
         },
         {
           title: "Artikel Tersimpan",

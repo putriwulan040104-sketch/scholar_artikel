@@ -1,26 +1,33 @@
-from app.search_engine import search_articles, get_category_options
+from app.search_engine import search_articles, get_category_options, get_cosine_catalog
 from flask import Blueprint, jsonify, request
-import pandas as pd
-import os
-import glob
 
 search_bp = Blueprint("search", __name__)
 
-# Path ke folder cosine_results (pakai absolut path)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-COSINE_DIR = os.path.join(BASE_DIR, "data", "cosine_results")
-
 @search_bp.route("/results")
 def results():    
-    all_files = glob.glob(os.path.join(COSINE_DIR, "*.csv"))
-    
-    if not all_files:
-        return jsonify({"error": "No CSV files found"}), 404
-    
-    df_list = [pd.read_csv(f) for f in all_files]
-    df = pd.concat(df_list, ignore_index=True)
-    
-    return jsonify(df.to_dict(orient="records"))
+    result = get_cosine_catalog()
+    return jsonify(result["articles"])
+
+
+@search_bp.route("/cosine-results", methods=["GET"])
+def cosine_results():
+    result = get_cosine_catalog(
+        query=request.args.get("query"),
+        kategori=request.args.get("kategori") or request.args.get("category"),
+        year_start=request.args.get("year_start"),
+        year_end=request.args.get("year_end"),
+        jenis_artikel=request.args.get("jenis_artikel"),
+        sort_by=request.args.get("sort_by") or "query_rank",
+    )
+
+    return jsonify({
+        "status": "success",
+        "total": result["total"],
+        "total_all": result["total_all"],
+        "data": result["articles"],
+        "queries": result["queries"],
+        "categories": result["categories"],
+    })
 
 @search_bp.route("/categories", methods=["GET"])  # /api/search/categories
 def categories():

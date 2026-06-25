@@ -652,6 +652,78 @@ export interface CategoryOption {
   count: number;
 }
 
+export interface CosineArticle {
+  id: number;
+  query: string;
+  rank?: number | null;
+  title: string;
+  authors: string;
+  year?: number | null;
+  source?: string | null;
+  category: string;
+  abstract?: string | null;
+  similarity_score: number;
+  occurrence?: number;
+  interpretation?: string | null;
+  pdf_url?: string | null;
+  url?: string | null;
+  access_url?: string | null;
+  is_pdf?: boolean | string;
+  scrape_status?: string | null;
+}
+
+export interface CosineResultParams {
+  query?: string;
+  kategori?: string;
+  yearStart?: number;
+  yearEnd?: number;
+  jenisArtikel?: string;
+  sortBy?: string;
+}
+
+export async function getCosineResults(filters: CosineResultParams = {}): Promise<{
+  status: string;
+  data?: CosineArticle[];
+  total?: number;
+  total_all?: number;
+  queries?: CategoryOption[];
+  categories?: CategoryOption[];
+  message?: string;
+}> {
+  try {
+    const params = new URLSearchParams();
+
+    if (filters.query) params.set("query", filters.query);
+    if (filters.kategori) params.set("kategori", filters.kategori);
+    if (filters.yearStart) params.set("year_start", String(filters.yearStart));
+    if (filters.yearEnd) params.set("year_end", String(filters.yearEnd));
+    if (filters.jenisArtikel) params.set("jenis_artikel", filters.jenisArtikel);
+    if (filters.sortBy) params.set("sort_by", filters.sortBy);
+
+    const queryString = params.toString();
+    const res = await fetch(`${BASE_URL}/cosine-results${queryString ? `?${queryString}` : ""}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        status: "error",
+        message: data?.message || "Gagal mengambil hasil cosine",
+      };
+    }
+
+    return {
+      status: "success",
+      data: Array.isArray(data?.data) ? data.data : [],
+      total: Number(data?.total ?? 0),
+      total_all: Number(data?.total_all ?? 0),
+      queries: Array.isArray(data?.queries) ? data.queries : [],
+      categories: Array.isArray(data?.categories) ? data.categories : [],
+    };
+  } catch {
+    return { status: "error", message: "Gagal koneksi ke server" };
+  }
+}
+
 export async function getCategoryOptions(): Promise<{
   status: string;
   data?: CategoryOption[];

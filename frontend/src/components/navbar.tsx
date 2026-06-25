@@ -37,6 +37,7 @@ export default function Navbar() {
     if (pathname.startsWith("/dashboard")) return "Dashboard";
     if (pathname.startsWith("/search")) return "Eksplorasi";
     if (pathname.startsWith("/citation-graph")) return "Jaringan Sitasi";
+    if (pathname.startsWith("/daftar-artikel")) return "Daftar Artikel";
     if (pathname.startsWith("/favorite")) return "Artikel Tersimpan";
     if (pathname.startsWith("/super-admin/dashboard")) return "Dashboard";
     if (pathname.startsWith("/super-admin/publications")) return "Kelola Publikasi";
