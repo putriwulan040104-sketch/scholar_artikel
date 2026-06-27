@@ -22,9 +22,10 @@ import {
 
 function hasSearchContext(): boolean {
   try {
+    const query = (localStorage.getItem("lastSearchQuery") || "").trim()
     const raw = localStorage.getItem("lastSearchPublicationIds")
     const parsed = raw ? JSON.parse(raw) : []
-    return Array.isArray(parsed) && parsed.length > 0
+    return Boolean(query) && Array.isArray(parsed) && parsed.length > 0
   } catch {
     return false
   }
@@ -74,6 +75,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           title: "Daftar Artikel",
           url: "/daftar-artikel",
           icon: <List />,
+          disabled: !graphEnabled,
         },
         {
           title: "Artikel Tersimpan",

@@ -562,7 +562,6 @@ export default function Page() {
             totalOccurrences={cardTotalOccurrences}
             paperCount={paperCount}
             totalMatched={totalMatched}
-            kategori={activeFilters.kategori}
           />
 
           <div className="px-4 lg:px-6">
@@ -576,6 +575,20 @@ export default function Page() {
           </div>
 
           <DataTable data={tableData} />
+
+          <div className="px-4 pb-6 lg:px-6">
+            <button
+              type="button"
+              onClick={() =>
+                navigate(`/daftar-artikel?query=${encodeURIComponent(query)}`, {
+                  state: { query },
+                })
+              }
+              className="inline-flex items-center rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+            >
+              Lihat semua artikel
+            </button>
+          </div>
         </div>
       </div>
     </div>
