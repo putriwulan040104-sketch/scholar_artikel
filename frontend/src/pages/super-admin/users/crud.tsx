@@ -37,9 +37,9 @@ interface UserCrudDialogProps {
 }
 
 const titleByMode: Record<UserCrudMode, string> = {
-  create: "Tambah User",
-  edit: "Edit User",
-  delete: "Hapus User",
+  create: "Tambah Pengguna",
+  edit: "Edit Pengguna",
+  delete: "Hapus Pengguna",
 };
 
 export function UserCrudDialog({

@@ -91,7 +91,7 @@ export function PublicationDialog({
           <div className="space-y-5">
             <p className="text-sm text-muted-foreground">
               Publikasi <strong>{publication?.title || "-"}</strong> akan dihapus permanen.
-              Relasi sitasi yang masih terhubung dapat membuat penghapusan ditolak database.
+              Relasi artikel yang masih terhubung dapat membuat penghapusan ditolak database.
             </p>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>

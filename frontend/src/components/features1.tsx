@@ -11,7 +11,7 @@ const features = [
   {
     title: "Relasi Penelitian Terlihat",
     description:
-      "Citation Network yang memvisualisasikan hubungan antar penelitian.",
+      "Jaringan artikel yang memvisualisasikan kesamaan referensi antar penelitian.",
     icon: Share2,
     color: "bg-teal-100 text-teal-600",
   },

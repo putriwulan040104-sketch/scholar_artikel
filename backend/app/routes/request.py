@@ -5,17 +5,15 @@ from datetime import datetime, timezone
 from flask import Blueprint, jsonify, request
 from supabase import create_client, Client
 from app.services.user_service import _validate_super_admin
-from app.services.activity.activity_log_service import log_activity
+from backend.app.services.activity_log_service import log_activity
 
 request_bp = Blueprint("request_bp", __name__)
 
 ARTICLE_REQUEST_TABLES = ["article_requests", "article_requests"]
 REQUEST_STATUSES = {"pending", "processing", "done", "rejected"}
 
-
 def get_supabase() -> Client:
     supabase_url = os.getenv("SUPABASE_URL")
-    # fallback supaya tetap jalan jika env lama masih SUPABASE_KEY
     supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY")
 
     if not supabase_url:
@@ -24,7 +22,6 @@ def get_supabase() -> Client:
         raise ValueError("SUPABASE_SERVICE_ROLE_KEY atau SUPABASE_KEY belum di-set di .env")
 
     return create_client(supabase_url, supabase_key)
-
 
 def send_dev_email(payload: dict) -> None:
     smtp_host = os.getenv("SMTP_HOST")
@@ -45,20 +42,19 @@ def send_dev_email(payload: dict) -> None:
     msg.set_content(
         f"""Ada request artikel baru:
 
-Nama: {payload['nama']}
-Email: {payload['email']}
-Kata Kunci: {payload['kata_kunci']}
-Judul Artikel: {payload.get('judul_artikel') or '-'}
-Keterangan: {payload.get('keterangan_tambahan') or '-'}
-Dikirim pada: {payload['created_at']}
-"""
+        Nama: {payload['nama']}
+        Email: {payload['email']}
+        Kata Kunci: {payload['kata_kunci']}
+        Judul Artikel: {payload.get('judul_artikel') or '-'}
+        Keterangan: {payload.get('keterangan_tambahan') or '-'}
+        Dikirim pada: {payload['created_at']}
+        """
     )
 
     with smtplib.SMTP(smtp_host, smtp_port) as server:
         server.starttls()
         server.login(smtp_user, smtp_pass)
         server.send_message(msg)
-
 
 def _normalize_request(row: dict) -> dict:
     return {
@@ -73,7 +69,6 @@ def _normalize_request(row: dict) -> dict:
         "updatedAt": row.get("updated_at"),
     }
 
-
 def _execute_on_request_table(action):
     supabase = get_supabase()
     last_error = None
@@ -86,14 +81,12 @@ def _execute_on_request_table(action):
 
     raise last_error
 
-
 def _get_token():
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.startswith("Bearer "):
         return None
 
     return auth_header.replace("Bearer ", "", 1).strip()
-
 
 @request_bp.route("/request-article", methods=["POST"])
 def request_article():
@@ -139,7 +132,6 @@ def request_article():
             {"status": "error", "message": f"Gagal mengirim permintaan: {str(e)}"}
         ), 500
 
-
 @request_bp.route("/article-requests", methods=["GET"])
 def list_article_requests():
     token = _get_token()
@@ -173,7 +165,6 @@ def list_article_requests():
             "status": "error",
             "message": str(error),
         }), 400
-
 
 @request_bp.route("/article-requests/<request_id>/status", methods=["PUT"])
 def update_article_request_status(request_id):

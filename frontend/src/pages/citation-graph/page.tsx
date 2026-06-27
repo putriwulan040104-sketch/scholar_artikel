@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import {
   getCitationGraphData,
   searchArticles,
+  type ArticleRelationType,
   type CitationGraphEdge,
   type CitationGraphNode,
 } from "@/api/api";
@@ -53,6 +54,9 @@ export default function CitationGraphPage() {
   const [queryMatchedIds, setQueryMatchedIds] = useState<number[]>([]);
   const [queryArticles, setQueryArticles] = useState<QueryArticleLite[]>([]);
   const [queryTotalMatched, setQueryTotalMatched] = useState<number>(0);
+  const [relationType, setRelationType] = useState<ArticleRelationType>(
+    "bibliographic_coupling",
+  );
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -88,6 +92,7 @@ export default function CitationGraphPage() {
         let yearStart: number | undefined;
         let yearEnd: number | undefined;
         let jenisArtikel: string | undefined;
+        let jenisAnalisis: ArticleRelationType | undefined;
         let kategori: string | undefined;
         let jumlahKemunculan: string | undefined;
         const rawFilters = localStorage.getItem("lastSearchFilters");
@@ -96,6 +101,12 @@ export default function CitationGraphPage() {
           if (parsed?.yearStart) yearStart = Number(parsed.yearStart);
           if (parsed?.yearEnd) yearEnd = Number(parsed.yearEnd);
           if (parsed?.jenisArtikel) jenisArtikel = parsed.jenisArtikel;
+          if (parsed?.jenisAnalisis) {
+            jenisAnalisis = parsed.jenisAnalisis as ArticleRelationType;
+            setRelationType(jenisAnalisis);
+          } else {
+            setRelationType("bibliographic_coupling");
+          }
           if (parsed?.kategori) kategori = parsed.kategori;
           if (parsed?.jumlahKemunculan) {
             jumlahKemunculan = parsed.jumlahKemunculan;
@@ -110,6 +121,8 @@ export default function CitationGraphPage() {
           jenisArtikel,
           kategori,
           jumlahKemunculan,
+          undefined,
+          jenisAnalisis,
         );
         if (res.status !== "success" || !Array.isArray(res.data)) {
           setQueryMatchedIds([]);
@@ -150,7 +163,6 @@ export default function CitationGraphPage() {
           ) || 0,
         );
 
-        // Simpan konteks terbaru agar sidebar / page lain sinkron
         localStorage.setItem("lastSearchPublicationIds", JSON.stringify(ids));
         window.dispatchEvent(new Event("search-context-updated"));
       } catch {
@@ -207,7 +219,7 @@ export default function CitationGraphPage() {
         return;
       }
 
-      const res = await getCitationGraphData(activeArticleIds);
+      const res = await getCitationGraphData(activeArticleIds, relationType);
       if (res.status === "error") {
         setError(res.message || "Gagal memuat graph.");
         setLoading(false);
@@ -219,7 +231,7 @@ export default function CitationGraphPage() {
       setLoading(false);
     };
     run();
-  }, [activeArticleIds]);
+  }, [activeArticleIds, relationType]);
 
   const displayNodes = useMemo(() => {
     if (!filterIds.size) return [];
@@ -309,6 +321,10 @@ export default function CitationGraphPage() {
         source: Number(e.source),
         target: Number(e.target),
         weight: Number(e.weight || 1),
+        sharedReferences: e.details?.shared_references || [],
+        sharedKeywords: e.details?.shared_keywords || [],
+        sharedAuthors: e.details?.shared_authors || [],
+        relationType: e.relation_type || relationType,
       }))
       .filter(
         (e) =>
@@ -346,13 +362,7 @@ export default function CitationGraphPage() {
     autoFocusedGraphRef.current = graphIdentity;
     const mostConnectedNode = [...graphModel.gNodes]
       .filter((node) => node.degree > 0)
-      .sort((left, right) => {
-        const leftCitations = graphModel.inDegreeById.get(left.id) || 0;
-        const rightCitations = graphModel.inDegreeById.get(right.id) || 0;
-        return (
-          right.degree - left.degree || rightCitations - leftCitations
-        );
-      })[0];
+      .sort((left, right) => right.degree - left.degree)[0];
 
     const timeoutId = window.setTimeout(() => {
       setSelectedNodeId(mostConnectedNode?.id ?? null);
@@ -371,39 +381,55 @@ export default function CitationGraphPage() {
 
   const selectedRelations = useMemo(() => {
     if (selectedNodeId === null) {
-      return { outgoing: [], incoming: [] };
+      return { connected: [] };
     }
 
-    const outgoing = graphModel.gLinks
-      .filter((link) => getLinkNodeId(link.source) === selectedNodeId)
-      .map((link) => ({
-        node: nodeById.get(getLinkNodeId(link.target)),
-        weight: link.weight,
-      }))
+    const connected = graphModel.gLinks
+      .filter((link) => {
+        const sourceId = getLinkNodeId(link.source);
+        const targetId = getLinkNodeId(link.target);
+        return sourceId === selectedNodeId || targetId === selectedNodeId;
+      })
+      .map((link) => {
+        const sourceId = getLinkNodeId(link.source);
+        const otherId =
+          sourceId === selectedNodeId
+            ? getLinkNodeId(link.target)
+            : sourceId;
+        return {
+          node: nodeById.get(otherId),
+          weight: link.weight,
+          sharedReferences: link.sharedReferences,
+          sharedKeywords: link.sharedKeywords,
+          sharedAuthors: link.sharedAuthors,
+          relationType: link.relationType || null,
+        };
+      })
       .filter(
         (
           relation,
-        ): relation is { node: GraphNode; weight: number } =>
+        ): relation is {
+          node: GraphNode;
+          weight: number;
+          sharedReferences: string[];
+          sharedKeywords: string[];
+          sharedAuthors: string[];
+          relationType: string | null;
+        } =>
           Boolean(relation.node),
       )
       .sort((left, right) => right.weight - left.weight);
 
-    const incoming = graphModel.gLinks
-      .filter((link) => getLinkNodeId(link.target) === selectedNodeId)
-      .map((link) => ({
-        node: nodeById.get(getLinkNodeId(link.source)),
-        weight: link.weight,
-      }))
-      .filter(
-        (
-          relation,
-        ): relation is { node: GraphNode; weight: number } =>
-          Boolean(relation.node),
-      )
-      .sort((left, right) => right.weight - left.weight);
-
-    return { outgoing, incoming };
+    return { connected };
   }, [graphModel.gLinks, nodeById, selectedNodeId]);
+
+  const connectedNodeIds = useMemo(
+    () =>
+      new Set(
+        selectedRelations.connected.map((relation) => relation.node.id),
+      ),
+    [selectedRelations.connected],
+  );
 
   const toggleFavorite = (node: GraphNode) => {
     const current = readFavorites();
@@ -418,9 +444,7 @@ export default function CitationGraphPage() {
       return;
     }
 
-    const inCount = graphModel.inDegreeById.get(node.id) || 0;
-    const outCount = graphModel.outDegreeById.get(node.id) || 0;
-    const score = inCount + outCount;
+    const score = graphModel.degreeById.get(node.id) || 0;
 
     const payload: FavoriteItem = {
       id: node.id,
@@ -458,9 +482,9 @@ export default function CitationGraphPage() {
         Kembali
       </Button>
       <div>
-        <h1 className="text-xl font-semibold">Jaringan Sitasi</h1>
+        <h1 className="text-xl font-semibold">Jaringan Relasi Artikel</h1>
         <p className="text-sm text-muted-foreground">
-          Visualisasi relasi sitasi antar publikasi.
+          Visualisasi hubungan artikel berdasarkan referensi yang sama.
         </p>
       </div>
 
@@ -472,7 +496,7 @@ export default function CitationGraphPage() {
           </p>
         </Card>
         <Card className="p-4">
-          <p className="text-sm text-muted-foreground">Total Relasi Sitasi</p>
+          <p className="text-sm text-muted-foreground">Total Relasi Artikel</p>
           <p className="text-2xl font-semibold">{displayEdges.length}</p>
         </Card>
         <Card className="p-4">
@@ -499,12 +523,15 @@ export default function CitationGraphPage() {
       <RelationDetails
         selectedNode={selectedNode}
         selectedRelations={selectedRelations}
+        relationType={relationType}
         onSelectNode={setSelectedNodeId}
       />
 
       <TopArticles
         graphModel={graphModel}
         favoriteIds={favoriteIds}
+        selectedNodeId={selectedNodeId}
+        connectedNodeIds={connectedNodeIds}
         onFocusNode={focusNodeFromList}
         onToggleFavorite={toggleFavorite}
       />

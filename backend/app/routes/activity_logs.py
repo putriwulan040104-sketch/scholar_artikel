@@ -1,18 +1,14 @@
 from flask import Blueprint, jsonify, request
-
-from app.services.activity.activity_log_service import get_activity_logs
+from app.services.activity_log_service import get_activity_logs
 from app.services.user_service import _validate_super_admin
 
-
 activity_logs_bp = Blueprint("activity_logs", __name__)
-
 
 def _get_token():
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.startswith("Bearer "):
         return ""
     return auth_header.replace("Bearer ", "", 1).strip()
-
 
 @activity_logs_bp.route("/admin/activity-logs", methods=["GET"])
 def list_activity_logs():
@@ -38,4 +34,4 @@ def list_activity_logs():
             "status": "error",
             "message": str(error),
         }), 400
-
+    

@@ -150,7 +150,6 @@ export default function DetailPublicationPage() {
 
   return (
     <div className="min-h-screen px-6 py-8">
-      {/* Back */}
       <Button
         variant="ghost"
         className="mb-6 gap-2 text-muted-foreground"
@@ -160,14 +159,10 @@ export default function DetailPublicationPage() {
         Kembali
       </Button>
 
-      {/* Title */}
       <h1 className="text-3xl font-bold mb-8">Detail Publikasi</h1>
 
-      {/* Card */}
-      <Card className="rounded-2xl border bg-white shadow-sm p-8 max-w-5xl">
-        {/* Header */}
+      <Card className="rounded-2xl border bg-white shadow-sm p-8 max-w-6xl">
         <div className="flex items-start justify-between gap-6">
-          {/* LEFT - Title, Authors, Journal */}
           <div className="space-y-4 flex-1">
             <h2 className="text-3xl font-bold leading-tight">
               {article.title}
@@ -185,7 +180,6 @@ export default function DetailPublicationPage() {
             </div>
           </div>
 
-          {/* RIGHT - Year */}
           <div className="flex flex-col items-end gap-3 shrink-0">
             <div className="text-sm text-muted-foreground">
               Year:{" "}
@@ -196,7 +190,6 @@ export default function DetailPublicationPage() {
           </div>
         </div>
 
-        {/* Abstract */}
         <div className="mt-10">
           <h3 className="text-xl font-bold mb-4">Abstrak</h3>
           <p className="text-[16px] leading-8 text-muted-foreground">
@@ -204,10 +197,9 @@ export default function DetailPublicationPage() {
           </p>
         </div>
 
-        {/* Keywords */}
-        <div className="mt-8">
-          <h3 className="text-xl font-bold mb-4">Keywords</h3>
-          {keywordList.length > 0 ? (
+        {keywordList.length > 0 && (
+          <div className="mt-8">
+            <h3 className="text-xl font-bold mb-4">Keywords</h3>
             <div className="flex flex-wrap gap-2">
               {keywordList.map((keyword) => (
                 <span
@@ -218,16 +210,10 @@ export default function DetailPublicationPage() {
                 </span>
               ))}
             </div>
-          ) : (
-            <p className="text-[15px] text-muted-foreground">
-              Keywords tidak tersedia.
-            </p>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Actions */}
         <div className="flex items-center justify-end gap-3 mt-10">
-          {/* Favorite */}
           <Button
             variant={isFavorite ? "default" : "outline"}
             onClick={handleFavorite}
@@ -237,7 +223,6 @@ export default function DetailPublicationPage() {
             {isFavorite ? "Tersimpan" : "Tambah Favorit"}
           </Button>
 
-          {/* PDF hanya muncul jika artikel bisa di-download */}
           {pdfLink && (
             <Button
               onClick={handleOpenPDF}
@@ -248,7 +233,6 @@ export default function DetailPublicationPage() {
             </Button>
           )}
 
-          {/* Source hanya muncul jika PDF tidak tersedia */}
           {sourceLink && (
             <Button
               variant="outline"

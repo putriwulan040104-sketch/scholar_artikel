@@ -1,6 +1,6 @@
 from app.db import supabase
 from app.services.auth import _decode_token
-from app.services.activity.activity_log_service import log_activity
+from backend.app.services.activity_log_service import log_activity
 from app.utils.hash import hash_password
 
 

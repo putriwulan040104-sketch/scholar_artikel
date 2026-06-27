@@ -1,4 +1,5 @@
 import type * as d3 from "d3";
+import type { ArticleRelationType } from "@/api/api";
 
 export type GraphNode = d3.SimulationNodeDatum & {
   id: number;
@@ -15,6 +16,10 @@ export type GraphLink = d3.SimulationLinkDatum<GraphNode> & {
   source: number | string | GraphNode;
   target: number | string | GraphNode;
   weight: number;
+  sharedReferences: string[];
+  sharedKeywords: string[];
+  sharedAuthors: string[];
+  relationType?: ArticleRelationType | string | null;
 };
 
 export type GraphModel = {
@@ -28,17 +33,21 @@ export type GraphModel = {
 export type GraphRelation = {
   node: GraphNode;
   weight: number;
+  sharedReferences: string[];
+  sharedKeywords: string[];
+  sharedAuthors: string[];
+  relationType?: ArticleRelationType | string | null;
 };
 
 export type SelectedRelations = {
-  outgoing: GraphRelation[];
-  incoming: GraphRelation[];
+  connected: GraphRelation[];
 };
 
 export type StoredFilters = {
   yearStart?: string;
   yearEnd?: string;
   jenisArtikel?: string;
+  jenisAnalisis?: string;
   kategori?: string;
   jumlahKemunculan?: string;
 };
@@ -70,6 +79,6 @@ export type GraphTooltip = {
   title: string;
   authors: string;
   year: string;
-  citations: number;
+  relations: number;
   references: number;
 };

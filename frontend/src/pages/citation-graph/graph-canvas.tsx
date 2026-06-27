@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import * as d3 from "d3";
-import { ArrowRight, MousePointerClick } from "lucide-react";
+import { Link2, MousePointerClick } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import type {
   GraphLink,
@@ -48,7 +48,7 @@ export default function GraphCanvas({
     title: "",
     authors: "-",
     year: "-",
-    citations: 0,
+    relations: 0,
     references: 0,
   });
 
@@ -63,28 +63,6 @@ export default function GraphCanvas({
     const nodeById = new Map(
       graphModel.gNodes.map((node) => [node.id, node]),
     );
-    const markerDefinitions = [
-      { id: "citation-arrow", color: "#64748b" },
-      { id: "citation-arrow-outgoing", color: "#2563eb" },
-      { id: "citation-arrow-incoming", color: "#059669" },
-    ];
-
-    const defs = svg.append("defs");
-    markerDefinitions.forEach((marker) => {
-      defs
-        .append("marker")
-        .attr("id", marker.id)
-        .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 18)
-        .attr("refY", 0)
-        .attr("markerWidth", 7)
-        .attr("markerHeight", 7)
-        .attr("orient", "auto")
-        .append("path")
-        .attr("d", "M0,-5L10,0L0,5")
-        .attr("fill", marker.color);
-    });
-
     const zoomBehavior = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.35, 3])
@@ -100,8 +78,12 @@ export default function GraphCanvas({
       .attr("stroke", (edge) => {
         const sourceId = getLinkNodeId(edge.source);
         const targetId = getLinkNodeId(edge.target);
-        if (sourceId === selectedNodeId) return "#2563eb";
-        if (targetId === selectedNodeId) return "#059669";
+        if (
+          sourceId === selectedNodeId ||
+          targetId === selectedNodeId
+        ) {
+          return "#2563eb";
+        }
         return "#64748b";
       })
       .attr("stroke-opacity", (edge) => {
@@ -118,23 +100,16 @@ export default function GraphCanvas({
         const selected =
           sourceId === selectedNodeId || targetId === selectedNodeId;
         return Math.min(4, (selected ? 1.8 : 0.8) + edge.weight * 0.35);
-      })
-      .attr("marker-end", (edge) => {
-        const sourceId = getLinkNodeId(edge.source);
-        const targetId = getLinkNodeId(edge.target);
-        if (sourceId === selectedNodeId) {
-          return "url(#citation-arrow-outgoing)";
-        }
-        if (targetId === selectedNodeId) {
-          return "url(#citation-arrow-incoming)";
-        }
-        return "url(#citation-arrow)";
       });
 
     link.append("title").text((edge) => {
       const source = nodeById.get(getLinkNodeId(edge.source));
       const target = nodeById.get(getLinkNodeId(edge.target));
-      return `${source?.title || "Artikel"} mengutip ${target?.title || "artikel"}`;
+      return (
+        `${source?.title || "Artikel"} dan ` +
+        `${target?.title || "artikel"} memiliki ${edge.weight} ` +
+        "referensi yang sama"
+      );
     });
 
     const circles = root
@@ -148,28 +123,18 @@ export default function GraphCanvas({
       .attr("fill", (node) => {
         if (node.id === selectedNodeId) return "#f59e0b";
         if (
-          selectedRelations.outgoing.some(
+          selectedRelations.connected.some(
             (relation) => relation.node.id === node.id,
           )
         ) {
           return "#2563eb";
-        }
-        if (
-          selectedRelations.incoming.some(
-            (relation) => relation.node.id === node.id,
-          )
-        ) {
-          return "#059669";
         }
         return "#64748b";
       })
       .attr("opacity", (node) => {
         if (selectedNodeId === null || node.id === selectedNodeId) return 1;
         const connected =
-          selectedRelations.outgoing.some(
-            (relation) => relation.node.id === node.id,
-          ) ||
-          selectedRelations.incoming.some(
+          selectedRelations.connected.some(
             (relation) => relation.node.id === node.id,
           );
         return connected ? 1 : 0.25;
@@ -191,10 +156,7 @@ export default function GraphCanvas({
         : graphModel.gNodes.filter(
             (node) =>
               node.id === selectedNodeId ||
-              selectedRelations.outgoing.some(
-                (relation) => relation.node.id === node.id,
-              ) ||
-              selectedRelations.incoming.some(
+              selectedRelations.connected.some(
                 (relation) => relation.node.id === node.id,
               ),
           );
@@ -214,6 +176,32 @@ export default function GraphCanvas({
       .style("pointer-events", "none")
       .text((node) => shortTitle(node.title));
 
+    const relationArrows = root
+      .append("g")
+      .attr("aria-label", "Penanda seluruh relasi artikel")
+      .selectAll<SVGPathElement, GraphLink>("path")
+      .data(graphModel.gLinks)
+      .join("path")
+      .attr("d", "M-5,-4 L5,0 L-5,4 Z")
+      .attr("fill", (edge) => {
+        const sourceId = getLinkNodeId(edge.source);
+        const targetId = getLinkNodeId(edge.target);
+        return sourceId === selectedNodeId || targetId === selectedNodeId
+          ? "#2563eb"
+          : "#64748b";
+      })
+      .attr("opacity", (edge) => {
+        if (selectedNodeId === null) return 0.8;
+        const sourceId = getLinkNodeId(edge.source);
+        const targetId = getLinkNodeId(edge.target);
+        return sourceId === selectedNodeId || targetId === selectedNodeId
+          ? 1
+          : 0.12;
+      })
+      .attr("stroke", "#ffffff")
+      .attr("stroke-width", 1)
+      .style("pointer-events", "none");
+
     circles
       .on("mousemove", (event, node) => {
         if (!graphWrapRef.current) return;
@@ -225,7 +213,7 @@ export default function GraphCanvas({
           title: node.title || `Publication ${node.id}`,
           authors: formatAuthors(node.authors),
           year: node.year ? String(node.year) : "-",
-          citations: graphModel.inDegreeById.get(node.id) || 0,
+          relations: graphModel.degreeById.get(node.id) || 0,
           references: Number(node.referenceCount || 0),
         });
       })
@@ -243,7 +231,7 @@ export default function GraphCanvas({
           .distance((edge) => Math.max(40, 80 - edge.weight * 6))
           .strength(0.6),
       )
-      .force("charge", d3.forceManyBody().strength(-120))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(WIDTH / 2, HEIGHT / 2))
       .force(
         "collision",
@@ -267,6 +255,23 @@ export default function GraphCanvas({
             (node) => (node.x || 0) + getNodeRadius(node.degree) + 5,
           )
           .attr("y", (node) => (node.y || 0) + 4);
+
+        relationArrows.attr("transform", (edge) => {
+          const source = edge.source as GraphNode;
+          const target = edge.target as GraphNode;
+          const sourceX = source.x || 0;
+          const sourceY = source.y || 0;
+          const targetX = target.x || 0;
+          const targetY = target.y || 0;
+          const deltaX = targetX - sourceX;
+          const deltaY = targetY - sourceY;
+          const distance = Math.hypot(deltaX, deltaY) || 1;
+          const targetOffset = getNodeRadius(target.degree) + 9;
+          const x = targetX - (deltaX / distance) * targetOffset;
+          const y = targetY - (deltaY / distance) * targetOffset;
+          const angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
+          return `translate(${x}, ${y}) rotate(${angle})`;
+        });
       });
 
     const drag = d3
@@ -318,8 +323,7 @@ export default function GraphCanvas({
     graphWrapRef,
     onSelectNode,
     selectedNodeId,
-    selectedRelations.incoming,
-    selectedRelations.outgoing,
+    selectedRelations.connected,
   ]);
 
   return (
@@ -327,7 +331,7 @@ export default function GraphCanvas({
       <div className="mb-3 flex flex-col gap-3 rounded-lg bg-slate-50 p-3 text-xs sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-2 text-muted-foreground">
           <MousePointerClick className="h-4 w-4 shrink-0" />
-          Klik titik artikel untuk melihat arah relasinya.
+          Klik titik artikel untuk melihat referensi yang sama.
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <span className="inline-flex items-center gap-1.5">
@@ -335,12 +339,8 @@ export default function GraphCanvas({
             Artikel dipilih
           </span>
           <span className="inline-flex items-center gap-1.5 text-blue-700">
-            <ArrowRight className="h-3.5 w-3.5" />
-            Mengutip
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-emerald-700">
-            <ArrowRight className="h-3.5 w-3.5 rotate-180" />
-            Dikutip oleh
+            <Link2 className="h-3.5 w-3.5" />
+            Memiliki referensi yang sama
           </span>
         </div>
       </div>
@@ -356,7 +356,7 @@ export default function GraphCanvas({
       ) : !graphModel.gNodes.length ? (
         <div className="flex h-[620px] items-center justify-center text-sm text-muted-foreground">
           {hasFilter
-            ? "Belum ada relasi sitasi pada hasil query ini."
+            ? "Belum ada kesamaan referensi pada hasil query ini."
             : "Belum ada hasil query. Silakan lakukan pencarian dulu."}
         </div>
       ) : (

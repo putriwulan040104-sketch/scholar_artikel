@@ -120,7 +120,7 @@ export function ChartBarLabel({
               onClick={onOpenCitationGraph}
             >
               <Network className="h-4 w-4" />
-              <span>Jaringan Sitasi</span>
+              <span>Jaringan Artikel</span>
             </Button>
           )}
         </div>
