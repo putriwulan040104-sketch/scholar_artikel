@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, request
-
 from app.search_engine import (
     get_article_by_id,
     get_category_options,
@@ -9,9 +8,7 @@ from app.search_engine import (
     get_cosine_catalog,
 )
 
-
 search_bp = Blueprint("search", __name__)
-
 
 @search_bp.route("/search", methods=["GET"])
 def search():
@@ -72,12 +69,10 @@ def search():
         "data": result["articles"],
     })
 
-
 @search_bp.route("/results")
 def results():    
     result = get_cosine_catalog()
     return jsonify(result["articles"])
-
 
 @search_bp.route("/cosine-results", methods=["GET"])
 def cosine_results():
@@ -113,14 +108,12 @@ def stats():
         "data": get_stats(),
     })
 
-
 @search_bp.route("/categories", methods=["GET"])
 def categories():
     return jsonify({
         "status": "success",
         "data": get_category_options(),
     })
-
 
 @search_bp.route("/relation-types", methods=["GET"])
 def relation_types():
@@ -136,7 +129,6 @@ def relation_types():
         "status": "success",
         "data": data,
     })
-
 
 @search_bp.route("/detail/<int:article_id>", methods=["GET"])
 def publication_detail(article_id):

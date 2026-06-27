@@ -161,7 +161,7 @@ export default function DetailPublicationPage() {
 
       <h1 className="text-3xl font-bold mb-8">Detail Publikasi</h1>
 
-      <Card className="rounded-2xl border bg-white shadow-sm p-8 max-w-5xl">
+      <Card className="rounded-2xl border bg-white shadow-sm p-8 max-w-6xl">
         <div className="flex items-start justify-between gap-6">
           <div className="space-y-4 flex-1">
             <h2 className="text-3xl font-bold leading-tight">

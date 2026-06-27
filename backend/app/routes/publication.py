@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, request
-
 from app.services.citation.bibliographic_coupling_service import (
     BibliographicBuildInProgressError,
     build_bibliographic_coupling,
@@ -23,9 +22,7 @@ from app.services.processing.publication_service import (
     repair_reference_data,
 )
 
-
 publication_bp = Blueprint("publication", __name__)
-
 
 @publication_bp.route("/extract-publications", methods=["GET"])
 def extract_publications():

@@ -231,7 +231,7 @@ export default function GraphCanvas({
           .distance((edge) => Math.max(40, 80 - edge.weight * 6))
           .strength(0.6),
       )
-      .force("charge", d3.forceManyBody().strength(-120))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(WIDTH / 2, HEIGHT / 2))
       .force(
         "collision",
