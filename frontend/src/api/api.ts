@@ -600,6 +600,7 @@ export async function searchArticles(
   kategori?        : string,
   jumlahKemunculan?: number | string, 
   jumlahPublikasi? : string,
+  jenisAnalisis?   : string,
 ): Promise<SearchResult> {
   try {
     const params = new URLSearchParams({ query, top_k: topK.toString() });
@@ -608,6 +609,7 @@ export async function searchArticles(
     if (yearEnd)          params.append("year_end",          yearEnd.toString());
     if (jenisArtikel)     params.append("jenis_artikel",     jenisArtikel);
     if (kategori)         params.append("kategori",          kategori);
+    if (jenisAnalisis)    params.append("jenis_analisis",    jenisAnalisis);
     if (jumlahKemunculan !== undefined && jumlahKemunculan !== null && String(jumlahKemunculan).trim() !== "") {
       params.append("jumlah_kemunculan", String(jumlahKemunculan));
     }
@@ -648,6 +650,12 @@ export async function getStats() {
 
 export interface CategoryOption {
   value: string;
+  label: string;
+  count: number;
+}
+
+export interface AnalysisTypeOption {
+  value: ArticleRelationType | string;
   label: string;
   count: number;
 }
@@ -702,16 +710,74 @@ export interface CitationGraphNode {
   reference_count?: number;
 }
 
+export async function getAnalysisTypeOptions(): Promise<{
+  status: string;
+  data?: AnalysisTypeOption[];
+  message?: string;
+}> {
+  const candidates = [
+    `${BASE_URL}/relation-types`,
+    `${BASE_URL}/search/relation-types`,
+    `${BASE_URL}/publications/relation-types`,
+  ];
+
+  try {
+    let lastMessage = "Gagal mengambil jenis analisis";
+    for (const url of candidates) {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          lastMessage = `Endpoint tidak ditemukan: ${url}`;
+          continue;
+        }
+        return {
+          status: "error",
+          message: data?.message || `HTTP ${res.status} saat ambil jenis analisis`,
+        };
+      }
+
+      return {
+        status: "success",
+        data: Array.isArray(data?.data) ? data.data : [],
+      };
+    }
+
+    return { status: "error", message: lastMessage };
+  } catch {
+    return { status: "error", message: "Gagal koneksi ke server" };
+  }
+}
+
+export type ArticleRelationType =
+  | "bibliographic_coupling"
+  | "keyword_cooccurrence"
+  | "co_authorship";
+
 export interface CitationGraphEdge {
   source: number;
   target: number;
   weight?: number;
+  relation_type?: ArticleRelationType;
+  details?: {
+    shared_references?: string[];
+    shared_keywords?: string[];
+    shared_authors?: string[];
+  };
 }
 
-export async function getCitationGraphData(articleIds?: number[]) {
-  const query = articleIds && articleIds.length
-    ? `?article_ids=${encodeURIComponent(articleIds.join(","))}`
-    : "";
+export async function getCitationGraphData(
+  articleIds?: number[],
+  relationType: ArticleRelationType = "bibliographic_coupling",
+) {
+  const params = new URLSearchParams({
+    relation_type: relationType,
+  });
+  if (articleIds?.length) {
+    params.set("article_ids", articleIds.join(","));
+  }
+  const query = `?${params.toString()}`;
   const candidates = [
     `${BASE_URL}/graph-data${query}`,
     `${BASE_URL}/publications/graph-data${query}`,

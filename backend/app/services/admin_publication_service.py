@@ -1,11 +1,13 @@
 from app.db import supabase
-from app.services.activity.activity_log_service import log_activity
+from backend.app.services.activity_log_service import log_activity
 from app.services.user_service import _validate_super_admin
 
 
+PUBLICATIONS_TABLE = "cleaned_papers_results"
+DOI_TABLE = "scholar_article_doi"
 PUBLICATION_COLUMNS = (
-    "id,article_id,article_url,pdf_url,title,authors,keywords,"
-    "reference_list,doi,journal,year,created_at"
+    "id,url,pdf_url,title,authors,keywords,reference_list,"
+    "source,category,year"
 )
 
 
@@ -17,12 +19,12 @@ def _as_list(value):
     return [value]
 
 
-def _normalize_publication(publication, category=None):
+def _normalize_publication(publication):
     references = _as_list(publication.get("reference_list"))
     keywords = _as_list(publication.get("keywords"))
     metadata_count = sum(
         bool(publication.get(field))
-        for field in ("title", "authors", "doi", "journal", "year")
+        for field in ("title", "authors", "doi", "source", "year")
     )
     if references and keywords and metadata_count >= 3:
         extraction_status = "complete"
@@ -33,8 +35,8 @@ def _normalize_publication(publication, category=None):
 
     return {
         "id": publication.get("id"),
-        "articleId": publication.get("article_id"),
-        "articleUrl": publication.get("article_url"),
+        "articleId": publication.get("id"),
+        "articleUrl": publication.get("url"),
         "pdfUrl": publication.get("pdf_url"),
         "title": publication.get("title"),
         "authors": _as_list(publication.get("authors")),
@@ -42,9 +44,9 @@ def _normalize_publication(publication, category=None):
         "referenceList": references,
         "referenceCount": len(references),
         "doi": publication.get("doi"),
-        "journal": publication.get("journal"),
+        "journal": publication.get("source"),
         "year": publication.get("year"),
-        "category": category,
+        "category": publication.get("category"),
         "extractionStatus": extraction_status,
         "createdAt": publication.get("created_at"),
     }
@@ -54,17 +56,43 @@ def _publication_audit_data(publication):
     references = _as_list(publication.get("reference_list"))
     return {
         "id": publication.get("id"),
-        "articleId": publication.get("article_id"),
+        "articleId": publication.get("id"),
         "title": publication.get("title"),
         "authors": _as_list(publication.get("authors")),
         "keywords": _as_list(publication.get("keywords")),
         "doi": publication.get("doi"),
-        "journal": publication.get("journal"),
+        "journal": publication.get("source"),
         "year": publication.get("year"),
-        "articleUrl": publication.get("article_url"),
+        "articleUrl": publication.get("url"),
         "pdfUrl": publication.get("pdf_url"),
         "referenceCount": len(references),
     }
+
+
+def _load_doi_by_id(publication_ids):
+    if not publication_ids:
+        return {}
+
+    response = (
+        supabase
+        .table(DOI_TABLE)
+        .select("id,doi")
+        .in_("id", publication_ids)
+        .execute()
+    )
+    return {
+        int(item["id"]): item.get("doi")
+        for item in (response.data or [])
+        if item.get("id") is not None
+    }
+
+
+def _with_doi(publication, doi_by_id):
+    result = dict(publication)
+    publication_id = result.get("id")
+    if publication_id is not None:
+        result["doi"] = doi_by_id.get(int(publication_id))
+    return result
 
 
 def get_admin_publications(token):
@@ -75,36 +103,21 @@ def get_admin_publications(token):
     try:
         response = (
             supabase
-            .table("publications")
+            .table(PUBLICATIONS_TABLE)
             .select(PUBLICATION_COLUMNS)
             .order("id")
             .execute()
         )
 
-        article_ids = [
-            item.get("article_id")
+        publication_ids = [
+            int(item["id"])
             for item in (response.data or [])
-            if item.get("article_id") is not None
+            if item.get("id") is not None
         ]
-        category_by_article_id = {}
-        if article_ids:
-            category_response = (
-                supabase
-                .table("scholar_articles")
-                .select("id,category")
-                .in_("id", article_ids)
-                .execute()
-            )
-            category_by_article_id = {
-                item.get("id"): item.get("category")
-                for item in (category_response.data or [])
-            }
+        doi_by_id = _load_doi_by_id(publication_ids)
 
         publications = [
-            _normalize_publication(
-                item,
-                category_by_article_id.get(item.get("article_id")),
-            )
+            _normalize_publication(_with_doi(item, doi_by_id))
             for item in (response.data or [])
         ]
 
@@ -151,17 +164,17 @@ def update_admin_publication(token, publication_id, data):
         "title": title,
         "authors": _as_list(data.get("authors")),
         "keywords": _as_list(data.get("keywords")),
-        "doi": str(data.get("doi") or "").strip() or None,
-        "journal": str(data.get("journal") or "").strip() or None,
+        "source": str(data.get("journal") or "").strip() or None,
         "year": year,
-        "article_url": str(data.get("articleUrl") or "").strip() or None,
+        "url": str(data.get("articleUrl") or "").strip() or None,
         "pdf_url": str(data.get("pdfUrl") or "").strip() or None,
     }
+    doi = str(data.get("doi") or "").strip() or None
 
     try:
         current_response = (
             supabase
-            .table("publications")
+            .table(PUBLICATIONS_TABLE)
             .select(PUBLICATION_COLUMNS)
             .eq("id", publication_id)
             .single()
@@ -175,9 +188,12 @@ def update_admin_publication(token, publication_id, data):
                 "status_code": 404,
             }
 
+        doi_by_id = _load_doi_by_id([publication_id])
+        current = _with_doi(current, doi_by_id)
+
         response = (
             supabase
-            .table("publications")
+            .table(PUBLICATIONS_TABLE)
             .update(payload)
             .eq("id", publication_id)
             .execute()
@@ -186,7 +202,7 @@ def update_admin_publication(token, publication_id, data):
         if not publication:
             latest = (
                 supabase
-                .table("publications")
+                .table(PUBLICATIONS_TABLE)
                 .select(PUBLICATION_COLUMNS)
                 .eq("id", publication_id)
                 .single()
@@ -200,6 +216,16 @@ def update_admin_publication(token, publication_id, data):
                 "message": "Publikasi tidak ditemukan.",
                 "status_code": 404,
             }
+
+        (
+            supabase
+            .table(DOI_TABLE)
+            .update({"doi": doi})
+            .eq("id", publication_id)
+            .execute()
+        )
+        publication = dict(publication)
+        publication["doi"] = doi
 
         normalized_publication = _normalize_publication(publication)
         log_activity(
@@ -241,7 +267,7 @@ def delete_admin_publication(token, publication_id):
     try:
         current = (
             supabase
-            .table("publications")
+            .table(PUBLICATIONS_TABLE)
             .select(PUBLICATION_COLUMNS)
             .eq("id", publication_id)
             .single()
@@ -254,7 +280,16 @@ def delete_admin_publication(token, publication_id):
                 "status_code": 404,
             }
 
-        supabase.table("publications").delete().eq("id", publication_id).execute()
+        doi_by_id = _load_doi_by_id([publication_id])
+        publication = _with_doi(current.data, doi_by_id)
+
+        (
+            supabase
+            .table(PUBLICATIONS_TABLE)
+            .delete()
+            .eq("id", publication_id)
+            .execute()
+        )
 
         log_activity(
             actor=auth.get("requester"),
@@ -262,13 +297,13 @@ def delete_admin_publication(token, publication_id):
             entity_type="publication",
             entity_id=publication_id,
             description=f"Menghapus publikasi {current.data.get('title') or publication_id}.",
-            old_data=_publication_audit_data(current.data),
+            old_data=_publication_audit_data(publication),
         )
 
         return {
             "status": "success",
             "message": "Publikasi berhasil dihapus.",
-            "data": _normalize_publication(current.data),
+            "data": _normalize_publication(publication),
         }
     except Exception as error:
         log_activity(

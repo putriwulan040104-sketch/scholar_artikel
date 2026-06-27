@@ -1,9 +1,7 @@
 from flask import Blueprint, jsonify, request
-
 from app.services.user_service import create_user, delete_user, get_users, update_user
 
 users_bp = Blueprint("users", __name__)
-
 
 def _get_token():
     auth_header = request.headers.get("Authorization", "")
@@ -12,14 +10,12 @@ def _get_token():
 
     return auth_header.replace("Bearer ", "", 1).strip()
 
-
 def _json_result(result, success_status=200):
     if result["status"] == "error":
         status_code = result.pop("status_code", 400)
         return jsonify(result), status_code
 
     return jsonify(result), success_status
-
 
 @users_bp.route("/users", methods=["GET"])
 def list_users():
@@ -33,7 +29,6 @@ def list_users():
     result = get_users(token)
     return _json_result(result)
 
-
 @users_bp.route("/users", methods=["POST"])
 def store_user():
     token = _get_token()
@@ -46,7 +41,6 @@ def store_user():
     result = create_user(token, request.json or {})
     return _json_result(result, 201)
 
-
 @users_bp.route("/users/<user_id>", methods=["PUT"])
 def edit_user(user_id):
     token = _get_token()
@@ -58,7 +52,6 @@ def edit_user(user_id):
 
     result = update_user(token, user_id, request.json or {})
     return _json_result(result)
-
 
 @users_bp.route("/users/<user_id>", methods=["DELETE"])
 def remove_user(user_id):

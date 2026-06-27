@@ -1,4 +1,5 @@
 import re
+from collections import Counter
 from app.utils.cleaner import clean_text
 
 # INTERNAL HELPERS
@@ -77,34 +78,13 @@ def _normalize_pdf_artifacts(text):
 
     return out
 
-# DOI
-def extract_doi(text):
-    if not text:
-        return None
-
-    first_part = text[:2000]
-
-    pattern = (
-        r"\b10\.\d{4,9}"
-        r"/[-._;()/:A-Z0-9]+\b"
-    )
-
-    matches = re.findall(
-        pattern,
-        first_part,
-        re.I
-    )
-
-    if matches:
-        return matches[0]
-
-    return None
-
 # KEYWORDS
-def extract_keywords(text):
+def _extract_keywords_legacy(text):
     patterns = [
-        r"(?:keywords?|index terms?|kata kunci)"
-        r"\s*[:\-]?\s*([^\n]+)"
+        r"^[ \t]*(?:keywords?|index terms?|kata kunci)"
+        r"[ \t]*(?::|[-\u2013\u2014])[ \t]*([^\n]+)$",
+        r"^[ \t]*(?:keywords?|index terms?|kata kunci)"
+        r"[ \t]*:?[ \t]*$\s*^([^\n]{2,300})$",
     ]
 
     blacklist = [
@@ -117,7 +97,7 @@ def extract_keywords(text):
         match = re.search(
             pattern,
             text,
-            re.I
+            re.I | re.M
         )
 
         if not match:
@@ -149,6 +129,84 @@ def extract_keywords(text):
 
     return []
 
+def extract_keywords(text):
+    if not text:
+        return []
+
+    text = _normalize_pdf_artifacts(text)
+    lines = text.splitlines()
+    heading_pattern = re.compile(
+        r"^\s*(keywords?|index\s+terms?|kata\s+kunci|"
+        r"additional\s+key\s+words\s+and\s+phrases)\s*"
+        r"(?:(:|[-\u2013\u2014])\s*)?(.*)\s*$",
+        re.I,
+    )
+    stop_pattern = re.compile(
+        r"^(?:(?:\d+(?:\.\d+)*)\.?\s+)?"
+        r"(?:abstract|introduction|background|references|"
+        r"ccs concepts|acm reference format|"
+        r"jel classification|acknowledg(?:e)?ments?|"
+        r"correspondence|article history)\b",
+        re.I,
+    )
+
+    for index, raw_line in enumerate(lines):
+        match = heading_pattern.match(raw_line)
+        if not match:
+            continue
+
+        label = match.group(1)
+        separator = match.group(2)
+        remainder = (match.group(3) or "").strip()
+
+        if remainder and not separator and label != label.upper():
+            continue
+
+        keyword_lines = []
+        if remainder:
+            keyword_lines.append(remainder)
+
+        for following_line in lines[index + 1:index + 31]:
+            candidate = following_line.strip()
+            if not candidate:
+                if keyword_lines:
+                    break
+                continue
+            if stop_pattern.match(candidate):
+                break
+            if heading_pattern.match(candidate):
+                break
+            if len(candidate) > 200:
+                break
+            candidate = re.sub(
+                r"^\s*(?:[-*•▪◦]|\d+[\.)])\s*",
+                "",
+                candidate,
+            ).strip()
+            if candidate:
+                keyword_lines.append(candidate)
+
+        cleaned = []
+        for keyword_line in keyword_lines:
+            for keyword in re.split(
+                r"\s*(?:,|;|\|)\s*",
+                keyword_line,
+            ):
+                keyword = clean_text(keyword).strip(" -–—.,;:")
+                if not keyword:
+                    continue
+                if len(keyword) > 80:
+                    continue
+                if stop_pattern.match(keyword):
+                    continue
+                cleaned.append(keyword)
+
+        if cleaned:
+            return list(dict.fromkeys(cleaned))
+    
+    result = _extract_keywords_legacy(text)
+    return result
+
 # REFERENCES
 def extract_reference(text):
     if not text:
@@ -156,30 +214,32 @@ def extract_reference(text):
 
     text = _normalize_pdf_artifacts(text)
 
-    patterns = [
-        r"\breferences\b",
-        r"\breference\b",
-        r"\bbibliography\b",
-        r"\bworks cited\b",
-        r"\bdaftar pustaka\b",
-        r"\breferensi\b",
+    heading_patterns = [
+        r"references?",
+        r"bibliography",
+        r"works\s+cited",
+        r"daftar\s+pustaka",
+        r"referensi",
         r"r\s*e\s*f\s*e\s*r\s*e\s*n\s*c\s*e\s*s",
     ]
 
-    reference_text = None
-
-    for pattern in patterns:
-        match = re.search(
-            pattern,
-            text,
-            re.I
+    heading_matches = []
+    for pattern in heading_patterns:
+        heading_matches.extend(
+            re.finditer(
+                rf"(?im)^[ \t]*(?:\d+[.)]?[ \t]+)?{pattern}"
+                r"[ \t]*[:.]?[ \t]*$",
+                text,
+            )
         )
 
-        if match:
-            reference_text = text[
-                match.end():
-            ]
-            break
+    reference_text = None
+    if heading_matches:
+        heading_match = max(
+            heading_matches,
+            key=lambda match: match.start(),
+        )
+        reference_text = text[heading_match.end():]
 
     if not reference_text:
         return []
@@ -211,6 +271,18 @@ def extract_reference(text):
     reference_text = re.sub(r"\n\s*\d+\s*\n", "\n", reference_text)
 
     lines = reference_text.split("\n")
+    cleaned_lines = [
+        clean_text(line)
+        for line in lines
+        if clean_text(line)
+    ]
+    line_counts = Counter(line.lower() for line in cleaned_lines)
+    numbered_mode = sum(
+        1
+        for line in cleaned_lines
+        if re.match(r"^\d{1,3}[.)]\s+", line)
+    ) >= 2
+
     references = []
     current_ref = ""
 
@@ -220,10 +292,24 @@ def extract_reference(text):
         if not line:
             continue
 
+        if re.fullmatch(r"\d{1,4}", line):
+            continue
+
+        is_numbered_ref = bool(
+            re.match(r"^\d{1,3}[.)]\s+", line)
+        )
+        
+        if (
+            line_counts[line.lower()] > 1
+            and not is_numbered_ref
+        ):
+            continue
+
         is_new_ref = re.match(
             r"""
             ^
             (
+                [-*•]\s+|
                 \[\d+\]|
                 \(\d+\)|
                 \d+[\.\)]|
@@ -234,6 +320,9 @@ def extract_reference(text):
             line,
             re.X
         )
+
+        if numbered_mode:
+            is_new_ref = is_numbered_ref
 
         if len(line) < 5:
             continue
@@ -267,7 +356,8 @@ def extract_reference(text):
         for line in dense:
             starts_new = bool(
                 re.match(
-                    r"^\s*(\[\d+\]|\(\d+\)|\d+[\.\)]|[A-Z][a-z]+,\s*[A-Z])",
+                    r"^\s*([-*•]\s+|\[\d+\]|\(\d+\)|"
+                    r"\d+[\.\)]|[A-Z][a-z]+,\s*[A-Z])",
                     line
                 )
             )
@@ -313,18 +403,3 @@ def extract_reference(text):
         clean_refs.append(ref)
 
     return clean_refs
-
-# YEAR
-def extract_year(text):
-    years = re.findall(
-        r"(?:19|20)\d{2}",
-        text
-    )
-
-    if years:
-        try:
-            return int(years[0])
-        except:
-            return None
-
-    return None

@@ -20,7 +20,13 @@ import {
 import { SectionCards } from "@/components/section-cards";
 import { DataTable } from "@/components/data-table";
 import { ChartBarLabel } from "@/components/bar-chart";
-import { getCategoryOptions, searchArticles, type CategoryOption } from "@/api/api";
+import {
+  getAnalysisTypeOptions,
+  getCategoryOptions,
+  searchArticles,
+  type AnalysisTypeOption,
+  type CategoryOption,
+} from "@/api/api";
 
 interface Article {
   rank: number;
@@ -43,6 +49,7 @@ interface Article {
 
 interface SearchFilters {
   jenisArtikel: string;
+  jenisAnalisis: string;
   yearStart: string;
   yearEnd: string;
   kategori: string;
@@ -56,6 +63,12 @@ const JENIS_ARTIKEL_LABEL: Record<string, string> = {
   close: "Close Source",
 };
 
+const JENIS_ANALISIS_LABEL: Record<string, string> = {
+  bibliographic_coupling: "Bibliographic Coupling",
+  keyword_cooccurrence: "Keyword Co-occurrence",
+  co_authorship: "Co-authorship",
+};
+
 const TREND_TOP_K = 5000;
 
 function buildChips(filters: SearchFilters): { key: FilterKey; label: string }[] {
@@ -65,6 +78,15 @@ function buildChips(filters: SearchFilters): { key: FilterKey; label: string }[]
     chips.push({
       key: "jenisArtikel",
       label: JENIS_ARTIKEL_LABEL[filters.jenisArtikel] ?? filters.jenisArtikel,
+    });
+  }
+
+  if (filters.jenisAnalisis) {
+    chips.push({
+      key: "jenisAnalisis",
+      label:
+        JENIS_ANALISIS_LABEL[filters.jenisAnalisis] ??
+        filters.jenisAnalisis.replaceAll("_", " "),
     });
   }
 
@@ -154,6 +176,7 @@ export default function Page() {
 
   const initFilters: SearchFilters = {
     jenisArtikel: "",
+    jenisAnalisis: "",
     yearStart: "",
     yearEnd: "",
     kategori: "",
@@ -180,6 +203,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const [activeFilters, setActiveFilters] = useState<SearchFilters>(initFilters);
   const [jenisArtikel, setJenisArtikel] = useState(initFilters.jenisArtikel);
+  const [jenisAnalisis, setJenisAnalisis] = useState(initFilters.jenisAnalisis);
   const [yearStart, setYearStart] = useState(initFilters.yearStart);
   const [yearEnd, setYearEnd] = useState(initFilters.yearEnd);
   const [kategori, setKategori] = useState(initFilters.kategori);
@@ -187,6 +211,7 @@ export default function Page() {
     initFilters.jumlahKemunculan
   );
   const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
+  const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
 
   const chips = buildChips(activeFilters);
 
@@ -202,6 +227,7 @@ export default function Page() {
   const chartKey = [
     query,
     activeFilters.jenisArtikel,
+    activeFilters.jenisAnalisis,
     activeFilters.yearStart,
     activeFilters.yearEnd,
     activeFilters.kategori,
@@ -212,6 +238,7 @@ export default function Page() {
 
   const openFilterEditor = () => {
     setJenisArtikel(activeFilters.jenisArtikel);
+    setJenisAnalisis(activeFilters.jenisAnalisis);
     setYearStart(activeFilters.yearStart);
     setYearEnd(activeFilters.yearEnd);
     setKategori(activeFilters.kategori);
@@ -220,14 +247,20 @@ export default function Page() {
   };
 
   useEffect(() => {
-    const loadCategories = async () => {
-      const res = await getCategoryOptions();
-      if (res.status === "success" && Array.isArray(res.data)) {
-        setCategoryOptions(res.data);
+    const loadFilterOptions = async () => {
+      const [categoryRes, analysisRes] = await Promise.all([
+        getCategoryOptions(),
+        getAnalysisTypeOptions(),
+      ]);
+      if (categoryRes.status === "success" && Array.isArray(categoryRes.data)) {
+        setCategoryOptions(categoryRes.data);
+      }
+      if (analysisRes.status === "success" && Array.isArray(analysisRes.data)) {
+        setAnalysisTypeOptions(analysisRes.data);
       }
     };
 
-    loadCategories();
+    loadFilterOptions();
   }, []);
 
   const fetchWithFilters = async (filters: SearchFilters, topK = 10) => {
@@ -250,7 +283,9 @@ export default function Page() {
       filters.yearEnd ? parseInt(filters.yearEnd) : undefined,
       filters.jenisArtikel || undefined,
       filters.kategori || undefined,
-      safeMinOccurrence
+      safeMinOccurrence,
+      undefined,
+      filters.jenisAnalisis || undefined,
     );
   };
 
@@ -261,6 +296,7 @@ export default function Page() {
 
     const newFilters: SearchFilters = {
       jenisArtikel,
+      jenisAnalisis,
       yearStart,
       yearEnd,
       kategori,
@@ -309,6 +345,11 @@ export default function Page() {
     if (key === "jenisArtikel") {
       nextFilters.jenisArtikel = "";
       setJenisArtikel("");
+    }
+
+    if (key === "jenisAnalisis") {
+      nextFilters.jenisAnalisis = "";
+      setJenisAnalisis("");
     }
 
     if (key === "year") {
@@ -503,6 +544,31 @@ export default function Page() {
                               categoryOptions.map((category) => (
                                 <SelectItem key={category.value} value={category.value}>
                                   {category.label}
+                                </SelectItem>
+                              ))
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="flex flex-col gap-2">
+                        <label className="text-sm">Jenis analisis</label>
+                        <Select
+                          onValueChange={setJenisAnalisis}
+                          value={jenisAnalisis}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Pilih analisis" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {analysisTypeOptions.length === 0 ? (
+                              <SelectItem value="analysis-empty" disabled>
+                                Jenis analisis belum tersedia
+                              </SelectItem>
+                            ) : (
+                              analysisTypeOptions.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
                                 </SelectItem>
                               ))
                             )}

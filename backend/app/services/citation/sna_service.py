@@ -1,7 +1,7 @@
 from app.db import supabase
 
-PUBLICATIONS_TABLE = "publications"
-CITATIONS_TABLE = "citations"
+PUBLICATIONS_TABLE = "cleaned_papers_results"
+RELATIONS_TABLE = "article_relations"
 
 def _load_publications():
     all_rows = []
@@ -9,25 +9,14 @@ def _load_publications():
     offset = 0
 
     while True:
-        try:
-            response = (
-                supabase
-                .table(PUBLICATIONS_TABLE)
-                .select("id, article_id, title, year, doi, authors, reference_list")
-                .order("id", desc=False)
-                .range(offset, offset + page_size - 1)
-                .execute()
-            )
-        except Exception:
-            # Backward-compat: beberapa schema lama belum punya article_id
-            response = (
-                supabase
-                .table(PUBLICATIONS_TABLE)
-                .select("id, title, year, doi, authors, reference_list")
-                .order("id", desc=False)
-                .range(offset, offset + page_size - 1)
-                .execute()
-            )
+        response = (
+            supabase
+            .table(PUBLICATIONS_TABLE)
+            .select("id,title,year,authors,reference_list")
+            .order("id", desc=False)
+            .range(offset, offset + page_size - 1)
+            .execute()
+        )
 
         batch = response.data or []
         if not batch:
@@ -76,34 +65,38 @@ def _reference_count(reference_value):
     return 0
 
 
-def _load_citations():
+def _load_relations(relation_type="bibliographic_coupling"):
     try:
         response = (
             supabase
-            .table(CITATIONS_TABLE)
-            .select("citing_id, cited_id, weight")
+            .table(RELATIONS_TABLE)
+            .select(
+                "source_id,target_id,weight,relation_type,details"
+            )
+            .eq("relation_type", relation_type)
             .execute()
         )
     except Exception:
         response = (
             supabase
-            .table(CITATIONS_TABLE)
-            .select("citing_id, cited_id")
+            .table(RELATIONS_TABLE)
+            .select("source_id, target_id, relation_type")
+            .eq("relation_type", relation_type)
             .execute()
         )
     return response.data or []
 
 
-def _build_graph(publications, citations):
+def _build_graph(publications, relations, directed=False):
     node_ids = [int(p["id"]) for p in publications if p.get("id") is not None]
     node_set = set(node_ids)
     out_adj = {node_id: set() for node_id in node_ids}
     in_adj = {node_id: set() for node_id in node_ids}
 
     edge_weights = {}
-    for row in citations:
-        citing_id = row.get("citing_id")
-        cited_id = row.get("cited_id")
+    for row in relations:
+        citing_id = row.get("source_id")
+        cited_id = row.get("target_id")
         if citing_id is None or cited_id is None:
             continue
 
@@ -114,6 +107,9 @@ def _build_graph(publications, citations):
 
         out_adj[c1].add(c2)
         in_adj[c2].add(c1)
+        if not directed:
+            out_adj[c2].add(c1)
+            in_adj[c1].add(c2)
 
         edge = (c1, c2)
         weight = int(row.get("weight") or 1)
@@ -182,12 +178,19 @@ def _weak_component_stats(node_ids, out_adj, in_adj):
     return component_count, largest_component_size
 
 
-def build_sna_metrics(top_n=10):
+def build_sna_metrics(
+    top_n=10,
+    relation_type="bibliographic_coupling",
+):
     publications = _load_publications()
-    citations = _load_citations()
+    relations = _load_relations(relation_type)
     pub_map = {int(p["id"]): p for p in publications if p.get("id") is not None}
 
-    node_ids, edges, out_adj, in_adj = _build_graph(publications, citations)
+    node_ids, edges, out_adj, in_adj = _build_graph(
+        publications,
+        relations,
+        directed=False,
+    )
     pagerank = _compute_pagerank(node_ids, out_adj)
 
     node_count = len(node_ids)
@@ -195,7 +198,7 @@ def build_sna_metrics(top_n=10):
     total_edge_weight = sum(weight for _src, _dst, weight in edges)
     density = 0.0
     if node_count > 1:
-        density = edge_count / (node_count * (node_count - 1))
+        density = (2 * edge_count) / (node_count * (node_count - 1))
 
     isolated_nodes = sum(
         1 for node_id in node_ids
@@ -206,13 +209,15 @@ def build_sna_metrics(top_n=10):
 
     metrics_rows = []
     for node_id in node_ids:
+        degree = len(out_adj[node_id])
         metrics_rows.append({
             "id": node_id,
             "title": pub_map[node_id].get("title"),
             "year": pub_map[node_id].get("year"),
             "doi": pub_map[node_id].get("doi"),
-            "in_degree": len(in_adj[node_id]),
-            "out_degree": len(out_adj[node_id]),
+            "degree": degree,
+            "in_degree": degree,
+            "out_degree": degree,
             "pagerank": round(float(pagerank.get(node_id, 0.0)), 8),
         })
 
@@ -236,21 +241,27 @@ def build_sna_metrics(top_n=10):
         "isolated_nodes": isolated_nodes,
         "component_count": component_count,
         "largest_component_size": largest_component_size,
-        "average_in_degree": round(float(edge_count / node_count), 8) if node_count else 0.0,
-        "average_out_degree": round(float(edge_count / node_count), 8) if node_count else 0.0,
+        "average_degree": round(float(2 * edge_count / node_count), 8) if node_count else 0.0,
+        "average_in_degree": round(float(2 * edge_count / node_count), 8) if node_count else 0.0,
+        "average_out_degree": round(float(2 * edge_count / node_count), 8) if node_count else 0.0,
+        "relation_type": relation_type,
     }
 
     return {
         "summary": summary,
         "top_cited": top_by_in_degree,
+        "top_connected": top_by_in_degree,
         "top_pagerank": top_by_pagerank,
         "node_metrics": metrics_rows,
     }
 
 
-def build_graph_payload(article_ids=None):
+def build_graph_payload(
+    article_ids=None,
+    relation_type="bibliographic_coupling",
+):
     publications = _load_publications()
-    citations = _load_citations()
+    citations = _load_relations(relation_type)
     requested_ids = set()
     if article_ids:
         for raw_id in article_ids:
@@ -263,18 +274,10 @@ def build_graph_payload(article_ids=None):
         filtered_publications = []
         for row in publications:
             pub_id = row.get("id")
-            article_id = row.get("article_id")
-
             keep = False
             if pub_id is not None:
                 try:
                     keep = int(pub_id) in requested_ids
-                except Exception:
-                    keep = False
-
-            if not keep and article_id is not None:
-                try:
-                    keep = int(article_id) in requested_ids
                 except Exception:
                     keep = False
 
@@ -284,30 +287,45 @@ def build_graph_payload(article_ids=None):
         publications = filtered_publications
 
     pub_map = {int(p["id"]): p for p in publications if p.get("id") is not None}
-    node_ids, edges, _out_adj, _in_adj = _build_graph(publications, citations)
+    node_ids, edges, _out_adj, _in_adj = _build_graph(
+        publications,
+        citations,
+        directed=False,
+    )
 
     nodes = []
     for node_id in node_ids:
         data = pub_map[node_id]
         nodes.append({
             "id": node_id,
-            "article_id": data.get("article_id"),
+            "article_id": node_id,
             "title": data.get("title"),
             "year": data.get("year"),
-            "doi": data.get("doi"),
+            "doi": None,
             "authors": data.get("authors"),
             "reference_count": _reference_count(data.get("reference_list")),
         })
 
     edge_payload = []
+    relation_details = {
+        (int(row["source_id"]), int(row["target_id"])): (
+            row.get("details") or {}
+        )
+        for row in citations
+        if row.get("source_id") is not None
+        and row.get("target_id") is not None
+    }
     for c1, c2, weight in edges:
         edge_payload.append({
             "source": c1,
             "target": c2,
             "weight": weight,
+            "relation_type": relation_type,
+            "details": relation_details.get((c1, c2), {}),
         })
 
     return {
         "nodes": nodes,
         "edges": edge_payload,
+        "relation_type": relation_type,
     }

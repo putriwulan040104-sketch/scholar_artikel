@@ -16,8 +16,8 @@ const demoSteps = [
     preview: "results",
   },
   {
-    title: "Eksplorasi Citation Network",
-    description: "Klik artikel untuk melihat jaringan sitasi dan relasi antar penelitian.",
+    title: "Eksplorasi Jaringan Artikel",
+    description: "Klik artikel untuk melihat hubungan berdasarkan referensi yang sama.",
     icon: Network,
     accent: "bg-sky-600",
     preview: "graph",

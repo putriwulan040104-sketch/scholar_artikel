@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 
-from app.services.activity.activity_log_service import get_activity_logs
+from backend.app.services.activity_log_service import get_activity_logs
 from app.services.user_service import _validate_super_admin
 
 

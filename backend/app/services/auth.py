@@ -2,7 +2,7 @@ import os
 import jwt
 import datetime
 from app.db import supabase
-from app.services.activity.activity_log_service import log_activity
+from app.services.activity_log_service import log_activity
 from app.utils.hash import hash_password, verify_password
 
 SECRET_KEY = os.getenv("SECRET_KEY")

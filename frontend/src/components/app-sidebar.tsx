@@ -64,7 +64,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           icon: <Search />,
         },
         {
-          title: "Jaringan Sitasi",
+          title: "Jaringan Artikel",
           url: "/citation-graph",
           icon: <Waypoints />,
           disabled: !graphEnabled,

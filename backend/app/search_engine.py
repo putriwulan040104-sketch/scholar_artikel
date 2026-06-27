@@ -23,6 +23,12 @@ from src.preprocessing.stemming import stemming
 TFIDF_DIR = os.path.join(BASE_DIR, "data", "tfidf")
 COSINE_DIR = os.path.join(BASE_DIR, "data", "cosine_results")
 
+RELATION_TYPE_LABELS = {
+    "bibliographic_coupling": "Bibliographic Coupling",
+    "keyword_cooccurrence": "Keyword Co-occurrence",
+    "co_authorship": "Co-authorship",
+}
+
 
 def _format_authors(value):
     if value is None:
@@ -127,6 +133,49 @@ def _fetch_all_supabase(table_name, selected_columns, batch_size=1000):
     return rows
 
 
+def _fetch_relation_rows(relation_type=None):
+    rows = []
+    offset = 0
+    batch_size = 1000
+
+    while True:
+        query = (
+            supabase.table("article_relations")
+            .select("source_id,target_id,relation_type")
+            .range(offset, offset + batch_size - 1)
+        )
+        if relation_type:
+            query = query.eq("relation_type", relation_type)
+
+        response = query.execute()
+        batch = response.data or []
+        if not batch:
+            break
+
+        rows.extend(batch)
+        offset += batch_size
+        if len(batch) < batch_size:
+            break
+
+    return rows
+
+
+def _get_relation_article_ids(relation_type):
+    relation_type = str(relation_type or "").strip()
+    if not relation_type:
+        return set()
+
+    ids = set()
+    for row in _fetch_relation_rows(relation_type=relation_type):
+        for key in ("source_id", "target_id"):
+            try:
+                ids.add(int(row.get(key)))
+            except (TypeError, ValueError):
+                continue
+
+    return ids
+
+
 def _load_vsm_files():
     tfidf_matrix = sp.load_npz(os.path.join(TFIDF_DIR, "tfidf_matrix.npz"))
 
@@ -147,12 +196,27 @@ def _load_vsm_files():
 
 
 def _load_doc_index_from_supabase(doc_ids, tfidf_documents):
-    selected_columns = (
+    base_columns = (
         "id,title,authors,year,source,category,abstract,"
         "pdf_url,url,scrape_status,cleaned_text"
     )
+    selected_columns = base_columns + ",keywords,reference_list"
 
-    rows = _fetch_all_supabase("cleaned_papers_results", selected_columns)
+    try:
+        rows = _fetch_all_supabase(
+            "cleaned_papers_results",
+            selected_columns,
+        )
+    except Exception as error:
+        if (
+            "keywords" not in str(error).lower()
+            and "reference_list" not in str(error).lower()
+        ):
+            raise
+        rows = _fetch_all_supabase(
+            "cleaned_papers_results",
+            base_columns,
+        )
 
     if not rows:
         raise RuntimeError("Tabel cleaned_papers_results kosong atau gagal diakses.")
@@ -162,8 +226,8 @@ def _load_doc_index_from_supabase(doc_ids, tfidf_documents):
 
     required_cols = [
         "id", "title", "authors", "year", "source", "category",
-        "abstract", "keywords", "pdf_url", "url", "scrape_status",
-        "cleaned_text"
+        "abstract", "keywords", "reference_list", "pdf_url", "url",
+        "scrape_status", "cleaned_text"
     ]
 
     for col in required_cols:
@@ -186,7 +250,7 @@ def _load_doc_index_from_supabase(doc_ids, tfidf_documents):
 
     for col in [
         "title", "authors", "source", "category", "abstract",
-        "keywords", "pdf_url", "url", "scrape_status",
+        "keywords", "reference_list", "pdf_url", "url", "scrape_status",
         "cleaned_text", "document_text"
     ]:
         if col in doc_index.columns:
@@ -311,6 +375,13 @@ def search_articles(
         category_values = results["category"].astype(str).str.strip().str.lower()
         results = results[category_values == selected_category]
 
+    if jenis_analisis is not None and str(jenis_analisis).strip() != "":
+        relation_article_ids = _get_relation_article_ids(jenis_analisis)
+        if relation_article_ids:
+            results = results[results["id"].astype(int).isin(relation_article_ids)]
+        else:
+            results = results.iloc[0:0]
+
     results["pdf_url"] = results["pdf_url"].apply(_clean_cell)
     results["url"] = results["url"].apply(_clean_cell)
 
@@ -414,65 +485,80 @@ def get_category_options():
     ]
 
 
+def get_relation_type_options():
+    counts = Counter()
+
+    for row in _fetch_relation_rows():
+        relation_type = str(row.get("relation_type") or "").strip()
+        if relation_type:
+            counts[relation_type] += 1
+
+    return [
+        {
+            "value": relation_type,
+            "label": RELATION_TYPE_LABELS.get(
+                relation_type,
+                relation_type.replace("_", " ").title(),
+            ),
+            "count": int(count),
+        }
+        for relation_type, count in sorted(counts.items())
+    ]
+
+
 def get_article_by_id(article_id: int):
-    row = doc_index[doc_index["id"] == article_id]
-
-    if row.empty:
-        return None
-
-    r = row.iloc[0]
-
-    pdf_url = _clean_cell(r.get("pdf_url"))
-    url = _clean_cell(r.get("url"))
-    access_url = pdf_url if pdf_url else url
-
-    publication_data = None
+    selected_columns = (
+        "id,title,authors,year,source,category,abstract,doi,"
+        "keywords,reference_list,pdf_url,url,scrape_status"
+    )
 
     try:
-        pub_res = (
-            supabase.table("publications")
-            .select("keywords,journal,doi,article_url,pdf_url")
-            .eq("article_id", article_id)
+        response = (
+            supabase.table("cleaned_papers_results")
+            .select(selected_columns)
+            .eq("id", article_id)
+            .limit(1)
+            .execute()
+        )
+    except Exception as error:
+        if "doi" not in str(error).lower():
+            raise
+        response = (
+            supabase.table("cleaned_papers_results")
+            .select(
+                "id,title,authors,year,source,category,abstract,"
+                "keywords,reference_list,pdf_url,url,scrape_status"
+            )
+            .eq("id", article_id)
             .limit(1)
             .execute()
         )
 
-        if pub_res.data:
-            publication_data = pub_res.data[0]
-    except Exception:
-        publication_data = None
+    if not response.data:
+        return None
 
-    pub_keywords = _format_keywords(
-        publication_data.get("keywords") if publication_data else None
-    )
-    pub_journal = _clean_cell(
-        publication_data.get("journal") if publication_data else None
-    )
-    pub_doi = _clean_cell(
-        publication_data.get("doi") if publication_data else None
-    )
-    pub_article_url = _clean_cell(
-        publication_data.get("article_url") if publication_data else None
-    )
-    pub_pdf_url = _clean_cell(
-        publication_data.get("pdf_url") if publication_data else None
-    )
+    r = response.data[0]
 
-    final_pdf_url = pub_pdf_url or pdf_url
-    final_url = pub_article_url or url
+    pdf_url = _clean_cell(r.get("pdf_url"))
+    url = _clean_cell(r.get("url"))
+    # access_url = pdf_url if pdf_url else url
+
+    final_pdf_url = pdf_url
+    final_url = url
     final_access_url = final_pdf_url or final_url
 
     return {
-        "id": int(r["id"]),
+        "id": int(r.get("id")),
         "title": _clean_cell(r.get("title")) or "",
         "authors": _format_authors(r.get("authors")) or "",
-        "keywords": pub_keywords or _format_keywords(r.get("keywords")),
-        "year": int(r["year"]) if pd.notna(r.get("year")) and str(r.get("year")).strip() else None,
+        "keywords": _format_keywords(r.get("keywords")),
+        "reference_list": _format_keywords(r.get("reference_list")),
+        "year": int(r["year"]) if r.get("year") is not None and str(r.get("year")).strip() else None,
         "source": _clean_cell(r.get("source")) or "",
-        "journal": pub_journal or _clean_cell(r.get("source")) or "",
+        "journal": _clean_cell(r.get("source")) or "",
         "category": _clean_cell(r.get("category")) or "",
         "abstract": _clean_cell(r.get("abstract")) or "",
-        "doi": pub_doi,
+        "doi": _clean_cell(r.get("doi")),
         "pdf_url": final_pdf_url,
         "url": final_url,
         "access_url": final_access_url,

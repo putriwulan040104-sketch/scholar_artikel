@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Link2, Quote, Star } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import type { GraphModel, GraphNode } from "./citation-graph.types";
 import { buildPageItems, formatAuthors } from "./citation-graph.utils";
@@ -9,6 +9,8 @@ const LIST_PAGE_SIZE = 5;
 interface TopArticlesProps {
   graphModel: GraphModel;
   favoriteIds: Set<number>;
+  selectedNodeId: number | null;
+  connectedNodeIds: Set<number>;
   onFocusNode: (node: GraphNode) => void;
   onToggleFavorite: (node: GraphNode) => void;
 }
@@ -16,6 +18,8 @@ interface TopArticlesProps {
 export default function TopArticles({
   graphModel,
   favoriteIds,
+  // selectedNodeId,
+  // connectedNodeIds,
   onFocusNode,
   onToggleFavorite,
 }: TopArticlesProps) {
@@ -24,11 +28,6 @@ export default function TopArticles({
   const rankedNodes = useMemo(
     () =>
       [...graphModel.gNodes].sort((left, right) => {
-        const leftCitations = graphModel.inDegreeById.get(left.id) || 0;
-        const rightCitations = graphModel.inDegreeById.get(right.id) || 0;
-        if (rightCitations !== leftCitations) {
-          return rightCitations - leftCitations;
-        }
         return right.degree - left.degree;
       }),
     [graphModel],
@@ -56,9 +55,10 @@ export default function TopArticles({
       ) : (
         <div className="space-y-3">
           {pagedNodes.map((node) => {
-            const citationCount =
-              graphModel.inDegreeById.get(node.id) || 0;
+            const relationCount = graphModel.degreeById.get(node.id) || 0;
             const referenceCount = Number(node.referenceCount || 0);
+            // const isSelected = node.id === selectedNodeId;
+            // const isConnected = connectedNodeIds.has(node.id);
 
             return (
               <div
@@ -74,6 +74,16 @@ export default function TopArticles({
                 }}
                 className="rounded-lg border bg-white px-4 py-3 text-left transition hover:border-blue-300 hover:bg-blue-50/40"
               >
+                {/* {(isSelected || isConnected) && (
+                  <div className="mb-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700">
+                      <Link2 className="h-3 w-3" />
+                      {isSelected
+                        ? "Artikel yang dipilih"
+                        : "Berelasi dengan artikel dipilih"}
+                    </span>
+                  </div>
+                )} */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
                     <p className="line-clamp-2 text-base font-semibold">
@@ -107,8 +117,8 @@ export default function TopArticles({
 
                 <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-indigo-600">
                   <span className="inline-flex items-center gap-1">
-                    <Quote className="h-3 w-3" />
-                    {citationCount} Sitasi
+                    <Link2 className="h-3 w-3" />
+                    {relationCount} Relasi
                   </span>
                   <span className="inline-flex items-center gap-1">
                     <Quote className="h-3 w-3" />

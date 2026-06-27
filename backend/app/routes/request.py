@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from flask import Blueprint, jsonify, request
 from supabase import create_client, Client
 from app.services.user_service import _validate_super_admin
-from app.services.activity.activity_log_service import log_activity
+from backend.app.services.activity_log_service import log_activity
 
 request_bp = Blueprint("request_bp", __name__)
 

@@ -25,10 +25,18 @@ import {
   Network,
   Loader2,
 } from "lucide-react";
-import { getCategoryOptions, getUser, searchArticles, type CategoryOption } from "@/api/api";
+import {
+  getAnalysisTypeOptions,
+  getCategoryOptions,
+  getUser,
+  searchArticles,
+  type AnalysisTypeOption,
+  type CategoryOption,
+} from "@/api/api";
 
 export interface SearchFilters {
   jenisArtikel: string;
+  jenisAnalisis: string;
   yearStart: string;
   yearEnd: string;
   kategori: string;
@@ -61,9 +69,11 @@ export function Searchpage() {
   const [yearStart, setYearStart] = useState<string>("");
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
+  const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
   const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
   const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
+  const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
 
   const [openRequestDialog, setOpenRequestDialog] = useState(false);
   const [requestForm, setRequestForm] = useState({
@@ -99,14 +109,20 @@ export function Searchpage() {
   }, []);
 
   useEffect(() => {
-    const loadCategories = async () => {
-      const res = await getCategoryOptions();
-      if (res.status === "success" && Array.isArray(res.data)) {
-        setCategoryOptions(res.data);
+    const loadFilterOptions = async () => {
+      const [categoryRes, analysisRes] = await Promise.all([
+        getCategoryOptions(),
+        getAnalysisTypeOptions(),
+      ]);
+      if (categoryRes.status === "success" && Array.isArray(categoryRes.data)) {
+        setCategoryOptions(categoryRes.data);
+      }
+      if (analysisRes.status === "success" && Array.isArray(analysisRes.data)) {
+        setAnalysisTypeOptions(analysisRes.data);
       }
     };
 
-    loadCategories();
+    loadFilterOptions();
   }, []);
 
   useEffect(() => {
@@ -189,6 +205,7 @@ export function Searchpage() {
 
     const activeFilters: SearchFilters = {
       jenisArtikel,
+      jenisAnalisis,
       yearStart,
       yearEnd,
       kategori,
@@ -205,7 +222,9 @@ export function Searchpage() {
         yearEnd ? parseInt(yearEnd) : undefined,
         jenisArtikel || undefined,
         kategori || undefined,
-        jumlahKemunculan || undefined
+        jumlahKemunculan || undefined,
+        undefined,
+        jenisAnalisis || undefined,
       );
 
       const elapsed = Date.now() - startedAt;
@@ -371,6 +390,28 @@ export function Searchpage() {
                     </div>
 
                     <div className="flex flex-col gap-2">
+                      <label className="text-sm">Jenis analisis</label>
+                      <Select onValueChange={setJenisAnalisis} value={jenisAnalisis}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Pilih analisis" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {analysisTypeOptions.length === 0 ? (
+                            <SelectItem value="analysis-empty" disabled>
+                              Jenis analisis belum tersedia
+                            </SelectItem>
+                          ) : (
+                            analysisTypeOptions.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
                       <label className="text-sm font-medium">Jumlah kemunculan</label>
                       <Input
                         type="number"
@@ -496,8 +537,10 @@ export function Searchpage() {
                 <Network className="h-4 w-4" />
               </div>
               <div>
-                <p className="font-medium text-slate-800">Eksplorasi jaringan sitasi</p>
-                <p className="text-slate-500">Temukan artikel penting melalui hubungan sitasi.</p>
+                <p className="font-medium text-slate-800">Eksplorasi relasi artikel</p>
+                <p className="text-slate-500">
+                  Temukan artikel yang terhubung melalui referensi yang sama.
+                </p>
               </div>
             </div>
           </div>
