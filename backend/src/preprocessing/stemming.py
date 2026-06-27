@@ -6,7 +6,6 @@ from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 # Inisialisasi stemmer sekali saja
 factory = StemmerFactory()
 stemmer = factory.create_stemmer()
-
 def stemming(tokens: List[str]) -> List[str]:
     """
     Melakukan stemming Bahasa Indonesia

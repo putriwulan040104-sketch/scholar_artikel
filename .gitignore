@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+backend/venv/
+frontend/node_modules/
+
+.env
+.env.*
+!.env.example

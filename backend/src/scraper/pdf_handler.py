@@ -20,17 +20,10 @@ def normalize_doi(doi):
     return match.group(1).rstrip(".,;)").lower()
 
 
-def download_pdf(pdf_url, title, driver=None):
-    """
-    Download PDF menggunakan requests saja (TIDAK pakai Selenium).
-    Mengembalikan path file jika valid, else None.
-    Driver parameter dipertahankan untuk kompatibilitas tapi tidak digunakan.
-    """
+def download_pdf(pdf_url, title, driver=None):    
     safe_title = re.sub(r"[^\w]+", "_", title)[:80]
     file_path = os.path.join(PDF_DIR, f"{safe_title}.pdf")
-
-    try:
-        headers = {
+    headers = {
             "User-Agent": (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
@@ -40,51 +33,29 @@ def download_pdf(pdf_url, title, driver=None):
             "Accept-Language": "en-US,en;q=0.9",
             "Referer": "https://scholar.google.com/",
         }
-
-        print(f"  🔗 Download PDF: {pdf_url[:70]}")
-
-        response = requests.get(
-            pdf_url,
-            headers=headers,
-            timeout=20,
-            allow_redirects=True,
+    response = requests.get(pdf_url,headers=headers,timeout=20,allow_redirects=True,
             stream=True,
         )
-
-        content_type = response.headers.get("Content-Type", "").lower()
-
+    content_type = response.headers.get("Content-Type", "").lower()
         # Baca chunk pertama untuk cek magic bytes
-        first_chunk = b""
-        all_chunks = []
-        for chunk in response.iter_content(8192):
+    first_chunk = b""
+    all_chunks = []
+    for chunk in response.iter_content(8192):
             if chunk:
                 if not first_chunk:
                     first_chunk = chunk
                 all_chunks.append(chunk)
-
-        is_pdf = "pdf" in content_type or first_chunk[:4] == b"%PDF"
-
-        if response.status_code == 200 and is_pdf:
+    is_pdf = "pdf" in content_type or first_chunk[:4] == b"%PDF"
+    if response.status_code == 200 and is_pdf:
             with open(file_path, "wb") as f:
-                for chunk in all_chunks:
-                    f.write(chunk)
-
+                for chunk in all_chunks:f.write(chunk)
             if is_pdf_valid(file_path):
-                print("  ✅ PDF valid")
+                print("PDF valid")
                 return file_path
             else:
                 os.remove(file_path)
-                print("  ⚠ PDF corrupt, dihapus")
-        else:
-            print(f"  ❌ Bukan PDF (status={response.status_code}, type={content_type[:40]})")
-
-    except requests.exceptions.Timeout:
-        print("  ⏱ Timeout download PDF")
-    except Exception as e:
-        print(f"  ⚠ Error download PDF: {e}")
-
+                print("  ⚠ PDF corrupt, dihapus")       
     return None
-
 
 def is_pdf_valid(path):
     try:

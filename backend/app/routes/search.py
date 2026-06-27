@@ -6,6 +6,7 @@ from app.search_engine import (
     get_relation_type_options,
     get_stats,
     search_articles,
+    get_cosine_catalog,
 )
 
 
@@ -71,6 +72,39 @@ def search():
         "data": result["articles"],
     })
 
+
+@search_bp.route("/results")
+def results():    
+    result = get_cosine_catalog()
+    return jsonify(result["articles"])
+
+
+@search_bp.route("/cosine-results", methods=["GET"])
+def cosine_results():
+    result = get_cosine_catalog(
+        query=request.args.get("query"),
+        kategori=request.args.get("kategori") or request.args.get("category"),
+        year_start=request.args.get("year_start"),
+        year_end=request.args.get("year_end"),
+        jenis_artikel=request.args.get("jenis_artikel"),
+        sort_by=request.args.get("sort_by") or "query_rank",
+    )
+
+    return jsonify({
+        "status": "success",
+        "total": result["total"],
+        "total_all": result["total_all"],
+        "data": result["articles"],
+        "queries": result["queries"],
+        "categories": result["categories"],
+    })
+
+# @search_bp.route("/categories", methods=["GET"])  # /api/search/categories
+# def categories():
+#     return jsonify({
+#         "status": "success",
+#         "data": get_category_options(),
+#     })
 
 @search_bp.route("/stats", methods=["GET"])
 def stats():

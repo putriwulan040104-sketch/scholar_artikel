@@ -1,15 +1,3 @@
-"""
-scholar_scraper.py  –  Scraper artikel Google Scholar dengan validasi DOI bertingkat.
-
-Tingkat validasi:
-  LEVEL A  →  open_access       : DOI ada + PDF diunduh + pdf_doi ada + cocok dengan doi
-  LEVEL B  →  open_access       : DOI ada + PDF diunduh (pdf_doi tidak embed di PDF — umum terjadi)
-  LEVEL C  →  closed_access     : DOI ada + tidak ada PDF / PDF tidak bisa diakses
-
-Artikel TANPA DOI sama sekali → skip (tidak disimpan).
-Browser Selenium HANYA digunakan untuk browsing Scholar, TIDAK untuk download PDF.
-"""
-
 import re
 import time
 from datetime import datetime, timezone
@@ -43,7 +31,6 @@ DOI_PATTERN = re.compile(
 # ─── Helpers ────────────────────────────────────────────────────────────────
 
 def clean_source(rest_text, year):
-    """Ekstrak nama jurnal/konferensi dari string metadata Google Scholar."""
     try:
         ym = re.search(r"\b(19|20)\d{2}\b", rest_text)
         if not ym:
@@ -61,10 +48,7 @@ def clean_source(rest_text, year):
 
 
 def fetch_doi_crossref(title, authors=""):
-    """
-    Cari DOI via CrossRef API berdasarkan judul.
-    Tidak membuka browser — murni HTTP request.
-    """
+    
     try:
         params = {"query.title": title, "rows": 1, "select": "DOI,title,score"}
         if authors:
@@ -90,10 +74,6 @@ def fetch_doi_crossref(title, authors=""):
 
 
 def fetch_doi_from_doi_org(url):
-    """
-    Resolve DOI via doi.org/search jika URL artikel mengandung hint DOI.
-    Coba ekstrak DOI dari redirect final URL.
-    """
     if not url:
         return None
     try:
@@ -103,7 +83,7 @@ def fetch_doi_from_doi_org(url):
             return doi
         # Coba ikuti redirect (tanpa render JS) untuk dapat URL final
         r = requests.head(url, allow_redirects=True, timeout=8,
-                          headers={"User-Agent": "Mozilla/5.0"})
+                headers={"User-Agent": "Mozilla/5.0"})
         final = r.url
         doi = normalize_doi(final)
         if doi:
@@ -115,7 +95,6 @@ def fetch_doi_from_doi_org(url):
 
 
 # ─── Duplikasi checks ───────────────────────────────────────────────────────
-
 def _exists(field, value):
     if not value:
         return False
@@ -131,9 +110,7 @@ is_pdfurl_dup  = lambda v: _exists("pdf_url", v)
 
 
 # ─── Scraper utama ──────────────────────────────────────────────────────────
-
 def _init_driver():
-    """Buat driver baru, retry sekali jika gagal."""
     try:
         return setup_driver(headless=False)
     except Exception as e:
@@ -226,8 +203,8 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
                     # Judul & URL
                     title_el = result.find_element(By.CSS_SELECTOR, ".gs_rt")
                     links    = title_el.find_elements(By.TAG_NAME, "a")
-                    rd["title"] = (links[0].text.strip() if links
-                                   else title_el.text.strip())
+                    rd["title"] = (links[0].text.strip() if links                                   
+                                    else title_el.text.strip())
                     rd["url"]   = links[0].get_attribute("href") if links else ""
 
                     # Metadata
@@ -253,7 +230,7 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
                     rd["citations"] = 0
                     try:
                         cites = result.find_elements(By.CSS_SELECTOR,
-                                                     "a[href*='cites']")
+                                                    "a[href*='cites']")
                         if cites:
                             m = re.search(r"\d+", cites[0].text)
                             rd["citations"] = int(m.group()) if m else 0
@@ -281,9 +258,7 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
             for rd in result_data:
                 if scraped_count >= max_results:
                     break
-
                 print()
-
                 # 1. Judul
                 if not rd.get("title") or len(rd["title"]) < 5:
                     print("⏭  Skip: judul tidak valid")
@@ -370,9 +345,7 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
                             # LEVEL A: DOI ada, PDF ada, pdf_doi ada
                             if pdf_doi == doi_article:
                                 print(f"  ✅ [LEVEL A] DOI cocok: {doi_article}")
-                            else:
-                                # DOI beda — tetap simpan, catat ketidakcocokan
-                                # (bisa terjadi karena versi preprint vs published)
+                            else:                              
                                 print(
                                     f"  ⚠ [LEVEL A*] DOI berbeda (preprint?):\n"
                                     f"     artikel  : {doi_article}\n"
@@ -387,9 +360,6 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
                         print(f"  ℹ PDF gagal diunduh → closed_access")
                 else:
                     print(f"  ℹ Tidak ada PDF → closed_access")
-
-                # LEVEL C: DOI ada, tidak ada PDF (closed_access)
-                # → tetap disimpan karena DOI sudah terverifikasi
 
                 # 9. Bangun baris data
                 row = {

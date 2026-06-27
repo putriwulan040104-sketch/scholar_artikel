@@ -17,7 +17,7 @@ sys.path.insert(0, BASE_DIR)
 from app.db import supabase
 from src.preprocessing.clean_text import clean_text
 from src.preprocessing.tokenizing import tokenizing
-from src.preprocessing.stopwords_id import get_stopwords
+from src.preprocessing.stopwords import get_stopwords
 from src.preprocessing.stemming import stemming
 
 TFIDF_DIR = os.path.join(BASE_DIR, "data", "tfidf")
@@ -464,6 +464,201 @@ def get_stats():
         "per_tahun": per_tahun,
         "per_kategori": per_kategori,
         "top_kemunculan": kemunculan,
+    }
+
+
+def _coerce_bool(value):
+    if isinstance(value, bool):
+        return value
+
+    if pd.isna(value):
+        return False
+
+    return str(value).strip().lower() in ["true", "1", "yes", "y"]
+
+
+def _cosine_base_dataframe():
+    if doc_index.empty or "id" not in doc_index.columns:
+        return pd.DataFrame()
+
+    metadata_cols = [
+        "id", "title", "authors", "year", "source", "category",
+        "abstract", "pdf_url", "url", "scrape_status", "document_text"
+    ]
+    available_cols = [col for col in metadata_cols if col in doc_index.columns]
+    df = doc_index[available_cols].copy()
+
+    df["id"] = pd.to_numeric(df["id"], errors="coerce")
+    df = df.dropna(subset=["id"])
+    df["id"] = df["id"].astype(int)
+    df["category"] = df.get("category", "").fillna("").astype(str).str.strip()
+    df = df[df["category"] != ""].copy()
+
+    if df.empty:
+        return df
+
+    df["query"] = df["category"]
+    df["authors"] = df.get("authors", "").apply(_format_authors)
+    df["year"] = pd.to_numeric(df.get("year"), errors="coerce")
+    df["similarity_score"] = 0.0
+    df["occurrence"] = 0
+
+    for col in ["title", "source", "abstract", "scrape_status", "document_text"]:
+        if col not in df.columns:
+            df[col] = ""
+        df[col] = df[col].fillna("").astype(str).str.strip()
+
+    for category in df["category"].dropna().unique():
+        query_terms = preprocess_query(str(category))
+        category_mask = df["category"].astype(str).str.lower() == str(category).lower()
+
+        if not query_terms:
+            continue
+
+        query_vec = build_query_vector(query_terms)
+        scores = cosine_similarity(query_vec, tfidf_matrix).flatten()
+        row_positions = df.index[category_mask].to_numpy()
+
+        df.loc[category_mask, "similarity_score"] = scores[row_positions]
+        df.loc[category_mask, "occurrence"] = df.loc[
+            category_mask, "document_text"
+        ].apply(lambda text: count_occurrence(text, query_terms))
+
+    df = df.sort_values(
+        ["query", "similarity_score", "id"],
+        ascending=[True, False, True]
+    )
+    df["rank"] = df.groupby("query").cumcount() + 1
+
+    df["interpretation"] = np.select(
+        [
+            df["similarity_score"] >= 0.45,
+            df["similarity_score"] >= 0.20,
+            df["similarity_score"] > 0,
+        ],
+        ["Relevan Tinggi", "Relevan Sedang", "Relevan Rendah"],
+        default="Tidak Relevan"
+    )
+
+    for col in ["pdf_url", "url", "access_url"]:
+        if col not in df.columns:
+            df[col] = None
+        df[col] = df[col].apply(_clean_cell)
+
+    df["access_url"] = df.apply(
+        lambda row: row["access_url"] or row["pdf_url"] or row["url"],
+        axis=1
+    )
+
+    if "is_pdf" in df.columns:
+        df["is_pdf"] = df["is_pdf"].apply(_coerce_bool)
+    else:
+        df["is_pdf"] = False
+
+    df["is_pdf"] = df.apply(
+        lambda row: bool(row["is_pdf"]) or _is_direct_pdf(row["access_url"]),
+        axis=1
+    )
+
+    df = df.drop(columns=["document_text"], errors="ignore")
+
+    return df
+
+
+def get_cosine_catalog(
+    query=None,
+    kategori=None,
+    year_start=None,
+    year_end=None,
+    jenis_artikel=None,
+    sort_by="query_rank",
+):
+    base_df = _cosine_base_dataframe()
+
+    if base_df.empty:
+        return {
+            "articles": [],
+            "total": 0,
+            "total_all": 0,
+            "queries": [],
+            "categories": [],
+        }
+
+    query_options = [
+        {"value": value, "label": value.title(), "count": int(count)}
+        for value, count in base_df["query"].value_counts().sort_index().items()
+    ]
+    category_options = [
+        {"value": value, "label": value, "count": int(count)}
+        for value, count in base_df["category"].value_counts().sort_index().items()
+        if str(value).strip()
+    ]
+
+    df = base_df.copy()
+
+    if query is not None and str(query).strip() != "":
+        selected_query = str(query).strip().lower()
+        df = df[df["query"].str.lower() == selected_query]
+
+    if kategori is not None and str(kategori).strip() != "":
+        selected_category = str(kategori).strip().lower()
+        df = df[df["category"].str.lower() == selected_category]
+
+    if year_start is not None and str(year_start).strip() != "":
+        df = df[df["year"] >= int(year_start)]
+
+    if year_end is not None and str(year_end).strip() != "":
+        df = df[df["year"] <= int(year_end)]
+
+    if jenis_artikel == "open":
+        df = df[df["is_pdf"] == True]
+    elif jenis_artikel == "close":
+        df = df[df["is_pdf"] == False]
+
+    if sort_by == "similarity_asc":
+        df = df.sort_values(["similarity_score", "query"], ascending=[True, True])
+    elif sort_by == "year_desc":
+        df = df.sort_values(["year", "similarity_score"], ascending=[False, False])
+    elif sort_by == "year_asc":
+        df = df.sort_values(["year", "similarity_score"], ascending=[True, False])
+    elif sort_by == "similarity_desc":
+        df = df.sort_values(["similarity_score", "query"], ascending=[False, True])
+    else:
+        df = df.sort_values(["query", "rank", "similarity_score"], ascending=[True, True, False])
+
+    columns = [
+        "id", "query", "rank", "title", "authors", "year", "source",
+        "category", "abstract", "similarity_score", "occurrence",
+        "interpretation", "pdf_url", "url", "access_url", "is_pdf",
+        "scrape_status"
+    ]
+
+    for col in columns:
+        if col not in df.columns:
+            df[col] = None
+
+    df = df[columns].copy()
+    df["rank"] = df["rank"].where(pd.notna(df["rank"]), None)
+    df["year"] = df["year"].where(pd.notna(df["year"]), None)
+
+    records = []
+    for record in df.replace({np.nan: None}).to_dict("records"):
+        if record.get("rank") is not None:
+            record["rank"] = int(record["rank"])
+        if record.get("year") is not None:
+            record["year"] = int(record["year"])
+        record["id"] = int(record["id"])
+        record["similarity_score"] = float(record.get("similarity_score") or 0)
+        record["occurrence"] = int(record.get("occurrence") or 0)
+        record["is_pdf"] = bool(record.get("is_pdf"))
+        records.append(record)
+
+    return {
+        "articles": records,
+        "total": len(records),
+        "total_all": int(len(base_df)),
+        "queries": query_options,
+        "categories": category_options,
     }
 
 

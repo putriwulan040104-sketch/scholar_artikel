@@ -17,7 +17,7 @@ import SuperAdminRequestsPage from "./pages/super-admin/requests/page";
 import SuperAdminUsersPage from "./pages/super-admin/users/page";
 import SuperAdminPublicationsPage from "./pages/super-admin/publications/page";
 import SuperAdminActivityLogsPage from "./pages/super-admin/activity-logs/page";
-
+import DaftarArtikelPage from "./pages/daftar_artikel/page";
 export function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <SidebarProvider>
@@ -107,6 +107,16 @@ function App() {
           <ProtectedRoute>
             <DashboardLayout>
               <CitationGraphPage />
+            </DashboardLayout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/daftar-artikel"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout>
+              <DaftarArtikelPage />
             </DashboardLayout>
           </ProtectedRoute>
         }
