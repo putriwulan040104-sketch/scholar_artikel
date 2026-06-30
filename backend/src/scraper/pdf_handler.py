@@ -33,18 +33,31 @@ def download_pdf(pdf_url, title, driver=None):
             "Accept-Language": "en-US,en;q=0.9",
             "Referer": "https://scholar.google.com/",
         }
-    response = requests.get(pdf_url,headers=headers,timeout=20,allow_redirects=True,
+    try:
+        response = requests.get(
+            pdf_url,
+            headers=headers,
+            timeout=20,
+            allow_redirects=True,
             stream=True,
         )
+    except requests.RequestException as error:
+        print(f"  ⚠ PDF gagal diunduh: {error}")
+        return None
+
     content_type = response.headers.get("Content-Type", "").lower()
         # Baca chunk pertama untuk cek magic bytes
     first_chunk = b""
     all_chunks = []
-    for chunk in response.iter_content(8192):
+    try:
+        for chunk in response.iter_content(8192):
             if chunk:
                 if not first_chunk:
                     first_chunk = chunk
                 all_chunks.append(chunk)
+    except requests.RequestException as error:
+        print(f"  ⚠ PDF gagal dibaca: {error}")
+        return None
     is_pdf = "pdf" in content_type or first_chunk[:4] == b"%PDF"
     if response.status_code == 200 and is_pdf:
             with open(file_path, "wb") as f:
@@ -66,10 +79,7 @@ def is_pdf_valid(path):
 
 
 def extract_doi_from_pdf(pdf_path):
-    """
-    Ekstrak DOI dari file PDF yang sudah diunduh.
-    Cek metadata dulu, lalu teks 3 halaman pertama.
-    """
+
     if not pdf_path or not os.path.exists(pdf_path):
         return None
 
