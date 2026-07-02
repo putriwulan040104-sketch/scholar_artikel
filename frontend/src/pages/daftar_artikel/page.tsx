@@ -1,50 +1,42 @@
     "use client"
 
-    import { getCosineResults, type CategoryOption, type CosineArticle } from "@/api/api"
+    import { searchArticles, type CosineArticle, getCosineResults, type CategoryOption, } from "@/api/api"
     import {
     readFavorites,
     writeFavorites,
     } from "@/lib/favorites"
     import { useCallback, useEffect, useMemo, useState } from "react"
-    import { useNavigate } from "react-router-dom"
+    import { useLocation, useNavigate } from "react-router-dom"
     import {
+    ArrowLeft,
     ChevronLeft,
     ChevronRight,
     Download,
     ExternalLink,
-    FileText,
-    RotateCcw,
-    Search,
     Star,
     } from "lucide-react"
 
-    const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
-    "machine learning": { bg: "bg-blue-50", text: "text-blue-600", border: "border-blue-200" },
-    "cyber security": { bg: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-200" },
-    "web application": { bg: "bg-sky-50", text: "text-sky-600", border: "border-sky-200" },
-    "web development": { bg: "bg-sky-50", text: "text-sky-600", border: "border-sky-200" },
-    "mobile application": { bg: "bg-teal-50", text: "text-teal-600", border: "border-teal-200" },
-    }
-
-    const SORT_OPTIONS = [
-    { value: "query_rank", label: "Rank per Kategori" },
+    const RANK_SORT_OPTIONS = [
+    { value: "query_rank", label: "Rank Hasil Search" },
     { value: "similarity_desc", label: "Similarity Tertinggi" },
     { value: "similarity_asc", label: "Similarity Terendah" },
+    ]
+
+    const YEAR_SORT_OPTIONS = [
+    { value: "", label: "Semua Tahun" },
     { value: "year_desc", label: "Tahun Terbaru" },
     { value: "year_asc", label: "Tahun Terlama" },
     ]
 
-    const ALL_CATEGORIES = "Semua Kategori"
     const PER_PAGE = 10
+    const RESULT_LIMIT = 50
 
-    function getCategoryColor(cat: string) {
-    return (
-        CATEGORY_COLORS[cat?.toLowerCase()] ?? {
-        bg: "bg-gray-50",
-        text: "text-gray-500",
-        border: "border-gray-200",
-        }
-    )
+    interface StoredFilters {
+    jenisArtikel?: string
+    yearStart?: string
+    yearEnd?: string
+    kategori?: string
+    jumlahKemunculan?: string
     }
 
     function getScoreColor(score: number) {
@@ -73,43 +65,77 @@
 
     export default function DaftarArtikelPage() {
     const navigate = useNavigate()
+    const location = useLocation()
+    const query = (
+        (location.state as { query?: string } | null)?.query ||
+        new URLSearchParams(location.search).get("query") ||
+        localStorage.getItem("lastSearchQuery") ||
+        ""
+    ).trim()
+
     const [articles, setArticles] = useState<CosineArticle[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
-    const [totalAll, setTotalAll] = useState(0)
-    const [categories, setCategories] = useState<CategoryOption[]>([])
+    const [totalMatched, setTotalMatched] = useState(0)
 
-    const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORIES)
-    const [sortBy, setSortBy] = useState("query_rank")
-    const [searchText, setSearchText] = useState("")
+    const [rankSortBy, setRankSortBy] = useState("query_rank")
+    const [yearSortBy, setYearSortBy] = useState("")
     const [page, setPage] = useState(1)
     const [favoriteIds, setFavoriteIds] = useState<number[]>(() =>
         loadFavorites().map((item) => Number(item.id)).filter(Number.isFinite)
     )
 
+    const readStoredFilters = useCallback((): StoredFilters => {
+        try {
+        const raw = localStorage.getItem("lastSearchFilters")
+        if (!raw) return {}
+        const parsed = JSON.parse(raw)
+        return parsed && typeof parsed === "object" ? parsed : {}
+        } catch {
+        return {}
+        }
+    }, [])
+
     const fetchArticles = useCallback(async () => {
+        if (!query) {
+        navigate("/search", { replace: true })
+        return
+        }
+
         setLoading(true)
         setError(null)
 
         try {
-        const res = await getCosineResults({
-            kategori: selectedCategory === ALL_CATEGORIES ? undefined : selectedCategory,
-            sortBy,
-        })
+        const filters = readStoredFilters()
+        const yearStart = filters.yearStart ? Number(filters.yearStart) : undefined
+        const yearEnd = filters.yearEnd ? Number(filters.yearEnd) : undefined
+        const jumlahKemunculan =
+            filters.jumlahKemunculan && filters.jumlahKemunculan.trim() !== ""
+            ? filters.jumlahKemunculan
+            : undefined
+
+        const res = await searchArticles(
+            query,
+            RESULT_LIMIT,
+            Number.isFinite(yearStart) ? yearStart : undefined,
+            Number.isFinite(yearEnd) ? yearEnd : undefined,
+            filters.jenisArtikel || undefined,
+            filters.kategori || undefined,
+            jumlahKemunculan,
+        )
 
         if (res.status !== "success") {
             throw new Error(res.message || "Gagal mengambil hasil cosine")
         }
 
-        setArticles(res.data || [])
-        setTotalAll(res.total_all || 0)
-        setCategories(res.categories || [])
+        setArticles((res.data || []) as CosineArticle[])
+        setTotalMatched(res.total_matched ?? res.total ?? res.data?.length ?? 0)
         } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Terjadi kesalahan")
         } finally {
         setLoading(false)
         }
-    }, [selectedCategory, sortBy])
+    }, [navigate, query, readStoredFilters])
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -131,20 +157,30 @@
         }
     }, [])
 
-    const visibleArticles = useMemo(() => {
-        const keyword = searchText.trim().toLowerCase()
-        if (!keyword) return articles
+    const sortedArticles = useMemo(() => {
+        const rows = [...articles]
 
-        return articles.filter((article) => {
-        return (
-            article.title?.toLowerCase().includes(keyword) ||
-            article.authors?.toLowerCase().includes(keyword)
-        )
-        })
-    }, [articles, searchText])
+        if (yearSortBy === "year_desc") {
+        return rows.sort((a, b) => Number(b.year || 0) - Number(a.year || 0))
+        }
 
-    const totalPages = Math.max(1, Math.ceil(visibleArticles.length / PER_PAGE))
-    const paginated = visibleArticles.slice((page - 1) * PER_PAGE, page * PER_PAGE)
+        if (yearSortBy === "year_asc") {
+        return rows.sort((a, b) => Number(a.year || 0) - Number(b.year || 0))
+        }
+
+        if (rankSortBy === "similarity_asc") {
+        return rows.sort((a, b) => (a.similarity_score || 0) - (b.similarity_score || 0))
+        }
+
+        if (rankSortBy === "similarity_desc") {
+        return rows.sort((a, b) => (b.similarity_score || 0) - (a.similarity_score || 0))
+        }
+
+        return rows.sort((a, b) => Number(a.rank || 0) - Number(b.rank || 0))
+    }, [articles, rankSortBy, yearSortBy])
+
+    const totalPages = Math.max(1, Math.ceil(sortedArticles.length / PER_PAGE))
+    const paginated = sortedArticles.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
     const pageNumbers = () => {
         const delta = 2
@@ -166,68 +202,66 @@
         setFavoriteIds(next.map((item) => Number(item.id)).filter(Number.isFinite))
     }
 
-    const resetFilter = () => {
-        setSelectedCategory(ALL_CATEGORIES)
-        setSortBy("query_rank")
-        setSearchText("")
+    const showingStart = sortedArticles.length === 0 ? 0 : (page - 1) * PER_PAGE + 1
+    const showingEnd = Math.min(page * PER_PAGE, sortedArticles.length)
+
+    const goBackToDashboard = () => {
+        if (!query) {
+        navigate("/search")
+        return
+        }
+
+        const topTen = [...articles]
+        .sort((a, b) => Number(a.rank || 0) - Number(b.rank || 0))
+        .slice(0, 10)
+
+        navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
+        state: {
+            results: topTen,
+            query,
+            filters: readStoredFilters(),
+            total_matched: totalMatched || articles.length,
+            total_occurrences: topTen.reduce((acc, row) => acc + Number(row.occurrence || 0), 0),
+            paper_count: topTen.length,
+        },
+        })
     }
 
-    const showingStart = visibleArticles.length === 0 ? 0 : (page - 1) * PER_PAGE + 1
-    const showingEnd = Math.min(page * PER_PAGE, visibleArticles.length)
-
     return (
+        <div className="min-h-screen p-6 space-y-4">
+        <button
+            type="button"
+            onClick={goBackToDashboard}
+            className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-gray-500 transition-colors hover:bg-white hover:text-gray-800"
+        >
+            <ArrowLeft className="w-4 h-4" />
+            Kembali
+        </button>
+
+        <div>
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">Daftar Artikel</h1>
         <div className="min-h-screen p-6 space-y-4">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-wrap items-start justify-between gap-4">
             <div>
             <h1 className="text-xl font-bold text-gray-900">Daftar Artikel</h1>
             <p className="text-sm text-gray-500 mt-1">
-                Katalog hasil score similarity dari topik dataset yang sudah tersedia.
+            Daftar hasil score similarity dari "{query}" yang sudah tersedia.
             </p>
-            </div>
-
-            <div className="flex items-center gap-3 bg-blue-50 rounded-xl px-5 py-3 shrink-0">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                <FileText className="w-5 h-5 text-white" />
-            </div>
-            <div>
-                <p className="text-xs text-gray-500">Total Katalog</p>
-                <p className="text-xl font-bold text-blue-700">{visibleArticles.length} Artikel</p>
-                <p className="text-xs text-gray-400">Dari {totalAll} hasil score valid</p>
-            </div>
-            </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-wrap items-end gap-4">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="flex flex-wrap items-end gap-4 border-b border-gray-100 p-4">
             <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-gray-600">Kategori</label>
+            <label className="text-xs font-semibold text-gray-600">Urutkan Rank</label>
             <select
-                value={selectedCategory}
+                value={rankSortBy}
                 onChange={(e) => {
-                setSelectedCategory(e.target.value)
-                setPage(1)
-                }}
-                className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 bg-white min-w-[190px] focus:outline-none focus:ring-2 focus:ring-blue-300"
-            >
-                <option value={ALL_CATEGORIES}>{ALL_CATEGORIES}</option>
-                {categories.map((category) => (
-                <option key={category.value} value={category.value}>
-                    {category.label} ({category.count})
-                </option>
-                ))}
-            </select>
-            </div>
-
-            <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-gray-600">Urutkan</label>
-            <select
-                value={sortBy}
-                onChange={(e) => {
-                setSortBy(e.target.value)
+                setRankSortBy(e.target.value)
                 setPage(1)
                 }}
                 className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 bg-white min-w-[180px] focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-                {SORT_OPTIONS.map((option) => (
+                {RANK_SORT_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                     {option.label}
                 </option>
@@ -235,33 +269,26 @@
             </select>
             </div>
 
-            <div className="flex flex-col gap-1 flex-1 min-w-[220px]">
-            <label className="text-xs font-semibold text-gray-600">Cari dalam katalog</label>
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                type="text"
-                placeholder="Cari judul atau penulis..."
-                value={searchText}
+            <div className="flex flex-col gap-1">
+            <label className="text-xs font-semibold text-gray-600">Urutkan Tahun</label>
+            <select
+                value={yearSortBy}
                 onChange={(e) => {
-                    setSearchText(e.target.value)
-                    setPage(1)
+                setYearSortBy(e.target.value)
+                setPage(1)
                 }}
-                className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                />
-            </div>
-            </div>
-
-            <button
-            onClick={resetFilter}
-            className="flex items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 bg-white min-w-[180px] focus:outline-none focus:ring-2 focus:ring-blue-300"
             >
-            <RotateCcw className="w-4 h-4" />
-            Reset
-            </button>
-        </div>
+                {YEAR_SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
+                ))}
+            </select>
+            </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            </div>
+
             {loading ? (
             <div className="flex flex-col items-center justify-center py-20 text-gray-400 gap-3">
                 <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin" />
@@ -276,21 +303,19 @@
                 <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
-                    <tr className="bg-gray-50 border-b border-gray-100">
+                    <tr className="bg-primary border-b border-primary">
                         {[
-                        "Topik",
                         "Rank",
                         "Judul Artikel",
                         "Penulis",
                         "Tahun",
-                        "Kategori",
                         "Similarity",
                         "Akses",
                         "Favorit",
                         ].map((header) => (
                         <th
                             key={header}
-                            className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap"
+                            className="px-4 py-3 text-left text-xs font-semibold text-primary-foreground uppercase tracking-wide whitespace-nowrap"
                         >
                             {header}
                         </th>
@@ -300,25 +325,18 @@
                     <tbody className="divide-y divide-gray-50">
                     {paginated.length === 0 ? (
                         <tr>
-                        <td colSpan={9} className="text-center py-16 text-gray-400 text-sm">
+                        <td colSpan={7} className="text-center py-16 text-gray-400 text-sm">
                             Tidak ada artikel ditemukan
                         </td>
                         </tr>
                     ) : (
                         paginated.map((article) => {
-                        const catColor = getCategoryColor(article.category)
                         const isFavorite = favoriteIds.includes(Number(article.id))
                         const accessUrl = article.access_url || article.pdf_url || article.url
                         const isPdf = isPdfFlag(article.is_pdf)
 
                         return (
                             <tr key={`${article.query}-${article.id}`} className="hover:bg-gray-50 transition-colors">
-                            <td className="px-4 py-3 w-40">
-                                <span className="inline-block rounded-md border border-blue-100 bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-600">
-                                {formatLabel(article.query)}
-                                </span>
-                            </td>
-
                             <td className="px-4 py-3 text-center text-sm font-semibold text-gray-400 w-14">
                                 {article.rank ?? "-"}
                             </td>
@@ -343,14 +361,6 @@
 
                             <td className="px-4 py-3 text-center text-sm text-gray-600 w-16">
                                 {article.year ?? "-"}
-                            </td>
-
-                            <td className="px-4 py-3 w-36">
-                                <span
-                                className={`inline-block px-2.5 py-0.5 rounded-md text-xs font-medium border ${catColor.bg} ${catColor.text} ${catColor.border}`}
-                                >
-                                {formatLabel(article.category)}
-                                </span>
                             </td>
 
                             <td className="px-4 py-3 text-center w-28">
@@ -400,10 +410,10 @@
                 </table>
                 </div>
 
-                {visibleArticles.length > 0 && (
+                {articles.length > 0 && (
                 <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-gray-100">
                     <span className="text-xs text-gray-500">
-                    Menampilkan {showingStart}-{showingEnd} dari {visibleArticles.length} artikel
+                    Menampilkan {showingStart}-{showingEnd} dari {sortedArticles.length} artikel
                     </span>
 
                     <div className="flex items-center gap-1">

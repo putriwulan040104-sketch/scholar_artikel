@@ -1,4 +1,4 @@
 Metric,Value,Percentage
-Mean P@5,0.3455,34.55
-Mean P@10,0.2636,26.36
-Mean P@20,0.2227,22.27
+Mean P@5,0.6,60.0
+Mean P@10,0.475,47.5
+Mean P@20,0.3667,36.67

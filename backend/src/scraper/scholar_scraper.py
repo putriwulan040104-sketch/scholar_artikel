@@ -93,7 +93,6 @@ def fetch_doi_from_doi_org(url):
         pass
     return None
 
-
 # ─── Duplikasi checks ───────────────────────────────────────────────────────
 def _exists(field, value):
     if not value:
@@ -199,15 +198,12 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
             for result in results:
                 try:
                     rd = {}
-
-                    # Judul & URL
                     title_el = result.find_element(By.CSS_SELECTOR, ".gs_rt")
                     links    = title_el.find_elements(By.TAG_NAME, "a")
                     rd["title"] = (links[0].text.strip() if links                                   
                                     else title_el.text.strip())
                     rd["url"]   = links[0].get_attribute("href") if links else ""
-
-                    # Metadata
+                    
                     info   = result.find_element(By.CSS_SELECTOR, ".gs_a").text
                     parts  = info.split(" - ")
                     rd["authors"] = parts[0].strip()
@@ -216,28 +212,13 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
                     rd["year"]   = int(ym.group()) if ym else None
                     rd["source"] = clean_source(rest, rd["year"]) if ym else ""
 
-                    # Abstract
                     try:
                         rd["abstract"] = result.find_element(
                             By.CSS_SELECTOR, ".gs_rs").text.strip()
                     except Exception:
                         rd["abstract"] = ""
 
-                    # DOI dari DOM Scholar
                     rd["doi_scholar"] = extract_doi_from_scholar_result(result)
-
-                    # Citations
-                    rd["citations"] = 0
-                    try:
-                        cites = result.find_elements(By.CSS_SELECTOR,
-                                                    "a[href*='cites']")
-                        if cites:
-                            m = re.search(r"\d+", cites[0].text)
-                            rd["citations"] = int(m.group()) if m else 0
-                    except Exception:
-                        pass
-
-                    # PDF URL
                     rd["pdf_url"] = None
                     try:
                         pdf_el = result.find_element(
@@ -367,8 +348,7 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
                     "authors":      rd.get("authors", ""),
                     "year":         rd["year"],
                     "source":       rd["source"],
-                    "abstract":     rd["abstract"],
-                    "citations":    rd.get("citations", 0),
+                    "abstract":     rd["abstract"],                
                     "url":          rd.get("url", ""),
                     "pdf_url":      pdf_url,
                     "scrape_status": status,

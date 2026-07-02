@@ -116,7 +116,7 @@ export default function GraphCanvas({
       .append("g")
       .attr("stroke", "#ffffff")
       .attr("stroke-width", 1.2)
-      .selectAll("circle")
+      .selectAll<SVGCircleElement, GraphNode>("circle")
       .data(graphModel.gNodes)
       .join("circle")
       .attr("r", (node) => getNodeRadius(node.degree))
