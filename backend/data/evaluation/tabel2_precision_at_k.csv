@@ -1,13 +1,13 @@
 Query,Kategori,Retrieved,Relevan@5,P@5,Relevan@10,P@10,Relevan@20,P@20
 machine learning,Machine Learning,20,5,1.0,10,1.0,20,1.0
 pembelajaran mesin,Machine Learning,5,2,0.4,2,0.2,2,0.1
-data mining,Machine Learning,20,0,0.0,0,0.0,0,0.0
-web application,Web Application,20,4,0.8,4,0.4,4,0.2
-aplikasi web,Web Application,20,5,1.0,6,0.6,6,0.3
-sistem informasi berbasis web,Web Application,20,2,0.4,2,0.2,2,0.1
-cyber security,Cyber Security,20,5,1.0,10,1.0,19,0.95
+data mining,Machine Learning,20,3,0.6,5,0.5,11,0.55
+web application,Web Application,20,5,1.0,10,1.0,18,0.9
+aplikasi web,Web Application,20,5,1.0,10,1.0,17,0.85
+sistem informasi berbasis web,Web Application,20,4,0.8,8,0.8,15,0.75
+cyber security,Cyber Security,20,5,1.0,10,1.0,20,1.0
 keamanan siber,Cyber Security,20,5,1.0,10,1.0,20,1.0
-keamanan jaringan,Cyber Security,20,1,0.2,1,0.1,1,0.05
-mobile application,Mobile Application,20,1,0.2,1,0.1,1,0.05
-aplikasi mobile,Mobile Application,20,5,1.0,10,1.0,12,0.6
-aplikasi android,Mobile Application,20,1,0.2,1,0.1,1,0.05
+keamanan jaringan,Cyber Security,20,4,0.8,9,0.9,19,0.95
+mobile application,Mobile Application,20,4,0.8,8,0.8,15,0.75
+aplikasi mobile,Mobile Application,20,5,1.0,10,1.0,20,1.0
+aplikasi android,Mobile Application,20,4,0.8,9,0.9,15,0.75
