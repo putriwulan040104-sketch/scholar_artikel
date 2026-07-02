@@ -1,6 +1,10 @@
     "use client"
 
     import { getCosineResults, type CategoryOption, type CosineArticle } from "@/api/api"
+    import {
+    readFavorites,
+    writeFavorites,
+    } from "@/lib/favorites"
     import { useCallback, useEffect, useMemo, useState } from "react"
     import { useNavigate } from "react-router-dom"
     import {
@@ -64,12 +68,7 @@
     }
 
     function loadFavorites(): CosineArticle[] {
-    try {
-        const parsed = JSON.parse(localStorage.getItem("favorites") || "[]")
-        return Array.isArray(parsed) ? parsed : []
-    } catch {
-        return []
-    }
+    return readFavorites<CosineArticle>()
     }
 
     export default function DaftarArtikelPage() {
@@ -123,7 +122,13 @@
         }
 
         window.addEventListener("storage", syncFavorites)
-        return () => window.removeEventListener("storage", syncFavorites)
+        window.addEventListener("favorites-updated", syncFavorites)
+        window.addEventListener("user-updated", syncFavorites)
+        return () => {
+        window.removeEventListener("storage", syncFavorites)
+        window.removeEventListener("favorites-updated", syncFavorites)
+        window.removeEventListener("user-updated", syncFavorites)
+        }
     }, [])
 
     const visibleArticles = useMemo(() => {
@@ -157,7 +162,7 @@
         ? favorites.filter((item) => Number(item.id) !== Number(article.id))
         : [...favorites, article]
 
-        localStorage.setItem("favorites", JSON.stringify(next))
+        writeFavorites(next)
         setFavoriteIds(next.map((item) => Number(item.id)).filter(Number.isFinite))
     }
 
@@ -171,7 +176,7 @@
     const showingEnd = Math.min(page * PER_PAGE, visibleArticles.length)
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6 space-y-4">
+        <div className="min-h-screen p-6 space-y-4">
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-wrap items-start justify-between gap-4">
             <div>
             <h1 className="text-xl font-bold text-gray-900">Daftar Artikel</h1>

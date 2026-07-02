@@ -1,5 +1,5 @@
 from app.db import supabase
-from backend.app.services.activity_log_service import log_activity
+from app.services.activity_log_service import log_activity
 from app.services.user_service import _validate_super_admin
 
 
@@ -10,14 +10,12 @@ PUBLICATION_COLUMNS = (
     "source,category,year"
 )
 
-
 def _as_list(value):
     if isinstance(value, list):
         return value
     if value in (None, ""):
         return []
     return [value]
-
 
 def _normalize_publication(publication):
     references = _as_list(publication.get("reference_list"))
@@ -51,7 +49,7 @@ def _normalize_publication(publication):
         "createdAt": publication.get("created_at"),
     }
 
-
+# disimpan ke log aktivitas
 def _publication_audit_data(publication):
     references = _as_list(publication.get("reference_list"))
     return {
@@ -67,7 +65,6 @@ def _publication_audit_data(publication):
         "pdfUrl": publication.get("pdf_url"),
         "referenceCount": len(references),
     }
-
 
 def _load_doi_by_id(publication_ids):
     if not publication_ids:
@@ -86,14 +83,12 @@ def _load_doi_by_id(publication_ids):
         if item.get("id") is not None
     }
 
-
 def _with_doi(publication, doi_by_id):
     result = dict(publication)
     publication_id = result.get("id")
     if publication_id is not None:
         result["doi"] = doi_by_id.get(int(publication_id))
     return result
-
 
 def get_admin_publications(token):
     auth = _validate_super_admin(token)
@@ -108,7 +103,6 @@ def get_admin_publications(token):
             .order("id")
             .execute()
         )
-
         publication_ids = [
             int(item["id"])
             for item in (response.data or [])
@@ -132,7 +126,6 @@ def get_admin_publications(token):
             "message": str(error),
             "status_code": 400,
         }
-
 
 def update_admin_publication(token, publication_id, data):
     auth = _validate_super_admin(token)
@@ -216,7 +209,6 @@ def update_admin_publication(token, publication_id, data):
                 "message": "Publikasi tidak ditemukan.",
                 "status_code": 404,
             }
-
         (
             supabase
             .table(DOI_TABLE)
@@ -258,7 +250,6 @@ def update_admin_publication(token, publication_id, data):
             "status_code": 400,
         }
 
-
 def delete_admin_publication(token, publication_id):
     auth = _validate_super_admin(token)
     if auth["status"] == "error":
@@ -282,7 +273,6 @@ def delete_admin_publication(token, publication_id):
 
         doi_by_id = _load_doi_by_id([publication_id])
         publication = _with_doi(current.data, doi_by_id)
-
         (
             supabase
             .table(PUBLICATIONS_TABLE)

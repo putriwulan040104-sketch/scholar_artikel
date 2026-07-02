@@ -7,7 +7,6 @@ from app.utils.hash import hash_password, verify_password
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-
 def _user_payload(user):
     return {
         "id": user.get("id"),
@@ -16,7 +15,6 @@ def _user_payload(user):
         "avatarUrl": user.get("avatar_url"),
         "role": user.get("role") or "user",
     }
-
 
 def register_user(name, email, password):
     try:
@@ -43,8 +41,6 @@ def register_user(name, email, password):
             "password": hashed
         }).execute()
 
-        # Versi postgrest tertentu tidak mendukung chaining .select() setelah insert,
-        # jadi lakukan fetch terpisah.
         user = None
         if response.data:
             user = response.data[0]
@@ -156,7 +152,6 @@ def login_user(email, password):
             "message": str(e)
         }
 
-
 def _decode_token(token):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
@@ -165,7 +160,6 @@ def _decode_token(token):
         return {"_token_error": "Token sudah kedaluwarsa"}
     except Exception:
         return None
-
 
 def update_profile_user(token, name=None, email=None, avatar_url=None):
     payload = _decode_token(token)
@@ -233,7 +227,6 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
             "email": next_email,
         }
 
-        # Coba simpan avatar_url jika kolom tersedia.
         if isinstance(avatar_url, str):
             update_payload["avatar_url"] = avatar_url
 
@@ -260,7 +253,6 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
 
         user = (update_response.data or [None])[0]
         if not user:
-            # lakukan re-fetch untuk memastikan update berhasil.
             latest = (
                 supabase
                 .table("users")
@@ -304,7 +296,6 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
             "status": "error",
             "message": str(e)
         }
-
 
 def logout_user(token):
     payload = _decode_token(token)

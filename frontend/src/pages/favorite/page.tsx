@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash2, Info, ChevronRight, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { readFavorites, writeFavorites } from "@/lib/favorites";
 import {
   Dialog,
   DialogContent,
@@ -34,18 +35,27 @@ export default function FavoritPage() {
   const PAGE_SIZE = 10;
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("favorites");
-      if (stored) setFavorites(JSON.parse(stored));
-    } catch (_) {
-      setFavorites([]);
-    }
+    const syncFavorites = () => {
+      setFavorites(readFavorites<FavoriteItem>());
+      setPage(1);
+    };
+
+    syncFavorites();
+    window.addEventListener("favorites-updated", syncFavorites);
+    window.addEventListener("user-updated", syncFavorites);
+    window.addEventListener("storage", syncFavorites);
+
+    return () => {
+      window.removeEventListener("favorites-updated", syncFavorites);
+      window.removeEventListener("user-updated", syncFavorites);
+      window.removeEventListener("storage", syncFavorites);
+    };
   }, []);
 
   const handleDelete = (id: number) => {
     const updated = favorites.filter((item) => item.id !== id);
     setFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
+    writeFavorites(updated);
     setConfirmId(null);
   };
 

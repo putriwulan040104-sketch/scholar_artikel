@@ -37,6 +37,11 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import { z } from "zod"
 
 import { useIsMobile } from "@/hooks/use-mobile"
+import {
+  isFavoriteArticle,
+  readFavorites,
+  writeFavorites,
+} from "@/lib/favorites"
 // import { Badge } from "@/components/ui/badge"                        // ← dihapus: tidak dipakai setelah Tabs dihapus
 import { Button } from "@/components/ui/button"
 import {
@@ -268,12 +273,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   cell: ({ row }) => {
     // ── Cek apakah sudah ada di localStorage saat render ──
     const isAlreadyFavorite = (): boolean => {
-      try {
-        const existing = JSON.parse(localStorage.getItem("favorites") || "[]")
-        return existing.some((item: { id: number }) => item.id === row.original.id)
-      } catch (_) {
-        return false
-      }
+      return isFavoriteArticle(row.original.id)
     }
 
     const [favorite, setFavorite] = React.useState(() => 
@@ -285,24 +285,16 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
       setFavorite(updated)
 
       try {
-        const existing: z.infer<typeof schema>[] = JSON.parse(
-          localStorage.getItem("favorites") || "[]"
-        )
+        const existing = readFavorites<z.infer<typeof schema>>()
 
         if (updated) {
           // ── Tolak duplikat: cek id dulu sebelum push ──
           const alreadyExists = existing.some((item) => item.id === row.original.id)
           if (!alreadyExists) {
-            localStorage.setItem(
-              "favorites",
-              JSON.stringify([...existing, row.original])
-            )
+            writeFavorites([...existing, row.original])
           }
         } else {
-          localStorage.setItem(
-            "favorites",
-            JSON.stringify(existing.filter((item) => item.id !== row.original.id))
-          )
+          writeFavorites(existing.filter((item) => item.id !== row.original.id))
         }
       } catch (_) {}
     }

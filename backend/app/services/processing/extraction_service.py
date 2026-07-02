@@ -81,9 +81,11 @@ def _normalize_pdf_artifacts(text):
 # KEYWORDS
 def _extract_keywords_legacy(text):
     patterns = [
-        r"^[ \t]*(?:keywords?|index terms?|kata kunci)"
+        r"^[ \t]*(?:keywords?|key\s+words?|index terms?|kata kunci|"
+        r"additional\s+(?:key\s+words?|keywords?)\s+and\s+phrases)"
         r"[ \t]*(?::|[-\u2013\u2014])[ \t]*([^\n]+)$",
-        r"^[ \t]*(?:keywords?|index terms?|kata kunci)"
+        r"^[ \t]*(?:keywords?|key\s+words?|index terms?|kata kunci|"
+        r"additional\s+(?:key\s+words?|keywords?)\s+and\s+phrases)"
         r"[ \t]*:?[ \t]*$\s*^([^\n]{2,300})$",
     ]
 
@@ -136,8 +138,8 @@ def extract_keywords(text):
     text = _normalize_pdf_artifacts(text)
     lines = text.splitlines()
     heading_pattern = re.compile(
-        r"^\s*(keywords?|index\s+terms?|kata\s+kunci|"
-        r"additional\s+key\s+words\s+and\s+phrases)\s*"
+        r"^\s*(keywords?|key\s+words?|index\s+terms?|kata\s+kunci|"
+        r"additional\s+(?:key\s+words?|keywords?)\s+and\s+phrases)\s*"
         r"(?:(:|[-\u2013\u2014])\s*)?(.*)\s*$",
         re.I,
     )

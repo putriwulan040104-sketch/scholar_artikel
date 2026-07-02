@@ -93,7 +93,6 @@ export default function CitationGraphPage() {
         let yearEnd: number | undefined;
         let jenisArtikel: string | undefined;
         let jenisAnalisis: ArticleRelationType | undefined;
-        let kategori: string | undefined;
         let jumlahKemunculan: string | undefined;
         const rawFilters = localStorage.getItem("lastSearchFilters");
         if (rawFilters) {
@@ -107,7 +106,6 @@ export default function CitationGraphPage() {
           } else {
             setRelationType("bibliographic_coupling");
           }
-          if (parsed?.kategori) kategori = parsed.kategori;
           if (parsed?.jumlahKemunculan) {
             jumlahKemunculan = parsed.jumlahKemunculan;
           }
@@ -119,7 +117,7 @@ export default function CitationGraphPage() {
           yearStart,
           yearEnd,
           jenisArtikel,
-          kategori,
+          undefined,
           jumlahKemunculan,
           undefined,
           jenisAnalisis,

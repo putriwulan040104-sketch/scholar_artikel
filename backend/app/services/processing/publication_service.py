@@ -15,7 +15,6 @@ from app.services.extraction.pdf_service import (
     remove_pdf,
 )
 
-
 SOURCE_TABLE = "scholar_article_doi"
 TARGET_TABLE = "cleaned_papers_results"
 SOURCE_COLUMNS = "id,title,doi,url,pdf_url,authors"
@@ -35,10 +34,8 @@ NON_REFERENCE_PHRASES = (
 )
 _REFERENCE_REPAIR_LOCK = threading.Lock()
 
-
 class ReferenceRepairInProgressError(RuntimeError):
     pass
-
 
 def _sanitize_for_postgres(value):
     if isinstance(value, str):
@@ -51,7 +48,6 @@ def _sanitize_for_postgres(value):
             for key, item in value.items()
         }
     return value
-
 
 def _merge_keywords(*keyword_lists):
     merged = []
@@ -71,7 +67,6 @@ def _merge_keywords(*keyword_lists):
             merged.append(value)
 
     return merged
-
 
 def analyze_reference_quality(references):
     if not isinstance(references, list) or not references:
@@ -159,7 +154,6 @@ def analyze_reference_quality(references):
         "reasons": reasons,
     }
 
-
 def _pick_better_references(current_references, candidate_references):
     current_references = current_references or []
     candidate_references = candidate_references or []
@@ -186,14 +180,12 @@ def _pick_better_references(current_references, candidate_references):
 
     return current_references
 
-
 def _needs_reference_enrichment(references):
     quality = analyze_reference_quality(references or [])
     return (
         not quality["valid"]
         or quality["score"] < MIN_REFERENCE_SCORE_BEFORE_ALTERNATE_CHECK
     )
-
 
 def get_articles(source_ids=None):
     if source_ids:
@@ -253,7 +245,6 @@ def get_articles(source_ids=None):
 
     return all_rows
 
-
 def _ensure_target_columns():
     try:
         (
@@ -273,7 +264,6 @@ def _ensure_target_columns():
                 "melalui Supabase SQL Editor."
             ) from error
         raise
-
 
 def save_publication(extraction_result):
     source_id = extraction_result.get("source_id")
@@ -325,12 +315,13 @@ def save_publication(extraction_result):
 
     return response
 
-
 def _extract_article_fields(article):
     content = None
     article_result = None
     declared_keywords = []
-    attempted_urls = set()
+    attempted_pdf_urls = set()
+    attempted_article_urls = set()
+    non_pdf_urls = set()
     pdf_url = article.get("pdf_url")
     article_url = article.get("url")
     doi_url = (
@@ -348,10 +339,13 @@ def _extract_article_fields(article):
             or "/servlets/purl/" in url
         )
 
+    def is_non_pdf_error(error):
+        return "URL tidak mengembalikan berkas PDF" in str(error)
+
     def try_pdf(url, label, timeout=20, max_duration=25):
-        if not url or url in attempted_urls:
+        if not url or url in attempted_pdf_urls:
             return None
-        attempted_urls.add(url)
+        attempted_pdf_urls.add(url)
         print(f"{label}: {url}")
         pdf_path = None
         try:
@@ -362,6 +356,8 @@ def _extract_article_fields(article):
             )
             return extract_pdf_content(pdf_path)
         except Exception as error:
+            if is_non_pdf_error(error):
+                non_pdf_urls.add(url)
             print(f"{label} Error: {error}")
             return None
         finally:
@@ -369,9 +365,9 @@ def _extract_article_fields(article):
                 remove_pdf(pdf_path)
 
     def try_article(url, label, timeout=25):
-        if not url or url in attempted_urls:
+        if not url or url in attempted_article_urls:
             return None
-        attempted_urls.add(url)
+        attempted_article_urls.add(url)
         print(f"{label}: {url}")
         return extract_article(url, timeout=timeout)
 
@@ -382,6 +378,16 @@ def _extract_article_fields(article):
             timeout=15,
             max_duration=20,
         )
+        if not content and pdf_url in non_pdf_urls:
+            article_result = try_article(
+                pdf_url,
+                "Processing PDF URL as Article",
+                timeout=25,
+            )
+            if article_result:
+                declared_keywords = article_result.get("keywords") or []
+                content = article_result.get("content")
+
     if not content and doi_url and str(article.get("doi") or "").lower().endswith(".pdf"):
         content = try_pdf(
             doi_url,
@@ -389,8 +395,24 @@ def _extract_article_fields(article):
             timeout=15,
             max_duration=20,
         )
+        if not content and doi_url in non_pdf_urls:
+            article_result = try_article(
+                doi_url,
+                "Processing DOI PDF URL as Article",
+                timeout=20,
+            )
+            if article_result:
+                declared_keywords = _merge_keywords(
+                    declared_keywords,
+                    article_result.get("keywords") or [],
+                )
+                content = article_result.get("content")
 
-    result = build_publication(article, content or "")
+    result = build_publication(
+        article,
+        content or "",
+        declared_keywords=declared_keywords,
+    )
 
     if len(result["keywords"]) < MIN_KEYWORDS_BEFORE_HTML_CHECK and article_url:
         article_result = try_article(
@@ -452,7 +474,13 @@ def _extract_article_fields(article):
         for document_url in (
             location_enrichment or {}
         ).get("document_urls") or []:
-            if not document_url or document_url in attempted_urls:
+            if (
+                not document_url
+                or (
+                    document_url in attempted_pdf_urls
+                    and document_url in attempted_article_urls
+                )
+            ):
                 continue
             if tried_alternates >= max_alternates:
                 break
@@ -466,6 +494,17 @@ def _extract_article_fields(article):
                     timeout=12,
                     max_duration=12,
                 )
+                if not alternate_content and document_url in non_pdf_urls:
+                    alternate_result = try_article(
+                        document_url,
+                        "Processing Alternate PDF URL as Article",
+                        timeout=12,
+                    )
+                    if alternate_result:
+                        alternate_content = alternate_result.get("content")
+                        alternate_keywords = (
+                            alternate_result.get("keywords") or []
+                        )
             else:
                 alternate_result = try_article(
                     document_url,
@@ -524,7 +563,6 @@ def _extract_article_fields(article):
 
     return result
 
-
 def process_articles(source_ids=None):
     _ensure_target_columns()
     articles = get_articles(source_ids=source_ids)
@@ -566,7 +604,6 @@ def process_articles(source_ids=None):
             print(f"  Extraction Error: {error}")
 
     return results
-
 
 def audit_reference_data():
     rows = []
@@ -613,7 +650,6 @@ def audit_reference_data():
         "problematic_references": len(issues),
         "issues": issues,
     }
-
 
 def _repair_reference_data(source_ids=None, limit=None):
     audit = audit_reference_data()
@@ -734,7 +770,6 @@ def _repair_reference_data(source_ids=None, limit=None):
         ),
         "results": results,
     }
-
 
 def repair_reference_data(source_ids=None, limit=None):
     if not _REFERENCE_REPAIR_LOCK.acquire(blocking=False):

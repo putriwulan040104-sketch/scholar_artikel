@@ -13,6 +13,9 @@ export async function login(email: string, password: string) {
     if (data.token) {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.data));
+      window.dispatchEvent(new Event("user-updated"));
+      window.dispatchEvent(new Event("favorites-updated"));
+      window.dispatchEvent(new Event("search-history-updated"));
     }
     return data;
   } catch {
@@ -52,6 +55,9 @@ export function logout() {
   localStorage.removeItem("lastSearchPublicationIds");
   localStorage.removeItem("lastSearchQuery");
   localStorage.removeItem("lastSearchFilters");
+  window.dispatchEvent(new Event("user-updated"));
+  window.dispatchEvent(new Event("favorites-updated"));
+  window.dispatchEvent(new Event("search-history-updated"));
   window.dispatchEvent(new Event("search-context-updated"));
 }
 
@@ -649,6 +655,12 @@ export async function getStats() {
 }
 
 export interface CategoryOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
+export interface AnalysisTypeOption {
   value: string;
   label: string;
   count: number;

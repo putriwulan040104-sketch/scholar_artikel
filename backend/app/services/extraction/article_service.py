@@ -29,8 +29,8 @@ TEXT_BLOCK_TAGS = {
     "ol", "p", "section", "span", "td", "th", "tr", "ul",
 }
 KEYWORD_HEADING_PATTERN = re.compile(
-    r"^(keywords?|index\s+terms?|kata\s+kunci|"
-    r"additional\s+key\s+words\s+and\s+phrases)$",
+    r"^(keywords?|key\s+words?|index\s+terms?|kata\s+kunci|"
+    r"additional\s+(?:key\s+words?|keywords?)\s+and\s+phrases)$",
     re.I,
 )
 VISIBLE_KEYWORD_STOP_PATTERN = re.compile(
@@ -247,8 +247,8 @@ def _extract_visible_keyword_section(html):
     keywords = []
     chunks = parser.chunks
     KEYWORD_INLINE_PATTERN = re.compile(
-        r"^(?:keywords?|index\s+terms?|kata\s+kunci|"
-        r"additional\s+key\s+words\s+and\s+phrases)"
+        r"^(?:keywords?|key\s+words?|index\s+terms?|kata\s+kunci|"
+        r"additional\s+(?:key\s+words?|keywords?)\s+and\s+phrases)"
         r"\s*[:\-–—]\s*(.+)$",
         re.I,
     )

@@ -48,7 +48,6 @@ export type StoredFilters = {
   yearEnd?: string;
   jenisArtikel?: string;
   jenisAnalisis?: string;
-  kategori?: string;
   jumlahKemunculan?: string;
 };
 

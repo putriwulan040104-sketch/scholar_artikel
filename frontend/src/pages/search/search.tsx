@@ -27,19 +27,20 @@ import {
 } from "lucide-react";
 import {
   getAnalysisTypeOptions,
-  getCategoryOptions,
   getUser,
   searchArticles,
   type AnalysisTypeOption,
-  type CategoryOption,
 } from "@/api/api";
+import {
+  addSearchHistory,
+  readSearchHistory,
+} from "@/lib/search-history";
 
 export interface SearchFilters {
   jenisArtikel: string;
   jenisAnalisis: string;
   yearStart: string;
   yearEnd: string;
-  kategori: string;
   jumlahKemunculan: string;
 }
 
@@ -56,8 +57,6 @@ const popularSearches = [
   "Android Application",
 ];
 
-const HISTORY_STORAGE_KEY = "search_history";
-
 export function Searchpage() {
   const navigate = useNavigate();
 
@@ -70,9 +69,7 @@ export function Searchpage() {
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
   const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
-  const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
-  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
   const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
 
   const [openRequestDialog, setOpenRequestDialog] = useState(false);
@@ -88,17 +85,9 @@ export function Searchpage() {
   const [requestNotif, setRequestNotif] = useState("");
   const [requestNotifType, setRequestNotifType] = useState<"success" | "error">("success");
 
-  const [searchHistory, setSearchHistory] = useState<string[]>(() => {
-    if (typeof window === "undefined") return [];
-    const raw = window.localStorage.getItem(HISTORY_STORAGE_KEY);
-    if (!raw) return [];
-    try {
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  });
+  const [searchHistory, setSearchHistory] = useState<string[]>(() =>
+    typeof window === "undefined" ? [] : readSearchHistory(),
+  );
 
   useEffect(() => {
     // Saat kembali ke Eksplorasi, reset konteks hasil pencarian
@@ -110,13 +99,7 @@ export function Searchpage() {
 
   useEffect(() => {
     const loadFilterOptions = async () => {
-      const [categoryRes, analysisRes] = await Promise.all([
-        getCategoryOptions(),
-        getAnalysisTypeOptions(),
-      ]);
-      if (categoryRes.status === "success" && Array.isArray(categoryRes.data)) {
-        setCategoryOptions(categoryRes.data);
-      }
+      const analysisRes = await getAnalysisTypeOptions();
       if (analysisRes.status === "success" && Array.isArray(analysisRes.data)) {
         setAnalysisTypeOptions(analysisRes.data);
       }
@@ -126,13 +109,18 @@ export function Searchpage() {
   }, []);
 
   useEffect(() => {
-    const syncUser = () => setUser(getUser());
+    const syncUser = () => {
+      setUser(getUser());
+      setSearchHistory(readSearchHistory());
+    };
 
     window.addEventListener("user-updated", syncUser);
+    window.addEventListener("search-history-updated", syncUser);
     window.addEventListener("storage", syncUser);
 
     return () => {
       window.removeEventListener("user-updated", syncUser);
+      window.removeEventListener("search-history-updated", syncUser);
       window.removeEventListener("storage", syncUser);
     };
   }, []);
@@ -143,9 +131,7 @@ export function Searchpage() {
     const clean = keyword.trim();
     if (!clean) return;
 
-    const updated = [clean, ...searchHistory.filter((item) => item !== clean)].slice(0, 6);
-    setSearchHistory(updated);
-    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
+    setSearchHistory(addSearchHistory(clean));
   };
 
   const handleChangeRequest = (
@@ -208,7 +194,6 @@ export function Searchpage() {
       jenisAnalisis,
       yearStart,
       yearEnd,
-      kategori,
       jumlahKemunculan,
     };
     const startedAt = Date.now();
@@ -221,7 +206,7 @@ export function Searchpage() {
         yearStart ? parseInt(yearStart) : undefined,
         yearEnd ? parseInt(yearEnd) : undefined,
         jenisArtikel || undefined,
-        kategori || undefined,
+        undefined,
         jumlahKemunculan || undefined,
         undefined,
         jenisAnalisis || undefined,
@@ -365,28 +350,6 @@ export function Searchpage() {
                           </SelectContent>
                         </Select>
                       </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm">Kategori penelitian</label>
-                      <Select onValueChange={setKategori} value={kategori}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Pilih kategori" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categoryOptions.length === 0 ? (
-                            <SelectItem value="category-empty" disabled>
-                              Kategori belum tersedia
-                            </SelectItem>
-                          ) : (
-                            categoryOptions.map((category) => (
-                              <SelectItem key={category.value} value={category.value}>
-                                {category.label}
-                              </SelectItem>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
                     </div>
 
                     <div className="flex flex-col gap-2">

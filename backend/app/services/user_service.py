@@ -1,12 +1,10 @@
 from app.db import supabase
 from app.services.auth import _decode_token
-from backend.app.services.activity_log_service import log_activity
+from app.services.activity_log_service import log_activity
 from app.utils.hash import hash_password
-
 
 def _normalize_role(role):
     return (role or "").strip().lower().replace("-", "_").replace(" ", "_")
-
 
 def _normalize_user(user):
     return {
@@ -18,7 +16,6 @@ def _normalize_user(user):
         "createdAt": user.get("created_at"),
     }
 
-
 def _get_requester(user_id):
     response = (
         supabase
@@ -29,7 +26,6 @@ def _get_requester(user_id):
         .execute()
     )
     return response.data if response else None
-
 
 def _validate_super_admin(token):
     payload = _decode_token(token)
@@ -81,7 +77,6 @@ def _validate_super_admin(token):
             "status_code": 400,
         }
 
-
 def _safe_select_user(user_id):
     response = (
         supabase
@@ -93,19 +88,15 @@ def _safe_select_user(user_id):
     )
     return response.data if response else None
 
-
 def _normalize_email(email):
     return (email or "").strip().lower()
-
 
 def _normalize_name(name):
     return (name or "").strip()
 
-
 def _safe_role(role):
     normalized = _normalize_role(role)
     return "super_admin" if normalized == "super_admin" else "user"
-
 
 def get_users(token):
     auth = _validate_super_admin(token)
@@ -133,7 +124,6 @@ def get_users(token):
             "message": str(error),
             "status_code": 400,
         }
-
 
 def create_user(token, data):
     auth = _validate_super_admin(token)
@@ -224,7 +214,6 @@ def create_user(token, data):
             "message": str(error),
             "status_code": 400,
         }
-
 
 def update_user(token, user_id, data):
     auth = _validate_super_admin(token)
@@ -326,7 +315,6 @@ def update_user(token, user_id, data):
             "message": str(error),
             "status_code": 400,
         }
-
 
 def delete_user(token, user_id):
     auth = _validate_super_admin(token)

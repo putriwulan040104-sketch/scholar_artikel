@@ -4,7 +4,6 @@ from datetime import datetime, timezone
 from flask import has_request_context, request
 from app.db import supabase
 
-
 SENSITIVE_KEYS = {
     "password",
     "token",
@@ -35,7 +34,6 @@ def _sanitize_value(value, key=""):
 
     return str(value)
 
-
 def _json_value(value):
     if value is None:
         return None
@@ -46,7 +44,6 @@ def _json_value(value):
     except (TypeError, ValueError):
         return {"value": str(sanitized)}
 
-
 def _request_ip():
     if not has_request_context():
         return None
@@ -55,7 +52,6 @@ def _request_ip():
     if forwarded:
         return forwarded.split(",", 1)[0].strip()
     return request.remote_addr
-
 
 def log_activity(
     *,
@@ -69,7 +65,6 @@ def log_activity(
     status="success",
     user_name=None,
 ):
-    """Write an audit event without interrupting the primary operation."""
     actor = actor or {}
     payload = {
         "user_id": actor.get("id"),
@@ -113,7 +108,6 @@ def _normalize_log(row):
         "status": row.get("status") or "success",
         "createdAt": row.get("created_at"),
     }
-
 
 def get_activity_logs(
     *,

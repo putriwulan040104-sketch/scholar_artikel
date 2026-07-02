@@ -22,10 +22,8 @@ import { DataTable } from "@/components/data-table";
 import { ChartBarLabel } from "@/components/bar-chart";
 import {
   getAnalysisTypeOptions,
-  getCategoryOptions,
   searchArticles,
   type AnalysisTypeOption,
-  type CategoryOption,
 } from "@/api/api";
 
 interface Article {
@@ -52,7 +50,6 @@ interface SearchFilters {
   jenisAnalisis: string;
   yearStart: string;
   yearEnd: string;
-  kategori: string;
   jumlahKemunculan: string;
 }
 
@@ -94,13 +91,6 @@ function buildChips(filters: SearchFilters): { key: FilterKey; label: string }[]
     chips.push({
       key: "year",
       label: `Tahun: ${filters.yearStart || "-"} - ${filters.yearEnd || "-"}`,
-    });
-  }
-
-  if (filters.kategori) {
-    chips.push({
-      key: "kategori",
-      label: filters.kategori,
     });
   }
 
@@ -179,7 +169,6 @@ export default function Page() {
     jenisAnalisis: "",
     yearStart: "",
     yearEnd: "",
-    kategori: "",
     jumlahKemunculan: "",
     ...(location.state?.filters ?? {}),
   };
@@ -206,11 +195,9 @@ export default function Page() {
   const [jenisAnalisis, setJenisAnalisis] = useState(initFilters.jenisAnalisis);
   const [yearStart, setYearStart] = useState(initFilters.yearStart);
   const [yearEnd, setYearEnd] = useState(initFilters.yearEnd);
-  const [kategori, setKategori] = useState(initFilters.kategori);
   const [jumlahKemunculan, setJumlahKemunculan] = useState(
     initFilters.jumlahKemunculan
   );
-  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
   const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
 
   const chips = buildChips(activeFilters);
@@ -230,7 +217,6 @@ export default function Page() {
     activeFilters.jenisAnalisis,
     activeFilters.yearStart,
     activeFilters.yearEnd,
-    activeFilters.kategori,
     activeFilters.jumlahKemunculan,
     trendData.length,
     cardTotalOccurrences,
@@ -241,20 +227,13 @@ export default function Page() {
     setJenisAnalisis(activeFilters.jenisAnalisis);
     setYearStart(activeFilters.yearStart);
     setYearEnd(activeFilters.yearEnd);
-    setKategori(activeFilters.kategori);
     setJumlahKemunculan(activeFilters.jumlahKemunculan);
     setOpen(true);
   };
 
   useEffect(() => {
     const loadFilterOptions = async () => {
-      const [categoryRes, analysisRes] = await Promise.all([
-        getCategoryOptions(),
-        getAnalysisTypeOptions(),
-      ]);
-      if (categoryRes.status === "success" && Array.isArray(categoryRes.data)) {
-        setCategoryOptions(categoryRes.data);
-      }
+      const analysisRes = await getAnalysisTypeOptions();
       if (analysisRes.status === "success" && Array.isArray(analysisRes.data)) {
         setAnalysisTypeOptions(analysisRes.data);
       }
@@ -282,7 +261,7 @@ export default function Page() {
       filters.yearStart ? parseInt(filters.yearStart) : undefined,
       filters.yearEnd ? parseInt(filters.yearEnd) : undefined,
       filters.jenisArtikel || undefined,
-      filters.kategori || undefined,
+      undefined,
       safeMinOccurrence,
       undefined,
       filters.jenisAnalisis || undefined,
@@ -299,7 +278,6 @@ export default function Page() {
       jenisAnalisis,
       yearStart,
       yearEnd,
-      kategori,
       jumlahKemunculan,
     };
 
@@ -357,11 +335,6 @@ export default function Page() {
       nextFilters.yearEnd = "";
       setYearStart("");
       setYearEnd("");
-    }
-
-    if (key === "kategori") {
-      nextFilters.kategori = "";
-      setKategori("");
     }
 
     if (key === "jumlahKemunculan") {
@@ -530,28 +503,6 @@ export default function Page() {
                       </div>
 
                       <div className="flex flex-col gap-2">
-                        <label className="text-sm">Kategori penelitian</label>
-                        <Select onValueChange={setKategori} value={kategori}>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Pilih kategori" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {categoryOptions.length === 0 ? (
-                              <SelectItem value="category-empty" disabled>
-                                Kategori belum tersedia
-                              </SelectItem>
-                            ) : (
-                              categoryOptions.map((category) => (
-                                <SelectItem key={category.value} value={category.value}>
-                                  {category.label}
-                                </SelectItem>
-                              ))
-                            )}
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="flex flex-col gap-2">
                         <label className="text-sm">Jenis analisis</label>
                         <Select
                           onValueChange={setJenisAnalisis}
@@ -628,7 +579,6 @@ export default function Page() {
             totalOccurrences={cardTotalOccurrences}
             paperCount={paperCount}
             totalMatched={totalMatched}
-            kategori={activeFilters.kategori}
           />
 
           <div className="px-4 lg:px-6">
