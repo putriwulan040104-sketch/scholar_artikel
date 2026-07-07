@@ -1,5 +1,4 @@
 import re
-
 import app.services.processing.extraction_service as extractor
 import app.services.processing.normalization_service as normalizer
 

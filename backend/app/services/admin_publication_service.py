@@ -1,10 +1,10 @@
 from app.db import supabase
 from app.services.activity_log_service import log_activity
+from app.services.doi_lookup_service import DOI_TABLE, load_doi_by_publication_id
 from app.services.user_service import _validate_super_admin
 
 
 PUBLICATIONS_TABLE = "cleaned_papers_results"
-DOI_TABLE = "scholar_article_doi"
 PUBLICATION_COLUMNS = (
     "id,url,pdf_url,title,authors,keywords,reference_list,"
     "source,category,year"
@@ -66,23 +66,6 @@ def _publication_audit_data(publication):
         "referenceCount": len(references),
     }
 
-def _load_doi_by_id(publication_ids):
-    if not publication_ids:
-        return {}
-
-    response = (
-        supabase
-        .table(DOI_TABLE)
-        .select("id,doi")
-        .in_("id", publication_ids)
-        .execute()
-    )
-    return {
-        int(item["id"]): item.get("doi")
-        for item in (response.data or [])
-        if item.get("id") is not None
-    }
-
 def _with_doi(publication, doi_by_id):
     result = dict(publication)
     publication_id = result.get("id")
@@ -108,7 +91,7 @@ def get_admin_publications(token):
             for item in (response.data or [])
             if item.get("id") is not None
         ]
-        doi_by_id = _load_doi_by_id(publication_ids)
+        doi_by_id = load_doi_by_publication_id(publication_ids)
 
         publications = [
             _normalize_publication(_with_doi(item, doi_by_id))
@@ -181,7 +164,7 @@ def update_admin_publication(token, publication_id, data):
                 "status_code": 404,
             }
 
-        doi_by_id = _load_doi_by_id([publication_id])
+        doi_by_id = load_doi_by_publication_id([publication_id])
         current = _with_doi(current, doi_by_id)
 
         response = (
@@ -271,7 +254,7 @@ def delete_admin_publication(token, publication_id):
                 "status_code": 404,
             }
 
-        doi_by_id = _load_doi_by_id([publication_id])
+        doi_by_id = load_doi_by_publication_id([publication_id])
         publication = _with_doi(current.data, doi_by_id)
         (
             supabase

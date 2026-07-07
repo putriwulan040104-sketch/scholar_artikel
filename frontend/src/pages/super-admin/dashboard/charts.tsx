@@ -1,4 +1,4 @@
-import { Bar, BarChart, CartesianGrid, Cell, XAxis } from "recharts";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, XAxis } from "recharts";
 import type { ArticleRequest, ArticleRequestStatus } from "@/api/api";
 import {
   Card,
@@ -96,7 +96,17 @@ export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
             config={monthChartConfig}
             className="h-[280px] w-full"
           >
-            <BarChart accessibilityLayer data={monthlyData}>
+            <AreaChart
+              accessibilityLayer
+              data={monthlyData}
+              margin={{ left: 12, right: 12 }}
+            >
+              <defs>
+                <linearGradient id="requestAreaFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--color-total)" stopOpacity={0.35} />
+                  <stop offset="95%" stopColor="var(--color-total)" stopOpacity={0.12} />
+                </linearGradient>
+              </defs>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="month"
@@ -108,8 +118,16 @@ export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
                 cursor={false}
                 content={<ChartTooltipContent indicator="dot" />}
               />
-              <Bar dataKey="total" fill="var(--primary)" radius={8} />
-            </BarChart>
+              <Area
+                dataKey="total"
+                type="monotone"
+                fill="url(#requestAreaFill)"
+                stroke="var(--color-total)"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4 }}
+              />
+            </AreaChart>
           </ChartContainer>
         </CardContent>
       </Card>

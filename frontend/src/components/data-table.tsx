@@ -35,14 +35,12 @@ import {
 } from "@tanstack/react-table"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 import { z } from "zod"
-
 import { useIsMobile } from "@/hooks/use-mobile"
 import {
   isFavoriteArticle,
   readFavorites,
   writeFavorites,
 } from "@/lib/favorites"
-// import { Badge } from "@/components/ui/badge"                        // ← dihapus: tidak dipakai setelah Tabs dihapus
 import { Button } from "@/components/ui/button"
 import {
   ChartContainer,
@@ -60,22 +58,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-// import {                                                              // ← dihapus: Columns button dihapus
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
 import {
   Table,
@@ -85,30 +69,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-// import {                                                              // ← dihapus: Tabs dihapus
-//   Tabs,
-//   TabsContent,
-//   TabsList,
-//   TabsTrigger,
-// } from "@/components/ui/tabs"
 import {
-  GripVerticalIcon,
-  // Columns3Icon,                                                      // ← dihapus: Columns button dihapus
-  // ChevronDownIcon,                                                    // ← dihapus: Columns button dihapus
-  // PlusIcon,                                                           // ← dihapus: Add Section diganti Jaringan Sitasi
-  ChevronsLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ChevronsRightIcon,
+  GripVerticalIcon,    
   TrendingUpIcon,
   Star,
   FileText,
   ExternalLink,
-  Network,                                                               // ← baru: icon Jaringan Sitasi
 } from "lucide-react"
 
-// ─── Schema ────────────────────────────────────────────────────────────────────
-// ✅ BENAR — gunakan .optional() untuk field opsional
 export const schema = z.object({
   id              : z.number(),
   rank            : z.number(),
@@ -127,7 +95,6 @@ export const schema = z.object({
   favorite        : z.boolean().default(false),   // ← bukan favorite?: boolean
 })
 
-// ─── Helper: cek apakah URL valid ──────────────────────────────────────────────
 function isValidUrl(url?: string | null): boolean {
   if (!url) return false
   const trimmed = url.trim()
@@ -271,7 +238,6 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   id: "favorite",
   header: "Favorit",
   cell: ({ row }) => {
-    // ── Cek apakah sudah ada di localStorage saat render ──
     const isAlreadyFavorite = (): boolean => {
       return isFavoriteArticle(row.original.id)
     }
@@ -397,73 +363,7 @@ export function DataTable({
   }
 
   return (
-    // ── SEBELUM: pakai <Tabs> wrapper ──────────────────────────────────────────
-    // <Tabs defaultValue="outline" className="w-full flex-col justify-start gap-6">
-    // ── SESUDAH: ganti dengan <div> biasa ─────────────────────────────────────
     <div className="w-full flex flex-col gap-6">
-
-      {/* ── SEBELUM: ada Select view + TabsList + Columns button + Add Section ──
-      <div className="flex items-center justify-between px-4 lg:px-6">
-        <Label htmlFor="view-selector" className="sr-only">View</Label>
-        <Select defaultValue="outline">
-          <SelectTrigger className="flex w-fit @4xl/main:hidden" size="sm" id="view-selector">
-            <SelectValue placeholder="Select a view" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="outline">Outline</SelectItem>
-              <SelectItem value="past-performance">Past Performance</SelectItem>
-              <SelectItem value="key-personnel">Key Personnel</SelectItem>
-              <SelectItem value="focus-documents">Focus Documents</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
-        <TabsList className="hidden **:data-[slot=badge]:size-5 **:data-[slot=badge]:rounded-full **:data-[slot=badge]:bg-muted-foreground/30 **:data-[slot=badge]:px-1 @4xl/main:flex">
-          <TabsTrigger value="outline">Outline</TabsTrigger>
-          <TabsTrigger value="past-performance">
-            Past Performance <Badge variant="secondary">3</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="key-personnel">
-            Key Personnel <Badge variant="secondary">2</Badge>
-          </TabsTrigger>
-          <TabsTrigger value="focus-documents">Focus Documents</TabsTrigger>
-        </TabsList>
-
-        <div className="flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Columns3Icon data-icon="inline-start" />
-                Columns
-                <ChevronDownIcon data-icon="inline-end" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-32">
-              {table
-                .getAllColumns()
-                .filter((col) => typeof col.accessorFn !== "undefined" && col.getCanHide())
-                .map((col) => (
-                  <DropdownMenuCheckboxItem
-                    key={col.id}
-                    className="capitalize"
-                    checked={col.getIsVisible()}
-                    onCheckedChange={(value) => col.toggleVisibility(!!value)}
-                  >
-                    {col.id}
-                  </DropdownMenuCheckboxItem>
-                ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button variant="outline" size="sm">
-            <PlusIcon />
-            <span className="hidden lg:inline">Add Section</span>
-          </Button>
-        </div>
-      </div>
-      ── AKHIR SEBELUM ── */}
-
-      {/* ── SESUDAH: hanya tombol Jaringan Sitasi di kanan ── */}
       <div className="px-4 lg:px-6">
         <div className="mt-6 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-700">
@@ -472,12 +372,6 @@ export function DataTable({
         </div>
       </div>
 
-      {/* ── SEBELUM: pakai <TabsContent value="outline"> ──────────────────────
-      <TabsContent
-        value="outline"
-        className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6"
-      >
-      ── SESUDAH: ganti dengan <div> biasa ── */}
       <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
         <div className="overflow-hidden rounded-lg border">
           <DndContext
@@ -523,24 +417,7 @@ export function DataTable({
             </Table>
           </DndContext>
         </div>
-
-    
-        
-      {/* </TabsContent> ← SEBELUM penutup TabsContent */}
       </div>
-      {/* ── SEBELUM: Tab lain — dikomentari semua ─────────────────────────────
-      <TabsContent value="past-performance" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
-      </TabsContent>
-      <TabsContent value="key-personnel" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
-      </TabsContent>
-      <TabsContent value="focus-documents" className="flex flex-col px-4 lg:px-6">
-        <div className="aspect-video w-full flex-1 rounded-lg border border-dashed" />
-      </TabsContent>
-      ── AKHIR SEBELUM ── */}
-
-    {/* </Tabs> ← SEBELUM penutup Tabs */}
     </div>
   )
 }

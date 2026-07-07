@@ -56,6 +56,7 @@ const popularSearches = [
   "Mobile Application",
   "Android Application",
 ];
+const SEARCH_HISTORY_DISPLAY_LIMIT = 5;
 
 export function Searchpage() {
   const navigate = useNavigate();
@@ -126,6 +127,7 @@ export function Searchpage() {
   }, []);
 
   const displayName = user?.name?.trim() || "User";
+  const visibleSearchHistory = searchHistory.slice(0, SEARCH_HISTORY_DISPLAY_LIMIT);
 
   const saveHistory = (keyword: string) => {
     const clean = keyword.trim();
@@ -458,7 +460,7 @@ export function Searchpage() {
             <p className="text-sm text-slate-400">Belum ada riwayat pencarian.</p>
           ) : (
             <div className="space-y-2">
-              {searchHistory.map((item) => (
+              {visibleSearchHistory.map((item) => (
                 <button
                   key={item}
                   type="button"

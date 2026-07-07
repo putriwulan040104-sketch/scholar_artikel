@@ -16,7 +16,17 @@ def _user_payload(user):
         "role": user.get("role") or "user",
     }
 
+def _is_duplicate_name_constraint(error):
+    message = str(error).lower()
+    return (
+        "users_username_key" in message
+        or "key (name)=" in message
+    )
+
 def register_user(name, email, password):
+    name = (name or "").strip()
+    email = (email or "").strip().lower()
+
     try:
         existing = supabase.table("users").select("id").eq("email", email).execute()
         if existing.data:
@@ -74,6 +84,12 @@ def register_user(name, email, password):
             "data": normalized_user
         }
     except Exception as e:
+        message = (
+            "Constraint unik nama lengkap masih aktif di database. "
+            "Jalankan SQL backend/sql/20260708_allow_duplicate_user_names.sql."
+            if _is_duplicate_name_constraint(e)
+            else str(e)
+        )
         log_activity(
             action="register",
             entity_type="user",
@@ -84,7 +100,7 @@ def register_user(name, email, password):
         )
         return {
             "status": "error",
-            "message": str(e)
+            "message": message
         }
 
 def login_user(email, password):
@@ -198,7 +214,11 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
 
         current_user = existing_response.data[0]
         next_name = (name or "").strip() if isinstance(name, str) else current_user.get("name")
-        next_email = (email or "").strip() if isinstance(email, str) else current_user.get("email")
+        next_email = (
+            (email or "").strip().lower()
+            if isinstance(email, str)
+            else current_user.get("email")
+        )
 
         if not next_name or not next_email:
             return {
@@ -284,6 +304,12 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
             "data": normalized_user
         }
     except Exception as e:
+        message = (
+            "Constraint unik nama lengkap masih aktif di database. "
+            "Jalankan SQL backend/sql/20260708_allow_duplicate_user_names.sql."
+            if _is_duplicate_name_constraint(e)
+            else str(e)
+        )
         log_activity(
             actor={"id": user_id, "email": payload.get("email")},
             action="update_profile",
@@ -294,7 +320,7 @@ def update_profile_user(token, name=None, email=None, avatar_url=None):
         )
         return {
             "status": "error",
-            "message": str(e)
+            "message": message
         }
 
 def logout_user(token):

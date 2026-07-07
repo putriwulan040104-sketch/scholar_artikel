@@ -73,7 +73,7 @@ def _validate_super_admin(token):
     except Exception as error:
         return {
             "status": "error",
-            "message": str(error),
+            "message": _format_user_write_error(error),
             "status_code": 400,
         }
 
@@ -98,6 +98,21 @@ def _safe_role(role):
     normalized = _normalize_role(role)
     return "super_admin" if normalized == "super_admin" else "user"
 
+def _is_duplicate_name_constraint(error):
+    message = str(error).lower()
+    return (
+        "users_username_key" in message
+        or "key (name)=" in message
+    )
+
+def _format_user_write_error(error):
+    if _is_duplicate_name_constraint(error):
+        return (
+            "Constraint unik nama lengkap masih aktif di database. "
+            "Jalankan SQL backend/sql/20260708_allow_duplicate_user_names.sql."
+        )
+    return str(error)
+
 def get_users(token):
     auth = _validate_super_admin(token)
     if auth["status"] == "error":
@@ -121,7 +136,7 @@ def get_users(token):
     except Exception as error:
         return {
             "status": "error",
-            "message": str(error),
+            "message": _format_user_write_error(error),
             "status_code": 400,
         }
 
@@ -211,7 +226,7 @@ def create_user(token, data):
         )
         return {
             "status": "error",
-            "message": str(error),
+            "message": _format_user_write_error(error),
             "status_code": 400,
         }
 
@@ -312,7 +327,7 @@ def update_user(token, user_id, data):
         )
         return {
             "status": "error",
-            "message": str(error),
+            "message": _format_user_write_error(error),
             "status_code": 400,
         }
 

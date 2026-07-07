@@ -32,7 +32,7 @@ export default function FavoritPage() {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
 
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 5;
 
   useEffect(() => {
     const syncFavorites = () => {
@@ -67,7 +67,7 @@ export default function FavoritPage() {
 
   const pagedFavorites = favorites.slice(
     (page - 1) * PAGE_SIZE,
-    page * PAGE_SIZE
+    page * PAGE_SIZE,
   );
 
   const goToPage = (next: number) => {
