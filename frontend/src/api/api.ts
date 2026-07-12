@@ -636,6 +636,80 @@ export async function searchArticles(
   }
 }
 
+export type SearchProgressStageStatus = "waiting" | "running" | "done";
+
+export interface SearchProgressStage {
+  key: string;
+  title: string;
+  description: string;
+  status: SearchProgressStageStatus;
+  duration_seconds?: number;
+  details?: Record<string, any>;
+}
+
+export interface SearchProgressLog {
+  message: string;
+  elapsed_seconds: number;
+}
+
+export interface SearchProgressEvent {
+  event: "progress" | "complete" | "error";
+  keyword: string;
+  category: string;
+  target: number;
+  status: "running" | "complete" | "error";
+  message?: string;
+  progress: number;
+  elapsed_seconds: number;
+  stages: SearchProgressStage[];
+  logs: SearchProgressLog[];
+  result?: {
+    articles: any[];
+    total: number;
+    total_matched?: number;
+    total_occurrences?: number;
+    paper_count?: number;
+  } | null;
+  error?: string | null;
+}
+
+export function createSearchProgressSource(params: {
+  query: string;
+  kategori?: string;
+  target?: number;
+  yearStart?: number;
+  yearEnd?: number;
+  jenisArtikel?: string;
+  jenisAnalisis?: string;
+  jumlahKemunculan?: number | string;
+  jumlahPublikasi?: string;
+}) {
+  const queryParams = new URLSearchParams({
+    query: params.query,
+    target: String(params.target || 10),
+  });
+
+  if (params.kategori && params.kategori.trim()) {
+    queryParams.set("kategori", params.kategori.trim());
+  }
+  if (params.yearStart) queryParams.set("year_start", String(params.yearStart));
+  if (params.yearEnd) queryParams.set("year_end", String(params.yearEnd));
+  if (params.jenisArtikel) queryParams.set("jenis_artikel", params.jenisArtikel);
+  if (params.jenisAnalisis) queryParams.set("jenis_analisis", params.jenisAnalisis);
+  if (
+    params.jumlahKemunculan !== undefined &&
+    params.jumlahKemunculan !== null &&
+    String(params.jumlahKemunculan).trim() !== ""
+  ) {
+    queryParams.set("jumlah_kemunculan", String(params.jumlahKemunculan));
+  }
+  if (params.jumlahPublikasi) {
+    queryParams.set("jumlah_publikasi", params.jumlahPublikasi);
+  }
+
+  return new EventSource(`${BASE_URL}/search-progress?${queryParams.toString()}`);
+}
+
 // Stats
 export async function getStats() {
   try {
@@ -649,6 +723,12 @@ export async function getStats() {
 }
 
 export interface CategoryOption {
+  value: string;
+  label: string;
+  count: number;
+}
+
+export interface AnalysisTypeOption {
   value: string;
   label: string;
   count: number;

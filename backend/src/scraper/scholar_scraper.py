@@ -1,36 +1,47 @@
+from urllib.parse import urlencode
 import re
-import time
-from datetime import datetime, timezone
 
-import requests
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import (
-    InvalidSessionIdException,
-    WebDriverException,
-    NoSuchElementException,
-    StaleElementReferenceException,
-)
+from selenium.common.exceptions import StaleElementReferenceException
 
-from src.config.supabase_client import supabase
-from src.utils.driver import setup_driver, wait_for_captcha_if_needed
+from src.scraper.html_parser import extract_doi_from_scholar_result
+from src.scraper.source_selector import choose_pdf_url
 from src.utils.delay import human_like_delay
-from src.scraper.pdf_handler import download_pdf, extract_doi_from_pdf
-from src.scraper.html_parser import normalize_doi, extract_doi_from_scholar_result
+from src.utils.driver import wait_for_captcha_if_needed
+from src.utils import helpers
+from src.utils import logger
 
-# ─── Konstanta ──────────────────────────────────────────────────────────────
-TABLE_DOI  = "scholar_article_doi"
-YEAR_MIN   = 2021
-YEAR_MAX   = 2026
-DOI_PATTERN = re.compile(
-    r"(?:https?://(?:dx\.)?doi\.org/)?(10\.\d{4,9}/[-._;()/:A-Z0-9]+)",
-    re.IGNORECASE,
-)
 
-# ─── Helpers ────────────────────────────────────────────────────────────────
+YEAR_MIN = 2021
+YEAR_MAX = 2026
+SCHOLAR_BASE_URL = "https://scholar.google.co.id/scholar"
+SCHOLAR_RESULT_SELECTOR = ".gs_r.gs_or.gs_scl"
+
+# =============================================================================
+# KONFIGURASI RETRY & STABILITAS SCRAPER
+# (tidak mengubah pipeline penelitian, hanya kestabilan proses Selenium)
+# =============================================================================
+MAX_DRIVER_RESTART = 6            # batas restart browser sebelum benar-benar menyerah
+MAX_PAGE_LOAD_RETRY = 4           # retry driver.get() untuk satu halaman
+MAX_EMPTY_RELOAD_RETRY = 4        # retry reload saat DOM/halaman terbaca 0 hasil
+RESULT_WAIT_BASE_TIMEOUT = 30     # detik, naik bertahap tiap retry
+RESULT_WAIT_TIMEOUT_STEP = 10
+PAGE_LOAD_BACKOFF_BASE = 3        # detik, dikali attempt untuk backoff
+
+
+def build_scholar_search_url(keyword, start):
+    """Membuat URL Google Scholar yang konsisten dengan locale Indonesia."""
+    params = {
+        "start": start,
+        "q": keyword,
+        "hl": "id",
+        "as_sdt": "0,5",
+    }
+    return f"{SCHOLAR_BASE_URL}?{urlencode(params)}"
+
 
 def clean_source(rest_text, year):
+    """Membersihkan source/publisher dari metadata Google Scholar."""
     try:
         ym = re.search(r"\b(19|20)\d{2}\b", rest_text)
         if not ym:
@@ -47,343 +58,336 @@ def clean_source(rest_text, year):
         return ""
 
 
-def fetch_doi_crossref(title, authors=""):
-    
+def build_temporary_metadata_row(rd, category):
+    """Membuat row raw metadata sementara tanpa DOI final, PDF validation, atau field DB final."""
+    return {
+        "title":        rd["title"],
+        "authors":      rd.get("authors", ""),
+        "year":         rd["year"],
+        "source":       rd["source"],
+        "abstract":     rd["abstract"],
+        "url":          rd.get("url", ""),
+        "pdf_url":      rd.get("pdf_url"),
+        "category":     category,
+    }
+
+
+# =============================================================================
+# LOGIKA SCRAPING GOOGLE SCHOLAR (tetap di file ini, bukan utility generik)
+# =============================================================================
+
+def _has_next_scholar_page(driver):
     try:
-        params = {"query.title": title, "rows": 1, "select": "DOI,title,score"}
-        if authors:
-            last = authors.split(",")[0].strip().split()[-1]
-            params["query.author"] = last
+        next_btn = driver.find_element(By.ID, "gs_n")
 
-        r = requests.get(
-            "https://api.crossref.org/works",
-            params=params,
-            timeout=8,
-            headers={"User-Agent": "ScholarScraper/2.0 (mailto:research@example.com)"},
-        )
-        if r.status_code == 200:
-            items = r.json().get("message", {}).get("items", [])
-            if items and items[0].get("score", 0) >= 30:   # threshold relevansi
-                doi = normalize_doi(items[0].get("DOI", ""))
-                if doi:
-                    print(f"  🔎 CrossRef DOI: {doi}")
-                    return doi
-    except Exception as e:
-        print(f"  ⚠ CrossRef: {e}")
-    return None
+        links = next_btn.find_elements(By.TAG_NAME, "a")
 
+        for link in links:
 
-def fetch_doi_from_doi_org(url):
-    if not url:
-        return None
-    try:
-        # Kadang URL artikel langsung mengandung DOI
-        doi = normalize_doi(url)
-        if doi:
-            return doi
-        # Coba ikuti redirect (tanpa render JS) untuk dapat URL final
-        r = requests.head(url, allow_redirects=True, timeout=8,
-                headers={"User-Agent": "Mozilla/5.0"})
-        final = r.url
-        doi = normalize_doi(final)
-        if doi:
-            print(f"  🌐 DOI dari redirect URL: {doi}")
-            return doi
+            text = (link.text or "").lower()
+
+            aria = (link.get_attribute("aria-label") or "").lower()
+
+            cls = (link.get_attribute("class") or "").lower()
+
+            if (
+                "next" in text
+                or "berikutnya" in text
+                or "next" in aria
+                or "berikutnya" in aria
+            ):
+
+                if "disabled" in cls:
+                    return False
+
+                return True
+
     except Exception:
         pass
-    return None
 
-# ─── Duplikasi checks ───────────────────────────────────────────────────────
-def _exists(field, value):
-    if not value:
-        return False
+    return False
+
+
+def _find_scholar_results(driver):
+    """Mengambil elemen hasil Google Scholar dengan selector utama."""
     try:
-        res = supabase.table(TABLE_DOI).select("id").eq(field, value).limit(1).execute()
-        return bool(res.data)
+        return driver.find_elements(By.CSS_SELECTOR, SCHOLAR_RESULT_SELECTOR)
     except Exception:
-        return False
-
-is_doi_dup     = lambda v: _exists("doi", v)
-is_url_dup     = lambda v: _exists("url", v)
-is_pdfurl_dup  = lambda v: _exists("pdf_url", v)
+        return []
 
 
-# ─── Scraper utama ──────────────────────────────────────────────────────────
-def _init_driver():
-    try:
-        return setup_driver(headless=False)
-    except Exception as e:
-        print(f"⚠ Driver gagal pertama kali: {e}, retry...")
-        time.sleep(3)
-        return setup_driver(headless=False)
+def _snapshot_scholar_results(results):
+    """Mengambil snapshot metadata dari DOM Google Scholar agar aman dari stale element."""
+    result_data = []
+    for result in results:
+        try:
+            rd = {}
+            title_el = result.find_element(By.CSS_SELECTOR, ".gs_rt")
+            links = title_el.find_elements(By.TAG_NAME, "a")
+            rd["title"] = (links[0].text.strip() if links else title_el.text.strip())
+            rd["url"] = links[0].get_attribute("href") if links else ""
+
+            info = result.find_element(By.CSS_SELECTOR, ".gs_a").text
+            parts = info.split(" - ")
+            rd["authors"] = parts[0].strip()
+            rest = parts[1] if len(parts) > 1 else ""
+            ym = re.search(r"\b(19|20)\d{2}\b", rest)
+            rd["year"] = int(ym.group()) if ym else None
+            rd["source"] = clean_source(rest, rd["year"]) if ym else ""
+
+            try:
+                rd["abstract"] = result.find_element(By.CSS_SELECTOR, ".gs_rs").text.strip()
+            except Exception:
+                rd["abstract"] = ""
+
+            rd["doi_scholar"] = extract_doi_from_scholar_result(result)
+            rd["pdf_url"] = None
+            try:
+                pdf_links = result.find_elements(By.CSS_SELECTOR, ".gs_or_ggsm a")
+                pdf_urls = [
+                    pdf_el.get_attribute("href")
+                    for pdf_el in pdf_links
+                ]
+                rd["pdf_url"] = choose_pdf_url(pdf_urls)
+            except Exception:
+                pass
+
+            result_data.append(rd)
+
+        except StaleElementReferenceException:
+            continue
+        except Exception as e:
+            logger.log_warning(f"  ⚠ Snapshot elemen gagal: {e}")
+            continue
+
+    return result_data
 
 
-def scrape_and_save_to_supabase(keyword, category, max_results=50):
-    driver       = None
-    success      = 0
+def _resolve_empty_page(driver, url, keyword, page):
+    """
+    Menangani kasus halaman terbaca 0 hasil padahal browser sebenarnya masih memiliki hasil
+    (loading lambat / DOM belum selesai / delay Google Scholar).
+    Melakukan reload halaman yang sama beberapa kali sebelum menyimpulkan halaman benar-benar kosong.
+    Mengembalikan (driver, results, confirmed_empty: bool).
+    """
+    for empty_retry in range(1, MAX_EMPTY_RELOAD_RETRY + 1):
+        timeout = RESULT_WAIT_BASE_TIMEOUT + (empty_retry - 1) * RESULT_WAIT_TIMEOUT_STEP
+        logger.log_retry(
+            f"  [EMPTY] Jumlah hasil : 0 (percobaan ke-{empty_retry}/{MAX_EMPTY_RELOAD_RETRY})",
+            f"  [EMPTY] Wait timeout : {timeout}s",
+        )
+
+        wait_ok = helpers.wait_until_results(driver, SCHOLAR_RESULT_SELECTOR, timeout=timeout)
+        results = _find_scholar_results(driver)
+        logger.log_retry(f"  [EMPTY] Jumlah hasil setelah wait: {len(results)}")
+        helpers.log_browser_state(driver, "Cek ulang hasil kosong", keyword=keyword, page=page, retry=empty_retry)
+
+        if results:
+            logger.log_success("  ✅ [EMPTY] Hasil ditemukan setelah retry, halaman TIDAK kosong.")
+            return driver, results, False
+
+        if not wait_ok:
+            logger.log_warning("  ⚠ [EMPTY] Timeout menunggu DOM hasil.")
+
+        if empty_retry < MAX_EMPTY_RELOAD_RETRY:
+            logger.log_retry("  🔄 [EMPTY] Reload halaman yang sama (kemungkinan loading delay Google Scholar)...")
+            driver, load_ok = helpers.safe_driver_get(
+                driver, url, keyword, page,
+                max_retries=MAX_PAGE_LOAD_RETRY,
+                backoff_base=PAGE_LOAD_BACKOFF_BASE,
+                max_driver_restart=MAX_DRIVER_RESTART,
+            )
+            if not load_ok:
+                logger.log_error("  ❌ [EMPTY] Reload gagal total, hentikan retry halaman kosong.")
+                return driver, [], True
+            human_like_delay(5, 9)
+
+    logger.log_warning("  ⚠ [EMPTY] Halaman dikonfirmasi kosong setelah seluruh retry.")
+    return driver, [], True
+
+
+def scrape_and_collect_google_scholar(
+    keyword,
+    category,
+    max_results=50,
+    start_page=0,
+    pages_to_collect=None,
+    progress_callback=None,
+):
+    """Scraping metadata Google Scholar dan mengembalikan temporary dataset tanpa insert database."""
+    driver = None
     scraped_count = 0
     skipped_total = 0
-    page          = 0
+    page = start_page
+    pages_collected = 0
+    has_more_pages = True
+    temporary_dataset = []
+    driver_restarts = 0
 
     skip_reasons = {
         "judul": 0, "url_dup": 0, "tahun": 0, "source": 0,
         "abstract": 0, "doi": 0, "doi_dup": 0,
-        "pdfurl_dup": 0, "disimpan": 0,
+        "pdfurl_dup": 0, "pdf_failed": 0, "metadata_dup": 0,
+        "disimpan": 0,
     }
 
-    query = keyword.replace(" ", "+")
-
     try:
-        driver = _init_driver()
+        driver = helpers.init_driver()
 
-        while scraped_count < max_results:
-            # ── Cek session driver masih hidup ───────────────────────────
-            try:
-                _ = driver.title  # akan raise jika session mati
-            except (InvalidSessionIdException, WebDriverException):
-                print("⚠ Session browser mati, restart driver...")
-                try:
-                    driver.quit()
-                except Exception:
-                    pass
-                time.sleep(3)
-                driver = _init_driver()
+        while max_results is None or scraped_count < max_results:
+            if pages_to_collect is not None and pages_collected >= pages_to_collect:
+                break
+
+            if not helpers.is_session_alive(driver):
+                if driver_restarts >= MAX_DRIVER_RESTART:
+                    logger.log_error("❌ Batas restart driver tercapai di awal iterasi, hentikan scraping.")
+                    has_more_pages = False
+                    break
+                logger.log_retry("⚠ Session browser mati, restart driver...")
+                driver = helpers.restart_driver(driver, reason="session mati di awal iterasi")
+                driver_restarts += 1
 
             start = page * 10
-            url   = f"https://scholar.google.com/scholar?q={query}&start={start}"
+            url = build_scholar_search_url(keyword, start)
+            page_number = page + 1
 
-            print(f"\n{'='*65}")
-            print(
+            if progress_callback:
+                progress_callback({
+                    "stage": "scrape",
+                    "event": "page_start",
+                    "page": page_number,
+                    "message": f"Sedang memproses halaman {page_number}...",
+                    "temporary_count": scraped_count,
+                    "skipped_total": skipped_total,
+                })
+
+            target_label = max_results if max_results is not None else "FINAL TARGET"
+            logger.log_page(
+                f"\n{'='*65}",
                 f"📄 Halaman {page+1}  |  "
-                f"Valid: {scraped_count}/{max_results}  |  "
-                f"Skip: {skipped_total}"
+                f"Temporary valid: {scraped_count}/{target_label}  |  "
+                f"Skip: {skipped_total}",
+                f"{'='*65}",
             )
-            print(f"{'='*65}")
 
-            try:
-                driver.get(url)
-            except (InvalidSessionIdException, WebDriverException) as e:
-                print(f"⚠ Gagal get URL: {e}, restart driver...")
-                try:
-                    driver.quit()
-                except Exception:
-                    pass
-                time.sleep(3)
-                driver = _init_driver()
-                driver.get(url)
+            driver, load_ok = helpers.safe_driver_get(
+                driver, url, keyword, page,
+                max_retries=MAX_PAGE_LOAD_RETRY,
+                backoff_base=PAGE_LOAD_BACKOFF_BASE,
+                max_driver_restart=MAX_DRIVER_RESTART,
+            )
+            if not load_ok:
+                logger.log_error("❌ Gagal memuat halaman setelah seluruh retry, hentikan scraping.")
+                has_more_pages = False
+                break
 
             human_like_delay(3, 5)
 
             if not wait_for_captcha_if_needed(driver):
-                print("❌ CAPTCHA tidak selesai, berhenti.")
+                logger.log_error("❌ CAPTCHA tidak selesai, berhenti.")
+                has_more_pages = False
                 break
 
-            try:
-                WebDriverWait(driver, 20).until(
-                    EC.presence_of_element_located(
-                        (By.CSS_SELECTOR, ".gs_r.gs_or.gs_scl")
-                    )
-                )
-            except Exception:
-                print("❌ Tidak ada hasil di halaman ini.")
-                break
+            helpers.detect_redirect(driver, url)
 
-            results = driver.find_elements(By.CSS_SELECTOR, ".gs_r.gs_or.gs_scl")
+            # Tunggu hasil muncul (dengan timeout dasar)
+            wait_ok = helpers.wait_until_results(driver, SCHOLAR_RESULT_SELECTOR, timeout=RESULT_WAIT_BASE_TIMEOUT)
+            results = _find_scholar_results(driver)
+            logger.log_retry(f"  [CHECK] Jumlah hasil awal : {len(results)}  (wait_ok={wait_ok})")
+
             if not results:
-                print("❌ Tidak ada hasil lagi, scraping selesai.")
-                break
+                logger.log_warning( f"Halaman {page+1} kosong. Mencoba reload..."
+)
+                # Bisa jadi false-empty akibat loading lambat / DOM belum selesai / redirect sementara
+                driver, results, confirmed_empty = _resolve_empty_page(driver, url, keyword, page)
 
-            # Snapshot data dari DOM sebelum loop (hindari stale element)
-            result_data = []
-            for result in results:
-                try:
-                    rd = {}
-                    title_el = result.find_element(By.CSS_SELECTOR, ".gs_rt")
-                    links    = title_el.find_elements(By.TAG_NAME, "a")
-                    rd["title"] = (links[0].text.strip() if links                                   
-                                    else title_el.text.strip())
-                    rd["url"]   = links[0].get_attribute("href") if links else ""
-                    
-                    info   = result.find_element(By.CSS_SELECTOR, ".gs_a").text
-                    parts  = info.split(" - ")
-                    rd["authors"] = parts[0].strip()
-                    rest   = parts[1] if len(parts) > 1 else ""
-                    ym     = re.search(r"\b(19|20)\d{2}\b", rest)
-                    rd["year"]   = int(ym.group()) if ym else None
-                    rd["source"] = clean_source(rest, rd["year"]) if ym else ""
-
-                    try:
-                        rd["abstract"] = result.find_element(
-                            By.CSS_SELECTOR, ".gs_rs").text.strip()
-                    except Exception:
-                        rd["abstract"] = ""
-
-                    rd["doi_scholar"] = extract_doi_from_scholar_result(result)
-                    rd["pdf_url"] = None
-                    try:
-                        pdf_el = result.find_element(
-                            By.CSS_SELECTOR, ".gs_or_ggsm a")
-                        rd["pdf_url"] = pdf_el.get_attribute("href") or None
-                    except Exception:
-                        pass
-
-                    result_data.append(rd)
-
-                except StaleElementReferenceException:
-                    continue
-                except Exception as e:
-                    print(f"  ⚠ Snapshot elemen gagal: {e}")
-                    continue
-
-            # ── Proses setiap artikel ─────────────────────────────────────
-            for rd in result_data:
-                if scraped_count >= max_results:
+                if not results and confirmed_empty:
+                    if _has_next_scholar_page(driver):
+                        logger.log_retry(
+                            "➡ Halaman ini benar-benar kosong, tapi Google Scholar masih punya "
+                            "halaman berikutnya. Lanjut."
+                        )
+                        page += 1
+                        pages_collected += 1
+                        human_like_delay(2, 4)
+                        continue
+                    logger.log_error("❌ Google Scholar sudah tidak memiliki halaman hasil berikutnya.")
+                    has_more_pages = False
                     break
-                print()
-                # 1. Judul
+
+            result_data = _snapshot_scholar_results(results)
+            page_valid_start = scraped_count
+
+            for rd in result_data:
+                if max_results is not None and scraped_count >= max_results:
+                    break
+
                 if not rd.get("title") or len(rd["title"]) < 5:
-                    print("⏭  Skip: judul tidak valid")
+                    logger.log_skip("\n⏭  Skip: judul tidak valid")
                     skip_reasons["judul"] += 1
                     skipped_total += 1
                     continue
-                print(f"📄 {rd['title'][:72]}")
+                logger.log_success(f"\n📄 {rd['title'][:72]}")
 
-                # 2. Duplikasi URL
-                if is_url_dup(rd.get("url")):
-                    print("⏭  Skip: URL sudah ada di DB")
-                    skip_reasons["url_dup"] += 1
-                    skipped_total += 1
-                    continue
-
-                # 3. Tahun
                 if not rd.get("year") or not (YEAR_MIN <= rd["year"] <= YEAR_MAX):
-                    print(f"⏭  Skip: tahun {rd.get('year')}")
+                    logger.log_skip(f"⏭  Skip: tahun {rd.get('year')}")
                     skip_reasons["tahun"] += 1
                     skipped_total += 1
                     continue
 
-                # 4. Source
                 if not rd.get("source"):
-                    print("⏭  Skip: source tidak valid")
+                    logger.log_skip("⏭  Skip: source tidak valid")
                     skip_reasons["source"] += 1
                     skipped_total += 1
                     continue
 
-                # 5. Abstract
                 if not rd.get("abstract") or len(rd["abstract"]) < 20:
-                    print("⏭  Skip: abstract tidak valid")
+                    logger.log_skip("⏭  Skip: abstract tidak valid")
                     skip_reasons["abstract"] += 1
                     skipped_total += 1
                     continue
 
-                # 6. Cari DOI artikel (bertingkat)
-                doi_article = rd.get("doi_scholar")
-
-                if not doi_article:
-                    # Coba dari URL artikel
-                    doi_article = fetch_doi_from_doi_org(rd.get("url"))
-
-                if not doi_article:
-                    # Fallback CrossRef
-                    doi_article = fetch_doi_crossref(rd["title"], rd.get("authors", ""))
-
-                if not doi_article:
-                    print("⏭  Skip: DOI tidak ditemukan")
-                    skip_reasons["doi"] += 1
-                    skipped_total += 1
-                    continue
-
-                # 7. Duplikasi DOI
-                if is_doi_dup(doi_article):
-                    print(f"⏭  Skip: DOI {doi_article} sudah ada di DB")
-                    skip_reasons["doi_dup"] += 1
-                    skipped_total += 1
-                    continue
-
-                # 8. PDF & validasi DOI
-                pdf_url  = rd.get("pdf_url")
-                pdf_path = None
-                pdf_doi  = None
-                access   = "closed_access"
-                status   = "metadata_only"
-
-                if pdf_url:
-                    # Duplikasi PDF URL
-                    if is_pdfurl_dup(pdf_url):
-                        print("⏭  Skip: PDF URL sudah ada di DB")
-                        skip_reasons["pdfurl_dup"] += 1
-                        skipped_total += 1
-                        continue
-
-                    pdf_path = download_pdf(pdf_url, rd["title"])   # tanpa driver
-
-                    if pdf_path:
-                        access = "open_access"
-                        status = "pdf_downloaded"
-                        pdf_doi = extract_doi_from_pdf(pdf_path)
-
-                        if pdf_doi:
-                            # LEVEL A: DOI ada, PDF ada, pdf_doi ada
-                            if pdf_doi == doi_article:
-                                print(f"  ✅ [LEVEL A] DOI cocok: {doi_article}")
-                            else:                              
-                                print(
-                                    f"  ⚠ [LEVEL A*] DOI berbeda (preprint?):\n"
-                                    f"     artikel  : {doi_article}\n"
-                                    f"     pdf      : {pdf_doi}\n"
-                                    f"     → Simpan dengan doi=artikel, pdf_doi=pdf"
-                                )
-                        else:
-                            # LEVEL B: DOI ada, PDF ada, tapi pdf tidak embed DOI
-                            print(f"  ✅ [LEVEL B] PDF ada, pdf_doi tidak embed: {doi_article}")
-                    else:
-                        status = "pdf_failed"
-                        print(f"  ℹ PDF gagal diunduh → closed_access")
-                else:
-                    print(f"  ℹ Tidak ada PDF → closed_access")
-
-                # 9. Bangun baris data
-                row = {
-                    "title":        rd["title"],
-                    "authors":      rd.get("authors", ""),
-                    "year":         rd["year"],
-                    "source":       rd["source"],
-                    "abstract":     rd["abstract"],                
-                    "url":          rd.get("url", ""),
-                    "pdf_url":      pdf_url,
-                    "scrape_status": status,
-                    "scraped_at":   datetime.now(timezone.utc).isoformat(),
-                    "category":     category,
-                    "doi":          doi_article,
-                    "pdf_doi":      pdf_doi,
-                    "access_type":  access,
-                }
+                row = build_temporary_metadata_row(rd, category)
 
                 scraped_count += 1
-                print(
+                logger.log_success(
                     f"\n  [{scraped_count}] ✅ ARTIKEL VALID"
                     f"\n  Judul   : {row['title']}"
-                    f"\n  DOI     : {row['doi']}"
-                    f"\n  Akses   : {row['access_type']}"
-                    f"\n  Status  : {row['scrape_status']}"
+                    f"\n  Source  : {row['source']}"
+                    f"\n  Tahun   : {row['year']}",
+                    "  " + "-" * 55,
+                    "  Data masuk temporary dataset, belum insert database",
                 )
-                print("  " + "-" * 55)
-
-                try:
-                    supabase.table(TABLE_DOI).insert(row).execute()
-                    success += 1
-                    skip_reasons["disimpan"] += 1
-                except Exception as e:
-                    print(f"  ⚠ Gagal insert Supabase: {e}")
-                    scraped_count -= 1  # tidak hitung jika gagal insert
+                temporary_dataset.append(row)
 
                 human_like_delay(1, 3)
 
+            page_valid_count = scraped_count - page_valid_start
+            if progress_callback:
+                progress_callback({
+                    "stage": "scrape",
+                    "event": "page_done",
+                    "page": page_number,
+                    "found_count": page_valid_count,
+                    "message": f"Halaman {page_number} -> ditemukan {page_valid_count} artikel",
+                    "temporary_count": scraped_count,
+                    "skipped_total": skipped_total,
+                    "skip_reasons": skip_reasons.copy(),
+                })
+
             page += 1
-            human_like_delay(2, 4)
+            pages_collected += 1
+            human_like_delay(15, 25)
+
+        if max_results is not None and scraped_count < max_results and not has_more_pages:
+            logger.log_finish(
+                f"Target {max_results} artikel tidak tercapai. "
+                f"Hanya ditemukan {scraped_count} artikel yang memenuhi seluruh kriteria validasi.",
+                "Google Scholar sudah mencapai akhir hasil pencarian.",
+            )
 
     except KeyboardInterrupt:
-        print("\n⛔ Dihentikan oleh pengguna.")
+        logger.log_finish("\n⛔ Dihentikan oleh pengguna.")
 
     finally:
         if driver:
@@ -392,25 +396,11 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50):
             except Exception:
                 pass
 
-        # ── Laporan akhir ─────────────────────────────────────────────────
-        print(f"\n{'='*65}")
-        print("✅ SELESAI SCRAPING")
-        print(f"   Berhasil disimpan  : {success} artikel")
-        print(f"   Target             : {max_results} artikel")
-        print(f"   Total di-skip      : {skipped_total}")
-        print()
-        print("  RINCIAN SKIP:")
-        labels = {
-            "judul":      "Judul tidak valid",
-            "url_dup":    "URL duplikat",
-            "tahun":      "Tahun di luar range",
-            "source":     "Source tidak valid",
-            "abstract":   "Abstract tidak valid",
-            "doi":        "DOI tidak ditemukan",
-            "doi_dup":    "DOI duplikat",
-            "pdfurl_dup": "PDF URL duplikat",
-        }
-        for k, label in labels.items():
-            if skip_reasons[k]:
-                print(f"    {label:<28}: {skip_reasons[k]}")
-        print(f"{'='*65}")
+    return (
+        temporary_dataset,
+        skip_reasons,
+        skipped_total,
+        scraped_count,
+        page,
+        has_more_pages,
+    )

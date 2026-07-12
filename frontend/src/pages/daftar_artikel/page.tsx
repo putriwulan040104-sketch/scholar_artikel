@@ -67,6 +67,7 @@
     export default function DaftarArtikelPage() {
     const navigate = useNavigate()
     const location = useLocation()
+
     const query = (
         (location.state as { query?: string } | null)?.query ||
         new URLSearchParams(location.search).get("query") ||
@@ -117,7 +118,7 @@
 
         const res = await searchArticles(
             query,
-            RESULT_LIMIT,
+            50,
             Number.isFinite(yearStart) ? yearStart : undefined,
             Number.isFinite(yearEnd) ? yearEnd : undefined,
             filters.jenisArtikel || undefined,
