@@ -1,5 +1,4 @@
 import re
-
 import app.services.processing.extraction_service as extractor
 import app.services.processing.normalization_service as normalizer
 
@@ -19,7 +18,7 @@ def clean_document_text(text):
         flags=re.I,
     )
     text = re.sub(
-        r"K\s*E\s*Y\s*W\s*O\s*R\s*D\s*S",
+        r"\bK\s+E\s+Y\s+W\s+O\s+R\s+D\s+S\b",
         "KEYWORDS",
         text,
         flags=re.I,

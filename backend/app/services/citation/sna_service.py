@@ -1,4 +1,5 @@
 from app.db import supabase
+from app.services.doi_lookup_service import load_doi_by_publication_id
 
 PUBLICATIONS_TABLE = "cleaned_papers_results"
 RELATIONS_TABLE = "article_relations"
@@ -185,6 +186,7 @@ def build_sna_metrics(
     publications = _load_publications()
     relations = _load_relations(relation_type)
     pub_map = {int(p["id"]): p for p in publications if p.get("id") is not None}
+    doi_by_id = load_doi_by_publication_id(pub_map.keys())
 
     node_ids, edges, out_adj, in_adj = _build_graph(
         publications,
@@ -214,7 +216,7 @@ def build_sna_metrics(
             "id": node_id,
             "title": pub_map[node_id].get("title"),
             "year": pub_map[node_id].get("year"),
-            "doi": pub_map[node_id].get("doi"),
+            "doi": doi_by_id.get(node_id),
             "degree": degree,
             "in_degree": degree,
             "out_degree": degree,
@@ -287,6 +289,7 @@ def build_graph_payload(
         publications = filtered_publications
 
     pub_map = {int(p["id"]): p for p in publications if p.get("id") is not None}
+    doi_by_id = load_doi_by_publication_id(pub_map.keys())
     node_ids, edges, _out_adj, _in_adj = _build_graph(
         publications,
         citations,
@@ -301,7 +304,7 @@ def build_graph_payload(
             "article_id": node_id,
             "title": data.get("title"),
             "year": data.get("year"),
-            "doi": None,
+            "doi": doi_by_id.get(node_id),
             "authors": data.get("authors"),
             "reference_count": _reference_count(data.get("reference_list")),
         })

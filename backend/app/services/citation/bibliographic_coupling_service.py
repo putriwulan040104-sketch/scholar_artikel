@@ -2,7 +2,6 @@ import re
 import threading
 from collections import defaultdict
 from itertools import combinations
-
 from app.db import supabase
 
 
@@ -69,7 +68,6 @@ def _reference_identity(reference):
         return None
 
     return f"text:{normalized}"
-
 
 def _load_existing_relations():
     rows = []

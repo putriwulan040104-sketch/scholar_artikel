@@ -1,20 +1,18 @@
 import type { FavoriteItem, GraphLink } from "./citation-graph.types";
+import {
+  readFavorites as readUserFavorites,
+  writeFavorites as writeUserFavorites,
+} from "@/lib/favorites";
 
 const NODE_RADIUS_MIN = 5;
 const NODE_RADIUS_MAX = 18;
 
 export function readFavorites(): FavoriteItem[] {
-  try {
-    const raw = localStorage.getItem("favorites");
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
+  return readUserFavorites<FavoriteItem>();
 }
 
 export function writeFavorites(items: FavoriteItem[]) {
-  localStorage.setItem("favorites", JSON.stringify(items));
+  writeUserFavorites(items);
 }
 
 export function formatAuthors(raw: unknown): string {

@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, ExternalLink, FileText, Star } from "lucide-react";
+import { readFavorites, writeFavorites } from "@/lib/favorites";
 
 interface FavoriteItem {
   id: number;
@@ -71,8 +72,7 @@ export default function DetailPublicationPage() {
       try {
         setLoading(true);
 
-        const stored = localStorage.getItem("favorites");
-        const favorites: FavoriteItem[] = stored ? JSON.parse(stored) : [];
+        const favorites = readFavorites<FavoriteItem>();
         const fromFavorite = favorites.find((f) => f.id === Number(id));
         const savedScore = fromFavorite?.similarity_score ?? 0;
 
@@ -99,17 +99,16 @@ export default function DetailPublicationPage() {
   const handleFavorite = () => {
     if (!article) return;
 
-    const stored = localStorage.getItem("favorites");
-    const favorites: FavoriteItem[] = stored ? JSON.parse(stored) : [];
+    const favorites = readFavorites<FavoriteItem>();
     const exists = favorites.some((f) => f.id === article.id);
 
     if (exists) {
       const updated = favorites.filter((f) => f.id !== article.id);
-      localStorage.setItem("favorites", JSON.stringify(updated));
+      writeFavorites(updated);
       setIsFavorite(false);
     } else {
       const updated = [...favorites, article];
-      localStorage.setItem("favorites", JSON.stringify(updated));
+      writeFavorites(updated);
       setIsFavorite(true);
     }
   };

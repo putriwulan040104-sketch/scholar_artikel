@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
+import { useId, useMemo } from "react";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { Network } from "lucide-react";
-
 import {
   Card,
   CardContent,
@@ -60,6 +59,7 @@ export function ChartBarLabel({
   yearEnd,
   onOpenCitationGraph,
 }: ChartBarLabelProps) {
+  const gradientId = useId().replace(/:/g, "");
   const { chartData, subtitle } = useMemo(() => {
     const yearCount = new Map<number, number>();
 
@@ -103,10 +103,11 @@ export function ChartBarLabel({
 
     return { chartData: data, subtitle: desc };
   }, [articles, yearStart, yearEnd]);
+  const shouldTiltTicks = chartData.length > 8;
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="overflow-hidden border-border/70 shadow-sm">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between gap-3">
           <div>
             <CardTitle>Penelitian per Tahun</CardTitle>
@@ -126,23 +127,57 @@ export function ChartBarLabel({
         </div>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart
+        <ChartContainer config={chartConfig} className="h-[300px] w-full sm:h-[320px]">
+          <AreaChart
             accessibilityLayer
             data={chartData}
             margin={{
-              top: 20,
+              top: 16,
+              left: 4,
+              right: 18,
+              bottom: shouldTiltTicks ? 10 : 2,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <defs>
+              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-count)"
+                  stopOpacity={0.32}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-count)"
+                  stopOpacity={0.08}
+                />
+              </linearGradient>
+            </defs>
+            <CartesianGrid vertical={false} strokeDasharray="4 4" />
             <XAxis
               dataKey="year"
               tickLine={false}
-              tickMargin={10}
+              tickMargin={shouldTiltTicks ? 14 : 10}
               axisLine={false}
+              interval={0}
+              minTickGap={0}
+              angle={shouldTiltTicks ? -35 : 0}
+              textAnchor={shouldTiltTicks ? "end" : "middle"}
+              height={shouldTiltTicks ? 58 : 36}
+            />
+            <YAxis
+              allowDecimals={false}
+              axisLine={false}
+              tickLine={false}
+              tickMargin={8}
+              width={36}
             />
             <ChartTooltip
-              cursor={false}
+              cursor={{
+                stroke: "var(--color-count)",
+                strokeWidth: 1,
+                strokeDasharray: "4 4",
+                opacity: 0.45,
+              }}
               content={
                 <ChartTooltipContent
                   indicator="dot"
@@ -158,15 +193,30 @@ export function ChartBarLabel({
                 />
               }
             />
-            <Bar dataKey="count" fill="var(--primary)" radius={8}>
-              <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
-                fontSize={12}
-              />
-            </Bar>
-          </BarChart>
+            <Area
+              dataKey="count"
+              type="monotone"
+              fill={`url(#${gradientId})`}
+              stroke="var(--color-count)"
+              strokeWidth={2.5}
+              dot={
+                chartData.length <= 12
+                  ? {
+                      r: 3,
+                      fill: "var(--card)",
+                      stroke: "var(--color-count)",
+                      strokeWidth: 2,
+                    }
+                  : false
+              }
+              activeDot={{
+                r: 5,
+                fill: "var(--color-count)",
+                stroke: "var(--card)",
+                strokeWidth: 2,
+              }}
+            />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>

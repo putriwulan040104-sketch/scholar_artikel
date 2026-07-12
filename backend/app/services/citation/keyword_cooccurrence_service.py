@@ -4,22 +4,12 @@ import threading
 import unicodedata
 from collections import defaultdict
 from itertools import combinations
-
 from app.db import supabase
-
 
 PUBLICATIONS_TABLE = "cleaned_papers_results"
 RELATIONS_TABLE = "article_relations"
 RELATION_TYPE = "keyword_cooccurrence"
 _BUILD_LOCK = threading.Lock()
-
-GENERIC_KEYWORDS = {
-    "artificial intelligence",
-    "business",
-    "computer science",
-    "engineering",
-    "world wide web",
-}
 
 
 class KeywordCooccurrenceBuildInProgressError(RuntimeError):
@@ -101,7 +91,6 @@ def _normalize_keyword(value):
         len(normalized) < 2
         or len(normalized) > 120
         or len(normalized.split()) > 12
-        or normalized in GENERIC_KEYWORDS
     ):
         return None
 
@@ -188,7 +177,6 @@ def _build_keyword_cooccurrence(limit=None, min_shared=2):
     keyword_index = defaultdict(set)
     keyword_labels = {}
     publications_with_keywords = 0
-    ignored_generic_keywords = 0
 
     for index, publication in enumerate(publications, start=1):
         publication_id = publication.get("id")
@@ -199,9 +187,6 @@ def _build_keyword_cooccurrence(limit=None, min_shared=2):
         for raw_keyword in _as_keyword_list(publication.get("keywords")):
             keyword = _normalize_keyword(raw_keyword)
             if not keyword:
-                raw_normalized = _normalize_keyword_text(raw_keyword)
-                if raw_normalized in GENERIC_KEYWORDS:
-                    ignored_generic_keywords += 1
                 continue
 
             publication_keywords.add(keyword)
@@ -223,8 +208,7 @@ def _build_keyword_cooccurrence(limit=None, min_shared=2):
     _log(
         "Keyword index completed | "
         f"publications_with_keywords={publications_with_keywords} "
-        f"unique_keywords={len(keyword_index)} "
-        f"ignored_generic={ignored_generic_keywords}"
+        f"unique_keywords={len(keyword_index)}"
     )
 
     shared_by_pair = defaultdict(set)
@@ -361,8 +345,6 @@ def _build_keyword_cooccurrence(limit=None, min_shared=2):
         "processed_publications": len(publications),
         "publications_with_keywords": publications_with_keywords,
         "unique_keywords": len(keyword_index),
-        "ignored_generic_keywords": ignored_generic_keywords,
-        "excluded_keywords": sorted(GENERIC_KEYWORDS),
         "matched_relations": len(relations),
         "inserted_edges": inserted,
         "updated_edges": updated,

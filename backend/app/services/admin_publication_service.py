@@ -1,15 +1,14 @@
 from app.db import supabase
-from backend.app.services.activity_log_service import log_activity
+from app.services.activity_log_service import log_activity
+from app.services.doi_lookup_service import DOI_TABLE, load_doi_by_publication_id
 from app.services.user_service import _validate_super_admin
 
 
 PUBLICATIONS_TABLE = "cleaned_papers_results"
-DOI_TABLE = "scholar_article_doi"
 PUBLICATION_COLUMNS = (
     "id,url,pdf_url,title,authors,keywords,reference_list,"
     "source,category,year"
 )
-
 
 def _as_list(value):
     if isinstance(value, list):
@@ -17,7 +16,6 @@ def _as_list(value):
     if value in (None, ""):
         return []
     return [value]
-
 
 def _normalize_publication(publication):
     references = _as_list(publication.get("reference_list"))
@@ -51,7 +49,7 @@ def _normalize_publication(publication):
         "createdAt": publication.get("created_at"),
     }
 
-
+# disimpan ke log aktivitas
 def _publication_audit_data(publication):
     references = _as_list(publication.get("reference_list"))
     return {
@@ -68,32 +66,12 @@ def _publication_audit_data(publication):
         "referenceCount": len(references),
     }
 
-
-def _load_doi_by_id(publication_ids):
-    if not publication_ids:
-        return {}
-
-    response = (
-        supabase
-        .table(DOI_TABLE)
-        .select("id,doi")
-        .in_("id", publication_ids)
-        .execute()
-    )
-    return {
-        int(item["id"]): item.get("doi")
-        for item in (response.data or [])
-        if item.get("id") is not None
-    }
-
-
 def _with_doi(publication, doi_by_id):
     result = dict(publication)
     publication_id = result.get("id")
     if publication_id is not None:
         result["doi"] = doi_by_id.get(int(publication_id))
     return result
-
 
 def get_admin_publications(token):
     auth = _validate_super_admin(token)
@@ -108,13 +86,12 @@ def get_admin_publications(token):
             .order("id")
             .execute()
         )
-
         publication_ids = [
             int(item["id"])
             for item in (response.data or [])
             if item.get("id") is not None
         ]
-        doi_by_id = _load_doi_by_id(publication_ids)
+        doi_by_id = load_doi_by_publication_id(publication_ids)
 
         publications = [
             _normalize_publication(_with_doi(item, doi_by_id))
@@ -132,7 +109,6 @@ def get_admin_publications(token):
             "message": str(error),
             "status_code": 400,
         }
-
 
 def update_admin_publication(token, publication_id, data):
     auth = _validate_super_admin(token)
@@ -188,7 +164,7 @@ def update_admin_publication(token, publication_id, data):
                 "status_code": 404,
             }
 
-        doi_by_id = _load_doi_by_id([publication_id])
+        doi_by_id = load_doi_by_publication_id([publication_id])
         current = _with_doi(current, doi_by_id)
 
         response = (
@@ -216,7 +192,6 @@ def update_admin_publication(token, publication_id, data):
                 "message": "Publikasi tidak ditemukan.",
                 "status_code": 404,
             }
-
         (
             supabase
             .table(DOI_TABLE)
@@ -258,7 +233,6 @@ def update_admin_publication(token, publication_id, data):
             "status_code": 400,
         }
 
-
 def delete_admin_publication(token, publication_id):
     auth = _validate_super_admin(token)
     if auth["status"] == "error":
@@ -280,9 +254,8 @@ def delete_admin_publication(token, publication_id):
                 "status_code": 404,
             }
 
-        doi_by_id = _load_doi_by_id([publication_id])
+        doi_by_id = load_doi_by_publication_id([publication_id])
         publication = _with_doi(current.data, doi_by_id)
-
         (
             supabase
             .table(PUBLICATIONS_TABLE)

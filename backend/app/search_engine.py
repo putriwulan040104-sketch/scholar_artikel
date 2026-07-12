@@ -15,6 +15,10 @@ sys.path.insert(0, ROOT_DIR)
 sys.path.insert(0, BASE_DIR)
 
 from app.db import supabase
+from app.services.doi_lookup_service import (
+    load_doi_by_publication_id,
+    load_doi_for_publication,
+)
 from src.preprocessing.clean_text import clean_text
 from src.preprocessing.tokenizing import tokenizing
 from src.preprocessing.stopwords import get_stopwords
@@ -223,10 +227,12 @@ def _load_doc_index_from_supabase(doc_ids, tfidf_documents):
 
     metadata_df = pd.DataFrame(rows)
     metadata_df["id"] = metadata_df["id"].astype("int64")
+    doi_by_id = load_doi_by_publication_id(metadata_df["id"].tolist())
+    metadata_df["doi"] = metadata_df["id"].map(doi_by_id)
 
     required_cols = [
         "id", "title", "authors", "year", "source", "category",
-        "abstract", "keywords", "reference_list", "pdf_url", "url",
+        "abstract", "doi", "keywords", "reference_list", "pdf_url", "url",
         "scrape_status", "cleaned_text"
     ]
 
@@ -250,8 +256,8 @@ def _load_doc_index_from_supabase(doc_ids, tfidf_documents):
 
     for col in [
         "title", "authors", "source", "category", "abstract",
-        "keywords", "reference_list", "pdf_url", "url", "scrape_status",
-        "cleaned_text", "document_text"
+        "doi", "keywords", "reference_list", "pdf_url", "url",
+        "scrape_status", "cleaned_text", "document_text"
     ]:
         if col in doc_index.columns:
             doc_index[col] = doc_index[col].fillna("")
@@ -496,6 +502,8 @@ def search_articles(
     results = results.head(int(top_k))
     displayed_count = int(len(results))
     displayed_occurrences = int(results["term_frequency"].sum())
+    doi_by_id = load_doi_by_publication_id(results["id"].tolist())
+    results["doi"] = results["id"].map(doi_by_id).fillna("")
 
     results["occurrence"] = results["term_frequency"]
     results["jenis_analisis"] = jenis_analisis or ""
@@ -572,7 +580,8 @@ def _cosine_base_dataframe():
 
     metadata_cols = [
         "id", "title", "authors", "year", "source", "category",
-        "abstract", "pdf_url", "url", "scrape_status", "document_text"
+        "abstract", "doi", "pdf_url", "url", "scrape_status",
+        "document_text"
     ]
     available_cols = [col for col in metadata_cols if col in doc_index.columns]
     df = doc_index[available_cols].copy()
@@ -592,7 +601,10 @@ def _cosine_base_dataframe():
     df["similarity_score"] = 0.0
     df["occurrence"] = 0
 
-    for col in ["title", "source", "abstract", "scrape_status", "document_text"]:
+    for col in [
+        "title", "source", "abstract", "doi", "scrape_status",
+        "document_text"
+    ]:
         if col not in df.columns:
             df[col] = ""
         df[col] = df[col].fillna("").astype(str).str.strip()
@@ -718,7 +730,7 @@ def get_cosine_catalog(
     columns = [
         "id", "query", "rank", "title", "authors", "year", "source",
         "category", "abstract", "similarity_score", "occurrence",
-        "interpretation", "pdf_url", "url", "access_url", "is_pdf",
+        "interpretation", "doi", "pdf_url", "url", "access_url", "is_pdf",
         "scrape_status"
     ]
 
@@ -727,6 +739,8 @@ def get_cosine_catalog(
             df[col] = None
 
     df = df[columns].copy()
+    doi_by_id = load_doi_by_publication_id(df["id"].tolist())
+    df["doi"] = df["id"].map(doi_by_id).fillna("")
     df["rank"] = df["rank"].where(pd.notna(df["rank"]), None)
     df["year"] = df["year"].where(pd.notna(df["year"]), None)
 
@@ -792,31 +806,17 @@ def get_relation_type_options():
 
 def get_article_by_id(article_id: int):
     selected_columns = (
-        "id,title,authors,year,source,category,abstract,doi,"
+        "id,title,authors,year,source,category,abstract,"
         "keywords,reference_list,pdf_url,url,scrape_status"
     )
 
-    try:
-        response = (
-            supabase.table("cleaned_papers_results")
-            .select(selected_columns)
-            .eq("id", article_id)
-            .limit(1)
-            .execute()
-        )
-    except Exception as error:
-        if "doi" not in str(error).lower():
-            raise
-        response = (
-            supabase.table("cleaned_papers_results")
-            .select(
-                "id,title,authors,year,source,category,abstract,"
-                "keywords,reference_list,pdf_url,url,scrape_status"
-            )
-            .eq("id", article_id)
-            .limit(1)
-            .execute()
-        )
+    response = (
+        supabase.table("cleaned_papers_results")
+        .select(selected_columns)
+        .eq("id", article_id)
+        .limit(1)
+        .execute()
+    )
 
     if not response.data:
         return None
@@ -842,7 +842,7 @@ def get_article_by_id(article_id: int):
         "journal": _clean_cell(r.get("source")) or "",
         "category": _clean_cell(r.get("category")) or "",
         "abstract": _clean_cell(r.get("abstract")) or "",
-        "doi": _clean_cell(r.get("doi")),
+        "doi": _clean_cell(load_doi_for_publication(article_id)),
         "pdf_url": final_pdf_url,
         "url": final_url,
         "access_url": final_access_url,
