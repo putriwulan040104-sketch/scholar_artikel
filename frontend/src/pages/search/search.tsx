@@ -28,19 +28,20 @@ import {
 import {
   createSearchProgressSource,
   getAnalysisTypeOptions,
+  getCategoryOptions,
   getUser,
   type AnalysisTypeOption,
+  type CategoryOption,
+  type SearchProgressEvent,
 } from "@/api/api";
-import {
-  addSearchHistory,
-  readSearchHistory,
-} from "@/lib/search-history";
+import { SearchProgressDialog } from "./search-progress-dialog";
 
 export interface SearchFilters {
   jenisArtikel: string;
   jenisAnalisis: string;
   yearStart: string;
   yearEnd: string;
+  kategori: string;
   jumlahKemunculan: string;
 }
 
@@ -56,7 +57,8 @@ const popularSearches = [
   "Mobile Application",
   "Android Application",
 ];
-const SEARCH_HISTORY_DISPLAY_LIMIT = 5;
+
+const HISTORY_STORAGE_KEY = "search_history";
 
 export function Searchpage() {
   const navigate = useNavigate();
@@ -82,25 +84,22 @@ export function Searchpage() {
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
   const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
+  const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
+  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
   const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
 
-  const [openRequestDialog, setOpenRequestDialog] = useState(false);
-  const [requestForm, setRequestForm] = useState({
-    nama: "",
-    email: "",
-    kataKunci: "",
-    judulArtikel: "",
-    keterangan: "",
+  const [searchHistory, setSearchHistory] = useState<string[]>(() => {
+    if (typeof window === "undefined") return [];
+    const raw = window.localStorage.getItem(HISTORY_STORAGE_KEY);
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   });
-
-  const [requestLoading, setRequestLoading] = useState(false);
-  const [requestNotif, setRequestNotif] = useState("");
-  const [requestNotifType, setRequestNotifType] = useState<"success" | "error">("success");
-
-  const [searchHistory, setSearchHistory] = useState<string[]>(() =>
-    typeof window === "undefined" ? [] : readSearchHistory(),
-  );
 
   useEffect(() => {
     // Saat kembali ke Eksplorasi, reset konteks hasil pencarian
@@ -121,7 +120,13 @@ export function Searchpage() {
 
   useEffect(() => {
     const loadFilterOptions = async () => {
-      const analysisRes = await getAnalysisTypeOptions();
+      const [categoryRes, analysisRes] = await Promise.all([
+        getCategoryOptions(),
+        getAnalysisTypeOptions(),
+      ]);
+      if (categoryRes.status === "success" && Array.isArray(categoryRes.data)) {
+        setCategoryOptions(categoryRes.data);
+      }
       if (analysisRes.status === "success" && Array.isArray(analysisRes.data)) {
         setAnalysisTypeOptions(analysisRes.data);
       }
@@ -131,81 +136,28 @@ export function Searchpage() {
   }, []);
 
   useEffect(() => {
-    const syncUser = () => {
-      setUser(getUser());
-      setSearchHistory(readSearchHistory());
-    };
+    const syncUser = () => setUser(getUser());
 
     window.addEventListener("user-updated", syncUser);
-    window.addEventListener("search-history-updated", syncUser);
     window.addEventListener("storage", syncUser);
 
     return () => {
       window.removeEventListener("user-updated", syncUser);
-      window.removeEventListener("search-history-updated", syncUser);
       window.removeEventListener("storage", syncUser);
     };
   }, []);
 
   const displayName = user?.name?.trim() || "User";
-  const visibleSearchHistory = searchHistory.slice(0, SEARCH_HISTORY_DISPLAY_LIMIT);
 
   const saveHistory = (keyword: string) => {
     const clean = keyword.trim();
     if (!clean) return;
 
-    setSearchHistory(addSearchHistory(clean));
+    const updated = [clean, ...searchHistory.filter((item) => item !== clean)].slice(0, 6);
+    setSearchHistory(updated);
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
   };
 
-  const handleChangeRequest = (
-    key: "nama" | "email" | "kataKunci" | "judulArtikel" | "keterangan",
-    value: string
-  ) => {
-    setRequestForm((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSubmitRequest = async () => {
-    try {
-      setRequestLoading(true);
-      setRequestNotif("");
-
-      const res = await fetch("http://127.0.0.1:5000/api/request-article", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestForm),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || data?.status === "error") {
-        setRequestNotifType("error");
-        setRequestNotif(data?.message || "Gagal mengirim permintaan.");
-        return;
-      }
-
-      setRequestNotifType(data?.email_sent === false ? "error" : "success");
-      setRequestNotif(data?.message || "pesan email terkirim");
-
-      setOpenRequestDialog(false);
-      setRequestForm({
-        nama: "",
-        email: "",
-        kataKunci: "",
-        judulArtikel: "",
-        keterangan: "",
-      });
-    } catch (error: any) {
-      setRequestNotifType("error");
-      setRequestNotif(error?.message || "Gagal mengirim permintaan.");
-    } finally {
-      setRequestLoading(false);
-      setTimeout(() => setRequestNotif(""), 5000);
-    }
-  };
-
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   const handleSearch = async () => {
     if (!query.trim()) return;
 
@@ -223,41 +175,71 @@ export function Searchpage() {
       jenisAnalisis,
       yearStart,
       yearEnd,
+      kategori,
       jumlahKemunculan,
     };
 
     try {
-      const res = await searchArticles(
-        query,
-        10,
-        yearStart ? parseInt(yearStart) : undefined,
-        yearEnd ? parseInt(yearEnd) : undefined,
-        jenisArtikel || undefined,
-        undefined,
-        jumlahKemunculan || undefined,
-        undefined,
-        jenisAnalisis || undefined,
-      );
+      const source = createSearchProgressSource({
+        query: query.trim(),
+        kategori: kategori || undefined,
+        target: 10,
+        yearStart: yearStart ? parseInt(yearStart) : undefined,
+        yearEnd: yearEnd ? parseInt(yearEnd) : undefined,
+        jenisArtikel: jenisArtikel || undefined,
+        jenisAnalisis: jenisAnalisis || undefined,
+        jumlahKemunculan: jumlahKemunculan || undefined,
+      });
+      progressSourceRef.current = source;
 
-      const elapsed = Date.now() - startedAt;
-      if (elapsed < minLoadingTime) {
-        await wait(minLoadingTime - elapsed);
-      }
+      source.onmessage = (event) => {
+        const payload = JSON.parse(event.data) as SearchProgressEvent;
+        setSearchProgress(payload);
 
-      if (res.status === "success" && res.data && res.data.length > 0) {
-        saveHistory(query);
-        navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
-          state: {
-            results: res.data,
-            query,
-            filters: activeFilters,
-            total_matched: res.total_matched ?? res.total ?? res.data.length,
-            total_occurrences: res.total_occurrences ?? 0,
-            paper_count: res.paper_count ?? res.data.length,
-          },
-        });
-      } else {
-        setNoResult(true);
+        if (payload.status === "complete") {
+          source.close();
+          progressSourceRef.current = null;
+          setLoading(false);
+
+          const results = Array.isArray(payload.result?.articles)
+            ? payload.result.articles
+            : [];
+
+          if (results.length > 0) {
+            saveHistory(query);
+            // Simpan hasil untuk dinavigasikan nanti. Navigasi sebenarnya baru
+            // dijalankan lewat callback onFinished dari SearchProgressDialog,
+            // yaitu setelah seluruh tahapan animasi selesai DAN layar transisi
+            // "Artikel ditemukan" tampil selama beberapa detik (murni UX,
+            // tidak menyentuh pipeline pencarian di backend).
+            pendingNavigationRef.current = {
+              results,
+              query,
+              filters: activeFilters,
+              total_matched:
+                payload.result?.total_matched ?? payload.result?.total ?? results.length,
+              total_occurrences: payload.result?.total_occurrences ?? 0,
+              paper_count: payload.result?.paper_count ?? results.length,
+            };
+          }
+          // Catatan: kalau hasil kosong, dialog TIDAK ditutup di sini --
+          // SearchProgressDialog sendiri yang menghentikan animasi tepat di
+          // tahap scraping ("dataset") lalu menampilkan popup "Artikel tidak
+          // ditemukan" berikut tombol Request, berdasarkan `progress.result`
+          // yang sudah diteruskan lewat prop `progress`.
+        }
+
+        if (payload.status === "error") {
+          source.close();
+          progressSourceRef.current = null;
+          setLoading(false);
+          setProgressOpen(false);
+        }
+      };
+
+      source.onerror = () => {
+        source.close();
+        progressSourceRef.current = null;
         setLoading(false);
         setProgressOpen(false);
       };
@@ -395,6 +377,28 @@ export function Searchpage() {
                     </div>
 
                     <div className="flex flex-col gap-2">
+                      <label className="text-sm">Kategori penelitian</label>
+                      <Select onValueChange={setKategori} value={kategori}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Pilih kategori" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categoryOptions.length === 0 ? (
+                            <SelectItem value="category-empty" disabled>
+                              Kategori belum tersedia
+                            </SelectItem>
+                          ) : (
+                            categoryOptions.map((category) => (
+                              <SelectItem key={category.value} value={category.value}>
+                                {category.label}
+                              </SelectItem>
+                            ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
                       <label className="text-sm">Jenis analisis</label>
                       <Select onValueChange={setJenisAnalisis} value={jenisAnalisis}>
                         <SelectTrigger className="w-full">
@@ -479,7 +483,7 @@ export function Searchpage() {
             <p className="text-sm text-slate-400">Belum ada riwayat pencarian.</p>
           ) : (
             <div className="space-y-2">
-              {visibleSearchHistory.map((item) => (
+              {searchHistory.map((item) => (
                 <button
                   key={item}
                   type="button"
