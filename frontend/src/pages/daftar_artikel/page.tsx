@@ -65,29 +65,28 @@ function loadFavorites(): CosineArticle[] {
   return readFavorites<CosineArticle>();
 }
 
-export default function DaftarArtikelPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const query = (
-    (location.state as { query?: string } | null)?.query ||
-    new URLSearchParams(location.search).get("query") ||
-    localStorage.getItem("lastSearchQuery") ||
-    ""
-  ).trim();
+    export default function DaftarArtikelPage() {
+    const navigate = useNavigate()
+    const location = useLocation()
 
-  const [articles, setArticles] = useState<CosineArticle[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [totalMatched, setTotalMatched] = useState(0);
+    const query = (
+        (location.state as { query?: string } | null)?.query ||
+        new URLSearchParams(location.search).get("query") ||
+        localStorage.getItem("lastSearchQuery") ||
+        ""
+    ).trim()
 
-  const [rankSortBy, setRankSortBy] = useState("query_rank");
-  const [yearSortBy, setYearSortBy] = useState("");
-  const [page, setPage] = useState(1);
-  const [favoriteIds, setFavoriteIds] = useState<number[]>(() =>
-    loadFavorites()
-      .map((item) => Number(item.id))
-      .filter(Number.isFinite),
-  );
+    const [articles, setArticles] = useState<CosineArticle[]>([])
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState<string | null>(null)
+    const [totalMatched, setTotalMatched] = useState(0)
+
+    const [rankSortBy, setRankSortBy] = useState("query_rank")
+    const [yearSortBy, setYearSortBy] = useState("")
+    const [page, setPage] = useState(1)
+    const [favoriteIds, setFavoriteIds] = useState<number[]>(() =>
+        loadFavorites().map((item) => Number(item.id)).filter(Number.isFinite)
+    )
 
   const readStoredFilters = useCallback((): StoredFilters => {
     try {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -26,21 +26,22 @@ import {
   Loader2,
 } from "lucide-react";
 import {
+  createSearchProgressSource,
   getAnalysisTypeOptions,
+  getCategoryOptions,
   getUser,
-  searchArticles,
   type AnalysisTypeOption,
+  type CategoryOption,
+  type SearchProgressEvent,
 } from "@/api/api";
-import {
-  addSearchHistory,
-  readSearchHistory,
-} from "@/lib/search-history";
+import { SearchProgressDialog } from "./search-progress-dialog";
 
 export interface SearchFilters {
   jenisArtikel: string;
   jenisAnalisis: string;
   yearStart: string;
   yearEnd: string;
+  kategori: string;
   jumlahKemunculan: string;
 }
 
@@ -56,39 +57,49 @@ const popularSearches = [
   "Mobile Application",
   "Android Application",
 ];
-const SEARCH_HISTORY_DISPLAY_LIMIT = 5;
+
+const HISTORY_STORAGE_KEY = "search_history";
 
 export function Searchpage() {
   const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [noResult, setNoResult] = useState(false);
+  const [progressOpen, setProgressOpen] = useState(false);
+  const [searchProgress, setSearchProgress] = useState<SearchProgressEvent | null>(null);
+  const progressSourceRef = useRef<EventSource | null>(null);
+  const navigateTimerRef = useRef<number | null>(null);
+  const searchStartAtRef = useRef<number>(0);
+  const pendingNavigationRef = useRef<{
+    results: any[];
+    filters: SearchFilters;
+    total_matched: number;
+    total_occurrences: number;
+    paper_count: number;
+    query: string;
+  } | null>(null);
 
   const [user, setUser] = useState(() => getUser());
   const [yearStart, setYearStart] = useState<string>("");
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
   const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
+  const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
+  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
   const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
 
-  const [openRequestDialog, setOpenRequestDialog] = useState(false);
-  const [requestForm, setRequestForm] = useState({
-    nama: "",
-    email: "",
-    kataKunci: "",
-    judulArtikel: "",
-    keterangan: "",
+  const [searchHistory, setSearchHistory] = useState<string[]>(() => {
+    if (typeof window === "undefined") return [];
+    const raw = window.localStorage.getItem(HISTORY_STORAGE_KEY);
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   });
-
-  const [requestLoading, setRequestLoading] = useState(false);
-  const [requestNotif, setRequestNotif] = useState("");
-  const [requestNotifType, setRequestNotifType] = useState<"success" | "error">("success");
-
-  const [searchHistory, setSearchHistory] = useState<string[]>(() =>
-    typeof window === "undefined" ? [] : readSearchHistory(),
-  );
 
   useEffect(() => {
     // Saat kembali ke Eksplorasi, reset konteks hasil pencarian
@@ -99,8 +110,23 @@ export function Searchpage() {
   }, []);
 
   useEffect(() => {
+    return () => {
+      progressSourceRef.current?.close();
+      if (navigateTimerRef.current) {
+        window.clearTimeout(navigateTimerRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     const loadFilterOptions = async () => {
-      const analysisRes = await getAnalysisTypeOptions();
+      const [categoryRes, analysisRes] = await Promise.all([
+        getCategoryOptions(),
+        getAnalysisTypeOptions(),
+      ]);
+      if (categoryRes.status === "success" && Array.isArray(categoryRes.data)) {
+        setCategoryOptions(categoryRes.data);
+      }
       if (analysisRes.status === "success" && Array.isArray(analysisRes.data)) {
         setAnalysisTypeOptions(analysisRes.data);
       }
@@ -110,156 +136,152 @@ export function Searchpage() {
   }, []);
 
   useEffect(() => {
-    const syncUser = () => {
-      setUser(getUser());
-      setSearchHistory(readSearchHistory());
-    };
+    const syncUser = () => setUser(getUser());
 
     window.addEventListener("user-updated", syncUser);
-    window.addEventListener("search-history-updated", syncUser);
     window.addEventListener("storage", syncUser);
 
     return () => {
       window.removeEventListener("user-updated", syncUser);
-      window.removeEventListener("search-history-updated", syncUser);
       window.removeEventListener("storage", syncUser);
     };
   }, []);
 
   const displayName = user?.name?.trim() || "User";
-  const visibleSearchHistory = searchHistory.slice(0, SEARCH_HISTORY_DISPLAY_LIMIT);
 
   const saveHistory = (keyword: string) => {
     const clean = keyword.trim();
     if (!clean) return;
 
-    setSearchHistory(addSearchHistory(clean));
+    const updated = [clean, ...searchHistory.filter((item) => item !== clean)].slice(0, 6);
+    setSearchHistory(updated);
+    window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
   };
 
-  const handleChangeRequest = (
-    key: "nama" | "email" | "kataKunci" | "judulArtikel" | "keterangan",
-    value: string
-  ) => {
-    setRequestForm((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSubmitRequest = async () => {
-    try {
-      setRequestLoading(true);
-      setRequestNotif("");
-
-      const res = await fetch("http://127.0.0.1:5000/api/request-article", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestForm),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || data?.status === "error") {
-        setRequestNotifType("error");
-        setRequestNotif(data?.message || "Gagal mengirim permintaan.");
-        return;
-      }
-
-      setRequestNotifType(data?.email_sent === false ? "error" : "success");
-      setRequestNotif(data?.message || "pesan email terkirim");
-
-      setOpenRequestDialog(false);
-      setRequestForm({
-        nama: "",
-        email: "",
-        kataKunci: "",
-        judulArtikel: "",
-        keterangan: "",
-      });
-    } catch (error: any) {
-      setRequestNotifType("error");
-      setRequestNotif(error?.message || "Gagal mengirim permintaan.");
-    } finally {
-      setRequestLoading(false);
-      setTimeout(() => setRequestNotif(""), 5000);
-    }
-  };
-
-  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
   const handleSearch = async () => {
     if (!query.trim()) return;
 
+    searchStartAtRef.current = Date.now();
     setLoading(true);
-    setNoResult(false);
+    setProgressOpen(true);
+    setSearchProgress(null);
+    progressSourceRef.current?.close();
+    if (navigateTimerRef.current) {
+      window.clearTimeout(navigateTimerRef.current);
+    }
 
     const activeFilters: SearchFilters = {
       jenisArtikel,
       jenisAnalisis,
       yearStart,
       yearEnd,
+      kategori,
       jumlahKemunculan,
     };
-    const startedAt = Date.now();
-    const minLoadingTime = 1800;
 
     try {
-      const res = await searchArticles(
-        query,
-        10,
-        yearStart ? parseInt(yearStart) : undefined,
-        yearEnd ? parseInt(yearEnd) : undefined,
-        jenisArtikel || undefined,
-        undefined,
-        jumlahKemunculan || undefined,
-        undefined,
-        jenisAnalisis || undefined,
-      );
+      const source = createSearchProgressSource({
+        query: query.trim(),
+        kategori: kategori || undefined,
+        target: 10,
+        yearStart: yearStart ? parseInt(yearStart) : undefined,
+        yearEnd: yearEnd ? parseInt(yearEnd) : undefined,
+        jenisArtikel: jenisArtikel || undefined,
+        jenisAnalisis: jenisAnalisis || undefined,
+        jumlahKemunculan: jumlahKemunculan || undefined,
+      });
+      progressSourceRef.current = source;
 
-      const elapsed = Date.now() - startedAt;
-      if (elapsed < minLoadingTime) {
-        await wait(minLoadingTime - elapsed);
-      }
+      source.onmessage = (event) => {
+        const payload = JSON.parse(event.data) as SearchProgressEvent;
+        setSearchProgress(payload);
 
-      if (res.status === "success" && res.data && res.data.length > 0) {
-        saveHistory(query);
-        navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
-          state: {
-            results: res.data,
-            query,
-            filters: activeFilters,
-            total_matched: res.total_matched ?? res.total ?? res.data.length,
-            total_occurrences: res.total_occurrences ?? 0,
-            paper_count: res.paper_count ?? res.data.length,
-          },
-        });
-      } else {
-        setNoResult(true);
+        if (payload.status === "complete") {
+          source.close();
+          progressSourceRef.current = null;
+          setLoading(false);
+
+          const results = Array.isArray(payload.result?.articles)
+            ? payload.result.articles
+            : [];
+
+          if (results.length > 0) {
+            saveHistory(query);
+            // Simpan hasil untuk dinavigasikan nanti. Navigasi sebenarnya baru
+            // dijalankan lewat callback onFinished dari SearchProgressDialog,
+            // yaitu setelah seluruh tahapan animasi selesai DAN layar transisi
+            // "Artikel ditemukan" tampil selama beberapa detik (murni UX,
+            // tidak menyentuh pipeline pencarian di backend).
+            pendingNavigationRef.current = {
+              results,
+              query,
+              filters: activeFilters,
+              total_matched:
+                payload.result?.total_matched ?? payload.result?.total ?? results.length,
+              total_occurrences: payload.result?.total_occurrences ?? 0,
+              paper_count: payload.result?.paper_count ?? results.length,
+            };
+          }
+          // Catatan: kalau hasil kosong, dialog TIDAK ditutup di sini --
+          // SearchProgressDialog sendiri yang menghentikan animasi tepat di
+          // tahap scraping ("dataset") lalu menampilkan popup "Artikel tidak
+          // ditemukan" berikut tombol Request, berdasarkan `progress.result`
+          // yang sudah diteruskan lewat prop `progress`.
+        }
+
+        if (payload.status === "error") {
+          source.close();
+          progressSourceRef.current = null;
+          setLoading(false);
+          setProgressOpen(false);
+        }
+      };
+
+      source.onerror = () => {
+        source.close();
+        progressSourceRef.current = null;
         setLoading(false);
-      }
+        setProgressOpen(false);
+      };
     } catch (error) {
       console.error(error);
-
-      const elapsed = Date.now() - startedAt;
-      if (elapsed < minLoadingTime) {
-        await wait(minLoadingTime - elapsed);
-      }
-      setNoResult(true);
       setLoading(false);
+      setProgressOpen(false);
     }
+  };
+
+  // Dipanggil oleh SearchProgressDialog setelah layar transisi
+  // "Artikel ditemukan" tampil (lihat prop onFinished).
+  const handleProgressFinished = () => {
+    const pending = pendingNavigationRef.current;
+    pendingNavigationRef.current = null;
+    setProgressOpen(false);
+
+    if (!pending) return;
+
+    navigate(`/dashboard?query=${encodeURIComponent(pending.query)}`, {
+      state: {
+        results: pending.results,
+        query: pending.query,
+        filters: pending.filters,
+        total_matched: pending.total_matched,
+        total_occurrences: pending.total_occurrences,
+        paper_count: pending.paper_count,
+      },
+    });
   };
 
   return (
     <div className="flex flex-col gap-6">
-      {requestNotif && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100]">
-          <div
-            className={`rounded-lg px-4 py-2 text-sm font-medium shadow-md ${
-              requestNotifType === "success" ? "bg-emerald-600 text-white" : "bg-red-600 text-white"
-            }`}
-          >
-            {requestNotif}
-          </div>
-        </div>
-      )}
+      <SearchProgressDialog
+        open={progressOpen}
+        progress={searchProgress}
+        query={query}
+        category={searchProgress?.category || kategori || "Otomatis"}
+        onOpenChange={setProgressOpen}
+        startedAt={searchStartAtRef.current}
+        onFinished={handleProgressFinished}
+      />
 
       {/* Header + Search tanpa card kotak */}
       <div className="flex items-center justify-center">
@@ -355,6 +377,28 @@ export function Searchpage() {
                     </div>
 
                     <div className="flex flex-col gap-2">
+                      <label className="text-sm">Kategori penelitian</label>
+                      <Select onValueChange={setKategori} value={kategori}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Pilih kategori" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categoryOptions.length === 0 ? (
+                            <SelectItem value="category-empty" disabled>
+                              Kategori belum tersedia
+                            </SelectItem>
+                          ) : (
+                            categoryOptions.map((category) => (
+                              <SelectItem key={category.value} value={category.value}>
+                                {category.label}
+                              </SelectItem>
+                            ))
+                          )}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
                       <label className="text-sm">Jenis analisis</label>
                       <Select onValueChange={setJenisAnalisis} value={jenisAnalisis}>
                         <SelectTrigger className="w-full">
@@ -421,10 +465,7 @@ export function Searchpage() {
                 <button
                   key={keyword}
                   type="button"
-                  onClick={() => {
-                    setQuery(keyword);
-                    setNoResult(false);
-                  }}
+                  onClick={() => setQuery(keyword)}
                   className="px-5 py-2 rounded-full border border-slate-200 bg-white text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:border-blue-300 transition"
                 >
                   {keyword}
@@ -435,24 +476,6 @@ export function Searchpage() {
         </section>
       </div>
 
-      {noResult && !loading && query.trim() !== "" && (
-        <div className="text-center">
-          <p className="text-slate-500 font-medium">
-            Artikel "{query}" belum tersedia dalam sistem. Silakan kirim permintaan kepada developer.
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              setRequestForm((prev) => ({ ...prev, kataKunci: query }));
-              setOpenRequestDialog(true);
-            }}
-            className="mt-3 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 px-6 py-2 font-medium text-white transition hover:opacity-90"
-          >
-            Request
-          </button>
-        </div>
-      )}
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="w-full shadow-sm rounded-xl p-6">
           <h3 className="font-semibold mb-4">Pencarian Terakhir</h3>
@@ -460,7 +483,7 @@ export function Searchpage() {
             <p className="text-sm text-slate-400">Belum ada riwayat pencarian.</p>
           ) : (
             <div className="space-y-2">
-              {visibleSearchHistory.map((item) => (
+              {searchHistory.map((item) => (
                 <button
                   key={item}
                   type="button"
@@ -512,77 +535,6 @@ export function Searchpage() {
         </Card>
       </div>
 
-      <Dialog open={openRequestDialog} onOpenChange={setOpenRequestDialog}>
-        <DialogContent className="max-w-xl min-h-[470px] rounded-2xl border border-black shadow-md">
-          <DialogHeader>
-            <DialogTitle className="text-center">Kirim Permintaan</DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-4 py-2">
-            <div className="flex flex-col gap-2">
-              <label className="text-sm">Nama</label>
-              <Input
-                value={requestForm.nama}
-                onChange={(e) => handleChangeRequest("nama", e.target.value)}
-                placeholder="Nama lengkap"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-sm">Email</label>
-              <Input
-                type="email"
-                value={requestForm.email}
-                onChange={(e) => handleChangeRequest("email", e.target.value)}
-                placeholder="email@contoh.com"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-sm">Kata Kunci Pencarian</label>
-              <Input
-                value={requestForm.kataKunci}
-                onChange={(e) => handleChangeRequest("kataKunci", e.target.value)}
-                placeholder="Contoh: web accessibility"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-sm">Judul Artikel (Opsional)</label>
-              <Input
-                value={requestForm.judulArtikel}
-                onChange={(e) => handleChangeRequest("judulArtikel", e.target.value)}
-                placeholder="Jika ada judul spesifik"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-sm">Keterangan Tambahan (Opsional)</label>
-              <textarea
-                value={requestForm.keterangan}
-                onChange={(e) => handleChangeRequest("keterangan", e.target.value)}
-                placeholder="Tambahkan detail permintaan..."
-                className="min-h-[110px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              />
-            </div>
-
-            <div className="flex justify-center pt-2">
-              <Button
-                onClick={handleSubmitRequest}
-                className="px-10"
-                disabled={
-                  requestLoading ||
-                  !requestForm.nama.trim() ||
-                  !requestForm.email.trim() ||
-                  !requestForm.kataKunci.trim()
-                }
-              >
-                {requestLoading ? "Mengirim..." : "Kirim Permintaan"}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

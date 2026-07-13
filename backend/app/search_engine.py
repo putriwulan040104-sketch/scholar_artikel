@@ -333,20 +333,50 @@ def count_occurrence(document_text, query_terms):
     return sum(document_tokens.count(term) for term in query_terms)
 
 
+def _emit_search_progress(progress_callback, payload):
+    if callable(progress_callback):
+        progress_callback(payload)
+
+
 def search_articles(
-    query,
-    top_k=10,
-    year_start=None,
-    year_end=None,
-    jenis_artikel=None,
-    jenis_analisis=None,
-    jumlah_publikasi=None,
-    jumlah_kemunculan=None,
-    kategori=None,
-):
+    query,top_k=50,year_start=None,year_end=None,jenis_artikel=None, jenis_analisis=None, jumlah_publikasi=None, jumlah_kemunculan=None, kategori=None, progress_callback=None,):
+    _emit_search_progress(progress_callback, {
+        "stage": "prepare",
+        "event": "start",
+        "message": "Menyiapkan dataset artikel dari Supabase...",
+        "article_count": int(len(doc_index)),
+        "vocab_count": int(tfidf_matrix.shape[1]),
+    })
+    _emit_search_progress(progress_callback, {
+        "stage": "prepare",
+        "event": "done",
+        "message": f"Dataset siap: {len(doc_index)} artikel",
+        "article_count": int(len(doc_index)),
+        "vocab_count": int(tfidf_matrix.shape[1]),
+    })
+
+    _emit_search_progress(progress_callback, {
+        "stage": "preprocessing",
+        "event": "start",
+        "message": "Membersihkan dan memecah kata kunci pencarian...",
+        "query": query,
+    })
     query_terms = preprocess_query(query)
+    _emit_search_progress(progress_callback, {
+        "stage": "preprocessing",
+        "event": "done",
+        "message": f"Preprocessing selesai: {len(query_terms)} kata kunci dipakai",
+        "query_terms": query_terms,
+        "term_count": len(query_terms),
+    })
 
     if not query_terms:
+        _emit_search_progress(progress_callback, {
+            "stage": "final",
+            "event": "done",
+            "message": "Kata kunci tidak menghasilkan token yang dapat dicari",
+            "result_count": 0,
+        })
         return {
             "articles": [],
             "total_occurrences": 0,
@@ -356,16 +386,59 @@ def search_articles(
             "displayed_occurrences": 0,
         }
 
+    _emit_search_progress(progress_callback, {
+        "stage": "tfidf",
+        "event": "start",
+        "message": "Menghitung bobot TF-IDF untuk kata kunci...",
+        "term_count": len(query_terms),
+    })
     query_vec = build_query_vector(query_terms)
+    non_zero_terms = int(np.count_nonzero(query_vec))
+    _emit_search_progress(progress_callback, {
+        "stage": "tfidf",
+        "event": "done",
+        "message": f"Bobot TF-IDF query selesai: {non_zero_terms} term cocok dengan vocabulary",
+        "matched_term_count": non_zero_terms,
+        "vocab_count": int(tfidf_matrix.shape[1]),
+    })
+
+    _emit_search_progress(progress_callback, {
+        "stage": "vsm",
+        "event": "start",
+        "message": "Menyiapkan Vector Space Model dari matriks dataset...",
+        "document_count": int(tfidf_matrix.shape[0]),
+        "vocab_count": int(tfidf_matrix.shape[1]),
+    })
+    _emit_search_progress(progress_callback, {
+        "stage": "vsm",
+        "event": "done",
+        "message": f"VSM siap: {tfidf_matrix.shape[0]} dokumen x {tfidf_matrix.shape[1]} term",
+        "document_count": int(tfidf_matrix.shape[0]),
+        "vocab_count": int(tfidf_matrix.shape[1]),
+    })
+
+    _emit_search_progress(progress_callback, {
+        "stage": "cosine",
+        "event": "start",
+        "message": "Menghitung Cosine Similarity antara query dan seluruh artikel...",
+        "document_count": int(tfidf_matrix.shape[0]),
+    })
     scores = cosine_similarity(query_vec, tfidf_matrix).flatten()
+    positive_scores = int(np.count_nonzero(scores > 0))
+    _emit_search_progress(progress_callback, {
+        "stage": "cosine",
+        "event": "done",
+        "message": f"Cosine Similarity selesai: {positive_scores} artikel memiliki kecocokan awal",
+        "matched_count": positive_scores,
+    })
+
+    _emit_search_progress(progress_callback, {
+        "stage": "filter",
+        "event": "start",
+        "message": "Menyaring artikel sesuai kata kunci dan filter yang dipilih...",
+    })
     ranked_idx = np.argsort(scores)[::-1]
-
-    results = doc_index.iloc[ranked_idx][[
-        "id", "title", "authors", "year", "source", "category",
-        "abstract", "doi", "pdf_url", "url", "scrape_status",
-        "document_text"
-    ]].copy()
-
+    results = doc_index.iloc[ranked_idx].copy()
     results["similarity_score"] = scores[ranked_idx]
     results = results[results["similarity_score"] > 0].reset_index(drop=True)
 
@@ -391,12 +464,7 @@ def search_articles(
 
     results["pdf_url"] = results["pdf_url"].apply(_clean_cell)
     results["url"] = results["url"].apply(_clean_cell)
-
-    results["access_url"] = results.apply(
-        lambda row: row["pdf_url"] if row["pdf_url"] else row["url"],
-        axis=1
-    )
-
+    results["access_url"] = results.apply( lambda row: row["pdf_url"] if row["pdf_url"] else row["url"], axis=1)    
     results["is_pdf"] = results["access_url"].apply(_is_direct_pdf)
 
     if jenis_artikel == "open":
@@ -404,9 +472,7 @@ def search_articles(
     elif jenis_artikel == "close":
         results = results[results["is_pdf"] == False]
 
-    results["term_frequency"] = results["document_text"].apply(
-        lambda text: count_occurrence(text, query_terms)
-    )
+    results["term_frequency"] = results["document_text"].apply( lambda text: count_occurrence(text, query_terms))
 
     if jumlah_kemunculan is not None and str(jumlah_kemunculan).strip() != "":
         min_occ = int(jumlah_kemunculan)
@@ -417,6 +483,21 @@ def search_articles(
 
     total_matched = int(len(results))
     total_occurrences = int(results["term_frequency"].sum())
+    _emit_search_progress(progress_callback, {
+        "stage": "filter",
+        "event": "done",
+        "message": f"Artikel sesuai filter: {total_matched}",
+        "matched_count": total_matched,
+        "total_occurrences": total_occurrences,
+    })
+
+    _emit_search_progress(progress_callback, {
+        "stage": "final",
+        "event": "start",
+        "message": "Menyusun hasil akhir berdasarkan skor kecocokan...",
+        "matched_count": total_matched,
+        "top_k": int(top_k),
+    })
 
     results = results.head(int(top_k))
     displayed_count = int(len(results))
@@ -430,6 +511,14 @@ def search_articles(
 
     results = results.drop(columns=["document_text"], errors="ignore")
     results = results.fillna("")
+    _emit_search_progress(progress_callback, {
+        "stage": "final",
+        "event": "done",
+        "message": f"Hasil akhir siap: {displayed_count} artikel ditampilkan",
+        "displayed_count": displayed_count,
+        "total_matched": total_matched,
+        "total_occurrences": total_occurrences,
+    })
 
     return {
         "articles": results.to_dict("records"),
@@ -437,8 +526,7 @@ def search_articles(
         "paper_count": displayed_count,
         "total_matched": total_matched,
         "displayed_count": displayed_count,
-        "displayed_occurrences": displayed_occurrences,
-    }
+        "displayed_occurrences": displayed_occurrences,}
 
 
 def get_stats():

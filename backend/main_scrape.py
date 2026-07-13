@@ -1,4 +1,4 @@
-from src.scraper.scholar_scraper import scrape_and_save_to_supabase
+from src.scraper.pipeline import scrape_and_save_to_supabase
 
 DEFAULT_TARGET = 50
 def input_target():
