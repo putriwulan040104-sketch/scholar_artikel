@@ -1,3 +1,4 @@
+import json
 import re
 import threading
 from collections import defaultdict
@@ -11,6 +12,14 @@ RELATION_TYPE = "bibliographic_coupling"
 DOI_PATTERN = re.compile(
     r"(10\.\d{4,9}/[-._;()/:A-Z0-9]+)",
     re.I,
+)
+YEAR_PATTERN = re.compile(r"\((?:19|20)\d{2}[a-z]?\)\.?", re.I)
+REFERENCE_BOUNDARY_PATTERN = re.compile(
+    r"(?<=\.)\s+"
+    r"(?=(?:\[\d+\]\s*)?"
+    r"[A-ZÀ-ÖØ-Þ][\wÀ-ÖØ-öø-ÿ'’-]{1,}"
+    r"(?:\s+[A-ZÀ-ÖØ-Þ][\wÀ-ÖØ-öø-ÿ'’-]{1,})*,\s+"
+    r"[^()]{0,240}?\((?:19|20)\d{2}[a-z]?\)\.?)",
 )
 _BUILD_LOCK = threading.Lock()
 
@@ -50,24 +59,124 @@ def _get_publications(limit=None):
     return rows
 
 
-def _reference_identity(reference):
-    if not reference:
-        return None
+def _clean_text(value):
+    return re.sub(r"\s+", " ", str(value or "")).strip()
 
-    value = str(reference).strip()
-    doi_match = DOI_PATTERN.search(value)
-    if doi_match:
-        doi = doi_match.group(1).lower().rstrip(".,;:)]}")
-        return f"doi:{doi}"
 
-    normalized = value.lower()
-    normalized = re.sub(r"https?://\S+", " ", normalized)
-    normalized = re.sub(r"[^\w\s]", " ", normalized)
-    normalized = re.sub(r"\s+", " ", normalized).strip()
-    if len(normalized) < 30:
-        return None
+def _split_reference_entries(reference):
+    value = _clean_text(reference)
+    if not value:
+        return []
 
-    return f"text:{normalized}"
+    entries = [
+        _clean_text(entry)
+        for entry in REFERENCE_BOUNDARY_PATTERN.split(value)
+        if _clean_text(entry)
+    ]
+    return entries or [value]
+
+
+def _extract_reference_title(reference):
+    value = _clean_text(reference)
+    if not value:
+        return ""
+
+    value = re.sub(r"^\s*(?:\[\d+\]|\d+[.)])\s*", "", value)
+    year_match = YEAR_PATTERN.search(value)
+    candidate = value[year_match.end():] if year_match else value
+    candidate = candidate.strip(" .:-;")
+
+    if not year_match:
+        parts = re.split(r"\.\s+", candidate, maxsplit=1)
+        if len(parts) > 1:
+            candidate = parts[1].strip()
+
+    title = re.split(r"\.\s+", candidate, maxsplit=1)[0]
+    return _clean_text(title.strip(" .:-;"))
+
+
+def _extract_reference_authors(reference):
+    value = _clean_text(reference)
+    if not value:
+        return ""
+
+    value = re.sub(r"^\s*(?:\[\d+\]|\d+[.)])\s*", "", value)
+    year_match = YEAR_PATTERN.search(value)
+    if year_match:
+        return _clean_text(value[:year_match.start()].strip(" .:-;"))
+
+    first_sentence = re.split(r"\.\s+", value, maxsplit=1)[0]
+    return _clean_text(first_sentence.strip(" .:-;"))
+
+
+def _extract_reference_year(reference):
+    match = YEAR_PATTERN.search(_clean_text(reference))
+    if not match:
+        return ""
+
+    year_match = re.search(r"(?:19|20)\d{2}[a-z]?", match.group(0), re.I)
+    return year_match.group(0) if year_match else ""
+
+
+def _extract_reference_metadata(reference):
+    original_reference = _clean_text(reference)
+    title = _extract_reference_title(original_reference)
+
+    return {
+        "original_reference": original_reference,
+        "authors": _extract_reference_authors(original_reference),
+        "year": _extract_reference_year(original_reference),
+        "title": title,
+    }
+
+
+def _normalize_reference_title(title):
+    value = _clean_text(title)
+    if not value:
+        return ""
+
+    value = DOI_PATTERN.sub(" ", value)
+    value = re.sub(r"https?://\S+", " ", value)
+    value = re.sub(r"\barxiv:\S+", " ", value, flags=re.I)
+    value = value.lower()
+    value = value.replace("&", " and ")
+    value = re.sub(r"[^\w\s]", " ", value)
+    value = re.sub(r"\s+", " ", value).strip()
+
+    if len(value) < 12 or len(value.split()) < 3:
+        return ""
+
+    return value
+
+
+def _reference_identity_items(reference):
+    identities = []
+
+    for entry in _split_reference_entries(reference):
+        metadata = _extract_reference_metadata(entry)
+        doi_matches = list(DOI_PATTERN.finditer(entry))
+        if doi_matches:
+            for match in doi_matches:
+                doi = match.group(1).lower().rstrip(".,;:)]}")
+                identities.append({
+                    "identity": f"doi:{doi}",
+                    "label": _clean_text(entry),
+                    "match_type": "doi",
+                    **metadata,
+                })
+            continue
+
+        title = metadata["title"]
+        normalized_title = _normalize_reference_title(title)
+        if normalized_title:
+            identities.append({
+                "identity": f"title:{normalized_title}",
+                "label": title,
+                "match_type": "title",
+                **metadata,
+            })
+
+    return identities
 
 def _load_existing_relations():
     rows = []
@@ -78,7 +187,7 @@ def _load_existing_relations():
         response = (
             supabase
             .table(RELATIONS_TABLE)
-            .select("id,source_id,target_id,weight")
+            .select("id,source_id,target_id,weight,details")
             .eq("relation_type", RELATION_TYPE)
             .order("id")
             .range(offset, offset + page_size - 1)
@@ -96,6 +205,69 @@ def _load_existing_relations():
         (int(row["source_id"]), int(row["target_id"])): row
         for row in rows
     }
+
+
+def _normalize_detail_items(items):
+    return {
+        re.sub(r"\s+", " ", str(item or "")).strip().lower()
+        for item in items or []
+        if str(item or "").strip()
+    }
+
+
+def _extract_current_shared_references(details):
+    if isinstance(details, str):
+        try:
+            details = json.loads(details)
+        except (TypeError, ValueError):
+            return []
+
+    if not isinstance(details, dict):
+        return []
+
+    shared = details.get("shared_references")
+    return shared if isinstance(shared, list) else []
+
+
+def _extract_current_shared_reference_matches(details):
+    if isinstance(details, str):
+        try:
+            details = json.loads(details)
+        except (TypeError, ValueError):
+            return []
+
+    if not isinstance(details, dict):
+        return []
+
+    shared = details.get("shared_reference_matches")
+    return shared if isinstance(shared, list) else []
+
+
+def _normalize_match_items(items):
+    normalized = []
+    for item in items or []:
+      if not isinstance(item, dict):
+          continue
+      normalized.append({
+          "reference": _clean_text(item.get("reference")).lower(),
+          "match_type": _clean_text(item.get("match_type")).lower(),
+          "authors": _clean_text(item.get("authors")).lower(),
+          "year": _clean_text(item.get("year")).lower(),
+          "title": _clean_text(item.get("title")).lower(),
+          "original_reference": _clean_text(
+              item.get("original_reference")
+          ).lower(),
+      })
+    return sorted(
+        normalized,
+        key=lambda item: (
+            item["match_type"],
+            item["reference"],
+            item["authors"],
+            item["year"],
+            item["title"],
+        ),
+    )
 
 
 def _is_unique_conflict(error):
@@ -117,6 +289,7 @@ def _build_bibliographic_coupling(limit=None, min_shared=1):
 
     reference_index = defaultdict(set)
     reference_labels = {}
+    reference_metadata = {}
 
     for index, publication in enumerate(publications, start=1):
         publication_id = publication.get("id")
@@ -125,11 +298,28 @@ def _build_bibliographic_coupling(limit=None, min_shared=1):
             continue
 
         for reference in references:
-            identity = _reference_identity(reference)
-            if not identity:
-                continue
-            reference_index[identity].add(int(publication_id))
-            reference_labels.setdefault(identity, str(reference).strip())
+            for item in _reference_identity_items(reference):
+                identity = item["identity"]
+                if not identity:
+                    continue
+                reference_index[identity].add(int(publication_id))
+                reference_labels.setdefault(identity, item["label"])
+                reference_metadata.setdefault(identity, {
+                    "reference": item["label"],
+                    "match_type": item["match_type"],
+                    "authors": item.get("authors") or "",
+                    "year": item.get("year") or "",
+                    "title": item.get("title") or item["label"],
+                    "original_reference": (
+                        item.get("original_reference") or item["label"]
+                    ),
+                })
+
+                match_type = item["match_type"]
+                reference_labels.setdefault(
+                    f"{identity}:match_type",
+                    match_type,
+                )
 
         if index % 10 == 0 or index == len(publications):
             _log(
@@ -195,15 +385,46 @@ def _build_bibliographic_coupling(limit=None, min_shared=1):
             reference_labels[identity]
             for identity in identities
         ]
+        shared_reference_matches = [
+            reference_metadata.get(identity, {
+                "reference": reference_labels[identity],
+                "match_type": reference_labels.get(
+                    f"{identity}:match_type",
+                    "title" if identity.startswith("title:") else "doi",
+                ),
+                "authors": "",
+                "year": "",
+                "title": reference_labels[identity],
+                "original_reference": reference_labels[identity],
+            })
+            for identity in identities
+        ]
         details = {
             "shared_references": shared_references,
+            "shared_reference_matches": shared_reference_matches,
         }
         current = existing.get((source_id, target_id))
 
         try:
             if current:
                 current_weight = int(current.get("weight") or 1)
-                if current_weight == weight:
+                current_shared_references = (
+                    _extract_current_shared_references(
+                        current.get("details")
+                    )
+                )
+                current_shared_matches = (
+                    _extract_current_shared_reference_matches(
+                        current.get("details")
+                    )
+                )
+                details_match = (
+                    _normalize_detail_items(current_shared_references)
+                    == _normalize_detail_items(shared_references)
+                    and _normalize_match_items(current_shared_matches)
+                    == _normalize_match_items(shared_reference_matches)
+                )
+                if current_weight == weight and details_match:
                     skipped += 1
                     continue
                 (

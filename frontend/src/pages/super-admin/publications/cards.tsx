@@ -1,4 +1,4 @@
-import { BookOpen, CircleAlert, CircleCheck, Link2Off } from "lucide-react";
+import { BookOpen, CircleAlert, CircleCheck } from "lucide-react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface PublicationStatCardsProps {
@@ -12,12 +12,11 @@ const cards = [
   { key: "total", label: "Total Publikasi", icon: BookOpen },
   { key: "complete", label: "Data Lengkap", icon: CircleCheck },
   { key: "partial", label: "Data Sebagian", icon: CircleAlert },
-  { key: "withoutReferences", label: "Tanpa Referensi", icon: Link2Off },
 ] as const;
 
 export function PublicationStatCards(props: PublicationStatCardsProps) {
   return (
-    <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+    <div className="grid grid-cols-3 gap-3">
       {cards.map(({ key, label, icon: Icon }) => (
         <Card key={key}>
           <CardHeader className="flex flex-row items-center justify-between gap-3 p-4 sm:p-6">

@@ -1,5 +1,6 @@
 import { Link2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import type { ReferenceMatch } from "@/api/api";
 import type { ArticleRelationType } from "@/api/api";
 import type {
   GraphNode,
@@ -66,6 +67,52 @@ function getRelationItems(
   return relation.sharedReferences || [];
 }
 
+function getReferenceMatches(
+  relation: SelectedRelations["connected"][number],
+) {
+  return relation.sharedReferenceMatches?.length
+    ? relation.sharedReferenceMatches
+    : (relation.sharedReferences || []).map((reference) => ({
+        reference,
+        title: reference,
+        match_type: "title",
+      }));
+}
+
+function ReferenceMatchList({ matches }: { matches: ReferenceMatch[] }) {
+  return (
+    <span className="mt-2 block space-y-2 border-t pt-2">
+      <span className="block text-xs font-semibold text-slate-700">
+        Referensi yang sama
+      </span>
+      {matches.map((match, index) => (
+        <span
+          key={`${match.match_type}-${match.reference}-${index}`}
+          className="block rounded-md bg-slate-50 p-2 text-xs text-slate-600"
+        >
+          <span className="mb-1 flex flex-wrap items-center gap-2">
+            {match.year ? (
+              <span className="text-slate-500">Tahun: {match.year}</span>
+            ) : null}
+          </span>
+          <span className="block font-medium text-slate-800">
+            {index + 1}. {match.title || match.reference || "-"}
+          </span>
+          {match.authors ? (
+            <span className="mt-1 block">Penulis: {match.authors}</span>
+          ) : null}
+          {match.original_reference &&
+          match.original_reference !== match.title ? (
+            <span className="mt-1 block text-slate-500">
+              Referensi asli: {match.original_reference}
+            </span>
+          ) : null}
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export default function RelationDetails({
   selectedNode,
   selectedRelations,
@@ -111,6 +158,7 @@ export default function RelationDetails({
                     String(relationType || ""),
                     relation,
                   );
+                  const referenceMatches = getReferenceMatches(relation);
 
                   return (
                   <button
@@ -131,7 +179,12 @@ export default function RelationDetails({
                       <span className="mt-1 block text-xs text-muted-foreground">
                         {weight} {relationCopy.weightLabel}
                       </span>
-                      {relationItems.length > 0 && (
+                      {String(relationType || "") ===
+                      "bibliographic_coupling" ? (
+                        referenceMatches.length > 0 ? (
+                          <ReferenceMatchList matches={referenceMatches} />
+                        ) : null
+                      ) : relationItems.length > 0 ? (
                         <span className="mt-2 block space-y-1 border-t pt-2">
                           <span className="block text-xs font-semibold text-slate-700">
                             {relationCopy.detailLabel}
@@ -145,7 +198,7 @@ export default function RelationDetails({
                             </span>
                           ))}
                         </span>
-                      )}
+                      ) : null}
                     </span>
                   </button>
                   );

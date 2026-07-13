@@ -1,5 +1,6 @@
 import os
 import re
+from difflib import SequenceMatcher
 from urllib.parse import quote
 import requests
 
@@ -12,10 +13,6 @@ DOI_PATTERN = re.compile(
     r"(10\.\d{4,9}/[-._;()/:A-Z0-9]+)",
     re.I,
 )
-OPENALEX_WORK_ID_PATTERN = re.compile(r"(W\d+)", re.I)
-REFERENCE_LIMIT = 30
-_WORK_CACHE = {}
-
 def _clean_doi(value):
     if not value:
         return None
@@ -101,6 +98,21 @@ def _extract_article_author_tokens(article):
     return tokens
 
 
+def _normalize_title(value):
+    value = str(value or "").lower()
+    value = re.sub(r"[^a-z0-9]+", " ", value)
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def _title_similarity(left, right):
+    left = _normalize_title(left)
+    right = _normalize_title(right)
+    if not left or not right:
+        return 0
+
+    return SequenceMatcher(None, left, right).ratio()
+
+
 def _extract_authors(work):
     authors = []
     for authorship in work.get("authorships", []):
@@ -139,14 +151,48 @@ def _fetch_by_title(title, article=None):
     if not results:
         return None
 
-    author_tokens = _extract_article_author_tokens(article or {})
-    if not author_tokens:
-        return results[0]
+    article = article or {}
+    author_tokens = _extract_article_author_tokens(article)
+    doi_candidates = _extract_doi_candidates(article)
+    scored = []
 
-    return max(
-        results,
-        key=lambda work: _author_overlap_score(work, author_tokens),
-    )
+    for work in results:
+        work_doi = _clean_doi(work.get("doi") or "")
+        if doi_candidates and work_doi and work_doi not in doi_candidates:
+            continue
+
+        similarity = _title_similarity(title, work.get("display_name"))
+        author_overlap = _author_overlap_score(work, author_tokens)
+        if similarity < 0.8:
+            continue
+        if author_tokens and author_overlap <= 0:
+            continue
+        if not author_tokens and similarity < 0.92:
+            continue
+
+        scored.append((author_overlap, similarity, work))
+
+    if not scored:
+        return None
+
+    return max(scored, key=lambda item: (item[0], item[1]))[2]
+
+
+def _work_matches_article(work, article):
+    doi_candidates = _extract_doi_candidates(article)
+    work_doi = _clean_doi(work.get("doi") or "")
+    if doi_candidates:
+        return work_doi in doi_candidates
+
+    title = article.get("title")
+    similarity = _title_similarity(title, work.get("display_name"))
+    author_tokens = _extract_article_author_tokens(article)
+    author_overlap = _author_overlap_score(work, author_tokens)
+
+    if author_tokens:
+        return similarity >= 0.8 and author_overlap > 0
+
+    return similarity >= 0.92
 
 
 def _extract_pdf_url(work):
@@ -172,7 +218,7 @@ def _extract_document_urls(work):
     locations.extend(work.get("locations", []) or [])
 
     for location in locations:
-        for field in ("pdf_url", "landing_page_url"):
+        for field in ("landing_page_url", "pdf_url"):
             url = (location.get(field) or "").strip()
             if not url or url in seen:
                 continue
@@ -189,109 +235,14 @@ def _work_to_result(work):
     }
 
 
-def _extract_journal(work):
-    primary = work.get("primary_location", {}) or {}
-    source = primary.get("source", {}) or {}
-    name = (source.get("display_name") or "").strip()
-    if name:
-        return name
-
-    host_venue = work.get("host_venue", {}) or {}
-    return (host_venue.get("display_name") or "").strip() or None
-
-
-def _format_reference_citation(work):
-    title = (work.get("display_name") or "").strip()
-    if not title:
-        return None
-
-    authors = _extract_authors(work)
-    author_part = (
-        f"{authors[0]} et al."
-        if len(authors) > 1
-        else authors[0]
-        if authors
-        else "Unknown author"
-    )
-    year = work.get("publication_year") or "n.d."
-    journal = _extract_journal(work)
-    doi = _clean_doi(work.get("doi") or "")
-
-    parts = [f"{author_part} ({year}). {title}."]
-    if journal:
-        parts.append(f"{journal}.")
-    if doi:
-        parts.append(f"https://doi.org/{doi}")
-
-    return " ".join(parts).strip()
-
-
-def _extract_openalex_work_id(value):
-    match = OPENALEX_WORK_ID_PATTERN.search(str(value or ""))
-    if not match:
-        return None
-
-    return match.group(1).upper()
-
-
-def _fetch_work_by_openalex_id(work_id):
-    if not work_id:
-        return None
-    if work_id in _WORK_CACHE:
-        return _WORK_CACHE[work_id]
-
-    try:
-        data = _openalex_get_json(f"{OPENALEX_BASE_URL}/works/{work_id}")
-    except Exception:
-        data = None
-
-    _WORK_CACHE[work_id] = data
-    return data
-
-
-def _extract_references(work):
-    references = []
-    seen = set()
-
-    for item in work.get("referenced_works", []) or []:
-        work_id = _extract_openalex_work_id(item)
-        if not work_id or work_id in seen:
-            continue
-
-        seen.add(work_id)
-        ref_work = _fetch_work_by_openalex_id(work_id)
-        citation = _format_reference_citation(ref_work or {})
-        if citation:
-            references.append(citation)
-
-        if len(references) >= REFERENCE_LIMIT:
-            break
-
-    return references
-
-
 def fetch_openalex_enrichment(article):
     for doi in _extract_doi_candidates(article):
         work = _fetch_by_doi(doi)
-        if work:
+        if work and _work_matches_article(work, article):
             return _work_to_result(work)
 
     work = _fetch_by_title(article.get("title"), article=article)
-    if work:
+    if work and _work_matches_article(work, article):
         return _work_to_result(work)
 
     return None
-
-
-def fetch_openalex_references_by_doi(article):
-    for doi in _extract_doi_candidates(article):
-        work = _fetch_by_doi(doi)
-        if not work:
-            continue
-
-        if _clean_doi(work.get("doi") or "") != doi:
-            continue
-
-        return _extract_references(work)
-
-    return []

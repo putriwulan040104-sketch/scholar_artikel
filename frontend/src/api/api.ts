@@ -353,6 +353,7 @@ export interface PublicationMutationPayload {
   title: string;
   authors: string[];
   keywords: string[];
+  referenceList?: string[];
   doi?: string;
   journal?: string;
   year?: number | null;
@@ -555,7 +556,7 @@ export async function updateProfile(payload: {
     }
 
     return data;
-  } catch (_error) {
+  } catch {
     return {
       status: "error",
       message: "Gagal koneksi ke server",
@@ -593,6 +594,8 @@ export interface SearchResult {
   displayed_count?  : number;
   total_occurrences?: number;  
   paper_count?      : number;  
+  // Search endpoint mengembalikan bentuk artikel yang dipakai beberapa halaman.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?             : any[];
   message?          : string;
 }
@@ -840,9 +843,19 @@ export interface CitationGraphEdge {
   relation_type?: ArticleRelationType;
   details?: {
     shared_references?: string[];
+    shared_reference_matches?: ReferenceMatch[];
     shared_keywords?: string[];
     shared_authors?: string[];
   };
+}
+
+export interface ReferenceMatch {
+  reference?: string;
+  match_type?: "doi" | "title" | string;
+  authors?: string;
+  year?: string;
+  title?: string;
+  original_reference?: string;
 }
 
 export async function getCitationGraphData(
@@ -866,10 +879,16 @@ export async function getCitationGraphData(
     for (const url of candidates) {
       const res = await fetch(url);
       const raw = await res.text();
-      let data: any = null;
+      let data: {
+        message?: string;
+        result?: {
+          nodes?: CitationGraphNode[];
+          edges?: CitationGraphEdge[];
+        };
+      } | null = null;
       try {
         data = raw ? JSON.parse(raw) : {};
-      } catch (_e) {
+      } catch {
         data = null;
       }
 
@@ -898,7 +917,7 @@ export async function getCitationGraphData(
       status: "error",
       message: lastMessage,
     };
-  } catch (_error) {
+  } catch {
     return {
       status: "error",
       message: "Gagal koneksi ke server",

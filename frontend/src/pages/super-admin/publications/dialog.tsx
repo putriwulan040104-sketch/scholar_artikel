@@ -30,6 +30,17 @@ function splitValues(value: string) {
     .filter(Boolean);
 }
 
+function joinReferenceValues(values?: string[]) {
+  return Array.isArray(values) ? values.join("\n") : "";
+}
+
+function splitReferences(value: string) {
+  return value
+    .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 export function PublicationDialog({
   open,
   mode,
@@ -46,18 +57,24 @@ export function PublicationDialog({
   const [year, setYear] = useState("");
   const [articleUrl, setArticleUrl] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
+  const [references, setReferences] = useState("");
 
   useEffect(() => {
     if (!open || !publication) return;
 
-    setTitle(publication.title || "");
-    setAuthors(joinValues(publication.authors));
-    setKeywords(joinValues(publication.keywords));
-    setDoi(publication.doi || "");
-    setJournal(publication.journal || "");
-    setYear(publication.year ? String(publication.year) : "");
-    setArticleUrl(publication.articleUrl || "");
-    setPdfUrl(publication.pdfUrl || "");
+    const timeoutId = window.setTimeout(() => {
+      setTitle(publication.title || "");
+      setAuthors(joinValues(publication.authors));
+      setKeywords(joinValues(publication.keywords));
+      setDoi(publication.doi || "");
+      setJournal(publication.journal || "");
+      setYear(publication.year ? String(publication.year) : "");
+      setArticleUrl(publication.articleUrl || "");
+      setPdfUrl(publication.pdfUrl || "");
+      setReferences(joinReferenceValues(publication.referenceList));
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, [open, publication]);
 
   const handleSubmit = () => {
@@ -70,6 +87,7 @@ export function PublicationDialog({
       title: title.trim(),
       authors: splitValues(authors),
       keywords: splitValues(keywords),
+      referenceList: splitReferences(references),
       doi: doi.trim(),
       journal: journal.trim(),
       year: year ? Number(year) : null,
@@ -179,6 +197,27 @@ export function PublicationDialog({
                 onChange={(event) => setPdfUrl(event.target.value)}
               />
             </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="publication-references">
+                Referensi
+                <span className="ml-1 text-xs font-normal text-muted-foreground">
+                  (satu referensi per baris)
+                </span>
+              </Label>
+              <textarea
+                id="publication-references"
+                value={references}
+                onChange={(event) => setReferences(event.target.value)}
+                placeholder="Tulis satu referensi per baris"
+                rows={8}
+                className="min-h-36 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              <p className="text-xs text-muted-foreground">
+                Total referensi: {splitReferences(references).length}
+              </p>
+            </div>
+
 
             <div className="flex justify-end gap-2 border-t pt-4">
               <Button variant="outline" onClick={() => onOpenChange(false)}>

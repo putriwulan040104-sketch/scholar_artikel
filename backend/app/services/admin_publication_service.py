@@ -63,6 +63,7 @@ def _publication_audit_data(publication):
         "year": publication.get("year"),
         "articleUrl": publication.get("url"),
         "pdfUrl": publication.get("pdf_url"),
+        "referenceList": references,
         "referenceCount": len(references),
     }
 
@@ -140,6 +141,7 @@ def update_admin_publication(token, publication_id, data):
         "title": title,
         "authors": _as_list(data.get("authors")),
         "keywords": _as_list(data.get("keywords")),
+        "reference_list": _as_list(data.get("referenceList")),
         "source": str(data.get("journal") or "").strip() or None,
         "year": year,
         "url": str(data.get("articleUrl") or "").strip() or None,

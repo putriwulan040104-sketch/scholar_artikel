@@ -41,22 +41,95 @@ def _looks_like_reference_entry(ref):
             ref
         )
     )
-    has_author_pattern = bool(
-        re.search(
-            r"[A-Z][a-z]+,\s*[A-Z]",
-            ref
-        )
-    )
+    has_author_pattern = _has_reference_author_pattern(ref)
 
     if has_doi or has_url or has_citation_marker:
         return True
-    if has_year and (
-        has_author_pattern
-        or len(ref.split()) >= 6
-    ):
+    if has_year and has_author_pattern:
+        return True
+    if has_author_pattern and len(ref.split()) >= 5:
         return True
 
     return False
+
+
+def _has_author_year_pattern(ref):
+    if not ref:
+        return False
+
+    ref = re.sub(r"\s+", " ", str(ref)).strip()
+    year_match = re.search(r"\b(?:19|20)\d{2}[a-z]?\b", ref)
+    if not year_match:
+        return False
+
+    author_part = ref[:year_match.start()]
+    author_part = re.sub(
+        r"^\s*(?:[-*â€¢]\s+|\[\d+\]|\(\d+\)|\d+[\.\)])\s*",
+        "",
+        author_part,
+    ).strip(" ,.;:")
+
+    if not author_part or len(author_part) > 180:
+        return False
+
+    author_patterns = [
+        r"\b[A-Z][A-Za-z'`-]{1,},\s*(?:[A-Z]\.?\s*){1,5}",
+        r"\b[A-Z][A-Za-z'`-]{1,}\s+(?:[A-Z]\.?\s*){1,5}",
+        r"\b(?:[A-Z]\.?\s*){1,5}[A-Z][A-Za-z'`-]{1,}",
+        r"\b[A-Z][A-Za-z'`-]{1,}\s+et\s+al\.?",
+        r"\b[A-Z][A-Za-z'`-]{1,}\s+(?:and|&)\s+"
+        r"[A-Z][A-Za-z'`-]{1,}",
+    ]
+
+    return any(
+        re.search(pattern, author_part)
+        for pattern in author_patterns
+    )
+
+
+def _strip_reference_marker(ref):
+    return re.sub(
+        r"^\s*(?:[-*â€¢Ã¢â‚¬Â¢]\s+|\[\d+\]|\(\d+\)|\d+[\.\)])\s*",
+        "",
+        str(ref or ""),
+    ).strip()
+
+
+def _has_reference_author_pattern(ref):
+    if not ref:
+        return False
+
+    ref = re.sub(r"\s+", " ", str(ref)).strip()
+    year_match = re.search(r"\b(?:19|20)\d{2}[a-z]?\b", ref)
+    author_part = ref[:year_match.start()] if year_match else ref[:180]
+    author_part = _strip_reference_marker(author_part).strip(" ,.;:")
+
+    if not author_part or len(author_part) > 180:
+        return False
+
+    author_patterns = [
+        r"^[A-Z][A-Za-z'`-]{1,},\s*(?:[A-Z]\.?\s*){1,5}",
+        r"^(?:[A-Z]\.?\s*){1,5}\s*[A-Z][A-Za-z'`-]{1,}\s*,",
+        r"^[A-Z][A-Za-z'`-]{1,}\s+(?:[A-Z]\.?\s*){1,5}\s*,",
+        r"^[A-Z][A-Za-z'`-]{1,}\s+et\s+al\.?",
+        r"^[A-Z][A-Za-z'`-]{1,}\s+(?:and|&)\s+"
+        r"[A-Z][A-Za-z'`-]{1,}",
+    ]
+
+    return any(
+        re.search(pattern, author_part)
+        for pattern in author_patterns
+    )
+
+
+def _starts_like_reference_entry(ref):
+    if re.match(
+        r"^\s*(?:[-*â€¢]\s+|\[\d+\]|\(\d+\)|\d+[\.\)])",
+        ref,
+    ):
+        return True
+
+    return _has_reference_author_pattern(ref)
 
 
 def _normalize_pdf_artifacts(text):
@@ -322,6 +395,7 @@ def extract_reference(text):
             line,
             re.X
         )
+        is_new_ref = is_new_ref or _starts_like_reference_entry(line)
 
         if numbered_mode:
             is_new_ref = is_numbered_ref
@@ -363,6 +437,7 @@ def extract_reference(text):
                     line
                 )
             )
+            starts_new = starts_new or _starts_like_reference_entry(line)
 
             if starts_new and buf:
                 rebuilt.append(buf.strip())
