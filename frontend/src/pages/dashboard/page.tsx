@@ -199,9 +199,7 @@ export default function Page() {
     initFilters.jumlahKemunculan
   );
   const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
-
   const chips = buildChips(activeFilters);
-
   const paperCount = tableData.length;
 
   const sumOccurrencesFromRows = useMemo(() => {

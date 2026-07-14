@@ -1,5 +1,5 @@
 import type * as d3 from "d3";
-import type { ArticleRelationType } from "@/api/api";
+import type { ArticleRelationType, ReferenceMatch } from "@/api/api";
 
 export type GraphNode = d3.SimulationNodeDatum & {
   id: number;
@@ -17,6 +17,7 @@ export type GraphLink = d3.SimulationLinkDatum<GraphNode> & {
   target: number | string | GraphNode;
   weight: number;
   sharedReferences: string[];
+  sharedReferenceMatches: ReferenceMatch[];
   sharedKeywords: string[];
   sharedAuthors: string[];
   relationType?: ArticleRelationType | string | null;
@@ -34,6 +35,7 @@ export type GraphRelation = {
   node: GraphNode;
   weight: number;
   sharedReferences: string[];
+  sharedReferenceMatches: ReferenceMatch[];
   sharedKeywords: string[];
   sharedAuthors: string[];
   relationType?: ArticleRelationType | string | null;

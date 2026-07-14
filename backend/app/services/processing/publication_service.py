@@ -7,7 +7,6 @@ from app.models.publication_model import build_publication
 from app.services.extraction.article_service import extract_article
 from app.services.extraction.openalex_service import (
     fetch_openalex_enrichment,
-    fetch_openalex_references_by_doi,
 )
 from app.services.extraction.pdf_service import (
     download_pdf,
@@ -19,7 +18,7 @@ SOURCE_TABLE = "scholar_article_doi"
 TARGET_TABLE = "cleaned_papers_results"
 SOURCE_COLUMNS = "id,title,doi,url,pdf_url,authors"
 MIN_KEYWORDS_BEFORE_HTML_CHECK = 3
-MIN_REFERENCE_SCORE_BEFORE_ALTERNATE_CHECK = 75
+MIN_REFERENCE_SCORE_BEFORE_ALTERNATE_CHECK = 85
 
 NON_REFERENCE_PHRASES = (
     "abstract",
@@ -317,7 +316,6 @@ def save_publication(extraction_result):
 
 def _extract_article_fields(article):
     content = None
-    article_result = None
     declared_keywords = []
     attempted_pdf_urls = set()
     attempted_article_urls = set()
@@ -371,91 +369,167 @@ def _extract_article_fields(article):
         print(f"{label}: {url}")
         return extract_article(url, timeout=timeout)
 
-    if pdf_url:
-        content = try_pdf(
-            pdf_url,
-            "Processing PDF",
-            timeout=15,
-            max_duration=20,
+    def apply_candidate(candidate_content=None, candidate_keywords=None):
+        nonlocal declared_keywords
+
+        publication = build_publication(
+            article,
+            candidate_content or "",
+            declared_keywords=candidate_keywords or [],
         )
-        if not content and pdf_url in non_pdf_urls:
-            article_result = try_article(
-                pdf_url,
-                "Processing PDF URL as Article",
-                timeout=25,
+
+        if candidate_keywords:
+            declared_keywords = _merge_keywords(
+                declared_keywords,
+                candidate_keywords,
             )
-            if article_result:
-                declared_keywords = article_result.get("keywords") or []
-                content = article_result.get("content")
-
-    if not content and doi_url and str(article.get("doi") or "").lower().endswith(".pdf"):
-        content = try_pdf(
-            doi_url,
-            "Processing PDF via DOI",
-            timeout=15,
-            max_duration=20,
-        )
-        if not content and doi_url in non_pdf_urls:
-            article_result = try_article(
-                doi_url,
-                "Processing DOI PDF URL as Article",
-                timeout=20,
+            publication["keywords"] = _merge_keywords(
+                publication["keywords"],
+                candidate_keywords,
             )
-            if article_result:
-                declared_keywords = _merge_keywords(
-                    declared_keywords,
-                    article_result.get("keywords") or [],
-                )
-                content = article_result.get("content")
 
-    result = build_publication(
-        article,
-        content or "",
-        declared_keywords=declared_keywords,
-    )
+        return publication
 
-    if len(result["keywords"]) < MIN_KEYWORDS_BEFORE_HTML_CHECK and article_url:
+    result = apply_candidate()
+
+    if article_url:
         article_result = try_article(
             article_url,
-            "Processing Article Keywords",
+            "Processing Article HTML",
             timeout=25,
         )
         if article_result:
-            declared_keywords = article_result.get("keywords") or []
-            if not content:
-                content = article_result.get("content")
-            result = build_publication(
-                article,
-                content or article_result.get("content") or "",
-                declared_keywords=declared_keywords,
+            content = article_result.get("content") or content
+            article_publication = apply_candidate(
+                content,
+                article_result.get("keywords") or [],
             )
             result["keywords"] = _merge_keywords(
                 result["keywords"],
-                declared_keywords,
+                article_publication["keywords"],
             )
+            result["reference_list"] = _pick_better_references(
+                result["reference_list"],
+                article_publication["reference_list"],
+            )
+
     if (
-        len(result["keywords"]) < MIN_KEYWORDS_BEFORE_HTML_CHECK
+        (
+            len(result["keywords"]) < MIN_KEYWORDS_BEFORE_HTML_CHECK
+            or _needs_reference_enrichment(result["reference_list"])
+        )
         and doi_url
-        and article_result is None
     ):
         doi_result = try_article(
             doi_url,
-            "Processing DOI Keywords",
+            "Processing DOI HTML",
             timeout=20,
         )
         if doi_result:
-            declared_keywords = doi_result.get("keywords") or []
-            if not content:
-                content = doi_result.get("content")
-            result = build_publication(
-                article,
-                content or doi_result.get("content") or "",
-                declared_keywords=declared_keywords,
+            content = doi_result.get("content") or content
+            doi_publication = apply_candidate(
+                content,
+                doi_result.get("keywords") or [],
             )
             result["keywords"] = _merge_keywords(
                 result["keywords"],
-                declared_keywords,
+                doi_publication["keywords"],
             )
+            result["reference_list"] = _pick_better_references(
+                result["reference_list"],
+                doi_publication["reference_list"],
+            )
+
+    if (
+        (
+            len(result["keywords"]) < MIN_KEYWORDS_BEFORE_HTML_CHECK
+            or _needs_reference_enrichment(result["reference_list"])
+        )
+        and pdf_url
+    ):
+        pdf_content = try_pdf(
+            pdf_url,
+            "Processing PDF Full Text",
+            timeout=15,
+            max_duration=20,
+        )
+        if pdf_content:
+            content = pdf_content
+            pdf_publication = apply_candidate(pdf_content)
+            result["keywords"] = _merge_keywords(
+                result["keywords"],
+                pdf_publication["keywords"],
+            )
+            result["reference_list"] = _pick_better_references(
+                result["reference_list"],
+                pdf_publication["reference_list"],
+            )
+        elif pdf_url in non_pdf_urls:
+            pdf_article_result = try_article(
+                pdf_url,
+                "Processing PDF URL as HTML",
+                timeout=25,
+            )
+            if pdf_article_result:
+                content = pdf_article_result.get("content") or content
+                pdf_article_publication = apply_candidate(
+                    content,
+                    pdf_article_result.get("keywords") or [],
+                )
+                result["keywords"] = _merge_keywords(
+                    result["keywords"],
+                    pdf_article_publication["keywords"],
+                )
+                result["reference_list"] = _pick_better_references(
+                    result["reference_list"],
+                    pdf_article_publication["reference_list"],
+                )
+
+    if (
+        (
+            len(result["keywords"]) < MIN_KEYWORDS_BEFORE_HTML_CHECK
+            or _needs_reference_enrichment(result["reference_list"])
+        )
+        and doi_url
+        and str(article.get("doi") or "").lower().endswith(".pdf")
+    ):
+        doi_pdf_content = try_pdf(
+            doi_url,
+            "Processing DOI PDF Full Text",
+            timeout=15,
+            max_duration=20,
+        )
+        if doi_pdf_content:
+            content = doi_pdf_content
+            doi_pdf_publication = apply_candidate(doi_pdf_content)
+            result["keywords"] = _merge_keywords(
+                result["keywords"],
+                doi_pdf_publication["keywords"],
+            )
+            result["reference_list"] = _pick_better_references(
+                result["reference_list"],
+                doi_pdf_publication["reference_list"],
+            )
+        elif doi_url in non_pdf_urls:
+            doi_pdf_result = try_article(
+                doi_url,
+                "Processing DOI PDF URL as HTML",
+                timeout=20,
+            )
+            if doi_pdf_result:
+                content = doi_pdf_result.get("content") or content
+                doi_pdf_publication = apply_candidate(
+                    content,
+                    doi_pdf_result.get("keywords") or [],
+                )
+                result["keywords"] = _merge_keywords(
+                    result["keywords"],
+                    doi_pdf_publication["keywords"],
+                )
+                result["reference_list"] = _pick_better_references(
+                    result["reference_list"],
+                    doi_pdf_publication["reference_list"],
+                )
 
     location_enrichment = None
     if (
@@ -469,7 +543,7 @@ def _extract_article_fields(article):
         len(result["keywords"]) < MIN_KEYWORDS_BEFORE_HTML_CHECK
         or _needs_reference_enrichment(result["reference_list"])
     ):
-        max_alternates = 2
+        max_alternates = 4
         tried_alternates = 0
         for document_url in (
             location_enrichment or {}
@@ -546,20 +620,6 @@ def _extract_article_fields(article):
                 and not _needs_reference_enrichment(result["reference_list"])
             ):
                 break
-
-    if _needs_reference_enrichment(result["reference_list"]):
-        openalex_references = fetch_openalex_references_by_doi(article)
-        if openalex_references:
-            print(
-                "OpenAlex DOI references fallback "
-                f"source_id={article.get('id')} "
-                f"count={len(openalex_references)}",
-                flush=True,
-            )
-            result["reference_list"] = _pick_better_references(
-                result["reference_list"],
-                openalex_references,
-            )
 
     return result
 

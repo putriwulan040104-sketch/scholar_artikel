@@ -320,6 +320,7 @@ export default function CitationGraphPage() {
         target: Number(e.target),
         weight: Number(e.weight || 1),
         sharedReferences: e.details?.shared_references || [],
+        sharedReferenceMatches: e.details?.shared_reference_matches || [],
         sharedKeywords: e.details?.shared_keywords || [],
         sharedAuthors: e.details?.shared_authors || [],
         relationType: e.relation_type || relationType,
@@ -333,7 +334,7 @@ export default function CitationGraphPage() {
       );
 
     return { gNodes, gLinks, degreeById, inDegreeById, outDegreeById };
-  }, [displayNodes, displayEdges]);
+  }, [displayNodes, displayEdges, relationType]);
 
   const nodeById = useMemo(
     () => new Map(graphModel.gNodes.map((node) => [node.id, node])),
@@ -398,6 +399,7 @@ export default function CitationGraphPage() {
           node: nodeById.get(otherId),
           weight: link.weight,
           sharedReferences: link.sharedReferences,
+          sharedReferenceMatches: link.sharedReferenceMatches,
           sharedKeywords: link.sharedKeywords,
           sharedAuthors: link.sharedAuthors,
           relationType: link.relationType || null,
@@ -410,6 +412,7 @@ export default function CitationGraphPage() {
           node: GraphNode;
           weight: number;
           sharedReferences: string[];
+          sharedReferenceMatches: GraphLink["sharedReferenceMatches"];
           sharedKeywords: string[];
           sharedAuthors: string[];
           relationType: string | null;

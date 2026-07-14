@@ -48,7 +48,13 @@ VISIBLE_KEYWORD_STOP_PATTERN = re.compile(
     r"close\b|back to top|search\b|journals\b|articles\b|data\b|api\b|"
     r"journal csv|oai-pmh|widgets\b|public data dump|openurl|xml\b|"
     r"metadata help|preservation\b|about\b|"
-    r"volume\b|issue\b|pages?\b|doi\b"
+    r"volume\b|issue\b|pages?\b|doi\b|uri\b|permalink\b|"
+    r"ucl classification\b|ucl\b|ucl beams\b|"
+    r"provost\b|provost and vice provost offices\b|"
+    r"faculty\b|dept\b|department\b|"
+    r"downloads?\b|downloads since deposit\b|download activity\b|"
+    r"downloads by country\b|export as\b|archive staff only\b|"
+    r"view item\b|disclaimer\b|freedom of information\b"
     r")",
     re.I,
 )
@@ -200,6 +206,12 @@ def _clean_visible_keyword(value):
     lower_keyword = keyword.lower()
 
     if not keyword:
+        return None
+    if len(keyword) < 2:
+        return None
+    if not re.search(r"[A-Za-z0-9]", keyword):
+        return None
+    if re.fullmatch(r"\d+", keyword):
         return None
     if len(keyword) > 80:
         return None
