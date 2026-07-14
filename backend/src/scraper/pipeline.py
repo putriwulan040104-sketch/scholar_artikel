@@ -200,7 +200,6 @@ def process_filtered_articles_for_doi_pdf(
             status = row.get("scrape_status")
         else:
             doi_article = None
-
             log_process_status("DOI Resolution", len(articles))
             doi_article = fetch_doi_from_doi_org(row.get("url"))
 
@@ -356,7 +355,6 @@ def process_filtered_articles_for_doi_pdf(
 
 
 def save_articles_to_supabase(articles, progress_callback=None):
-    """Menyimpan artikel final ke Supabase setelah seluruh filtering selesai."""
     success = 0
     total = len(articles)
     for index, row in enumerate(articles, start=1):
