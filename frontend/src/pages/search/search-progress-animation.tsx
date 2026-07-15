@@ -3,8 +3,8 @@ import { useEffect, useRef, useState } from "react";
 /* =========================================================================
  * TAHAPAN TERJADWAL (nama ramah-pengguna, durasi realistis per tahap)
  * -------------------------------------------------------------------------
- * 8 tahap tetap dengan rentang durasi acak (dalam ms). Tahap 1-7 berjalan
- * murni berdasarkan waktu (tidak menunggu backend). Tahap terakhir
+ * 10 tahap tetap dengan rentang durasi acak (dalam ms). Tahap sebelum
+ * terakhir berjalan murni berdasarkan waktu (tidak menunggu backend). Tahap terakhir
  * ("Menyusun Hasil Akhir") punya durasi MINIMUM saja -- ia hanya boleh
  * benar-benar "selesai" kalau backend sudah mengirim status "complete".
  * Selama menunggu backend, progress bergerak sangat pelan (mendekati batas
@@ -15,7 +15,8 @@ import { useEffect, useRef, useState } from "react";
  *   0–20%   -> cepat
  *   20–60%  -> normal, dengan jeda singkat di setiap pergantian tahap
  *   60–85%  -> melambat
- *   85–95%  -> sangat lambat (menunggu backend)
+ *   85–90%  -> menyusun jaringan relasi
+ *   90–95%  -> sangat lambat (menunggu backend)
  *   100%    -> hanya saat backend benar-benar mengirim status "complete"
  * ====================================================================== */
 
@@ -31,7 +32,7 @@ export interface ScriptedStageDef {
   pause?: boolean;
 }
 
-// Total waktu skrip: 60 detik, dibagi ke 8 tahap secara proporsional
+// Total waktu skrip: 60 detik, dibagi ke 10 tahap secara proporsional
 // mengikuti target band persentase di bawah (lihat komentar atas file).
 // Tiap sesi durasinya diacak +-15% dari basis ini supaya terasa alami
 // dan tidak identik setiap pencarian.
@@ -43,11 +44,13 @@ function jitterRange(baseMs: number, spread = 0.15): [number, number] {
 
 const [startMin, startMax] = jitterRange(0.08 * SCRIPTED_TOTAL_MS);
 const [datasetMin, datasetMax] = jitterRange(0.12 * SCRIPTED_TOTAL_MS);
-const [cleaningMin, cleaningMax] = jitterRange(0.14 * SCRIPTED_TOTAL_MS);
-const [keywordMin, keywordMax] = jitterRange(0.14 * SCRIPTED_TOTAL_MS);
-const [patternMin, patternMax] = jitterRange(0.12 * SCRIPTED_TOTAL_MS);
-const [matchingMin, matchingMax] = jitterRange(0.15 * SCRIPTED_TOTAL_MS);
-const [filteringMin, filteringMax] = jitterRange(0.1 * SCRIPTED_TOTAL_MS);
+const [articleInfoMin, articleInfoMax] = jitterRange(0.18 * SCRIPTED_TOTAL_MS);
+const [cleaningMin, cleaningMax] = jitterRange(0.09 * SCRIPTED_TOTAL_MS);
+const [keywordMin, keywordMax] = jitterRange(0.09 * SCRIPTED_TOTAL_MS);
+const [patternMin, patternMax] = jitterRange(0.07 * SCRIPTED_TOTAL_MS);
+const [matchingMin, matchingMax] = jitterRange(0.12 * SCRIPTED_TOTAL_MS);
+const [filteringMin, filteringMax] = jitterRange(0.07 * SCRIPTED_TOTAL_MS);
+const [relationMin, relationMax] = jitterRange(0.08 * SCRIPTED_TOTAL_MS);
 const [finalMin, finalMax] = jitterRange(0.1 * SCRIPTED_TOTAL_MS);
 
 export const SCRIPTED_STAGE_DEFS: ScriptedStageDef[] = [
@@ -70,13 +73,23 @@ export const SCRIPTED_STAGE_DEFS: ScriptedStageDef[] = [
     percentEnd: 20,
   },
   {
+    key: "article-info",
+    title: "Membaca Informasi Artikel",
+    description: "Mengenali topik utama dan rujukan penting dari artikel.",
+    minMs: articleInfoMin,
+    maxMs: articleInfoMax,
+    percentStart: 20,
+    percentEnd: 40,
+    pause: true,
+  },
+  {
     key: "cleaning",
     title: "Merapikan Kata Kunci",
     description: "Membersihkan dan menyusun kata kunci agar lebih akurat.",
     minMs: cleaningMin,
     maxMs: cleaningMax,
-    percentStart: 20,
-    percentEnd: 34,
+    percentStart: 40,
+    percentEnd: 50,
     pause: true,
   },
   {
@@ -85,8 +98,8 @@ export const SCRIPTED_STAGE_DEFS: ScriptedStageDef[] = [
     description: "Menentukan seberapa penting tiap kata dalam artikel.",
     minMs: keywordMin,
     maxMs: keywordMax,
-    percentStart: 34,
-    percentEnd: 48,
+    percentStart: 50,
+    percentEnd: 60,
     pause: true,
   },
   {
@@ -95,9 +108,8 @@ export const SCRIPTED_STAGE_DEFS: ScriptedStageDef[] = [
     description: "Membentuk pola untuk membandingkan tiap artikel.",
     minMs: patternMin,
     maxMs: patternMax,
-    percentStart: 48,
-    percentEnd: 60,
-    pause: true,
+    percentStart: 60,
+    percentEnd: 68,
   },
   {
     key: "matching",
@@ -105,8 +117,8 @@ export const SCRIPTED_STAGE_DEFS: ScriptedStageDef[] = [
     description: "Membandingkan kemiripan tiap artikel dengan kata kunci Anda.",
     minMs: matchingMin,
     maxMs: matchingMax,
-    percentStart: 60,
-    percentEnd: 75,
+    percentStart: 68,
+    percentEnd: 78,
   },
   {
     key: "filtering",
@@ -114,8 +126,17 @@ export const SCRIPTED_STAGE_DEFS: ScriptedStageDef[] = [
     description: "Menerapkan filter dan memvalidasi hasil pencarian.",
     minMs: filteringMin,
     maxMs: filteringMax,
-    percentStart: 75,
+    percentStart: 78,
     percentEnd: 85,
+  },
+  {
+    key: "relation-network",
+    title: "Menyusun Jaringan Relasi",
+    description: "Menghubungkan artikel berdasarkan kesamaan data.",
+    minMs: relationMin,
+    maxMs: relationMax,
+    percentStart: 85,
+    percentEnd: 90,
   },
   {
     key: "final",
@@ -123,7 +144,7 @@ export const SCRIPTED_STAGE_DEFS: ScriptedStageDef[] = [
     description: "Mengurutkan dan menyiapkan hasil terbaik untuk Anda.",
     minMs: finalMin,
     maxMs: finalMax,
-    percentStart: 85,
+    percentStart: 90,
     percentEnd: 95,
   },
 ];
@@ -142,7 +163,7 @@ interface InternalStageState {
   status: ScriptedStageStatus;
   startAt: number | null;
   endAt: number | null;
-  durationMs: number; // durasi acak final (tahap 1-7); tahap 8 = minimum saja
+  durationMs: number; // durasi acak final; tahap terakhir = durasi minimum saja
   pauseMs: number;
 }
 
@@ -304,7 +325,7 @@ export function useScriptedStages(
       const span = def.percentEnd - def.percentStart;
 
       if (runningIndex === LAST_INDEX) {
-        // Band 85-95%: naik cepat sampai durasi minimum, lalu merambat pelan
+        // Band terakhir: naik cepat sampai durasi minimum, lalu merambat pelan
         // secara asimtotik sambil menunggu backend, tanpa pernah menyentuh 95%.
         const rampMs = st.durationMs;
         if (elapsedInStage <= rampMs) {
