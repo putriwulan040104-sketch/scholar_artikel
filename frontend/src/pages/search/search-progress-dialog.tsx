@@ -11,7 +11,6 @@ import {
   GitCompare,
   Layers,
   Loader2,
-  Network,
   Search,
   SearchX,
   Sparkles,
@@ -37,18 +36,7 @@ import {
 } from "./search-progress-animation";
 
 // Ikon untuk tiap tahap (urutan mengikuti SCRIPTED_STAGE_DEFS).
-const stageIcons = [
-  Search,
-  Database,
-  FileText,
-  Sparkles,
-  Layers,
-  GitCompare,
-  GitCompare,
-  Filter,
-  Network,
-  ClipboardCheck,
-];
+const stageIcons = [Search, Database, FileText, Sparkles, Layers, GitCompare, Filter, ClipboardCheck];
 
 // Catatan kecil generik yang berputar selama sebuah tahap berjalan, agar
 // terasa lebih "hidup" & detail. Tidak mengklaim proses spesifik apa pun.
@@ -458,7 +446,7 @@ export function SearchProgressDialog({
       setShowRequestForm(false);
       return;
     }
-    // Untuk hasil "found": tunggu seluruh 10 tahap selesai + backend complete.
+    // Untuk hasil "found": tunggu seluruh 8 tahap selesai + backend complete.
     // Untuk hasil "empty": animasi dihentikan lebih awal tepat di tahap
     // scraping ("dataset"), lalu langsung tampilkan popup "tidak ditemukan".
     const readyToReveal = isFinished || isEmptyHalted;
