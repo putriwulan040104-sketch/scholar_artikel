@@ -117,7 +117,6 @@ def _find_scholar_results(driver):
 
 
 def _snapshot_scholar_results(results):
-    """Mengambil snapshot metadata dari DOM Google Scholar agar aman dari stale element."""
     result_data = []
     for result in results:
         try:

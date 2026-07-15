@@ -197,7 +197,6 @@ def select_pdf_url_for_article(doi, scholar_pdf_url):
 
     if doi:
         official_url, official_pdf_url = find_official_pdf_from_doi(doi)
-
     selected_pdf_url = official_pdf_url or scholar_pdf_url
     if doi:
         log_doi_pdf_resolution(
