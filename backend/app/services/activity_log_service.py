@@ -13,6 +13,18 @@ SENSITIVE_KEYS = {
     "authorization",
 }
 
+HIDDEN_ACTIONS = {"login", "logout", "register"}
+
+ACTION_SEARCH_TEXT = {
+    "update_profile": "update profile ubah profil",
+    "create_user": "create user tambah pengguna",
+    "update_user": "update user ubah pengguna",
+    "delete_user": "delete user hapus pengguna",
+    "update_request_status": "update request status ubah status request",
+    "update_publication": "update publication ubah publikasi",
+    "delete_publication": "delete publication hapus publikasi",
+}
+
 def _sanitize_value(value, key=""):
     normalized_key = str(key or "").strip().lower()
     if normalized_key in SENSITIVE_KEYS:
@@ -65,6 +77,9 @@ def log_activity(
     status="success",
     user_name=None,
 ):
+    if str(action) in HIDDEN_ACTIONS:
+        return False
+
     actor = actor or {}
     payload = {
         "user_id": actor.get("id"),
@@ -109,6 +124,23 @@ def _normalize_log(row):
         "createdAt": row.get("created_at"),
     }
 
+def _matching_actions(term):
+    normalized_term = re.sub(r"\s+", " ", str(term or "").lower()).strip()
+    if not normalized_term:
+        return []
+
+    words = normalized_term.split()
+    matches = []
+    for action, search_text in ACTION_SEARCH_TEXT.items():
+        if action in HIDDEN_ACTIONS:
+            continue
+        normalized_search_text = search_text.lower()
+        if normalized_term in normalized_search_text or all(
+            word in normalized_search_text for word in words
+        ):
+            matches.append(action)
+    return matches
+
 def get_activity_logs(
     *,
     page=1,
@@ -134,8 +166,19 @@ def get_activity_logs(
             count="exact",
         )
     )
+    for hidden_action in HIDDEN_ACTIONS:
+        query = query.neq("action", hidden_action)
 
     if action and action != "all":
+        if action in HIDDEN_ACTIONS:
+            return {
+                "status": "success",
+                "data": [],
+                "total": 0,
+                "page": page,
+                "pageSize": page_size,
+                "totalPages": 1,
+            }
         query = query.eq("action", action)
     if entity_type and entity_type != "all":
         query = query.eq("entity_type", entity_type)
@@ -148,11 +191,17 @@ def get_activity_logs(
     if search:
         term = re.sub(r"[^a-zA-Z0-9@._\-\s]", " ", str(search)).strip()
         if term:
-            query = query.or_(
-                f"user_name.ilike.%{term}%,"
-                f"description.ilike.%{term}%,"
-                f"entity_id.ilike.%{term}%"
+            search_clauses = [
+                f"user_name.ilike.%{term}%",
+                f"description.ilike.%{term}%",
+                f"entity_id.ilike.%{term}%",
+                f"action.ilike.%{term}%",
+            ]
+            search_clauses.extend(
+                f"action.eq.{matched_action}"
+                for matched_action in _matching_actions(term)
             )
+            query = query.or_(",".join(search_clauses))
 
     response = query.order("created_at", desc=True).range(start, end).execute()
     rows = [_normalize_log(row) for row in (response.data or [])]

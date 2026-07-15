@@ -13,6 +13,7 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
@@ -21,6 +22,29 @@ import { Input } from "./ui/input";
 import { useState } from "react";
 import { login } from "@/api/api";
 import { PasswordInput } from "@/components/password-input";
+import { z } from "zod";
+
+const loginSchema = z.object({
+  password: z
+    .string()
+    .min(1, "Password wajib diisi")
+    .min(8, "Password minimal 8 karakter")
+    .regex(/[A-Za-z]/, "Password harus berisi huruf")
+    .regex(/[0-9]/, "Password harus berisi angka"),
+});
+
+type LoginFormErrors = Partial<Record<keyof z.infer<typeof loginSchema>, string>>;
+
+function getLoginErrors(error: z.ZodError<z.infer<typeof loginSchema>>) {
+  return error.issues.reduce<LoginFormErrors>((errors, issue) => {
+    const field = issue.path[0] as keyof LoginFormErrors | undefined;
+    if (field && !errors[field]) {
+      errors[field] = issue.message;
+    }
+
+    return errors;
+  }, {});
+}
 
 export function LoginForm({
   className,
@@ -29,15 +53,24 @@ export function LoginForm({
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<LoginFormErrors>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    const parsed = loginSchema.safeParse({ password });
+    if (!parsed.success) {
+      setFieldErrors(getLoginErrors(parsed.error));
+      return;
+    }
+
+    setFieldErrors({});
     setLoading(true);
 
-    const res = await login(email, password);
+    const res = await login(email, parsed.data.password);
     setLoading(false);
 
     if (res.status === "error") {
@@ -72,18 +105,28 @@ export function LoginForm({
                   required
                 />
               </Field>
-              <Field>
+              <Field data-invalid={!!fieldErrors.password}>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
                 <PasswordInput
                   id="password"
                   placeholder="password"
                   value={password}
+                  aria-invalid={!!fieldErrors.password}
+                  aria-describedby={
+                    fieldErrors.password ? "login-password-error" : undefined
+                  }
                   onChange={(e) => {
                     setPassword(e.target.value);
                     setError("");
+                    setFieldErrors((current) => ({
+                      ...current,
+                      password: undefined,
+                    }));
                   }}
-                  required
                 />
+                <FieldError id="login-password-error">
+                  {fieldErrors.password}
+                </FieldError>
                 <div className="flex items-center">
                   <a
                     href="#"

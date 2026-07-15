@@ -30,14 +30,6 @@ def register_user(name, email, password):
     try:
         existing = supabase.table("users").select("id").eq("email", email).execute()
         if existing.data:
-            log_activity(
-                action="register",
-                entity_type="user",
-                description=f"Registrasi gagal untuk {email}: email sudah terdaftar.",
-                new_data={"name": name, "email": email},
-                status="failed",
-                user_name=email,
-            )
             return {
                 "status": "error",
                 "message": "Email sudah terdaftar"
@@ -71,14 +63,6 @@ def register_user(name, email, password):
                 "message": "Gagal mengambil data user setelah register"
             }
         normalized_user = _user_payload(user)
-        log_activity(
-            actor=user,
-            action="register",
-            entity_type="user",
-            entity_id=user.get("id"),
-            description=f"Akun {user.get('name') or email} berhasil didaftarkan.",
-            new_data=normalized_user,
-        )
         return {
             "status": "success",
             "data": normalized_user
@@ -90,14 +74,6 @@ def register_user(name, email, password):
             if _is_duplicate_name_constraint(e)
             else str(e)
         )
-        log_activity(
-            action="register",
-            entity_type="user",
-            description=f"Registrasi gagal untuk {email}.",
-            new_data={"name": name, "email": email},
-            status="failed",
-            user_name=email,
-        )
         return {
             "status": "error",
             "message": message
@@ -108,13 +84,6 @@ def login_user(email, password):
         response = supabase.table("users").select("*").eq("email", email).execute()
 
         if not response.data:
-            log_activity(
-                action="login",
-                entity_type="auth",
-                description=f"Login gagal untuk {email}.",
-                status="failed",
-                user_name=email,
-            )
             return {
                 "status": "error",
                 "message": "Email atau password salah"
@@ -124,14 +93,6 @@ def login_user(email, password):
 
         is_valid = verify_password(password, user["password"])
         if not is_valid:
-            log_activity(
-                actor=user,
-                action="login",
-                entity_type="auth",
-                entity_id=user.get("id"),
-                description=f"Login gagal untuk {email}.",
-                status="failed",
-            )
             return {
                 "status": "error",
                 "message": "Email atau password salah"
@@ -143,26 +104,12 @@ def login_user(email, password):
             "exp": datetime.datetime.utcnow() + datetime.timedelta(days=7)
         }, SECRET_KEY, algorithm="HS256")
 
-        log_activity(
-            actor=user,
-            action="login",
-            entity_type="auth",
-            entity_id=user.get("id"),
-            description=f"{user.get('name') or email} berhasil login.",
-        )
         return {
             "status": "success",
             "token": token,
             "data": _user_payload(user)
         }
     except Exception as e:
-        log_activity(
-            action="login",
-            entity_type="auth",
-            description=f"Login gagal untuk {email}.",
-            status="failed",
-            user_name=email,
-        )
         return {
             "status": "error",
             "message": str(e)
@@ -333,22 +280,6 @@ def logout_user(token):
 
     user_id = payload.get("user_id")
     try:
-        response = (
-            supabase
-            .table("users")
-            .select("id, name, email, role")
-            .eq("id", user_id)
-            .single()
-            .execute()
-        )
-        user = response.data if response else {"id": user_id}
-        log_activity(
-            actor=user,
-            action="logout",
-            entity_type="auth",
-            entity_id=user_id,
-            description=f"{user.get('name') or user_id} logout.",
-        )
         return {
             "status": "success",
             "message": "Logout berhasil",

@@ -19,15 +19,39 @@ interface PublicationDialogProps {
   onSubmit: (payload?: PublicationMutationPayload) => void;
 }
 
-function joinValues(values?: string[]) {
-  return Array.isArray(values) ? values.join(", ") : "";
+function parseListText(value: string) {
+  const trimmedValue = value.trim();
+  if (!trimmedValue) return [];
+
+  if (trimmedValue.startsWith("[") && trimmedValue.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(trimmedValue);
+      if (Array.isArray(parsed)) {
+        return parsed
+          .map((item) => String(item).trim())
+          .filter(Boolean);
+      }
+    } catch {
+      // Fall back to comma splitting for manually edited values.
+    }
+  }
+
+  return trimmedValue
+    .split(",")
+    .map((item) => item.trim().replace(/^["']|["']$/g, ""))
+    .filter(Boolean);
+}
+
+function joinValues(values?: string[] | string | null) {
+  if (Array.isArray(values)) {
+    return values.flatMap((item) => parseListText(String(item))).join(", ");
+  }
+
+  return parseListText(String(values || "")).join(", ");
 }
 
 function splitValues(value: string) {
-  return value
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
+  return parseListText(value);
 }
 
 function joinReferenceValues(values?: string[]) {
@@ -128,6 +152,7 @@ export function PublicationDialog({
                 id="publication-title"
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
+                required
               />
             </div>
 
@@ -147,6 +172,7 @@ export function PublicationDialog({
                   type="number"
                   value={year}
                   onChange={(event) => setYear(event.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -158,6 +184,7 @@ export function PublicationDialog({
                 value={authors}
                 onChange={(event) => setAuthors(event.target.value)}
                 placeholder="Pisahkan penulis dengan koma"
+                required
               />
             </div>
 
