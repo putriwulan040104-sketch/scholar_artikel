@@ -1,3 +1,5 @@
+import json
+
 from app.db import supabase
 from app.services.activity_log_service import log_activity
 from app.services.doi_lookup_service import DOI_TABLE, load_doi_by_publication_id
@@ -12,10 +14,28 @@ PUBLICATION_COLUMNS = (
 
 def _as_list(value):
     if isinstance(value, list):
-        return value
+        return [
+            str(item).strip()
+            for item in value
+            if str(item).strip()
+        ]
     if value in (None, ""):
         return []
-    return [value]
+
+    text = str(value).strip()
+    if text.startswith("[") and text.endswith("]"):
+        try:
+            parsed = json.loads(text)
+            if isinstance(parsed, list):
+                return [
+                    str(item).strip()
+                    for item in parsed
+                    if str(item).strip()
+                ]
+        except (TypeError, ValueError):
+            pass
+
+    return [text]
 
 def _normalize_publication(publication):
     references = _as_list(publication.get("reference_list"))

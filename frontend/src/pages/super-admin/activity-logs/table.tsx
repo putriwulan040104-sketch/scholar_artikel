@@ -28,9 +28,6 @@ import {
 import { Ellipsis, Eye, Search } from "lucide-react";
 
 export const ACTION_OPTIONS = [
-  ["login", "Login"],
-  ["logout", "Logout"],
-  ["register", "Registrasi"],
   ["update_profile", "Ubah Profil"],
   ["create_user", "Tambah Pengguna"],
   ["update_user", "Ubah Pengguna"],
@@ -43,7 +40,6 @@ export const ACTION_OPTIONS = [
 const ACTION_LABELS = Object.fromEntries(ACTION_OPTIONS);
 
 const ENTITY_OPTIONS = [
-  ["auth", "Autentikasi"],
   ["user", "Pengguna"],
   ["publication", "Publikasi"],
   ["article_request", "Request Artikel"],
@@ -155,7 +151,7 @@ export default function ActivityLogTable({
             <Input
               value={query}
               onChange={(event) => onQueryChange(event.target.value)}
-              placeholder="Cari role, deskripsi..."
+              placeholder="Cari role, aktivitas, deskripsi..."
               className="pl-9"
             />
           </div>

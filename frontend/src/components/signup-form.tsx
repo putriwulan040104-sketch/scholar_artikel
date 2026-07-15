@@ -10,6 +10,7 @@ import {
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
@@ -18,6 +19,38 @@ import { Link, useNavigate } from "react-router-dom";
 import { register } from "@/api/api";
 import { useState } from "react";
 import { PasswordInput } from "@/components/password-input";
+import { z } from "zod";
+
+const passwordMismatchMessage = "Konfirmasi password tidak sama";
+
+const signupSchema = z
+  .object({
+    password: z
+      .string()
+      .min(1, "Password wajib diisi")
+      .min(8, "Password minimal 8 karakter")
+      .regex(/[A-Za-z]/, "Password harus berisi huruf")
+      .regex(/[0-9]/, "Password harus berisi angka"),
+    confirmPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: passwordMismatchMessage,
+    path: ["confirmPassword"],
+  });
+
+type SignupFormValues = z.infer<typeof signupSchema>;
+type SignupFormErrors = Partial<Record<keyof SignupFormValues, string>>;
+
+function getSignupErrors(error: z.ZodError<SignupFormValues>) {
+  return error.issues.reduce<SignupFormErrors>((errors, issue) => {
+    const field = issue.path[0] as keyof SignupFormErrors | undefined;
+    if (field && !errors[field]) {
+      errors[field] = issue.message;
+    }
+
+    return errors;
+  }, {});
+}
 
 export function SignupForm({
   className,
@@ -27,15 +60,33 @@ export function SignupForm({
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<SignupFormErrors>({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    const parsed = signupSchema.safeParse({
+      password,
+      confirmPassword,
+    });
+
+    if (!parsed.success) {
+      setFieldErrors(getSignupErrors(parsed.error));
+      return;
+    }
+
+    setFieldErrors({});
     setLoading(true);
 
-    const res = await register(name, email, password);
+    const res = await register(
+      name,
+      email,
+      parsed.data.password,
+    );
     setLoading(false);
 
     if (res.status === "error") {
@@ -65,7 +116,10 @@ export function SignupForm({
                   type="text"
                   placeholder="Nama lengkap"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setError("");
+                  }}
                   required
                 />
               </Field>
@@ -76,26 +130,79 @@ export function SignupForm({
                   type="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setError("");
+                  }}
                   required
                 />
               </Field>
               <Field>
                 <Field className="grid grid-cols-2 gap-4">
-                  <Field>
+                  <Field data-invalid={!!fieldErrors.password}>
                     <FieldLabel htmlFor="password">Password</FieldLabel>
                     <PasswordInput
                       id="password"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
+                      aria-invalid={!!fieldErrors.password}
+                      aria-describedby={
+                        fieldErrors.password
+                          ? "signup-password-error"
+                          : undefined
+                      }
+                      onChange={(e) => {
+                        const nextPassword = e.target.value;
+
+                        setPassword(nextPassword);
+                        setError("");
+                        setFieldErrors((current) => ({
+                          ...current,
+                          password: undefined,
+                          confirmPassword:
+                            confirmPassword && nextPassword !== confirmPassword
+                              ? passwordMismatchMessage
+                              : current.confirmPassword ===
+                                  passwordMismatchMessage
+                              ? undefined
+                              : current.confirmPassword,
+                        }));
+                      }}
                     />
+                    <FieldError id="signup-password-error">
+                      {fieldErrors.password}
+                    </FieldError>
                   </Field>
-                  <Field>
+                  <Field data-invalid={!!fieldErrors.confirmPassword}>
                     <FieldLabel htmlFor="confirm-password">
                       Konfirmasi Password
                     </FieldLabel>
-                    <PasswordInput id="confirm-password" required />
+                    <PasswordInput
+                      id="confirm-password"
+                      value={confirmPassword}
+                      aria-invalid={!!fieldErrors.confirmPassword}
+                      aria-describedby={
+                        fieldErrors.confirmPassword
+                          ? "signup-confirm-password-error"
+                          : undefined
+                      }
+                      onChange={(e) => {
+                        const nextConfirmPassword = e.target.value;
+
+                        setConfirmPassword(nextConfirmPassword);
+                        setError("");
+                        setFieldErrors((current) => ({
+                          ...current,
+                          confirmPassword:
+                            nextConfirmPassword &&
+                            password !== nextConfirmPassword
+                              ? passwordMismatchMessage
+                              : undefined,
+                        }));
+                      }}
+                    />
+                    <FieldError id="signup-confirm-password-error">
+                      {fieldErrors.confirmPassword}
+                    </FieldError>
                   </Field>
                 </Field>
               </Field>

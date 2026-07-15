@@ -1,0 +1,28 @@
+<svg width="512" height="360" viewBox="0 0 512 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="paperciLogoGradient" x1="40" y1="42" x2="474" y2="303" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="0.5" stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <filter id="logoSoftShadow" x="-10%" y="-10%" width="120%" height="130%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="13" flood-color="#1E293B" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#logoSoftShadow)" stroke="url(#paperciLogoGradient)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M52 296V112C52 72 84 44 124 44H196C242 44 276 78 276 123C276 169 241 203 196 203H111V296"/>
+    <path d="M111 203V122C111 98 130 80 154 80H190C219 80 239 100 239 126C239 153 219 174 190 174H154"/>
+    <path d="M276 123C293 76 336 49 389 52C419 54 446 67 466 88"/>
+    <path d="M420 94C398 76 365 75 340 92C308 114 297 159 315 193C337 232 391 244 428 213"/>
+    <path d="M428 213C449 193 461 166 461 137"/>
+    <path d="M429 220L478 270"/>
+  </g>
+
+  <g fill="url(#paperciLogoGradient)">
+    <circle cx="52" cy="296" r="25"/>
+    <circle cx="466" cy="88" r="25"/>
+    <circle cx="461" cy="137" r="25"/>
+    <circle cx="478" cy="270" r="25"/>
+  </g>
+</svg>
