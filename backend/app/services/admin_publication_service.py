@@ -9,7 +9,7 @@ from app.services.user_service import _validate_super_admin
 PUBLICATIONS_TABLE = "cleaned_papers_results"
 PUBLICATION_COLUMNS = (
     "id,url,pdf_url,title,authors,keywords,reference_list,"
-    "source,category,year"
+    "source,category,year,updated_at"
 )
 
 def _as_list(value):
@@ -66,7 +66,7 @@ def _normalize_publication(publication):
         "year": publication.get("year"),
         "category": publication.get("category"),
         "extractionStatus": extraction_status,
-        "createdAt": publication.get("created_at"),
+        "updatedAt": publication.get("updated_at") or publication.get("updated_At"),
     }
 
 # disimpan ke log aktivitas

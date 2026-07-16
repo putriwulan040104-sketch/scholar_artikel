@@ -4,6 +4,53 @@ from app.utils.cleaner import (
     lowercase_text
 )
 
+
+def _starts_like_reference(ref):
+    ref = re.sub(r"\s+", " ", str(ref or "")).strip()
+    if len(ref) < 20:
+        return False
+
+    if re.match(r"^(?:[-*•]\s+|\[\d+\]|\(\d+\)|\d{1,3}[\.)]\s+)", ref):
+        return True
+
+    has_year = bool(re.search(r"\b(?:19|20)\d{2}[a-z]?\b", ref))
+    author_part = ref[:180]
+    if has_year:
+        year_match = re.search(r"\b(?:19|20)\d{2}[a-z]?\b", ref)
+        author_part = ref[:year_match.start()] if year_match else author_part
+
+    author_part = re.sub(
+        r"^\s*(?:[-*•]\s+|\[\d+\]|\(\d+\)|\d{1,3}[\.)]\s*)",
+        "",
+        author_part,
+    ).strip(" ,.;:")
+
+    author_patterns = [
+        r"^[A-Z][A-Za-z'`-]{1,},\s*(?:[A-Z]\.?\s*){1,5}",
+        r"^(?:[A-Z]\.?\s*){1,5}\s*[A-Z][A-Za-z'`-]{1,}\s*,",
+        r"^[A-Z][A-Za-z'`-]{1,}\s+et\s+al\.?",
+        r"^[A-Z][A-Za-z'`-]{1,}\s+(?:and|&)\s+[A-Z][A-Za-z'`-]{1,}",
+    ]
+    return has_year and any(re.search(pattern, author_part) for pattern in author_patterns)
+
+
+def _split_joined_references(ref):
+    parts = re.split(r"\s+-\s+", str(ref or ""))
+    if len(parts) <= 1:
+        return [ref]
+
+    rebuilt = []
+    current = parts[0]
+    for part in parts[1:]:
+        if _starts_like_reference(part):
+            rebuilt.append(current)
+            current = part
+        else:
+            current = f"{current} - {part}"
+
+    rebuilt.append(current)
+    return rebuilt
+
 # NORMALISASI KEYWORDS
 def normalize_keywords(keywords):
     if not keywords:
@@ -29,15 +76,7 @@ def normalize_reference(reference):
 
     expanded = []
     for ref in reference:
-        ref = str(ref)
-        parts = re.split(
-            r"\s+-\s+(?=(?:[A-Z0-9\"']|COVID-19))",
-            ref,
-        )
-        if len(parts) > 1:
-            expanded.extend(parts)
-        else:
-            expanded.append(ref)
+        expanded.extend(_split_joined_references(ref))
 
     frontiers_expanded = []
     for ref in expanded:

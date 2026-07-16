@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { RefreshCw } from "lucide-react";
 import {
   createUser,
@@ -9,6 +10,14 @@ import {
 } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { PaginationControls } from "@/components/ui/pagination-controls";
 import {
   UserCrudDialog,
@@ -163,6 +172,20 @@ export default function SuperAdminUsersPage() {
 
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-4 px-2 py-3 sm:gap-6 sm:px-4 sm:py-4 lg:px-6">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link to="/super-admin/dashboard">Dashboard Super Admin</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Pengguna</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="flex flex-col gap-2">
         <div className="flex justify-stretch gap-2 sm:justify-end">
           <Button onClick={loadUsers} disabled={loading} className="w-full sm:w-fit">

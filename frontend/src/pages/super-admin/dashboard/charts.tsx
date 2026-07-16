@@ -1,5 +1,5 @@
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, XAxis } from "recharts";
-import type { ArticleRequest, ArticleRequestStatus } from "@/api/api";
+import type { ManagedPublication, PublicationExtractionStatus } from "@/api/api";
 import {
   Card,
   CardContent,
@@ -16,40 +16,39 @@ import {
 
 const monthChartConfig = {
   total: {
-    label: "Jumlah Request: ",
+    label: "Jumlah Publikasi: ",
     color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
-const statusChartConfig = {
+const qualityChartConfig = {
   total: {
-    label: "Jumlah Request: ",
+    label: "Jumlah Publikasi: ",
     color: "var(--primary)",
   },
 } satisfies ChartConfig;
 
-const STATUS_ITEMS: {
-  status: ArticleRequestStatus;
+const QUALITY_ITEMS: {
+  status: PublicationExtractionStatus;
   label: string;
   color: string;
 }[] = [
-  { status: "pending", label: "Pending", color: "#eab308" },
-  { status: "processing", label: "Diproses", color: "#3b82f6" },
-  { status: "done", label: "Selesai", color: "#10b981" },
-  { status: "rejected", label: "Ditolak", color: "#ef4444" },
+  { status: "complete", label: "Lengkap", color: "#10b981" },
+  { status: "partial", label: "Sebagian", color: "#f59e0b" },
+  { status: "empty", label: "Kosong", color: "#ef4444" },
 ];
 
-function normalizeStatus(status?: string | null): ArticleRequestStatus {
-  const value = String(status || "pending").toLowerCase();
+function normalizeStatus(status?: string | null): PublicationExtractionStatus {
+  const value = String(status || "empty").toLowerCase();
 
-  if (value === "processing" || value === "done" || value === "rejected") {
+  if (value === "complete" || value === "partial") {
     return value;
   }
 
-  return "pending";
+  return "empty";
 }
 
-function buildMonthlyData(requests: ArticleRequest[]) {
+function buildMonthlyData(publications: ManagedPublication[]) {
   const formatter = new Intl.DateTimeFormat("id-ID", {
     month: "short",
   });
@@ -58,13 +57,13 @@ function buildMonthlyData(requests: ArticleRequest[]) {
   return Array.from({ length: 6 }, (_, index) => {
     const month = new Date(now.getFullYear(), now.getMonth() - 5 + index, 1);
     const nextMonth = new Date(month.getFullYear(), month.getMonth() + 1, 1);
-    const total = requests.filter((request) => {
-      if (!request.createdAt) return false;
-      const createdAt = new Date(request.createdAt);
+    const total = publications.filter((publication) => {
+      if (!publication.updatedAt) return false;
+      const updatedAt = new Date(publication.updatedAt);
       return (
-        !Number.isNaN(createdAt.getTime()) &&
-        createdAt >= month &&
-        createdAt < nextMonth
+        !Number.isNaN(updatedAt.getTime()) &&
+        updatedAt >= month &&
+        updatedAt < nextMonth
       );
     }).length;
 
@@ -75,12 +74,16 @@ function buildMonthlyData(requests: ArticleRequest[]) {
   });
 }
 
-export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
-  const monthlyData = buildMonthlyData(requests);
-  const statusData = STATUS_ITEMS.map((item) => ({
+export function PublicationCharts({
+  publications,
+}: {
+  publications: ManagedPublication[];
+}) {
+  const monthlyData = buildMonthlyData(publications);
+  const qualityData = QUALITY_ITEMS.map((item) => ({
     ...item,
-    total: requests.filter(
-      (request) => normalizeStatus(request.status) === item.status,
+    total: publications.filter(
+      (publication) => normalizeStatus(publication.extractionStatus) === item.status,
     ).length,
   }));
 
@@ -88,8 +91,8 @@ export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
     <div className="grid gap-4 xl:grid-cols-2">
       <Card className="min-w-0">
         <CardHeader>
-          <CardTitle>Request Artikel</CardTitle>
-          <CardDescription>Jumlah request selama enam bulan terakhir</CardDescription>
+          <CardTitle>Publikasi Diperbarui</CardTitle>
+          <CardDescription>Jumlah publikasi berdasarkan update enam bulan terakhir</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer
@@ -102,7 +105,7 @@ export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
               margin={{ left: 12, right: 12 }}
             >
               <defs>
-                <linearGradient id="requestAreaFill" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="publicationAreaFill" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="var(--color-total)" stopOpacity={0.35} />
                   <stop offset="95%" stopColor="var(--color-total)" stopOpacity={0.12} />
                 </linearGradient>
@@ -121,7 +124,7 @@ export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
               <Area
                 dataKey="total"
                 type="monotone"
-                fill="url(#requestAreaFill)"
+                fill="url(#publicationAreaFill)"
                 stroke="var(--color-total)"
                 strokeWidth={2}
                 dot={false}
@@ -134,15 +137,15 @@ export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
 
       <Card className="min-w-0">
         <CardHeader>
-          <CardTitle>Status Request</CardTitle>
-          <CardDescription>Distribusi request berdasarkan status</CardDescription>
+          <CardTitle>Kelengkapan Data</CardTitle>
+          <CardDescription>Distribusi publikasi berdasarkan hasil ekstraksi</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer
-            config={statusChartConfig}
+            config={qualityChartConfig}
             className="h-[280px] w-full"
           >
-            <BarChart accessibilityLayer data={statusData}>
+            <BarChart accessibilityLayer data={qualityData}>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="label"
@@ -155,7 +158,7 @@ export function RequestCharts({ requests }: { requests: ArticleRequest[] }) {
                 content={<ChartTooltipContent indicator="dot" />}
               />
               <Bar dataKey="total" radius={8}>
-                {statusData.map((item) => (
+                {qualityData.map((item) => (
                   <Cell key={item.status} fill={item.color} />
                 ))}
               </Bar>
