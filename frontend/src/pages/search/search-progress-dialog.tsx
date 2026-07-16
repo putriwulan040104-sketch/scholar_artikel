@@ -35,19 +35,85 @@ import {
   type ScriptedStageView,
 } from "./search-progress-animation";
 
-// Ikon untuk tiap tahap (urutan mengikuti SCRIPTED_STAGE_DEFS).
-const stageIcons = [Search, Database, FileText, Sparkles, Layers, GitCompare, Filter, ClipboardCheck];
-
-// Catatan kecil generik yang berputar selama sebuah tahap berjalan, agar
-// terasa lebih "hidup" & detail. Tidak mengklaim proses spesifik apa pun.
-const MICRO_PHRASES = [
-  "Menyusun potongan data...",
-  "Memeriksa kecocokan istilah...",
-  "Menyaring hasil yang relevan...",
-  "Merapikan urutan data...",
-  "Melakukan pengecekan tambahan...",
-  "Menyiapkan ringkasan proses...",
+// Ikon untuk tiap tahap mengikuti stage dari backend.
+const stageIcons = [
+  Database,
+  Search,
+  FileText,
+  Sparkles,
+  ClipboardCheck,
+  GitCompare,
+  Filter,
+  CheckCircle2,
+  Layers,
+  FileSearch,
 ];
+
+const DEFAULT_MICRO_PHRASES = [
+  "Menyiapkan proses pencarian...",
+  "Memeriksa data yang tersedia...",
+  "Menyusun hasil sementara...",
+];
+
+const STAGE_MICRO_PHRASES: Record<string, string[]> = {
+  start: [
+    "Mencocokkan kata kunci dengan judul artikel...",
+    "Memeriksa abstrak pada dataset yang tersedia...",
+    "Mengurutkan artikel berdasarkan tingkat kecocokan...",
+  ],
+  scrape: [
+    "Membuka halaman hasil Google Scholar...",
+    "Membaca judul, penulis, tahun, dan sumber artikel...",
+    "Melewati artikel dengan tahun atau abstrak yang tidak sesuai...",
+    "Mengambil kandidat PDF dari hasil pencarian...",
+  ],
+  temporary: [
+    "Mengumpulkan metadata ke dataset sementara...",
+    "Menyiapkan judul dan abstrak sebelum diproses...",
+    "Menghitung artikel valid dari hasil scraping...",
+  ],
+  preprocessing: [
+    "Membersihkan tanda baca dan karakter tidak perlu...",
+    "Memecah kalimat menjadi token kata...",
+    "Menghapus stopword yang tidak berpengaruh...",
+    "Melakukan stemming pada kata yang sudah dibersihkan...",
+  ],
+  tfidf: [
+    "Menghitung frekuensi kata pada setiap artikel...",
+    "Mengukur seberapa penting kata di seluruh dataset...",
+    "Membentuk bobot TF-IDF untuk judul dan abstrak...",
+  ],
+  similarity: [
+    "Membentuk vektor query dan artikel...",
+    "Menempatkan artikel pada ruang vektor yang sama...",
+    "Menghitung Cosine Similarity terhadap kata kunci...",
+    "Mengurutkan artikel dari skor tertinggi...",
+  ],
+  article_filtering: [
+    "Mengelompokkan artikel yang memiliki judul dan abstrak mirip...",
+    "Memeriksa kemungkinan duplikasi metadata...",
+    "Memilih sumber artikel yang paling resmi...",
+  ],
+  validation: [
+    "Mencari DOI dari metadata artikel...",
+    "Memeriksa URL PDF yang tersedia...",
+    "Memvalidasi akses dan sumber file artikel...",
+  ],
+  save_dataset: [
+    "Memperbarui artikel lama jika metadata berubah...",
+    "Menyimpan artikel baru ke Final Dataset...",
+    "Menyinkronkan dataset agar siap dihitung ulang...",
+  ],
+  final: [
+    "Memuat ulang indeks pencarian terbaru...",
+    "Menerapkan filter tahun, kategori, dan akses artikel...",
+    "Menyiapkan daftar artikel terbaik untuk ditampilkan...",
+  ],
+};
+
+function getStageMicroPhrases(stageKey: string) {
+  return STAGE_MICRO_PHRASES[stageKey] || DEFAULT_MICRO_PHRASES;
+}
 
 type TransitionKind = "found" | "empty";
 
@@ -282,7 +348,8 @@ function ProcessStep({
 }) {
   const Icon = stageIcons[index] || FileText;
   const isRunning = stage.status === "running";
-  const microDetail = useMicroTicker(isRunning, MICRO_PHRASES, 1700);
+  const microPhrases = getStageMicroPhrases(stage.key);
+  const microDetail = useMicroTicker(isRunning, microPhrases, 1700);
 
   return (
     <div
@@ -341,14 +408,20 @@ function TransitionScreen({
   kind,
   query,
   showRequestForm,
+  canRescrape,
   onOpenRequestForm,
   onRequestSubmitted,
+  onUseResults,
+  onRescrape,
 }: {
   kind: TransitionKind;
   query: string;
   showRequestForm: boolean;
+  canRescrape: boolean;
   onOpenRequestForm: () => void;
   onRequestSubmitted: () => void;
+  onUseResults: () => void;
+  onRescrape: () => void;
 }) {
   if (kind === "empty") {
     if (showRequestForm) {
@@ -390,8 +463,22 @@ function TransitionScreen({
       </div>
       <div>
         <p className="text-lg font-semibold text-slate-900">Artikel ditemukan!</p>
-        <p className="mt-1 text-sm text-slate-500">Menyiapkan halaman hasil untuk Anda...</p>
+        <p className="mt-1 text-sm text-slate-500">
+          {canRescrape
+            ? "Hasil ditemukan pada Initial Dataset. Anda dapat memakai hasil ini atau melakukan scraping ulang."
+            : "Menyiapkan halaman hasil untuk Anda..."}
+        </p>
       </div>
+      {canRescrape && (
+        <div className="mt-2 flex flex-wrap justify-center gap-3">
+          <Button variant="outline" onClick={onRescrape} className="px-7">
+            Scraping Ulang
+          </Button>
+          <Button onClick={onUseResults} className="px-7">
+            Gunakan Hasil
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
@@ -405,6 +492,7 @@ export function SearchProgressDialog({
   onOpenChange,
   startedAt,
   onFinished,
+  onRescrape,
 }: {
   open: boolean;
   progress: SearchProgressEvent | null;
@@ -415,10 +503,14 @@ export function SearchProgressDialog({
   startedAt?: number | null;
   /** Dipanggil setelah layar transisi penutup tampil sebentar. */
   onFinished?: () => void;
+  /** Dipanggil saat user memilih menjalankan Selenium untuk incremental update. */
+  onRescrape?: () => void;
 }) {
   const isComplete = progress?.status === "complete";
   const isActive = open && !!progress;
   const articleCount = Array.isArray(progress?.result?.articles) ? progress!.result!.articles.length : 0;
+  const canRescrape =
+    progress?.result?.pipeline_summary?.search_mode === "initial_dataset";
 
   // Status hasil dipakai untuk menentukan kapan animasi harus dihentikan
   // lebih awal (di tahap scraping) saat artikel tidak ditemukan.
@@ -428,12 +520,25 @@ export function SearchProgressDialog({
     ? "found"
     : "empty";
 
-  const { stages, percent, isFinished, isEmptyHalted } = useScriptedStages(
+  const scriptedProgress = useScriptedStages(
     isComplete,
     isActive,
     startedAt ?? null,
     resultStatus,
   );
+  const backendStages = Array.isArray(progress?.stages) && progress!.stages.length > 0
+    ? progress!.stages.map((stage) => ({
+        key: stage.key,
+        title: stage.title,
+        description: stage.description,
+        status: stage.status,
+        duration_seconds: stage.duration_seconds || 0,
+      }))
+    : null;
+  const stages = backendStages || scriptedProgress.stages;
+  const percent = backendStages ? progress?.progress ?? scriptedProgress.percent : scriptedProgress.percent;
+  const isFinished = backendStages ? isComplete : scriptedProgress.isFinished;
+  const isEmptyHalted = backendStages ? false : scriptedProgress.isEmptyHalted;
 
   const [transitionKind, setTransitionKind] = useState<TransitionKind | null>(null);
   const [showRequestForm, setShowRequestForm] = useState(false);
@@ -464,11 +569,12 @@ export function SearchProgressDialog({
   // tanpa didahului auto-close.
   useEffect(() => {
     if (transitionKind !== "found") return;
+    if (canRescrape) return;
     const navTimer = window.setTimeout(() => {
       onFinished?.();
     }, 5000);
     return () => window.clearTimeout(navTimer);
-  }, [transitionKind, onFinished]);
+  }, [transitionKind, canRescrape, onFinished]);
 
   // Selalu tampilkan teks statis ini di bawah judul (tidak lagi memakai
   // pesan dinamis dari backend, misal "Proses selesai. 10 artikel siap
@@ -539,11 +645,14 @@ export function SearchProgressDialog({
               kind={transitionKind}
               query={query}
               showRequestForm={showRequestForm}
+              canRescrape={canRescrape}
               onOpenRequestForm={() => setShowRequestForm(true)}
               onRequestSubmitted={() => {
                 setShowRequestForm(false);
                 onOpenChange(false);
               }}
+              onUseResults={() => onFinished?.()}
+              onRescrape={() => onRescrape?.()}
             />
           </div>
         ) : (

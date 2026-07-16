@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import scipy.sparse as sp
 from collections import Counter
+from datetime import datetime, timezone
 from sklearn.metrics.pairwise import cosine_similarity
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,6 +27,7 @@ from src.preprocessing.stemming import stemming
 
 TFIDF_DIR = os.path.join(BASE_DIR, "data", "tfidf")
 COSINE_DIR = os.path.join(BASE_DIR, "data", "cosine_results")
+SIMILARITY_TABLE = "similarity_results"
 
 RELATION_TYPE_LABELS = {
     "bibliographic_coupling": "Bibliographic Coupling",
@@ -302,6 +304,34 @@ if len(doc_index) != tfidf_matrix.shape[0]:
 print(f"VSM loaded: {len(doc_index)} dokumen, vocab {tfidf_matrix.shape[1]} term")
 
 
+def reload_search_index():
+    """Memuat ulang TF-IDF, VSM, dan metadata setelah incremental update."""
+    global tfidf_matrix, terms, doc_ids, idf_scores, tfidf_documents
+    global doc_index, cosine_results, term_to_index
+
+    loaded_matrix, loaded_terms, loaded_doc_ids, loaded_idf, loaded_documents = _load_vsm_files()
+    loaded_doc_index = _load_doc_index_from_supabase(loaded_doc_ids, loaded_documents)
+    if len(loaded_doc_index) != loaded_matrix.shape[0]:
+        raise RuntimeError(
+            f"Jumlah data doc_index ({len(loaded_doc_index)}) != baris tfidf_matrix ({loaded_matrix.shape[0]}). "
+            "Jalankan ulang TF-IDF dari dataset yang sama."
+        )
+
+    tfidf_matrix = loaded_matrix
+    terms = loaded_terms
+    doc_ids = loaded_doc_ids
+    idf_scores = loaded_idf
+    tfidf_documents = loaded_documents
+    doc_index = loaded_doc_index
+    cosine_results = _load_cosine_results()
+    term_to_index = {term: index for index, term in enumerate(terms)}
+
+    return {
+        "document_count": int(len(doc_index)),
+        "vocab_count": int(tfidf_matrix.shape[1]),
+    }
+
+
 def preprocess_query(query: str):
     text = clean_text(query)
     tokens = tokenizing(text)
@@ -336,6 +366,60 @@ def count_occurrence(document_text, query_terms):
 def _emit_search_progress(progress_callback, payload):
     if callable(progress_callback):
         progress_callback(payload)
+
+
+def _upsert_similarity_results(query, results, progress_callback=None):
+    """Menyimpan hasil cosine ke Supabase seperti notebook cosine.ipynb."""
+    if results is None or results.empty:
+        return {"saved": 0, "error": None}
+
+    if "id" not in results.columns or "similarity_score" not in results.columns:
+        return {"saved": 0, "error": "Kolom id/similarity_score tidak tersedia"}
+
+    timestamp = datetime.now(timezone.utc).isoformat()
+    payload = []
+    for row in results[["id", "similarity_score"]].to_dict("records"):
+        try:
+            payload.append({
+                "article_id": int(row["id"]),
+                "compared_text": str(query),
+                "similarity_score": round(float(row["similarity_score"]), 6),
+                "created_at": timestamp,
+            })
+        except (TypeError, ValueError):
+            continue
+
+    if not payload:
+        return {"saved": 0, "error": None}
+
+    try:
+        batch_size = 500
+        saved = 0
+        for start in range(0, len(payload), batch_size):
+            batch = payload[start:start + batch_size]
+            supabase.table(SIMILARITY_TABLE).upsert(
+                batch,
+                on_conflict="article_id,compared_text",
+            ).execute()
+            saved += len(batch)
+
+        _emit_search_progress(progress_callback, {
+            "stage": "cosine",
+            "event": "saved",
+            "message": f"Hasil Cosine Similarity tersimpan: {saved} baris",
+            "similarity_saved_count": saved,
+        })
+        return {"saved": saved, "error": None}
+    except Exception as error:
+        message = str(error)
+        print(f"[WARN] Gagal menyimpan similarity_results: {message}")
+        _emit_search_progress(progress_callback, {
+            "stage": "cosine",
+            "event": "save_warning",
+            "message": "Hasil cosine tetap dihitung, tetapi gagal disimpan ke similarity_results",
+            "error": message,
+        })
+        return {"saved": 0, "error": message}
 
 
 def search_articles(
@@ -483,6 +567,11 @@ def search_articles(
 
     total_matched = int(len(results))
     total_occurrences = int(results["term_frequency"].sum())
+    similarity_save_info = _upsert_similarity_results(
+        query,
+        results,
+        progress_callback=progress_callback,
+    )
     _emit_search_progress(progress_callback, {
         "stage": "filter",
         "event": "done",
@@ -526,7 +615,10 @@ def search_articles(
         "paper_count": displayed_count,
         "total_matched": total_matched,
         "displayed_count": displayed_count,
-        "displayed_occurrences": displayed_occurrences,}
+        "displayed_occurrences": displayed_occurrences,
+        "similarity_saved_count": similarity_save_info.get("saved", 0),
+        "similarity_save_error": similarity_save_info.get("error"),
+    }
 
 
 def get_stats():

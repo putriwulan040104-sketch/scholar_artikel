@@ -14,49 +14,60 @@ from app.search_engine import (
     search_articles,
     get_cosine_catalog,
 )
+from app.services.ir_pipeline_service import run_web_ir_pipeline
 
 search_bp = Blueprint("search", __name__)
 
 SEARCH_PROGRESS_STAGES = [
     {
         "key": "start",
-        "title": "Memulai Pencarian",
-        "description": "Mencari artikel berdasarkan kata kunci dan kategori yang Anda pilih.",
+        "title": "Mencari di Dataset",
+        "description": "Mengecek artikel yang sudah tersedia di sistem.",
     },
     {
-        "key": "prepare",
-        "title": "Menyiapkan Dataset Artikel",
-        "description": "Menggunakan dataset artikel yang sudah tersedia di Supabase.",
+        "key": "scrape",
+        "title": "Mengambil Data Baru",
+        "description": "Mengambil metadata artikel baru dari Google Scholar jika diperlukan.",
+    },
+    {
+        "key": "temporary",
+        "title": "Menyiapkan Data Sementara",
+        "description": "Mengumpulkan metadata hasil pencarian sebelum diproses.",
     },
     {
         "key": "preprocessing",
-        "title": "Melakukan Preprocessing",
-        "description": "Membersihkan kata kunci dan menyiapkan term yang akan dicocokkan.",
+        "title": "Membersihkan Data",
+        "description": "Merapikan judul, abstrak, dan kata kunci artikel.",
     },
     {
         "key": "tfidf",
-        "title": "Menghitung TF-IDF",
-        "description": "Menghitung bobot kata kunci berdasarkan vocabulary dataset.",
+        "title": "Menghitung Bobot Kata",
+        "description": "Menentukan bobot kata penting pada artikel dan pencarian.",
     },
     {
-        "key": "vsm",
-        "title": "Menyiapkan Vector Space Model",
-        "description": "Menempatkan query dan artikel pada ruang vektor yang sama.",
+        "key": "similarity",
+        "title": "Mengukur Kemiripan",
+        "description": "Membandingkan kata kunci dengan artikel yang tersedia.",
     },
     {
-        "key": "cosine",
-        "title": "Menghitung Cosine Similarity",
-        "description": "Menghitung tingkat kecocokan query dengan setiap artikel.",
+        "key": "article_filtering",
+        "title": "Menyaring Artikel Terbaik",
+        "description": "Menghapus duplikasi dan memilih sumber artikel terbaik.",
     },
     {
-        "key": "filter",
-        "title": "Menyaring Artikel Sesuai Kriteria",
-        "description": "Menerapkan filter tahun, kategori, akses artikel, dan jenis analisis.",
+        "key": "validation",
+        "title": "Memvalidasi Artikel",
+        "description": "Memeriksa DOI dan ketersediaan file artikel.",
+    },
+    {
+        "key": "save_dataset",
+        "title": "Menyimpan Dataset",
+        "description": "Memperbarui dataset akhir di sistem.",
     },
     {
         "key": "final",
-        "title": "Menyusun Hasil Akhir",
-        "description": "Mengurutkan artikel berdasarkan skor kecocokan dan menyiapkan data untuk ditampilkan.",
+        "title": "Menyiapkan Hasil",
+        "description": "Mengurutkan artikel terbaik untuk ditampilkan.",
     },
 ]
 
@@ -71,6 +82,21 @@ def _initial_progress_stages():
         }
         for stage in SEARCH_PROGRESS_STAGES
     ]
+
+
+STAGE_UI_KEY_MAP = {
+    "prepare": "start",
+    "vsm": "similarity",
+    "cosine": "similarity",
+    "group": "article_filtering",
+    "source": "article_filtering",
+    "doi": "validation",
+    "pdf": "validation",
+    "final_dataset": "save_dataset",
+    "supabase": "save_dataset",
+    "filter": "final",
+    "search": "final",
+}
 
 
 def _normalize_pipeline_articles(articles):
@@ -182,13 +208,16 @@ class SearchProgressReporter:
 
     def handle(self, payload):
         payload = payload or {}
-        key = payload.get("stage")
+        original_key = payload.get("stage")
+        key = STAGE_UI_KEY_MAP.get(original_key, original_key)
         event = payload.get("event")
         message = payload.get("message")
         details = {
             k: v for k, v in payload.items()
             if k not in {"stage", "event", "message"}
         }
+        if original_key and original_key != key:
+            details["backend_stage"] = original_key
         if message:
             details["message"] = message
 
@@ -226,6 +255,8 @@ class SearchProgressReporter:
             "total_occurrences": total_occurrences,
             "paper_count": paper_count,
         }
+        if isinstance(result, dict) and result.get("pipeline_summary"):
+            self.result["pipeline_summary"] = _json_safe(result.get("pipeline_summary"))
         self.finished = True
         self._append_log(f"Proses selesai. {paper_count} artikel siap ditampilkan.")
         self.emit(self.snapshot(event="complete"))
@@ -238,6 +269,10 @@ class SearchProgressReporter:
 
 def _sse_payload(data):
     return f"data: {json.dumps(data, ensure_ascii=False)}\n\n"
+
+
+def _truthy(value):
+    return str(value or "").strip().lower() in {"1", "true", "yes", "y"}
 
 
 @search_bp.route("/search-progress", methods=["GET"])
@@ -267,6 +302,7 @@ def search_progress():
         request.args.get("jumlah_kemunculan")
         or request.args.get("jumlahKemunculan")
     )
+    force_scrape = _truthy(request.args.get("force_scrape"))
 
     event_queue = queue.Queue()
     reporter = SearchProgressReporter(
@@ -286,19 +322,52 @@ def search_progress():
             reporter.handle({
                 "stage": "start",
                 "event": "done",
-                "message": "Pencarian dimulai dari dataset yang sudah tersedia",
+                "message": "Pencarian dimulai",
             })
 
-            result = search_articles(
-                query=keyword,
-                top_k=target,
+            if not force_scrape:
+                initial_result = search_articles(
+                    query=keyword,
+                    top_k=target,
+                    year_start=year_start,
+                    year_end=year_end,
+                    jenis_artikel=jenis_artikel,
+                    jenis_analisis=jenis_analisis,
+                    jumlah_kemunculan=jumlah_kemunculan,
+                    jumlah_publikasi=jumlah_publikasi,
+                    kategori=selected_category or None,
+                    progress_callback=reporter.handle,
+                )
+                initial_articles = initial_result.get("articles") or []
+                if initial_articles:
+                    initial_result["pipeline_summary"] = {
+                        "search_mode": "initial_dataset",
+                        "scraping_executed": False,
+                        "message": (
+                            "Hasil ditemukan pada Initial Final Dataset. "
+                            "Pengguna dapat memilih Scraping Ulang untuk incremental update."
+                        ),
+                    }
+                    reporter.complete(initial_result)
+                    return
+
+                reporter.handle({
+                    "stage": "prepare",
+                    "event": "done",
+                    "message": "Initial Dataset belum memiliki hasil relevan, lanjut scraping incremental",
+                    "matched_count": 0,
+                })
+
+            result = run_web_ir_pipeline(
+                keyword=keyword,
+                target=target,
                 year_start=year_start,
                 year_end=year_end,
                 jenis_artikel=jenis_artikel,
                 jenis_analisis=jenis_analisis,
                 jumlah_kemunculan=jumlah_kemunculan,
                 jumlah_publikasi=jumlah_publikasi,
-                kategori=selected_category or None,
+                selected_category=selected_category or None,
                 progress_callback=reporter.handle,
             )
             reporter.complete(result)

@@ -158,7 +158,7 @@ export function Searchpage() {
     window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (forceScrape = false) => {
     if (!query.trim()) return;
 
     searchStartAtRef.current = Date.now();
@@ -189,6 +189,7 @@ export function Searchpage() {
         jenisArtikel: jenisArtikel || undefined,
         jenisAnalisis: jenisAnalisis || undefined,
         jumlahKemunculan: jumlahKemunculan || undefined,
+        forceScrape,
       });
       progressSourceRef.current = source;
 
@@ -281,6 +282,10 @@ export function Searchpage() {
         onOpenChange={setProgressOpen}
         startedAt={searchStartAtRef.current}
         onFinished={handleProgressFinished}
+        onRescrape={() => {
+          pendingNavigationRef.current = null;
+          void handleSearch(true);
+        }}
       />
 
       {/* Header + Search tanpa card kotak */}
@@ -433,7 +438,7 @@ export function Searchpage() {
                   </div>
 
                   <div className="flex justify-center">
-                    <Button onClick={handleSearch} className="px-16">
+                    <Button onClick={() => handleSearch()} className="px-16">
                       Terapkan Filter
                     </Button>
                   </div>
@@ -442,7 +447,7 @@ export function Searchpage() {
             </Dialog>
 
             <button
-              onClick={handleSearch}
+              onClick={() => handleSearch()}
               disabled={loading}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 px-5 py-2 font-medium text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
             >

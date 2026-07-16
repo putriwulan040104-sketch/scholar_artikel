@@ -678,6 +678,11 @@ export interface SearchProgressEvent {
     total_matched?: number;
     total_occurrences?: number;
     paper_count?: number;
+    pipeline_summary?: {
+      search_mode?: string;
+      scraping_executed?: boolean;
+      [key: string]: any;
+    };
   } | null;
   error?: string | null;
 }
@@ -692,6 +697,7 @@ export function createSearchProgressSource(params: {
   jenisAnalisis?: string;
   jumlahKemunculan?: number | string;
   jumlahPublikasi?: string;
+  forceScrape?: boolean;
 }) {
   const queryParams = new URLSearchParams({
     query: params.query,
@@ -714,6 +720,9 @@ export function createSearchProgressSource(params: {
   }
   if (params.jumlahPublikasi) {
     queryParams.set("jumlah_publikasi", params.jumlahPublikasi);
+  }
+  if (params.forceScrape) {
+    queryParams.set("force_scrape", "true");
   }
 
   return new EventSource(`${BASE_URL}/search-progress?${queryParams.toString()}`);

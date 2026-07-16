@@ -12,7 +12,7 @@ from src.scraper.similarity_service import filter_articles_by_similarity_and_sou
 from src.scraper.source_selector import classify_pdf_source, log_pdf_source_validation
 
 
-TABLE_DOI = "scholar_articles_doi"
+TABLE_DOI = "scholar_article_doi"
 METADATA_SIMILARITY_THRESHOLD = 0.95
 METADATA_BUFFER_MULTIPLIER = 2
 MIN_METADATA_BATCH_SIZE = 50
@@ -129,6 +129,7 @@ def process_filtered_articles_for_doi_pdf(
     skip_reasons,
     target_limit=None,
     progress_callback=None,
+    skip_existing=True,
 ):
     """Menjalankan tahap DOI, official PDF, download PDF, validasi PDF, dan duplicate DB pada artikel final."""
     global PROCESSING_CACHE
@@ -168,7 +169,7 @@ def process_filtered_articles_for_doi_pdf(
             skipped_count += 1
             continue
 
-        if is_url_dup(article_url):
+        if skip_existing and is_url_dup(article_url):
             print("Skip: URL sudah ada di DB")
             skip_reasons["url_dup"] += 1
             skipped_count += 1
@@ -314,13 +315,13 @@ def process_filtered_articles_for_doi_pdf(
             skipped_count += 1
             continue
 
-        if is_doi_dup(doi_article):
+        if skip_existing and is_doi_dup(doi_article):
             print(f"Skip: DOI {doi_article} sudah ada di DB")
             skip_reasons["doi_dup"] += 1
             skipped_count += 1
             continue
 
-        if pdf_url and is_pdfurl_dup(pdf_url):
+        if skip_existing and pdf_url and is_pdfurl_dup(pdf_url):
             print("Skip: PDF URL sudah ada di DB")
             skip_reasons["pdfurl_dup"] += 1
             skipped_count += 1
@@ -381,6 +382,89 @@ def save_articles_to_supabase(articles, progress_callback=None):
         "total": total,
     })
     return success
+
+
+def _find_existing_article_id(row):
+    """Mencari artikel final yang sudah ada untuk incremental update."""
+    lookups = (
+        ("doi", row.get("doi")),
+        ("url", row.get("url")),
+        ("pdf_url", row.get("pdf_url")),
+    )
+    for field, value in lookups:
+        if not value:
+            continue
+        try:
+            res = (
+                supabase.table(TABLE_DOI)
+                .select("id")
+                .eq(field, value)
+                .limit(1)
+                .execute()
+            )
+            if res.data:
+                return res.data[0].get("id")
+        except Exception:
+            continue
+    return None
+
+
+def save_articles_incremental_to_supabase(articles, progress_callback=None):
+    """INSERT artikel baru dan UPDATE artikel lama tanpa replace/delete dataset."""
+    inserted = 0
+    updated = 0
+    saved_rows = []
+    total = len(articles)
+
+    for index, row in enumerate(articles, start=1):
+        _emit_progress(progress_callback, {
+            "stage": "supabase",
+            "event": "article_start",
+            "message": f"Memperbarui Final Dataset {index}/{total}...",
+            "current": index,
+            "total": total,
+            "inserted_count": inserted,
+            "updated_count": updated,
+        })
+
+        db_row = row.copy()
+        db_row.pop("publisher", None)
+        existing_id = _find_existing_article_id(db_row)
+
+        try:
+            if existing_id:
+                db_row.pop("id", None)
+                response = (
+                    supabase.table(TABLE_DOI)
+                    .update(db_row)
+                    .eq("id", existing_id)
+                    .execute()
+                )
+                updated += 1
+            else:
+                response = supabase.table(TABLE_DOI).insert(db_row).execute()
+                inserted += 1
+
+            if response.data:
+                saved_rows.extend(response.data)
+        except Exception as e:
+            print(f"  Gagal incremental save Supabase: {e}")
+
+    _emit_progress(progress_callback, {
+        "stage": "supabase",
+        "event": "done",
+        "message": f"Final Dataset diperbarui: {inserted} insert, {updated} update",
+        "inserted_count": inserted,
+        "updated_count": updated,
+        "saved_count": inserted + updated,
+        "total": total,
+    })
+    return {
+        "inserted": inserted,
+        "updated": updated,
+        "saved_count": inserted + updated,
+        "rows": saved_rows,
+    }
 
 
 def scrape_and_save_to_supabase_legacy(keyword, category, max_results=50):
