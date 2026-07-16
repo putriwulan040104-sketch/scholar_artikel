@@ -88,23 +88,23 @@ function ReferenceMatchList({ matches }: { matches: ReferenceMatch[] }) {
       {matches.map((match, index) => (
         <span
           key={`${match.match_type}-${match.reference}-${index}`}
-          className="block rounded-md bg-slate-50 p-2 text-xs text-slate-600"
+          className="block rounded-md p-2 text-xs text-slate-600"
         >
-          <span className="mb-1 flex flex-wrap items-center gap-2">
+          {/* <span className="mb-1 flex flex-wrap items-center gap-2">
             {match.year ? (
               <span className="text-slate-500">Tahun: {match.year}</span>
             ) : null}
-          </span>
+          </span> */}
           <span className="block font-medium text-slate-800">
             {index + 1}. {match.title || match.reference || "-"}
           </span>
-          {match.authors ? (
+          {/* {match.authors ? (
             <span className="mt-1 block">Penulis: {match.authors}</span>
-          ) : null}
+          ) : null} */}
           {match.original_reference &&
           match.original_reference !== match.title ? (
             <span className="mt-1 block text-slate-500">
-              Referensi asli: {match.original_reference}
+              {match.original_reference}
             </span>
           ) : null}
         </span>

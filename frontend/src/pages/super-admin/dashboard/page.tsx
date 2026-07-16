@@ -2,19 +2,17 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Activity,
-  ClipboardList,
+  BookOpenText,
   RefreshCw,
   UsersRound,
 } from "lucide-react";
 import {
   getActivityLogs,
-  getArticleRequests,
+  getManagedPublications,
   getUsers,
-  type ArticleRequest,
-  type ArticleRequestStatus,
+  type ManagedPublication,
   type ManagedUser,
 } from "@/api/api";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -31,7 +29,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { RequestCharts } from "./charts";
+import { PublicationCharts } from "./charts";
 
 function normalizeRole(role?: string | null) {
   return String(role || "user")
@@ -39,16 +37,6 @@ function normalizeRole(role?: string | null) {
     .toLowerCase()
     .replaceAll("-", "_")
     .replaceAll(" ", "_");
-}
-
-function normalizeStatus(status?: string | null): ArticleRequestStatus {
-  const value = String(status || "pending").toLowerCase();
-
-  if (value === "processing" || value === "done" || value === "rejected") {
-    return value;
-  }
-
-  return "pending";
 }
 
 function formatDate(value?: string | null) {
@@ -69,37 +57,10 @@ function timestamp(value?: string | null) {
   return Number.isNaN(date) ? 0 : date;
 }
 
-function statusLabel(status?: string | null) {
-  const labels: Record<ArticleRequestStatus, string> = {
-    pending: "Pending",
-    processing: "Diproses",
-    done: "Selesai",
-    rejected: "Ditolak",
-  };
-
-  return labels[normalizeStatus(status)];
-}
-
-function statusClassName(status?: string | null) {
-  const normalized = normalizeStatus(status);
-
-  if (normalized === "done") {
-    return "border-emerald-200 bg-emerald-100 text-emerald-700";
-  }
-  if (normalized === "processing") {
-    return "border-blue-200 bg-blue-100 text-blue-700";
-  }
-  if (normalized === "rejected") {
-    return "border-red-200 bg-red-100 text-red-700";
-  }
-
-  return "border-yellow-200 bg-yellow-100 text-yellow-700";
-}
-
 export default function SuperAdminDashboardPage() {
   const navigate = useNavigate();
   const [users, setUsers] = useState<ManagedUser[]>([]);
-  const [requests, setRequests] = useState<ArticleRequest[]>([]);
+  const [publications, setPublications] = useState<ManagedPublication[]>([]);
   const [activityTotal, setActivityTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
@@ -108,21 +69,21 @@ export default function SuperAdminDashboardPage() {
     setLoading(true);
     setMessage("");
 
-    const [usersResult, requestsResult, activityResult] = await Promise.all([
+    const [usersResult, publicationsResult, activityResult] = await Promise.all([
       getUsers(),
-      getArticleRequests(),
+      getManagedPublications(),
       getActivityLogs({ page: 1, pageSize: 1 }),
     ]);
 
     setUsers(usersResult.status === "success" ? usersResult.data || [] : []);
-    setRequests(
-      requestsResult.status === "success" ? requestsResult.data || [] : [],
+    setPublications(
+      publicationsResult.status === "success" ? publicationsResult.data || [] : [],
     );
     setActivityTotal(
       activityResult.status === "success" ? activityResult.total || 0 : 0,
     );
 
-    const errors = [usersResult, requestsResult, activityResult]
+    const errors = [usersResult, publicationsResult, activityResult]
       .filter((result) => result.status === "error")
       .map((result) => result.message)
       .filter(Boolean);
@@ -151,16 +112,20 @@ export default function SuperAdminDashboardPage() {
     () =>
       [...regularUsers]
         .sort((left, right) => timestamp(right.createdAt) - timestamp(left.createdAt))
-        .slice(0, 5),
+        .slice(0, 6),
     [regularUsers],
   );
 
-  const latestRequests = useMemo(
+  const latestPublications = useMemo(
     () =>
-      [...requests]
-        .sort((left, right) => timestamp(right.createdAt) - timestamp(left.createdAt))
-        .slice(0, 5),
-    [requests],
+      [...publications]
+        .sort(
+          (left, right) =>
+            timestamp(right.updatedAt) - timestamp(left.updatedAt) ||
+            Number(right.id) - Number(left.id),
+        )
+        .slice(0, 6),
+    [publications],
   );
 
   const statCards = [
@@ -172,9 +137,9 @@ export default function SuperAdminDashboardPage() {
       background: "bg-violet-100",
     },
     {
-      label: "Total Request",
-      value: requests.length,
-      icon: ClipboardList,
+      label: "Total Publikasi",
+      value: publications.length,
+      icon: BookOpenText,
       color: "text-slate-700",
       background: "bg-slate-100",
     },
@@ -195,7 +160,7 @@ export default function SuperAdminDashboardPage() {
             Ringkasan Sistem
           </h2>
           <p className="text-sm text-muted-foreground">
-            Pantau pengguna dan permintaan artikel dari satu tempat.
+            Pantau pengguna, publikasi, dan aktivitas sistem dari satu tempat.
           </p>
         </div>
         <Button
@@ -214,7 +179,7 @@ export default function SuperAdminDashboardPage() {
         </div>
       ) : null}
 
-      <div className="grid gap-4 grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
@@ -235,19 +200,19 @@ export default function SuperAdminDashboardPage() {
         })}
       </div>
 
-      <RequestCharts requests={requests} />
+      <PublicationCharts publications={publications} />
 
       <div className="grid min-w-0 gap-4 xl:grid-cols-2">
         <Card className="min-w-0">
           <CardHeader className="flex flex-row items-center justify-between gap-3">
             <div>
-              <CardTitle>Request Terbaru</CardTitle>
-              <CardDescription>Permintaan artikel terakhir</CardDescription>
+              <CardTitle>Publikasi Terbaru</CardTitle>
+              <CardDescription>Data publikasi yang terakhir diperbarui</CardDescription>
             </div>
             <Button
               variant="outline"
               size="sm"
-              onClick={() => navigate("/super-admin/requests")}
+              onClick={() => navigate("/super-admin/publications")}
             >
               Lihat Semua
             </Button>
@@ -257,32 +222,27 @@ export default function SuperAdminDashboardPage() {
               <Table className="min-w-[560px]">
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Pengguna</TableHead>
-                    <TableHead>Judul Artikel</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Tanggal</TableHead>
+                    <TableHead>Judul</TableHead>
+                    <TableHead>Kategori</TableHead>
+                    <TableHead>Tahun</TableHead>
+                    <TableHead>Diperbarui</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {latestRequests.length > 0 ? (
-                    latestRequests.map((request) => (
-                      <TableRow key={String(request.id)}>
-                        <TableCell className="whitespace-nowrap font-medium">
-                          {request.nama || request.email || "-"}
-                        </TableCell>
-                        <TableCell className="max-w-[220px] truncate">
-                          {request.judulArtikel || "-"}
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant="outline"
-                            className={statusClassName(request.status)}
-                          >
-                            {statusLabel(request.status)}
-                          </Badge>
+                  {latestPublications.length > 0 ? (
+                    latestPublications.map((publication) => (
+                      <TableRow key={String(publication.id)}>
+                        <TableCell className="max-w-[260px] truncate font-medium">
+                          {publication.title || "-"}
                         </TableCell>
                         <TableCell className="whitespace-nowrap">
-                          {formatDate(request.createdAt)}
+                          {publication.category || "-"}
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          {publication.year || "-"}
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          {formatDate(publication.updatedAt)}
                         </TableCell>
                       </TableRow>
                     ))
@@ -292,7 +252,7 @@ export default function SuperAdminDashboardPage() {
                         colSpan={4}
                         className="h-24 text-center text-muted-foreground"
                       >
-                        {loading ? "Mengambil data..." : "Belum ada request."}
+                        {loading ? "Mengambil data..." : "Belum ada publikasi."}
                       </TableCell>
                     </TableRow>
                   )}

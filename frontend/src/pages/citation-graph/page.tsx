@@ -1,15 +1,22 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
 import {
   getCitationGraphData,
   searchArticles,
   type ArticleRelationType,
   type CitationGraphEdge,
   type CitationGraphNode,
+  type CosineArticle,
 } from "@/api/api";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import type {
   FavoriteItem,
   GraphLink,
@@ -28,6 +35,17 @@ import RelationDetails from "./relation-details";
 import TopArticles from "./top-articles";
 
 const GRAPH_QUERY_TOP_K = 5000;
+
+function readStoredFilters(): StoredFilters {
+  try {
+    const raw = localStorage.getItem("lastSearchFilters");
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
 
 export default function CitationGraphPage() {
   const navigate = useNavigate();
@@ -53,6 +71,7 @@ export default function CitationGraphPage() {
   });
   const [queryMatchedIds, setQueryMatchedIds] = useState<number[]>([]);
   const [queryArticles, setQueryArticles] = useState<QueryArticleLite[]>([]);
+  const [dashboardArticles, setDashboardArticles] = useState<CosineArticle[]>([]);
   const [queryTotalMatched, setQueryTotalMatched] = useState<number>(0);
   const [relationType, setRelationType] = useState<ArticleRelationType>(
     "bibliographic_coupling",
@@ -94,21 +113,18 @@ export default function CitationGraphPage() {
         let jenisArtikel: string | undefined;
         let jenisAnalisis: ArticleRelationType | undefined;
         let jumlahKemunculan: string | undefined;
-        const rawFilters = localStorage.getItem("lastSearchFilters");
-        if (rawFilters) {
-          const parsed = JSON.parse(rawFilters) as StoredFilters;
-          if (parsed?.yearStart) yearStart = Number(parsed.yearStart);
-          if (parsed?.yearEnd) yearEnd = Number(parsed.yearEnd);
-          if (parsed?.jenisArtikel) jenisArtikel = parsed.jenisArtikel;
-          if (parsed?.jenisAnalisis) {
-            jenisAnalisis = parsed.jenisAnalisis as ArticleRelationType;
-            setRelationType(jenisAnalisis);
-          } else {
-            setRelationType("bibliographic_coupling");
-          }
-          if (parsed?.jumlahKemunculan) {
-            jumlahKemunculan = parsed.jumlahKemunculan;
-          }
+        const parsed = readStoredFilters();
+        if (parsed?.yearStart) yearStart = Number(parsed.yearStart);
+        if (parsed?.yearEnd) yearEnd = Number(parsed.yearEnd);
+        if (parsed?.jenisArtikel) jenisArtikel = parsed.jenisArtikel;
+        if (parsed?.jenisAnalisis) {
+          jenisAnalisis = parsed.jenisAnalisis as ArticleRelationType;
+          setRelationType(jenisAnalisis);
+        } else {
+          setRelationType("bibliographic_coupling");
+        }
+        if (parsed?.jumlahKemunculan) {
+          jumlahKemunculan = parsed.jumlahKemunculan;
         }
 
         const res = await searchArticles(
@@ -125,9 +141,12 @@ export default function CitationGraphPage() {
         if (res.status !== "success" || !Array.isArray(res.data)) {
           setQueryMatchedIds([]);
           setQueryArticles([]);
+          setDashboardArticles([]);
           setQueryTotalMatched(0);
           return;
         }
+
+        setDashboardArticles(res.data as CosineArticle[]);
 
         const ids = res.data
           .map((item: { id?: number | string }) => Number(item.id))
@@ -166,6 +185,7 @@ export default function CitationGraphPage() {
       } catch {
         setQueryMatchedIds([]);
         setQueryArticles([]);
+        setDashboardArticles([]);
         setQueryTotalMatched(0);
       }
     };
@@ -472,16 +492,49 @@ export default function CitationGraphPage() {
     });
   };
 
+  const goBackToDashboard = () => {
+    const query = (localStorage.getItem("lastSearchQuery") || "").trim();
+    if (!query) {
+      navigate("/search");
+      return;
+    }
+
+    const topTen = [...dashboardArticles]
+      .sort((left, right) => Number(left.rank || 0) - Number(right.rank || 0))
+      .slice(0, 10);
+
+    navigate(`/dashboard?query=${encodeURIComponent(query)}`, {
+      state: {
+        results: topTen,
+        query,
+        filters: readStoredFilters(),
+        total_matched: queryTotalMatched || dashboardArticles.length,
+        total_occurrences: topTen.reduce(
+          (acc, row) => acc + Number(row.occurrence || 0),
+          0,
+        ),
+        paper_count: topTen.length,
+      },
+    });
+  };
+
   return (
-    <div className="space-y-4">
-      <Button
-        variant="ghost"
-        className="mb-6 gap-2 text-muted-foreground"
-        onClick={() => navigate(-1)}
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Kembali
-      </Button>
+    <div className="space-y-4 p-4">
+      <Breadcrumb className="mb-6 mt-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <button type="button" onClick={goBackToDashboard}>
+                Dashboard
+              </button>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Jaringan Relasi Artikel</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <div>
         <h1 className="text-xl font-semibold">Jaringan Relasi Artikel</h1>
         <p className="text-sm text-muted-foreground">

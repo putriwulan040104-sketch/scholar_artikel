@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar"
 import {
   BookOpenText,
-  ClipboardList,
+  // ClipboardList,
   Home,
   History,
   Search,
@@ -102,11 +102,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             url: "/super-admin/users",
             icon: <UsersRound />,
           },
-          {
-            title: "Kelola Request",
-            url: "/super-admin/requests",
-            icon: <ClipboardList />,
-          },
+          // {
+          //   title: "Kelola Request",
+          //   url: "/super-admin/requests",
+          //   icon: <ClipboardList />,
+          // },
           {
             title: "Log Aktivitas",
             url: "/super-admin/activity-logs",

@@ -13,7 +13,7 @@ import CitationGraphPage from "./pages/citation-graph/page";
 import RegisterPage from "./pages/register/page";
 import { Searchpage } from "./pages/search/search";
 import SuperAdminDashboardPage from "./pages/super-admin/dashboard/page";
-import SuperAdminRequestsPage from "./pages/super-admin/requests/page";
+// import SuperAdminRequestsPage from "./pages/super-admin/requests/page";
 import SuperAdminUsersPage from "./pages/super-admin/users/page";
 import SuperAdminPublicationsPage from "./pages/super-admin/publications/page";
 import SuperAdminActivityLogsPage from "./pages/super-admin/activity-logs/page";
@@ -151,7 +151,7 @@ function App() {
           </SuperAdminRoute>
         }
       />
-      <Route
+      {/* <Route
         path="/super-admin/requests"
         element={
           <SuperAdminRoute>
@@ -160,7 +160,7 @@ function App() {
             </DashboardLayout>
           </SuperAdminRoute>
         }
-      />
+      /> */}
       <Route
         path="/super-admin/publications"
         element={

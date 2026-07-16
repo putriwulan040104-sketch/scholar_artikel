@@ -10,13 +10,20 @@ import { readFavorites, writeFavorites } from "@/lib/favorites";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
   Download,
   ExternalLink,
   Star,
 } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 const RANK_SORT_OPTIONS = [
   { value: "query_rank", label: "Rank Hasil Search" },
@@ -65,28 +72,30 @@ function loadFavorites(): CosineArticle[] {
   return readFavorites<CosineArticle>();
 }
 
-    export default function DaftarArtikelPage() {
-    const navigate = useNavigate()
-    const location = useLocation()
+export default function DaftarArtikelPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const query = (
-        (location.state as { query?: string } | null)?.query ||
-        new URLSearchParams(location.search).get("query") ||
-        localStorage.getItem("lastSearchQuery") ||
-        ""
-    ).trim()
+  const query = (
+    (location.state as { query?: string } | null)?.query ||
+    new URLSearchParams(location.search).get("query") ||
+    localStorage.getItem("lastSearchQuery") ||
+    ""
+  ).trim();
 
-    const [articles, setArticles] = useState<CosineArticle[]>([])
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<string | null>(null)
-    const [totalMatched, setTotalMatched] = useState(0)
+  const [articles, setArticles] = useState<CosineArticle[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [totalMatched, setTotalMatched] = useState(0);
 
-    const [rankSortBy, setRankSortBy] = useState("query_rank")
-    const [yearSortBy, setYearSortBy] = useState("")
-    const [page, setPage] = useState(1)
-    const [favoriteIds, setFavoriteIds] = useState<number[]>(() =>
-        loadFavorites().map((item) => Number(item.id)).filter(Number.isFinite)
-    )
+  const [rankSortBy, setRankSortBy] = useState("query_rank");
+  const [yearSortBy, setYearSortBy] = useState("");
+  const [page, setPage] = useState(1);
+  const [favoriteIds, setFavoriteIds] = useState<number[]>(() =>
+    loadFavorites()
+      .map((item) => Number(item.id))
+      .filter(Number.isFinite),
+  );
 
   const readStoredFilters = useCallback((): StoredFilters => {
     try {
@@ -255,16 +264,23 @@ function loadFavorites(): CosineArticle[] {
 
   return (
     <div className="min-h-screen p-6 space-y-4">
-      <button
-        type="button"
-        onClick={goBackToDashboard}
-        className="inline-flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium text-gray-500 transition-colors hover:bg-white hover:text-gray-800"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Kembali
-      </button>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <button type="button" onClick={goBackToDashboard}>
+                Dashboard
+              </button>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Daftar Artikel</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-wrap items-start justify-between gap-4">
+      <div className="space-y-4">
         <div>
           <h1 className="text-xl font-bold text-gray-900">Daftar Artikel</h1>
           <p className="text-sm text-gray-500 mt-1">
@@ -272,7 +288,7 @@ function loadFavorites(): CosineArticle[] {
           </p>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="flex flex-wrap items-end gap-4 border-b border-gray-100 p-4">
             <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold text-gray-600">
