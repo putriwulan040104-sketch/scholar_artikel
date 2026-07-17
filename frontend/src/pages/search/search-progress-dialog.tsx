@@ -70,11 +70,20 @@ const STAGE_MICRO_PHRASES: Record<string, string[]> = {
     "Memeriksa abstrak pada dataset yang tersedia...",
     "Mengurutkan artikel berdasarkan tingkat kecocokan...",
   ],
+  // Duplicate Grouping, Official Source Selection, DOI Resolution, dan PDF
+  // Validation BUKAN tahapan berdiri sendiri -- semuanya bagian dari proses
+  // Scraping, jadi micro-phrase-nya digabung ke tahap "scrape" di atas.
   scrape: [
     "Membuka halaman hasil Google Scholar...",
     "Membaca judul, penulis, tahun, dan sumber artikel...",
     "Melewati artikel dengan tahun atau abstrak yang tidak sesuai...",
     "Mengambil kandidat PDF dari hasil pencarian...",
+    "Mengelompokkan artikel yang memiliki judul dan abstrak mirip...",
+    "Memeriksa kemungkinan duplikasi metadata...",
+    "Memilih sumber artikel yang paling resmi...",
+    "Mencari DOI dari metadata artikel...",
+    "Memeriksa URL PDF yang tersedia...",
+    "Memvalidasi akses dan sumber file artikel...",
   ],
   temporary: [
     "Mengumpulkan metadata ke dataset sementara...",
@@ -97,16 +106,6 @@ const STAGE_MICRO_PHRASES: Record<string, string[]> = {
     "Menempatkan artikel pada ruang vektor yang sama...",
     "Menghitung Cosine Similarity terhadap kata kunci...",
     "Mengurutkan artikel dari skor tertinggi...",
-  ],
-  article_filtering: [
-    "Mengelompokkan artikel yang memiliki judul dan abstrak mirip...",
-    "Memeriksa kemungkinan duplikasi metadata...",
-    "Memilih sumber artikel yang paling resmi...",
-  ],
-  validation: [
-    "Mencari DOI dari metadata artikel...",
-    "Memeriksa URL PDF yang tersedia...",
-    "Memvalidasi akses dan sumber file artikel...",
   ],
   save_dataset: [
     "Memperbarui artikel lama jika metadata berubah...",
@@ -134,6 +133,66 @@ const STAGE_MICRO_PHRASES: Record<string, string[]> = {
 
 function getStageMicroPhrases(stageKey: string) {
   return STAGE_MICRO_PHRASES[stageKey] || DEFAULT_MICRO_PHRASES;
+}
+
+/**
+ * Melebur tahap "article_filtering" (Duplicate Grouping, Official Source
+ * Selection) dan "validation" (DOI Resolution, PDF Validation) LANGSUNG ke
+ * dalam tahap "scrape" (Scraping) -- bukan lagi ditampilkan sebagai tahap
+ * terpisah.
+ *
+ * Sesuai alur utama sistem: Scraping -> Preprocessing -> TF-IDF -> Cosine
+ * Similarity -> Hasil Pencarian. Pengelompokan duplikat, pemilihan sumber
+ * resmi, serta validasi DOI/PDF adalah BAGIAN dari proses Scraping, bukan
+ * tahapan yang berdiri sendiri.
+ *
+ * Status dan durasi dari ketiga tahap sumber digabung jadi satu tahap
+ * "scrape" saja, supaya progress/animasi/persentase tetap utuh. Deskripsi
+ * TIDAK digabung/diperpanjang -- tetap singkat -- karena detail
+ * pengelompokan duplikat, pemilihan sumber resmi, dan validasi DOI/PDF
+ * sudah tersampaikan lewat micro-phrase yang berjalan di kotak status
+ * (lihat STAGE_MICRO_PHRASES.scrape) saat tahap ini sedang aktif.
+ * Kalau tahap "scrape" atau kedua tahap yang dilebur tidak ditemukan (mis.
+ * skema tahap berbeda), array dikembalikan apa adanya tanpa perubahan.
+ */
+const SCRAPE_KEY = "scrape";
+const ABSORBED_INTO_SCRAPE_KEYS = ["article_filtering", "validation"];
+
+function foldIntoScrapeStage(rawStages: ScriptedStageView[]): ScriptedStageView[] {
+  const scrapeIndex = rawStages.findIndex((stage) => stage.key === SCRAPE_KEY);
+  const absorbedIndexes = rawStages
+    .map((stage, index) => (ABSORBED_INTO_SCRAPE_KEYS.includes(stage.key) ? index : -1))
+    .filter((index) => index !== -1);
+
+  if (scrapeIndex === -1 || absorbedIndexes.length !== ABSORBED_INTO_SCRAPE_KEYS.length) {
+    return rawStages;
+  }
+
+  const scrapeStage = rawStages[scrapeIndex];
+  const absorbedStages = absorbedIndexes.map((index) => rawStages[index]);
+  const allInvolved = [scrapeStage, ...absorbedStages];
+
+  let status: ScriptedStageStatus = "waiting";
+  if (allInvolved.every((stage) => stage.status === "done")) {
+    status = "done";
+  } else if (allInvolved.some((stage) => stage.status !== "waiting")) {
+    status = "running";
+  }
+
+  const mergedScrapeStage: ScriptedStageView = {
+    ...scrapeStage,
+    // Deskripsi dibuat singkat -- detail pengelompokan duplikat, pemilihan
+    // sumber resmi, serta validasi DOI/PDF TIDAK dimasukkan ke sini, tapi
+    // sudah tercakup lewat micro-phrase yang berjalan (lihat
+    // STAGE_MICRO_PHRASES.scrape) di kotak status berjalan saat tahap ini aktif.
+    description: "Mengambil metadata artikel baru dari Google Scholar jika diperlukan.",
+    status,
+    duration_seconds: allInvolved.reduce((total, stage) => total + (stage.duration_seconds || 0), 0),
+  };
+
+  return rawStages
+    .filter((_, index) => !absorbedIndexes.includes(index))
+    .map((stage) => (stage.key === SCRAPE_KEY ? mergedScrapeStage : stage));
 }
 
 type TransitionKind = "found" | "empty";
@@ -303,7 +362,7 @@ function TransitionScreen({
         <div>
           <p className="text-base font-semibold text-slate-700">Artikel tidak ditemukan</p>
           <p className="mt-1 text-sm text-slate-500">
-            Kata kunci "{query}" belum tersedia dalam sistem. Coba kata kunci lain.
+            Kata kunci "{query}" belum tersedia dalam sistem. Coba gunakan kata kunci lain.
           </p>
         </div>
         <Button onClick={onClose} className="mt-2 px-8">
@@ -393,7 +452,8 @@ export function SearchProgressDialog({
         duration_seconds: stage.duration_seconds || 0,
       }))
     : null;
-  const stages = backendStages || scriptedProgress.stages;
+  const rawStages = backendStages || scriptedProgress.stages;
+  const stages = foldIntoScrapeStage(rawStages);
   const percent = backendStages ? progress?.progress ?? scriptedProgress.percent : scriptedProgress.percent;
   const isFinished = backendStages ? isComplete : scriptedProgress.isFinished;
   const isEmptyHalted = backendStages ? false : scriptedProgress.isEmptyHalted;
@@ -421,7 +481,8 @@ export function SearchProgressDialog({
   }, [isFinished, isEmptyHalted, isActive, resultStatus]);
 
   // Hanya kasus "found" yang otomatis lanjut (navigasi ke hasil). Kasus
-  // "empty" dibiarkan terbuka supaya pengguna bisa mencoba kata kunci lain.
+  // "empty" dibiarkan terbuka (tidak auto-close) supaya pengguna sempat
+  // membaca pesan "Artikel tidak ditemukan" sebelum menutup dialog sendiri.
   useEffect(() => {
     if (transitionKind !== "found") return;
     if (canRescrape) return;
