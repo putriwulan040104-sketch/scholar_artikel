@@ -4,7 +4,6 @@ from flask_cors import CORS
 from app.routes.auth import auth_bp
 from app.routes.publication import publication_bp
 from app.routes.search import search_bp
-from app.routes.request import request_bp
 from app.routes.users import users_bp
 from app.routes.admin_publications import admin_publications_bp
 from app.routes.activity_logs import activity_logs_bp
