@@ -14,6 +14,7 @@ import {
   Search,
   SearchX,
   Sparkles,
+  Tags,
 } from "lucide-react";
 import {
   Dialog,
@@ -22,7 +23,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { SearchProgressEvent } from "@/api/api";
 import {
@@ -35,19 +35,28 @@ import {
   type ScriptedStageView,
 } from "./search-progress-animation";
 
-// Ikon untuk tiap tahap mengikuti stage dari backend.
-const stageIcons = [
-  Database,
-  Search,
-  FileText,
-  Sparkles,
-  ClipboardCheck,
-  GitCompare,
-  Filter,
-  CheckCircle2,
-  Layers,
-  FileSearch,
-];
+const stageIconsByKey = {
+  start: Database,
+  dataset: Database,
+  scrape: Search,
+  temporary: FileText,
+  "article-info": FileText,
+  preprocessing: Sparkles,
+  cleaning: Sparkles,
+  tfidf: ClipboardCheck,
+  "keyword-weight": ClipboardCheck,
+  similarity: GitCompare,
+  pattern: GitCompare,
+  matching: GitCompare,
+  article_filtering: Filter,
+  filtering: Filter,
+  validation: CheckCircle2,
+  save_dataset: Layers,
+  extraction: Tags,
+  relation_network: Tags,
+  "relation-network": Tags,
+  final: FileSearch,
+};
 
 const DEFAULT_MICRO_PHRASES = [
   "Menyiapkan proses pencarian...",
@@ -104,6 +113,18 @@ const STAGE_MICRO_PHRASES: Record<string, string[]> = {
     "Menyimpan artikel baru ke Final Dataset...",
     "Menyinkronkan dataset agar siap dihitung ulang...",
   ],
+  extraction: [
+    "Membuka halaman artikel yang sudah lolos validasi...",
+    "Mengekstrak keyword dari HTML atau PDF artikel...",
+    "Mengambil daftar referensi untuk analisis relasi...",
+    "Menyimpan keyword dan referensi ke cleaned dataset...",
+  ],
+  relation_network: [
+    "Membaca keyword, author, atau reference list terbaru...",
+    "Membangun relasi artikel yang serupa...",
+    "Memperbarui bobot relasi antar artikel...",
+    "Menyiapkan graph relasi untuk divisualisasikan...",
+  ],
   final: [
     "Memuat ulang indeks pencarian terbaru...",
     "Menerapkan filter tahun, kategori, dan akses artikel...",
@@ -117,149 +138,6 @@ function getStageMicroPhrases(stageKey: string) {
 
 type TransitionKind = "found" | "empty";
 
-interface RequestForm {
-  nama: string;
-  email: string;
-  kataKunci: string;
-  judulArtikel: string;
-  keterangan: string;
-}
-
-/**
- * Form "Request Artikel" yang tampil langsung di dalam popup scraper saat
- * artikel tidak ditemukan (dipindahkan dari halaman pencarian ke sini,
- * logikanya sama: POST ke /api/request-article).
- */
-function RequestArticleForm({
-  query,
-  onSubmitted,
-}: {
-  query: string;
-  onSubmitted: () => void;
-}) {
-  const [form, setForm] = useState<RequestForm>({
-    nama: "",
-    email: "",
-    kataKunci: query || "",
-    judulArtikel: "",
-    keterangan: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [notif, setNotif] = useState("");
-  const [notifType, setNotifType] = useState<"success" | "error">("success");
-
-  const handleChange = (key: keyof RequestForm, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      setNotif("");
-
-      const res = await fetch("http://127.0.0.1:5000/api/request-article", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || data?.status === "error") {
-        setNotifType("error");
-        setNotif(data?.message || "Gagal mengirim permintaan.");
-        return;
-      }
-
-      setNotifType(data?.email_sent === false ? "error" : "success");
-      setNotif(data?.message || "Permintaan berhasil dikirim.");
-
-      window.setTimeout(() => {
-        onSubmitted();
-      }, 1500);
-    } catch (error: any) {
-      setNotifType("error");
-      setNotif(error?.message || "Gagal mengirim permintaan.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="mx-auto w-full max-w-md text-left">
-      {notif && (
-        <div
-          className={cn(
-            "mb-4 rounded-lg px-3 py-2 text-center text-sm font-medium",
-            notifType === "success" ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700",
-          )}
-        >
-          {notif}
-        </div>
-      )}
-
-      <div className="space-y-3">
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm">Nama</label>
-          <Input
-            value={form.nama}
-            onChange={(e) => handleChange("nama", e.target.value)}
-            placeholder="Nama lengkap"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm">Email</label>
-          <Input
-            type="email"
-            value={form.email}
-            onChange={(e) => handleChange("email", e.target.value)}
-            placeholder="email@contoh.com"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm">Kata Kunci Pencarian</label>
-          <Input
-            value={form.kataKunci}
-            onChange={(e) => handleChange("kataKunci", e.target.value)}
-            placeholder="Contoh: web accessibility"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm">Judul Artikel (Opsional)</label>
-          <Input
-            value={form.judulArtikel}
-            onChange={(e) => handleChange("judulArtikel", e.target.value)}
-            placeholder="Jika ada judul spesifik"
-          />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm">Keterangan Tambahan (Opsional)</label>
-          <textarea
-            value={form.keterangan}
-            onChange={(e) => handleChange("keterangan", e.target.value)}
-            placeholder="Tambahkan detail permintaan..."
-            className="min-h-[90px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          />
-        </div>
-
-        <div className="flex justify-center pt-1">
-          <Button
-            onClick={handleSubmit}
-            className="px-10"
-            disabled={loading || !form.nama.trim() || !form.email.trim() || !form.kataKunci.trim()}
-          >
-            {loading ? "Mengirim..." : "Kirim Permintaan"}
-          </Button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function statusLabel(status: ScriptedStageStatus) {
   if (status === "done") return "Selesai";
   if (status === "running") return "Berjalan...";
@@ -272,7 +150,6 @@ function statusClass(status: ScriptedStageStatus) {
   return "text-slate-400";
 }
 
-/** Tiga titik berjalan ala "thinking indicator" (ChatGPT/Claude style). */
 function ThinkingDots({ className }: { className?: string }) {
   const tick = useDotTicker(3, 380);
   return (
@@ -346,7 +223,7 @@ function ProcessStep({
   stage: ScriptedStageView;
   index: number;
 }) {
-  const Icon = stageIcons[index] || FileText;
+  const Icon = stageIconsByKey[stage.key as keyof typeof stageIconsByKey] || FileText;
   const isRunning = stage.status === "running";
   const microPhrases = getStageMicroPhrases(stage.key);
   const microDetail = useMicroTicker(isRunning, microPhrases, 1700);
@@ -407,49 +284,30 @@ function ProcessStep({
 function TransitionScreen({
   kind,
   query,
-  showRequestForm,
   canRescrape,
-  onOpenRequestForm,
-  onRequestSubmitted,
+  onClose,
   onUseResults,
   onRescrape,
 }: {
   kind: TransitionKind;
   query: string;
-  showRequestForm: boolean;
   canRescrape: boolean;
-  onOpenRequestForm: () => void;
-  onRequestSubmitted: () => void;
+  onClose: () => void;
   onUseResults: () => void;
   onRescrape: () => void;
 }) {
   if (kind === "empty") {
-    if (showRequestForm) {
-      return (
-        <div className="px-6 py-8">
-          <div className="mb-5 text-center">
-            <p className="text-base font-semibold text-slate-700">Kirim Permintaan Artikel</p>
-            <p className="mt-1 text-sm text-slate-500">
-              Kata kunci "{query}" belum tersedia. Isi form berikut agar tim kami menambahkannya.
-            </p>
-          </div>
-          <RequestArticleForm query={query} onSubmitted={onRequestSubmitted} />
-        </div>
-      );
-    }
-
     return (
       <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
         <SearchX className="h-10 w-10 text-slate-300" />
         <div>
           <p className="text-base font-semibold text-slate-700">Artikel tidak ditemukan</p>
           <p className="mt-1 text-sm text-slate-500">
-            Kata kunci "{query}" belum tersedia dalam sistem. Coba kata kunci lain, atau kirim
-            permintaan kepada developer.
+            Kata kunci "{query}" belum tersedia dalam sistem. Coba kata kunci lain.
           </p>
         </div>
-        <Button onClick={onOpenRequestForm} className="mt-2 px-8">
-          Request
+        <Button onClick={onClose} className="mt-2 px-8">
+          Tutup
         </Button>
       </div>
     );
@@ -541,14 +399,12 @@ export function SearchProgressDialog({
   const isEmptyHalted = backendStages ? false : scriptedProgress.isEmptyHalted;
 
   const [transitionKind, setTransitionKind] = useState<TransitionKind | null>(null);
-  const [showRequestForm, setShowRequestForm] = useState(false);
   const firedRef = useRef(false);
 
   useEffect(() => {
     if (!isActive) {
       firedRef.current = false;
       setTransitionKind(null);
-      setShowRequestForm(false);
       return;
     }
     // Untuk hasil "found": tunggu seluruh 8 tahap selesai + backend complete.
@@ -565,8 +421,7 @@ export function SearchProgressDialog({
   }, [isFinished, isEmptyHalted, isActive, resultStatus]);
 
   // Hanya kasus "found" yang otomatis lanjut (navigasi ke hasil). Kasus
-  // "empty" dibiarkan terbuka supaya pengguna bisa memakai tombol Request
-  // tanpa didahului auto-close.
+  // "empty" dibiarkan terbuka supaya pengguna bisa mencoba kata kunci lain.
   useEffect(() => {
     if (transitionKind !== "found") return;
     if (canRescrape) return;
@@ -644,13 +499,8 @@ export function SearchProgressDialog({
             <TransitionScreen
               kind={transitionKind}
               query={query}
-              showRequestForm={showRequestForm}
               canRescrape={canRescrape}
-              onOpenRequestForm={() => setShowRequestForm(true)}
-              onRequestSubmitted={() => {
-                setShowRequestForm(false);
-                onOpenChange(false);
-              }}
+              onClose={() => onOpenChange(false)}
               onUseResults={() => onFinished?.()}
               onRescrape={() => onRescrape?.()}
             />

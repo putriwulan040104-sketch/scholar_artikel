@@ -3,6 +3,14 @@ from app.services.ir_index_service import (
     rebuild_tfidf_index,
     sync_cleaned_dataset_from_final,
 )
+from app.services.citation.bibliographic_coupling_service import (
+    build_bibliographic_coupling,
+)
+from app.services.citation.coauthorship_service import build_coauthorship
+from app.services.citation.keyword_cooccurrence_service import (
+    build_keyword_cooccurrence,
+)
+from app.services.processing.publication_service import process_articles
 from src.scraper.pipeline import (
     METADATA_SIMILARITY_THRESHOLD,
     _new_skip_reasons,
@@ -52,6 +60,66 @@ def _validation_progress_mapper(progress_callback):
     return handle
 
 
+def _build_relation_network(relation_type, progress_callback=None):
+    active_relation_type = relation_type or "bibliographic_coupling"
+    relation_order = [
+        active_relation_type,
+        "bibliographic_coupling",
+        "keyword_cooccurrence",
+        "co_authorship",
+    ]
+    relation_order = list(dict.fromkeys(relation_order))
+
+    _emit(progress_callback, {
+        "stage": "relation_network",
+        "event": "start",
+        "message": "Menyusun ulang seluruh jaringan relasi artikel...",
+        "relation_type": active_relation_type,
+        "relation_types": relation_order,
+    })
+
+    summaries = {}
+    for current_relation_type in relation_order:
+        _emit(progress_callback, {
+            "stage": "relation_network",
+            "event": "relation_start",
+            "message": (
+                "Membangun relasi "
+                f"{current_relation_type.replace('_', ' ')}..."
+            ),
+            "relation_type": current_relation_type,
+        })
+
+        if current_relation_type == "keyword_cooccurrence":
+            summary = build_keyword_cooccurrence()
+        elif current_relation_type == "co_authorship":
+            summary = build_coauthorship()
+        else:
+            current_relation_type = "bibliographic_coupling"
+            summary = build_bibliographic_coupling()
+
+        summaries[current_relation_type] = summary
+        _emit(progress_callback, {
+            "stage": "relation_network",
+            "event": "relation_done",
+            "message": (
+                "Relasi "
+                f"{current_relation_type.replace('_', ' ')} selesai diperbarui"
+            ),
+            "relation_type": current_relation_type,
+            "summary": summary,
+        })
+
+    _emit(progress_callback, {
+        "stage": "relation_network",
+        "event": "done",
+        "message": "Semua jaringan relasi artikel selesai diperbarui",
+        "relation_type": active_relation_type,
+        "summary": summaries,
+    })
+    return summaries
+
+
 def run_web_ir_pipeline(
     keyword,
     target=10,
@@ -62,6 +130,7 @@ def run_web_ir_pipeline(
     jenis_analisis=None,
     jumlah_publikasi=None,
     jumlah_kemunculan=None,
+    build_relations=False,
     progress_callback=None,
 ):
     """Menjalankan pipeline penelitian dari web dengan perubahan minimal."""
@@ -250,7 +319,7 @@ def run_web_ir_pipeline(
             "message": "Tidak ada artikel baru untuk disimpan",
         })
 
-    saved_ids = [
+    saved_ids = saved_summary.get("ids") or [
         row.get("id")
         for row in saved_summary.get("rows", [])
         if row.get("id") is not None
@@ -259,7 +328,28 @@ def run_web_ir_pipeline(
         source_ids=saved_ids or None,
         progress_callback=progress_callback,
     )
+    extraction_results = []
+    if saved_ids:
+        extraction_results = process_articles(
+            source_ids=saved_ids,
+            progress_callback=progress_callback,
+        )
+    else:
+        _emit(progress_callback, {
+            "stage": "extraction",
+            "event": "done",
+            "message": "Tidak ada artikel baru untuk diekstrak",
+            "article_count": 0,
+        })
+
     rebuild_tfidf_index(progress_callback=progress_callback)
+
+    relation_summary = None
+    if build_relations:
+        relation_summary = _build_relation_network(
+            jenis_analisis,
+            progress_callback=progress_callback,
+        )
 
     _emit(progress_callback, {
         "stage": "search",
@@ -287,6 +377,15 @@ def run_web_ir_pipeline(
         "processed_count": len(processed_articles),
         "inserted": saved_summary.get("inserted", 0),
         "updated": saved_summary.get("updated", 0),
+        "extracted": sum(
+            item.get("status") == "saved"
+            for item in extraction_results
+        ),
+        "extraction_errors": sum(
+            item.get("status") == "error"
+            for item in extraction_results
+        ),
+        "relation_network": relation_summary,
         "index": reload_info,
     }
     _emit(progress_callback, {

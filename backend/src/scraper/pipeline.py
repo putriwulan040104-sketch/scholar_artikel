@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-
 from src.config.supabase_client import supabase
 from src.scraper.doi_service import (
     fetch_doi_crossref,
@@ -414,6 +413,7 @@ def save_articles_incremental_to_supabase(articles, progress_callback=None):
     inserted = 0
     updated = 0
     saved_rows = []
+    saved_ids = []
     total = len(articles)
 
     for index, row in enumerate(articles, start=1):
@@ -441,12 +441,18 @@ def save_articles_incremental_to_supabase(articles, progress_callback=None):
                     .execute()
                 )
                 updated += 1
+                saved_ids.append(existing_id)
             else:
                 response = supabase.table(TABLE_DOI).insert(db_row).execute()
                 inserted += 1
 
             if response.data:
                 saved_rows.extend(response.data)
+                saved_ids.extend(
+                    row.get("id")
+                    for row in response.data
+                    if row.get("id") is not None
+                )
         except Exception as e:
             print(f"  Gagal incremental save Supabase: {e}")
 
@@ -464,6 +470,7 @@ def save_articles_incremental_to_supabase(articles, progress_callback=None):
         "updated": updated,
         "saved_count": inserted + updated,
         "rows": saved_rows,
+        "ids": sorted({int(saved_id) for saved_id in saved_ids if saved_id is not None}),
     }
 
 

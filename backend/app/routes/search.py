@@ -37,7 +37,12 @@ SEARCH_PROGRESS_STAGES = [
     {
         "key": "preprocessing",
         "title": "Membersihkan Data",
-        "description": "Merapikan judul, abstrak, dan kata kunci artikel.",
+        "description": "Merapikan judul dan abstrak artikel untuk perhitungan teks.",
+    },
+    {
+        "key": "extraction",
+        "title": "Mengekstrak Artikel",
+        "description": "Mengambil keyword dan referensi dari HTML atau PDF artikel.",
     },
     {
         "key": "tfidf",
@@ -65,6 +70,11 @@ SEARCH_PROGRESS_STAGES = [
         "description": "Memperbarui dataset akhir di sistem.",
     },
     {
+        "key": "relation_network",
+        "title": "Menyusun Jaringan Relasi",
+        "description": "Memperbarui relasi artikel berdasarkan hasil terbaru.",
+    },
+    {
         "key": "final",
         "title": "Menyiapkan Hasil",
         "description": "Mengurutkan artikel terbaik untuk ditampilkan.",
@@ -72,7 +82,7 @@ SEARCH_PROGRESS_STAGES = [
 ]
 
 
-def _initial_progress_stages():
+def _initial_progress_stages(include_relation_network=False):
     return [
         {
             **stage,
@@ -81,6 +91,7 @@ def _initial_progress_stages():
             "details": {},
         }
         for stage in SEARCH_PROGRESS_STAGES
+        if include_relation_network or stage["key"] != "relation_network"
     ]
 
 
@@ -142,14 +153,23 @@ def _json_safe(value):
 
 
 class SearchProgressReporter:
-    def __init__(self, emit, keyword, category, target):
+    def __init__(
+        self,
+        emit,
+        keyword,
+        category,
+        target,
+        include_relation_network=False,
+    ):
         self.emit = emit
         self.keyword = keyword
         self.category = category
         self.target = target
         self.started_at = time.time()
         self.monotonic_started_at = time.monotonic()
-        self.stages = _initial_progress_stages()
+        self.stages = _initial_progress_stages(
+            include_relation_network=include_relation_network,
+        )
         self.logs = []
         self.stage_started_at = {}
         self.finished = False
@@ -303,6 +323,7 @@ def search_progress():
         or request.args.get("jumlahKemunculan")
     )
     force_scrape = _truthy(request.args.get("force_scrape"))
+    build_relations = _truthy(request.args.get("build_relations"))
 
     event_queue = queue.Queue()
     reporter = SearchProgressReporter(
@@ -310,6 +331,7 @@ def search_progress():
         keyword=keyword,
         category=display_category,
         target=target,
+        include_relation_network=build_relations,
     )
 
     def run_pipeline():
@@ -368,6 +390,7 @@ def search_progress():
                 jumlah_kemunculan=jumlah_kemunculan,
                 jumlah_publikasi=jumlah_publikasi,
                 selected_category=selected_category or None,
+                build_relations=build_relations,
                 progress_callback=reporter.handle,
             )
             reporter.complete(result)

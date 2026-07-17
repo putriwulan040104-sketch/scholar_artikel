@@ -97,6 +97,7 @@ Pygments==2.18.0
 pyiceberg==0.10.0
 PyJWT==2.10.1
 pyparsing==3.2.0
+PyPDF2==3.0.1
 pypdfium2==5.3.0
 pyroaring==1.0.3
 python-dateutil==2.9.0.post0
