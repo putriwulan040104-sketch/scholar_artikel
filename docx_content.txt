@@ -1,0 +1,152 @@
+Pengujian Precision at K
+
+Setelah sistem menghasilkan pemeringkatan artikel menggunakan Cosine Similarity, tahap berikutnya adalah melakukan evaluasi untuk mengetahui ketepatan hasil pencarian yang ditampilkan pada posisi teratas. Evaluasi ini menggunakan metrik Precision at K karena fokus penelitian tidak hanya menghasilkan nilai kemiripan, tetapi juga menilai apakah artikel yang berada pada urutan teratas benar-benar relevan terhadap query pengguna.
+
+Pada tahap awal, nilai threshold Cosine Similarity > 0,3 digunakan sebagai indikator awal relevansi. Dokumen dengan nilai similarity di atas 0,3 diberi tanda awal sebagai dokumen yang berpotensi relevan, sedangkan dokumen dengan nilai similarity di bawah atau sama dengan 0,3 diberi tanda awal sebagai dokumen yang memiliki tingkat kemiripan lebih rendah. Threshold tersebut tidak digunakan sebagai keputusan akhir dalam evaluasi Precision at K. Keputusan akhir relevansi tetap ditentukan berdasarkan Label Final dari tiga evaluator melalui human judgement.
+
+Pada penelitian ini, nilai K yang digunakan adalah K=5, K=10, dan K=20. Ketiga nilai tersebut dipilih untuk melihat ketepatan sistem pada jumlah hasil pencarian yang paling mungkin diperhatikan oleh pengguna.
+
+Persiapan Query Uji dan Ground Truth
+
+Pengujian menggunakan 12 query uji yang disusun secara bilingual (Bahasa Indonesia dan Bahasa Inggris) dengan proporsi tiga query untuk setiap kategori artikel dalam korpus, yaitu Machine Learning, Web Application, Cyber Security, dan Mobile Application. Penyusunan query secara bilingual dilakukan karena korpus artikel yang digunakan terdiri dari campuran artikel berbahasa Indonesia dan Inggris, sehingga kemampuan sistem dalam menangani query dari kedua bahasa perlu diuji.
+
+Setiap query dijalankan melalui fungsi pencarian sistem dengan top_k = 20 agar seluruh kebutuhan K (5, 10, dan 20) dapat dipenuhi dari satu kali proses pencarian. Hasil pencarian untuk seluruh 12 query kemudian dikumpulkan dan diserahkan kepada tiga evaluator independen untuk dinilai relevansinya terhadap masing-masing query, tanpa evaluator mengetahui skor kemiripan yang dihasilkan sistem. Setiap evaluator memberikan label biner (1 = relevan, 0 = tidak relevan) pada setiap pasangan artikel-query. Label Final ditentukan melalui majority vote (konsensus minimal 2 dari 3 evaluator). Berkas ground truth inilah yang digunakan sebagai acuan pada perhitungan Precision@K.
+
+Dari total 225 pasangan artikel-query yang dinilai, sebanyak 196 artikel (87,1%) dinyatakan relevan dan 29 artikel (12,9%) dinyatakan tidak relevan berdasarkan konsensus evaluator.
+
+Implementasi Pencarian dan Perhitungan Precision@K
+
+Proses pencarian pada tahap evaluasi menggunakan pipeline yang sama dengan sistem pencarian utama. Query terlebih dahulu melalui tahap preprocessing yang terdiri dari cleaning (lowercase, hapus URL, hapus non-alfanumerik), tokenisasi, penghapusan stopword, dan stemming menggunakan Sastrawi. Urutan tahapan ini identik dengan preprocessing dokumen pada tahap pembangunan model TF-IDF.
+
+Kode Program 4.x Fungsi preprocess_query
+
+def preprocess_query(query):
+
+    cleaned = clean_text(query)
+
+    tokens = cleaned.split()
+
+    tokens = [t for t in tokens if t not in stop_words and len(t) > 1]
+
+    tokens = [stemmer.stem(t) for t in tokens]
+
+    return tokens
+
+Berdasarkan Kode Program 4.x, fungsi preprocess_query mengubah query menjadi kumpulan token dasar melalui tahap pembersihan, penyaringan stopword, dan stemming, sebelum ditimbang menjadi vektor TF-IDF.
+
+Kode Program 4.x Fungsi build_query_vector
+
+def build_query_vector(query_tokens):
+
+    term_to_index = {term: i for i, term in enumerate(terms)}
+
+    qv = np.zeros(len(terms), dtype=float)
+
+    if not query_tokens:
+
+        return qv.reshape(1, -1)
+
+    total = len(query_tokens)
+
+    counts = Counter(query_tokens)
+
+    for term, count in counts.items():
+
+        if term in term_to_index:
+
+            tf = count / total
+
+            idf = float(idf_scores.get(term, 0))
+
+            qv[term_to_index[term]] = tf * idf
+
+    return qv.reshape(1, -1)
+
+Pada Kode Program 4.x, bobot setiap term pada vektor query dihitung dengan mengalikan term frequency (TF) query terhadap nilai inverse document frequency (IDF) yang telah dihasilkan pada tahap pembangunan model TF-IDF korpus, sehingga skema pembobotan antara query dan dokumen tetap konsisten.
+
+Kode Program 4.x Fungsi search
+
+def search(query, top_k=20, min_occurrence=0, threshold=0.3):
+
+    query_tokens = preprocess_query(query)
+
+    if not query_tokens:
+
+        return pd.DataFrame()
+
+    qv = build_query_vector(query_tokens)
+
+    scores = cosine_similarity(qv, tfidf_matrix).flatten()
+
+    results = doc_index.copy()
+
+    results["similarity_score"] = scores
+
+    results["occurrence"] = results["document_text"].apply(
+
+        lambda t: count_occurrence(t, query_tokens))
+
+    results = results[results["similarity_score"] > 0].copy()
+
+    if min_occurrence > 0:
+
+        results = results[results["occurrence"] >= min_occurrence].copy()
+
+    results = results.sort_values("similarity_score", ascending=False)
+
+    results = results.head(top_k).reset_index(drop=True)
+
+    results["rank"] = range(1, len(results) + 1)
+
+    results["threshold_relevan"] = (results["similarity_score"] > threshold).astype(int)
+
+    results["interpretation"] = results["similarity_score"].apply(
+
+        lambda s: interpret_similarity(s, threshold))
+
+    return results
+
+Berdasarkan Kode Program 4.x, fungsi search() digunakan untuk menjalankan proses pencarian artikel berdasarkan query evaluasi. Query terlebih dahulu melalui tahap preprocessing agar bentuk katanya sesuai dengan data dokumen yang telah diproses sebelumnya. Selanjutnya, query diubah menjadi vektor dan dibandingkan dengan matriks TF-IDF dokumen menggunakan cosine similarity untuk memperoleh nilai similarity_score. Hasil pencarian kemudian difilter agar hanya artikel dengan skor similarity lebih dari 0 yang digunakan, lalu diurutkan dari skor tertinggi ke terendah dan dibatasi sesuai nilai top_k.
+
+Setelah hasil pencarian diperoleh, label relevansi dari ground truth digabungkan berdasarkan pasangan query dan article_id. Artikel yang memiliki Label Final = 1 diberi nilai relevan = 1, sedangkan artikel dengan Label Final = 0 atau tidak ditemukan pada ground truth diberi nilai relevan = 0. Precision@K kemudian dihitung untuk setiap query pada nilai K = 5, 10, dan 20.
+
+Kode Program 4.x Perhitungan Precision@K
+
+for k in K_VALUES:
+
+    top_k = merged.head(k)
+
+    relevant_k = int(top_k["relevan"].sum())
+
+    precision_k = relevant_k / k
+
+Berdasarkan Kode Program 4.x, perhitungan Precision@K dilakukan dengan mengambil jumlah artikel relevan pada peringkat teratas sesuai nilai K, kemudian membaginya dengan K. Nilai Precision@K diperoleh dengan membagi jumlah artikel relevan pada K teratas dengan jumlah K yang dievaluasi.
+
+Hasil Pengujian
+
+Hasil pengujian diperoleh dari proses pencarian terhadap 12 query uji yang mewakili empat kategori. Setiap query dijalankan menggunakan fungsi pencarian berbasis cosine similarity, kemudian hasilnya dicocokkan dengan data ground truth dari tiga evaluator. Sebagai gambaran awal, Tabel 4.13 menyajikan contoh hasil pencarian untuk query "cyber security" pada lima peringkat teratas.
+
+Tabel 4.13 Contoh Hasil Pencarian Query "cyber security" pada Top-5
+
+Berdasarkan Tabel 4.13, lima artikel teratas pada query "cyber security" seluruhnya memiliki nilai similarity di atas threshold dan memperoleh label relevan dari hasil konsensus evaluator. Artikel pada peringkat pertama memperoleh skor similarity tertinggi sebesar 0,8153, yang menunjukkan bahwa istilah pada query memiliki keterkaitan kuat dengan isi dokumen.
+
+Rekapitulasi hasil evaluasi untuk seluruh query uji disajikan pada Tabel 4.14.
+
+Tabel 4.14 Precision@K per Query
+
+Berdasarkan Tabel 4.14, sebagian besar query memperoleh nilai Precision@K yang cukup tinggi, terutama pada K = 5. Query seperti "machine learning", "web application", dan "cyber security" memperoleh nilai P@5 sempurna (1,00) karena seluruh artikel pada peringkat 1–5 dinyatakan relevan oleh evaluator. Query bilingual seperti "aplikasi web", "keamanan siber", dan "aplikasi mobile" juga menunjukkan performa yang baik dengan P@5 mencapai 0,80.
+
+Namun, beberapa query mengalami penurunan pada K yang lebih besar. Query "pembelajaran mesin" hanya memperoleh 6 hasil retrieved dan P@20 sebesar 0,20 karena keterbatasan dokumen berbahasa Indonesia yang mengandung istilah tersebut dalam korpus. Query "data mining" dan "aplikasi android" juga menunjukkan P@20 yang lebih rendah (0,50 dan 0,65) karena hasil pada peringkat bawah mulai mencakup artikel dari kategori lain yang tidak relevan.
+
+Untuk memperoleh gambaran performa sistem secara keseluruhan, nilai Precision@K dari seluruh query dihitung rata-ratanya. Hasil rata-rata tersebut disajikan pada Tabel 4.x, sedangkan perbandingan rata-rata berdasarkan kategori ditampilkan pada Tabel 4.x.
+
+Tabel 4.x Rata-rata Precision@K Keseluruhan
+
+Tabel 4.x Rata-rata Precision@K per Kategori
+
+Berdasarkan Tabel 4.x, sistem memperoleh rata-rata Precision@5 sebesar 78,33%, Precision@10 sebesar 77,50%, dan Precision@20 sebesar 73,33%. Nilai tersebut menunjukkan bahwa sistem memiliki kemampuan yang baik dalam menampilkan artikel relevan, terutama pada peringkat teratas. Penurunan nilai precision dari K = 5 ke K = 20 masih tergolong wajar karena semakin banyak artikel yang diambil, peluang munculnya artikel dengan tingkat relevansi lebih rendah juga semakin besar.
+
+Pada Tabel 4.x, kategori Cyber Security menunjukkan performa paling stabil dengan nilai rata-rata Precision@K pada rentang 0,8000 hingga 0,9000. Hal ini menunjukkan bahwa istilah pada query kategori tersebut memiliki keterkaitan yang kuat dan konsisten dengan dokumen yang tersedia. Kategori Web Application dan Mobile Application juga menunjukkan hasil yang baik dengan P@10 dan P@20 di atas 0,76.
+
+Sementara itu, kategori Machine Learning memperoleh nilai rata-rata yang menurun signifikan pada P@10 (0,5000) dan P@20 (0,4667). Hal ini disebabkan oleh query "pembelajaran mesin" yang hanya menghasilkan 6 artikel retrieved dengan relevansi terbatas, serta query "data mining" yang memunculkan artikel dari luar kategori Machine Learning pada peringkat bawah. Kondisi ini menunjukkan bahwa variasi query berbahasa Indonesia pada kategori Machine Learning memiliki tantangan dalam hal kecocokan term dengan korpus yang didominasi bahasa Inggris.
+

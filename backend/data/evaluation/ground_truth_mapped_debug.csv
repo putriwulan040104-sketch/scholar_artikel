@@ -1,415 +1,451 @@
-No.,Query,Kategori Query,Rank,Article ID,Kategori Artikel,Judul Artikel,Abstrak,Similarity Score,Threshold Awal,Evaluator 1,Evaluator 2,Evaluator 3,Label Final,Status Final,Catatan Evaluator
+No.,Query,Kategori Query,Rank,Article ID,Kategori Artikel,Judul Artikel,Abstrak,Similarity Score,Threshold Awal,Evaluator 1,Evaluator 2,Evaluator 3,Label Final,Status Final,Catatan Evaluator,Article ID (Old),ID Match
 1,machine learning,Machine Learning,1,28,machine learning,"Penerapan Machine Learning, Deep Learning, Dan Data Mining Dalam Deteksi Kecurangan Laporan Keuangan-a Systematic Literature Review","… the application of machine learning, deep learning, and data … provides evidence that machine
-learning, deep learning, and … New technologies such as machine learning, deep learning, …","0,474999",1,1,1,1.0,1,Relevan,
+learning, deep learning, and … New technologies such as machine learning, deep learning, …","0,474999",1,1,1,1.0,1,Relevan,,3,Matched
 2,machine learning,Machine Learning,2,6,machine learning,Machine learning and deep learning: C. Janiesch et al.,"… Deep learning is a machine learning concept based on … , deep learning models outperform
-shallow machine learning … fundamentals of machine learning and deep learning to generate …","0,469477",1,1,1,1.0,1,Relevan,
+shallow machine learning … fundamentals of machine learning and deep learning to generate …","0,469477",1,1,1,1.0,1,Relevan,,30,Matched
 3,machine learning,Machine Learning,3,38,machine learning,Penerapan Machine Learning Untuk Mengategorikan Sampah Plastik Rumah Tangga,"… With the help of Machine Learning and Deep Learning, we … Machine learning dapat
-diterapkan untuk mengolah data … Data yang tersimpan dalam Machine learning juga dapat …","0,445702",1,1,1,1.0,1,Relevan,
+diterapkan untuk mengolah data … Data yang tersimpan dalam Machine learning juga dapat …","0,445702",1,1,1,1.0,1,Relevan,,13,Matched
 4,machine learning,Machine Learning,4,16,machine learning,An overview of machine learning classification techniques,"… statistical learning and pattern recognition, machine learning now … between statistics and
-machine learning is evident, with … core of machine learning lies the concept of self-learning, a …","0,431999",1,1,1,1.0,1,Relevan,
+machine learning is evident, with … core of machine learning lies the concept of self-learning, a …","0,431999",1,1,1,1.0,1,Relevan,,40,Matched
 5,machine learning,Machine Learning,5,26,machine learning,Penerapan machine learning dalam prediksi tingkat kasus penyakit di Indonesia,"… menjabarkan implementasi machine learning untuk memprediksi … kasus, pengaplikasian
-machine learning dengan pemodelan ARIMA … Kemudian, implementasi machine learning untuk …","0,405156",1,1,1,1.0,1,Relevan,
+machine learning dengan pemodelan ARIMA … Kemudian, implementasi machine learning untuk …","0,405156",1,1,1,1.0,1,Relevan,,1,Matched
 6,machine learning,Machine Learning,6,49,machine learning,Penerapan Metode Machine Learning dalam Mengidentifikasi Berita Hoaks,"… method using a machine learning approach on news data. … sources and applying machine
-learning algorithms, including … The results of this research show that the machine learning …","0,384833",1,1,1,1.0,1,Relevan,
+learning algorithms, including … The results of this research show that the machine learning …","0,384833",1,1,1,1.0,1,Relevan,,23,Matched
 7,machine learning,Machine Learning,7,27,machine learning,Tinjauan Pustaka Sistematis: Penerapan Metode Machine Learning untuk Deteksi Bencana Banjir,"… Machine Learning dapat mempelajari pola data historis yang ada, sehingga dengan
-menggunakan metode machine learning … Hasil penelitian menunjukan bahwa Machine Learning …","0,382231",1,1,1,1.0,1,Relevan,
+menggunakan metode machine learning … Hasil penelitian menunjukan bahwa Machine Learning …","0,382231",1,1,1,1.0,1,Relevan,,2,Matched
 8,machine learning,Machine Learning,8,48,machine learning,Pemanfaatan machine learning di bidang kesehatan,"… pesat, machine learning menjadi salah satu pendekatan penting dalam berbagai bidang,
-termasuk kesehatan. Machine learning … untuk mengulas penerapan machine learning dalam …","0,371533",1,1,1,1.0,1,Relevan,
+termasuk kesehatan. Machine learning … untuk mengulas penerapan machine learning dalam …","0,371533",1,1,1,1.0,1,Relevan,,22,Matched
 9,machine learning,Machine Learning,9,47,machine learning,Penerapan Teknologi Machine Learning dalam Deteksi Dini Penyakit Pada Tanaman Pangan,"… This study aims to explore the application of machine learning … then analyzed using several
-machine learning algorithms, such … The results show that the application of machine learning …","0,367296",1,1,1,1.0,1,Relevan,
+machine learning algorithms, such … The results show that the application of machine learning …","0,367296",1,1,1,1.0,1,Relevan,,21,Matched
 10,machine learning,Machine Learning,10,13,machine learning,A survey on dataset quality in machine learning,"… of dataset quality in machine learning, including the definition of … of machine learning,
-which can help improve the accuracy, efficiency, and generalization ability of machine learning …","0,360741",1,1,1,1.0,1,Relevan,
+which can help improve the accuracy, efficiency, and generalization ability of machine learning …","0,360741",1,1,1,1.0,1,Relevan,,38,Matched
 11,machine learning,Machine Learning,11,9,machine learning,Using machine learning to detect misstatements,"… Intuitively, a machine learning algorithm can be taught to … Machine learning algorithms
-capture the relationship … We also examine a number of alternative machine learning approaches …","0,356879",1,1,1,1.0,1,Relevan,
+capture the relationship … We also examine a number of alternative machine learning approaches …","0,356879",1,1,1,1.0,1,Relevan,,33,Matched
 12,machine learning,Machine Learning,12,1,machine learning,What is machine learning?,"… that one can employ in machine learning (ML). The required … of two learning types: supervised
-or unsupervised learning. … skills through either automated learning or learning via human …","0,337805",1,1,1,1.0,1,Relevan,
+or unsupervised learning. … skills through either automated learning or learning via human …","0,337805",1,1,1,1.0,1,Relevan,,26,Matched
 13,machine learning,Machine Learning,13,24,machine learning,Causality for machine learning,"… for Machine Learning In spite of all recent successes, if we compare what machine learning
-… This shortcoming is not too surprising since machine learning often disregards information …","0,334837",1,1,1,1.0,1,Relevan,
+… This shortcoming is not too surprising since machine learning often disregards information …","0,334837",1,1,1,1.0,1,Relevan,,44,Matched
+14,machine learning,Machine Learning,14,27,machine learning,Machine learning for microbiologists,"… how to evaluate a machine learning model and how … machine learning-based work. The
+topics presented in this work will allow microbiologists to grasp the potential of machine learning …","0,334422",1,1,1,1.0,1,Relevan,,27,Unmatched
 15,machine learning,Machine Learning,15,18,machine learning,A survey of human-in-the-loop for machine learning,"… posed by machine learning … machine learning. Human-in-the-loop is an area that we see
-as increasingly important in future research due to the knowledge learned by machine learning …","0,329105",1,1,1,1.0,1,Relevan,
+as increasingly important in future research due to the knowledge learned by machine learning …","0,329105",1,1,1,1.0,1,Relevan,,42,Matched
+16,machine learning,Machine Learning,16,36,machine learning,Challenges in deploying machine learning: a survey of case studies,"… This survey reviews published reports of deploying machine learning … of the machine
+learning deployment workflow. By mapping found challenges to the steps of the machine learning …","0,321166",1,1,1,1.0,1,Relevan,,36,Unmatched
 17,machine learning,Machine Learning,17,36,machine learning,Visualisasi Data dan Penerapan Machine Learning Menggunakan Decision Tree Untuk Keputusan Layanan Kesehatan COVID-19,"… untuk penerapan Machine Learning di beberapa aplikasi dunia nyata di mana data dihasilkan
-secara terus menerus [16]. Banyak metode Machine Learning … Machine Learning, kami …","0,320859",1,1,1,1.0,1,Relevan,
+secara terus menerus [16]. Banyak metode Machine Learning … Machine Learning, kami …","0,320859",1,1,1,1.0,1,Relevan,,10,Matched
+18,machine learning,Machine Learning,18,24,machine learning,"Penerapan artificial intelligence, machine learning dan deep learning pada Kurikulum Akuntansi-A systematic literature review","… implementing artificial intelligence, machine learning and deep learning in accounting
+curriculum … New technologies such as artificial intelligence, machine learning and deep learning …","0,320402",1,1,1,1.0,1,Relevan,,24,Unmatched
+19,machine learning,Machine Learning,19,46,machine learning,Machine learning for biochemical engineering: A review,"… use of machine learning within biochemical engineering over the last 20 years. The most
+prevalent machine learning … Finally, core challenges into the application of machine learning in …","0,317257",1,1,1,1.0,1,Relevan,,46,Unmatched
+20,machine learning,Machine Learning,20,31,machine learning,Financial machine learning,"… We survey the nascent literature on machine learning in the study of financial markets. We
+… in grasping machine learning tools, as well as for statisticians and machine learners seeking …","0,314739",1,1,1,1.0,1,Relevan,,31,Unmatched
 21,pembelajaran mesin,Machine Learning,1,148,mobile application,Aplikasi pembelajaran ilmu tajwid berbasis mobile,"… Tujuan dari penelitian ini adalah membuat aplikasi … Aplikasi pembelajaran ilmu tajwid
-dirancang berdasarkan … Pengujian menggunakan metode black box testing menunjukan aplikasi …","0,348143",1,1,1,1.0,1,Relevan,
+dirancang berdasarkan … Pengujian menggunakan metode black box testing menunjukan aplikasi …","0,348143",1,1,1,1.0,1,Relevan,,116,Matched
 22,pembelajaran mesin,Machine Learning,2,78,web application,Penggunaan liveworksheet dengan aplikasi berbasis web untuk meningkatkan hasil belajar peserta didik,"… Hasil dari penelitian ini adalah penggunaan liveworksheet dengan aplikasi berbasis web
-dapat meningkatkan hasil belajar peserta yaitu pada prasiklus dengan ketutasan klasikal …","0,332741",1,1,1,1.0,1,Relevan,
+dapat meningkatkan hasil belajar peserta yaitu pada prasiklus dengan ketutasan klasikal …","0,332741",1,1,1,1.0,1,Relevan,,153,Matched
 23,pembelajaran mesin,Machine Learning,3,27,machine learning,Tinjauan Pustaka Sistematis: Penerapan Metode Machine Learning untuk Deteksi Bencana Banjir,"… Machine Learning dapat mempelajari pola data historis yang ada, sehingga dengan
-menggunakan metode machine learning … Hasil penelitian menunjukan bahwa Machine Learning …","0,201881",0,1,1,1.0,1,Relevan,
+menggunakan metode machine learning … Hasil penelitian menunjukan bahwa Machine Learning …","0,201881",0,1,1,1.0,1,Relevan,,2,Matched
 24,pembelajaran mesin,Machine Learning,4,40,machine learning,Penerapan Machine Learning dengan Algoritma Logistik Regresi untuk Memprediksi Diabetes,"Diabetes merupakan masalah kesehatan global yang signifikan, mempengaruhi kualitas
-hidup individu dan menimbulkan beban ekonomi dan sosial. Machine Learning (Pembelajaran …","0,174159",0,1,1,1.0,1,Relevan,
+hidup individu dan menimbulkan beban ekonomi dan sosial. Machine Learning (Pembelajaran …","0,174159",0,1,1,1.0,1,Relevan,,14,Matched
 25,pembelajaran mesin,Machine Learning,5,76,web application,Pengenalan pemrograman web: Pembuatan aplikasi web sederhana dengan PHP dan MySQL,"… dalam jurnal ini, kita akan mempelajari bagaimana membuat aplikasi website … dasar
-pemrograman web, termasuk pengertian, jenis bahasa pemrograman web, dan arsitektur web. …","0,150081",0,0,1,0.0,0,Tidak Relevan,
+pemrograman web, termasuk pengertian, jenis bahasa pemrograman web, dan arsitektur web. …","0,150081",0,0,1,0.0,0,Tidak Relevan,,151,Matched
 26,data mining,Machine Learning,1,28,machine learning,"Penerapan Machine Learning, Deep Learning, Dan Data Mining Dalam Deteksi Kecurangan Laporan Keuangan-a Systematic Literature Review","… the application of machine learning, deep learning, and data … provides evidence that machine
-learning, deep learning, and … New technologies such as machine learning, deep learning, …","0,260862",0,1,0,1.0,1,Relevan,
+learning, deep learning, and … New technologies such as machine learning, deep learning, …","0,260862",0,1,0,1.0,1,Relevan,,3,Matched
 27,data mining,Machine Learning,2,43,machine learning,Penerapan machine learning dengan algoritma support vector machine untuk prediksi kelembapan udara rata-rata,"… Machine learning dapat digunakan untuk memprediksi suatu data. Support Vector Machine
-merupakan bagian dari teknik data mining yang dipergunakan untuk mengidentifikasi dan …","0,245108",0,1,1,1.0,1,Relevan,
+merupakan bagian dari teknik data mining yang dipergunakan untuk mengidentifikasi dan …","0,245108",0,1,1,1.0,1,Relevan,,17,Matched
 28,data mining,Machine Learning,3,31,machine learning,Penerapan Machine Learning dengan Konsep Data Mining Rough Set (Prediksi Tingkat Pemahaman Mahasiswa terhadap Matakuliah),"Metode Rough Set (RS) merupakan bagian dari machine learning yang menganalisis
-ketidakpastian dataset yang digunakan untuk menentukan atribut objek penting (klasifikasi). …","0,199358",0,1,1,1.0,1,Relevan,
+ketidakpastian dataset yang digunakan untuk menentukan atribut objek penting (klasifikasi). …","0,199358",0,1,1,1.0,1,Relevan,,6,Matched
 29,data mining,Machine Learning,4,186,cyber security,Sistem Keamanan Siber dan Kedaulatan Data di Indonesia dalam Perspektif Ekonomi Politik (Studi Kasus Perlindungan Data Pribadi)[Cyber Security System and …,"… perlindungan data siber dan keamanan siber. Jaminan … digunakan dalam pembangunan
-keamanan siber. Akan tetapi, … dalam pembangunan keamanan siber dan kedaulatan data …","0,13754",0,0,1,0.0,0,Tidak Relevan,
+keamanan siber. Akan tetapi, … dalam pembangunan keamanan siber dan kedaulatan data …","0,13754",0,0,1,0.0,0,Tidak Relevan,,60,Matched
 30,data mining,Machine Learning,5,175,cyber security,Cyber risk and cybersecurity: a systematic review of data availability,"… cybersecurity and cyber risk management with a particular focus on data availability. From a
-preliminary search resulting in 5219 cyber … We posit that the lack of available data on cyber …","0,107029",0,0,1,0.0,0,Tidak Relevan,
+preliminary search resulting in 5219 cyber … We posit that the lack of available data on cyber …","0,107029",0,0,1,0.0,0,Tidak Relevan,,100,Matched
 31,data mining,Machine Learning,6,38,machine learning,Penerapan Machine Learning Untuk Mengategorikan Sampah Plastik Rumah Tangga,"… With the help of Machine Learning and Deep Learning, we … Machine learning dapat
-diterapkan untuk mengolah data … Data yang tersimpan dalam Machine learning juga dapat …","0,099148",0,1,0,1.0,1,Relevan,
+diterapkan untuk mengolah data … Data yang tersimpan dalam Machine learning juga dapat …","0,099148",0,1,0,1.0,1,Relevan,,13,Matched
 32,data mining,Machine Learning,7,178,cyber security,Data privasi dan keamanan siber pada smart-city: Tinjauan literatur,"… kebutuhan keamanan tidak mendukung. Maka dari itu, dalam penelitiannya menyarankan
-mitigasi terbaik dalam hal keamanan siber dan data privasi menggunakan keamanan siber …","0,083755",0,0,1,0.0,0,Tidak Relevan,
+mitigasi terbaik dalam hal keamanan siber dan data privasi menggunakan keamanan siber …","0,083755",0,0,1,0.0,0,Tidak Relevan,,53,Matched
 33,data mining,Machine Learning,8,59,web application,iDEP web application for RNA-seq data analysis,"… Through an example, we demonstrate how this web application democratizes access to
-high-throughput technologies and help biologists pinpoint molecular pathways from large data. …","0,082166",0,0,0,0.0,0,Tidak Relevan,
+high-throughput technologies and help biologists pinpoint molecular pathways from large data. …","0,082166",0,0,0,0.0,0,Tidak Relevan,,184,Matched
 34,data mining,Machine Learning,9,36,machine learning,Visualisasi Data dan Penerapan Machine Learning Menggunakan Decision Tree Untuk Keputusan Layanan Kesehatan COVID-19,"… untuk penerapan Machine Learning di beberapa aplikasi dunia nyata di mana data dihasilkan
-secara terus menerus [16]. Banyak metode Machine Learning … Machine Learning, kami …","0,079187",0,1,1,1.0,1,Relevan,
+secara terus menerus [16]. Banyak metode Machine Learning … Machine Learning, kami …","0,079187",0,1,1,1.0,1,Relevan,,10,Matched
 35,data mining,Machine Learning,10,97,web application,Pengujian aplikasi berbasis web data SKA menggunakan metode Black Box Testing,"… aplikasi adalah metode"" Black Box"", yang fokus pada pengujian fungsional tanpa memperhatikan
-implementasi internal aplikasi … Pengujian ini akan dilakukan pada website Data SKA …","0,069703",0,0,1,0.0,0,Tidak Relevan,
+implementasi internal aplikasi … Pengujian ini akan dilakukan pada website Data SKA …","0,069703",0,0,1,0.0,0,Tidak Relevan,,175,Matched
 36,data mining,Machine Learning,11,60,web application,MiBiOmics: an interactive web application for multi-omics data exploration and integration,"… Here, we present MiBiOmics, a web-based and standalone application that facilitates
-multi-omics data visualization, exploration, integration, and analysis by providing easy access to …","0,062942",0,0,1,0.0,0,Tidak Relevan,
+multi-omics data visualization, exploration, integration, and analysis by providing easy access to …","0,062942",0,0,1,0.0,0,Tidak Relevan,,185,Matched
 37,data mining,Machine Learning,12,49,machine learning,Penerapan Metode Machine Learning dalam Mengidentifikasi Berita Hoaks,"… method using a machine learning approach on news data. … sources and applying machine
-learning algorithms, including … The results of this research show that the machine learning …","0,047488",0,1,1,1.0,1,Relevan,
+learning algorithms, including … The results of this research show that the machine learning …","0,047488",0,1,1,1.0,1,Relevan,,23,Matched
 38,data mining,Machine Learning,13,27,machine learning,Tinjauan Pustaka Sistematis: Penerapan Metode Machine Learning untuk Deteksi Bencana Banjir,"… Machine Learning dapat mempelajari pola data historis yang ada, sehingga dengan
-menggunakan metode machine learning … Hasil penelitian menunjukan bahwa Machine Learning …","0,047167",0,1,1,1.0,1,Relevan,
+menggunakan metode machine learning … Hasil penelitian menunjukan bahwa Machine Learning …","0,047167",0,1,1,1.0,1,Relevan,,2,Matched
 39,data mining,Machine Learning,14,25,machine learning,Machine learning: new ideas and tools in environmental science and engineering,"… Machine learning has the potential to revolutionize data analysis and modeling in the …
-shortcomings, challenges, and opportunities for applications of machine learning in the ESE field. …","0,046255",0,1,0,1.0,1,Relevan,
+shortcomings, challenges, and opportunities for applications of machine learning in the ESE field. …","0,046255",0,1,0,1.0,1,Relevan,,47,Matched
 40,data mining,Machine Learning,15,190,cyber security,Pentingnya Keamanan Siber Dalam Era Digital:: Tinjauan Global Dan Kondisi Di Indonesia,"… dalam sistem keamanan siber yang bisa berdampak besar pada keamanan data strategis
-negara. Penelitian ini bertujuan untuk menganalisis pentingnya keamanan siber dengan …","0,045624",0,0,1,0.0,0,Tidak Relevan,
+negara. Penelitian ini bertujuan untuk menganalisis pentingnya keamanan siber dengan …","0,045624",0,0,1,0.0,0,Tidak Relevan,,65,Matched
 41,data mining,Machine Learning,16,199,cyber security,Keamanan siber di masa depan: Tantangan dan teknologi yang dibutuhkan,"… dan laporan terkini terkait keamanan siber. Hasil penelitian … berbasis blockchain dapat
-memperkuat keamanan data. Selain itu… mutakhir dengan kebijakan keamanan siber yang adaptif …","0,042435",0,0,1,0.0,0,Tidak Relevan,
+memperkuat keamanan data. Selain itu… mutakhir dengan kebijakan keamanan siber yang adaptif …","0,042435",0,0,1,0.0,0,Tidak Relevan,,75,Matched
 42,data mining,Machine Learning,17,32,machine learning,Penerapan Metode Machine Learning dalam Klasifikasi Risiko Kejadian Berat Badan Lahir Rendah di Indonesia,"… akan mengkaji penerapan beberapa metode machine learning dengan memperhatikan
-kasus imbalanced data dalam pemodelan klasifikasi. Adapun metode meachine learning yang …","0,041148",0,1,0,1.0,1,Relevan,
+kasus imbalanced data dalam pemodelan klasifikasi. Adapun metode meachine learning yang …","0,041148",0,1,0,1.0,1,Relevan,,7,Matched
 43,data mining,Machine Learning,18,92,web application,Perancangan Sistem Aplikasi Pendataan Membership Gym Menggunakan Metode Unified Software Development Process (USDP) Berbasis Web,"… ini adalah sebuah aplikasi web untuk mengelola keanggotaan gym, yang dapat diakses
-oleh admin dan pengguna melalui komputer atau perangkat mobile. Aplikasi ini dikembangkan …","0,04046",0,0,1,0.0,0,Tidak Relevan,
+oleh admin dan pengguna melalui komputer atau perangkat mobile. Aplikasi ini dikembangkan …","0,04046",0,0,1,0.0,0,Tidak Relevan,,168,Matched
 44,data mining,Machine Learning,19,42,machine learning,Penerapan Machine Learning menggunakan algoritma C4. 5 berbasis PSO dalam Menganalisa Data Siswa Putus Sekolah,"Pendidikan sangat memegang peranan penting dalam meningkatkan kualitas Sumber
-daya manusia yang ada di Indonesia. Untuk itu Pemerintah menggalakkan program wajib …","0,04025",0,1,0,1.0,1,Relevan,
+daya manusia yang ada di Indonesia. Untuk itu Pemerintah menggalakkan program wajib …","0,04025",0,1,0,1.0,1,Relevan,,16,Matched
 45,data mining,Machine Learning,20,155,cyber security,A systematic literature review on the cyber security,"… of cyber security kinds, why cyber security is important, cyber security framework, cyber
-security tools, and cyber security … Cyber security safeguards the data and integrity of computing …","0,037084",0,0,0,0.0,0,Tidak Relevan,
+security tools, and cyber security … Cyber security safeguards the data and integrity of computing …","0,037084",0,0,0,0.0,0,Tidak Relevan,,80,Matched
 46,web application,Web Application,1,73,web application,Open Lab: A web application for running and sharing online experiments,"… as a web application on a desktop computer (the “Install app” link is displayed in the top
-navigation bar). Progressive web application technology makes the application accessible via …","0,342091",1,1,0,1.0,1,Relevan,
+navigation bar). Progressive web application technology makes the application accessible via …","0,342091",1,1,0,1.0,1,Relevan,,197,Matched
+47,web application,Web Application,2,200,web application,A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,"… an institutional web application to corroborate the efficiency of this approach. Despite the
+web application's sensitivity, this study has used various versions of three web applications of …","0,339757",1,1,0,1.0,1,Relevan,,200,Unmatched
 48,web application,Web Application,3,56,web application,DeepCrop: Deep learning-based crop disease prediction with web application,"… a smart web application for real-life crop disease prediction. The proposed web application
-aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …","0,315247",1,1,0,1.0,1,Relevan,
+aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …","0,315247",1,1,0,1.0,1,Relevan,,181,Matched
 49,web application,Web Application,4,52,web application,A survey on web application penetration testing,"… Due to their nature, web applications and services are prone to security risks because they …
-the Internet and web applications become more widespread, every web application needs an …","0,308729",1,1,0,1.0,1,Relevan,
+the Internet and web applications become more widespread, every web application needs an …","0,308729",1,1,0,1.0,1,Relevan,,177,Matched
 50,web application,Web Application,5,71,web application,ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application,"… for CKD classification and to develop a web-based application for CKD prediction. The proposed
-… Additionally, we present a real-time web-based application to operationalize the model, …","0,279111",0,1,1,1.0,1,Relevan,
+… Additionally, we present a real-time web-based application to operationalize the model, …","0,279111",0,1,1,1.0,1,Relevan,,195,Matched
 51,web application,Web Application,6,63,web application,Machine learning based diabetes prediction and development of smart web application,"… We integrate this model in a web application using python flask web development framework.
-The results of this study suggest that an appropriate preprocessing pipeline on clinical …","0,270276",0,1,0,1.0,1,Relevan,
+The results of this study suggest that an appropriate preprocessing pipeline on clinical …","0,270276",0,1,0,1.0,1,Relevan,,188,Matched
 52,web application,Web Application,7,69,web application,Securing web applications against XSS and SQLi attacks using a novel deep learning approach,"… all web application attacks, SQL injection and XSS attacks are common, which may lead to
-severe damage to Web application data or web … for securing web applications from both cross-…","0,265202",0,1,1,1.0,1,Relevan,
+severe damage to Web application data or web … for securing web applications from both cross-…","0,265202",0,1,1,1.0,1,Relevan,,193,Matched
 53,web application,Web Application,8,55,web application,BEST: a web application for comprehensive biomarker exploration on large-scale data in solid tumors,"… Currently, several open-access web servers that allow users … Although these web applications
-are valuable and broadly … (BEST), a web-based application for comprehensive biomarker …","0,244648",0,1,1,1.0,1,Relevan,
+are valuable and broadly … (BEST), a web-based application for comprehensive biomarker …","0,244648",0,1,1,1.0,1,Relevan,,180,Matched
+54,web application,Web Application,9,199,web application,From prompt injections to sql injection attacks: How protected is your llm-integrated web application?,"… If an application remains vulnerable to these threats, the … -integrated applications, and what
+is their impact on application security? To study this question, we focus on web applications …","0,236682",0,1,0,1.0,1,Relevan,,199,Unmatched
 55,web application,Web Application,10,53,web application,A comparative study of web application security parameters: Current trends and future directions,"… in the use of web applications. Businesses, industries, … web applications. This mammoth
-rise in their usage has also resulted in many security issues that make these web applications …","0,230489",0,1,0,1.0,1,Relevan,
+rise in their usage has also resulted in many security issues that make these web applications …","0,230489",0,1,0,1.0,1,Relevan,,178,Matched
 56,web application,Web Application,11,67,web application,Signature-based and machine-learning-based web application firewalls: A short survey,"… web applications typically relied on the simple common gateway interface, CGI, protocol
-which spawned C or Perl programs. Attacks were concentrated at underlying web … web server …","0,222473",0,1,0,1.0,1,Relevan,
+which spawned C or Perl programs. Attacks were concentrated at underlying web … web server …","0,222473",0,1,0,1.0,1,Relevan,,191,Matched
 57,web application,Web Application,12,111,mobile application,Deep learning methods for accurate skin cancer recognition and mobile application,"… to be used in a mobile application. To be able to build an effective mobile application, it is …
-for our mobile application to be able to classify skin lesions using a common smartphone. …","0,221074",0,0,1,1.0,1,Relevan,
+for our mobile application to be able to classify skin lesions using a common smartphone. …","0,221074",0,0,1,1.0,1,Relevan,,134,Matched
 58,web application,Web Application,13,64,web application,A systematic literature review on the characteristics and effectiveness of web application vulnerability scanners,"… web applications. Theses scanners have the capability of automatically evaluating the security
-of web applications … analysts discover vulnerabilities in web applications. However, these …","0,219031",0,1,1,1.0,1,Relevan,
+of web applications … analysts discover vulnerabilities in web applications. However, these …","0,219031",0,1,1,1.0,1,Relevan,,189,Matched
 59,web application,Web Application,14,70,web application,DeepVenn--a web application for the creation of area-proportional Venn diagrams using the deep learning framework Tensorflow. js,"… , and others are not available as a web application or accept only numbers and not lists of
-… Results: The DeepVenn web application can create area-proportional Venn diagrams of up …","0,216169",0,1,1,1.0,1,Relevan,
+… Results: The DeepVenn web application can create area-proportional Venn diagrams of up …","0,216169",0,1,1,1.0,1,Relevan,,194,Matched
 60,web application,Web Application,15,59,web application,iDEP web application for RNA-seq data analysis,"… Through an example, we demonstrate how this web application democratizes access to
-high-throughput technologies and help biologists pinpoint molecular pathways from large data. …","0,208756",0,1,1,1.0,1,Relevan,
+high-throughput technologies and help biologists pinpoint molecular pathways from large data. …","0,208756",0,1,1,1.0,1,Relevan,,184,Matched
 61,web application,Web Application,16,62,web application,Development of interactive biological web applications with R/Shiny,"… web techniques used to build biological web applications in recent studies To get a full picture
-of the web techniques utilized to build biological web applications … issues of web servers …","0,204546",0,1,0,1.0,1,Relevan,
+of the web techniques utilized to build biological web applications … issues of web servers …","0,204546",0,1,0,1.0,1,Relevan,,187,Matched
 62,web application,Web Application,17,68,web application,Atomistica. online–web application for generating input files for ORCA molecular modelling package made with the Anvil platform,"… We present the atomistica.online, a web application for … allows the development of web
-applications using only Python … , they are not available as online applications. In this work, we …","0,200848",0,1,0,1.0,1,Relevan,
+applications using only Python … , they are not available as online applications. In this work, we …","0,200848",0,1,0,1.0,1,Relevan,,192,Matched
 63,web application,Web Application,18,51,web application,Web application development with streamlit,"… web applications of their own, from the most basic use cases to crafting complex and distributed
-applications on … should be able to interface their web applications with robust server-side …","0,19208",0,1,1,1.0,1,Relevan,
+applications on … should be able to interface their web applications with robust server-side …","0,19208",0,1,1,1.0,1,Relevan,,176,Matched
 64,web application,Web Application,19,76,web application,Pengenalan pemrograman web: Pembuatan aplikasi web sederhana dengan PHP dan MySQL,"… dalam jurnal ini, kita akan mempelajari bagaimana membuat aplikasi website … dasar
-pemrograman web, termasuk pengertian, jenis bahasa pemrograman web, dan arsitektur web. …","0,189208",0,1,1,1.0,1,Relevan,
+pemrograman web, termasuk pengertian, jenis bahasa pemrograman web, dan arsitektur web. …","0,189208",0,1,1,1.0,1,Relevan,,151,Matched
+65,web application,Web Application,20,141,mobile application,Towards a new learning experience through a mobile application with augmented reality in engineering education,"… The application of augmented reality (AR) in education … effect of an augmented reality mobile
+application (NetAR) that … established to work with the application for three weeks for three …","0,189202",0,0,0,1.0,0,Tidak Relevan,,141,Unmatched
 66,aplikasi web,Web Application,1,91,web application,Implementasi Aplikasi Kasir Berbasis Web pada Toko Ghafya Fruits Shop,"… Web adalah suatu layanan atau kumpulan halaman yang berisi informasi, iklan, serta program
-aplikasi yang … adalah sebuah aplikasi pendukung untuk membuka software aplikasi web …","0,339599",1,1,1,1.0,1,Relevan,
+aplikasi yang … adalah sebuah aplikasi pendukung untuk membuka software aplikasi web …","0,339599",1,1,1,1.0,1,Relevan,,167,Matched
 67,aplikasi web,Web Application,2,80,web application,Analisis Keretanan Website Dengan Aplikasi Owasp Zap,"… dirancang khusus untuk menguji aplikasi web dan fleksibel serta dapat … dan aplikasi web
-sehingga dapat mencegat dan memeriksa pesan yang dikirim antara browser dan aplikasi web…","0,338959",1,1,1,1.0,1,Relevan,
+sehingga dapat mencegat dan memeriksa pesan yang dikirim antara browser dan aplikasi web…","0,338959",1,1,1,1.0,1,Relevan,,155,Matched
 68,aplikasi web,Web Application,3,83,web application,Pengembangan Aplikasi Berbasis Web dan Android Sebagai Penunjang Kerja di Indonesia: Systematic Literature Review,"… aplikasi digunakan di Indonesia untuk mendukung kegiatan baik pemerintah maupun swasta.
-Makalah jurnal yang mencakup pembuatan aplikasi berbasis web … aplikasi berbasis web …","0,332195",1,1,1,1.0,1,Relevan,
+Makalah jurnal yang mencakup pembuatan aplikasi berbasis web … aplikasi berbasis web …","0,332195",1,1,1,1.0,1,Relevan,,158,Matched
 69,aplikasi web,Web Application,4,82,web application,Rancang bangun aplikasi penjualan online berbasis web menggunakan metode scrum,"… aplikasi ini juga tidak banyak. Tujuan dari penelitian ini adalah untuk merancang dan
-membangun aplikasi penjualan online berbasis web … Hasil penelitian ini adalah sebuah aplikasi …","0,323811",1,1,1,1.0,1,Relevan,
+membangun aplikasi penjualan online berbasis web … Hasil penelitian ini adalah sebuah aplikasi …","0,323811",1,1,1,1.0,1,Relevan,,157,Matched
 70,aplikasi web,Web Application,5,89,web application,Penerapan Metode Waterfall Pada Aplikasi Reservasi Lapangan Futsal Berbasis Web,"… Hasil dari penelitian ini berupa sebuah aplikasi berbasis web yang … Aplikasi yang telah
-dibuat dapat berjalan dengan baik. Kata Kunci: Aplikasi; Black Box; Penjadwalan; Waterfall; Web …","0,32246",1,1,1,1.0,1,Relevan,
+dibuat dapat berjalan dengan baik. Kata Kunci: Aplikasi; Black Box; Penjadwalan; Waterfall; Web …","0,32246",1,1,1,1.0,1,Relevan,,164,Matched
 71,aplikasi web,Web Application,6,96,web application,Digitalisasi Usaha Mikro Kecil Dan Menengah Di Desa Melalui Aplikasi Kede Desa Berbasis Web,"… penjualan melalui sistem yang berbasis web. Aplikasi Web dapat berjalan pada jaringan …
-dalam akses adalah ciri utama yang membuat Aplikasi Web lebih banyak diminati dan lebih …","0,311815",1,1,1,1.0,1,Relevan,
+dalam akses adalah ciri utama yang membuat Aplikasi Web lebih banyak diminati dan lebih …","0,311815",1,1,1,1.0,1,Relevan,,171,Matched
 72,aplikasi web,Web Application,7,76,web application,Pengenalan pemrograman web: Pembuatan aplikasi web sederhana dengan PHP dan MySQL,"… dalam jurnal ini, kita akan mempelajari bagaimana membuat aplikasi website … dasar
-pemrograman web, termasuk pengertian, jenis bahasa pemrograman web, dan arsitektur web. …","0,285943",0,1,1,1.0,1,Relevan,
+pemrograman web, termasuk pengertian, jenis bahasa pemrograman web, dan arsitektur web. …","0,285943",0,1,1,1.0,1,Relevan,,151,Matched
 73,aplikasi web,Web Application,8,87,web application,Rancang Bangun Aplikasi Penjualan Kebutuhan Pokok Berbasis Web Pada Toko Khansaa,"… belum adanya aplikasi penjualan berbasis web kebutuhan … bangun aplikasi penjualan
-kebutuhan pokok berbasis web di … ini adalah sebuah aplikasi penjualan berbasis web di toko …","0,283615",0,1,1,1.0,1,Relevan,
+kebutuhan pokok berbasis web di … ini adalah sebuah aplikasi penjualan berbasis web di toko …","0,283615",0,1,1,1.0,1,Relevan,,162,Matched
 74,aplikasi web,Web Application,9,90,web application,Implementasi Web Service Sebagai Penyedia Informasi Untuk Aplikasi Pengelolaan Jadwal Pemberian Pakan Ikan (Studi Kasus: Pokdakan Karya Bersama),"… solusi dengan membangun web service sebagai … web service. Hasil dari penelitian ini
-adalah pengembangan sistem layanan web yang mampu memberikan informasi untuk aplikasi …","0,245791",0,1,1,1.0,1,Relevan,
+adalah pengembangan sistem layanan web yang mampu memberikan informasi untuk aplikasi …","0,245791",0,1,1,1.0,1,Relevan,,165,Matched
 75,aplikasi web,Web Application,10,88,web application,Aplikasi Marketplace Pendamping Wisata Dengan Api Maps Berbasis Mobile Dan Web,"… Salah satu keuntungan membangun aplikasi berbasis website adalah karena website tidak
-… terhadap aplikasi web, karena pengguna mengakses server tempat website diletakkan …","0,245176",0,1,0,1.0,1,Relevan,
+… terhadap aplikasi web, karena pengguna mengakses server tempat website diletakkan …","0,245176",0,1,0,1.0,1,Relevan,,163,Matched
 76,aplikasi web,Web Application,11,85,web application,Rancang bangun aplikasi e-cuti pegawai berbasis website (studi kasus: Pengadilan Tata Usaha Negara),"… Aplikasi yang direncanakan dalam bentuk website ini … Aplikasi web adalah suatu sistem
-informasi yang mendukung interaksi dengan pengguna melalui antarmuka berbasis web. …","0,234805",0,1,1,1.0,1,Relevan,
+informasi yang mendukung interaksi dengan pengguna melalui antarmuka berbasis web. …","0,234805",0,1,1,1.0,1,Relevan,,161,Matched
 77,aplikasi web,Web Application,12,62,web application,Development of interactive biological web applications with R/Shiny,"… web techniques used to build biological web applications in recent studies To get a full picture
-of the web techniques utilized to build biological web applications … issues of web servers …","0,231258",0,1,1,1.0,1,Relevan,
+of the web techniques utilized to build biological web applications … issues of web servers …","0,231258",0,1,1,1.0,1,Relevan,,187,Matched
 78,aplikasi web,Web Application,13,79,web application,Pembuatan aplikasi penjualan berbasis web monja store menggunakan php dan mysql,"… software ataupun tampilan website dengan lebih mudah, cepat, dan … Gunakan aplikasi web
-server ini sebagai tools bantuan … website perancangan aplikasi penjualan berbasis website …","0,227021",0,1,1,1.0,1,Relevan,
+server ini sebagai tools bantuan … website perancangan aplikasi penjualan berbasis website …","0,227021",0,1,1,1.0,1,Relevan,,154,Matched
 79,aplikasi web,Web Application,14,92,web application,Perancangan Sistem Aplikasi Pendataan Membership Gym Menggunakan Metode Unified Software Development Process (USDP) Berbasis Web,"… ini adalah sebuah aplikasi web untuk mengelola keanggotaan gym, yang dapat diakses
-oleh admin dan pengguna melalui komputer atau perangkat mobile. Aplikasi ini dikembangkan …","0,223398",0,1,1,1.0,1,Relevan,
+oleh admin dan pengguna melalui komputer atau perangkat mobile. Aplikasi ini dikembangkan …","0,223398",0,1,1,1.0,1,Relevan,,168,Matched
 80,aplikasi web,Web Application,15,133,mobile application,Aplikasi Mobile JKN Edukasi Tentang Penggunaan Aplikasi Mobile JKN Pada Pasien Rawat Jalan RSUD Anugerah Tomohon,"… kurangnya pengetahuan masyarakat mengenai penggunaan aplikasi Mobile JKN. Selain
-itu… , aplikasi Mobile JKN merupakan aplikasi yang dapat digunakan pada smartphone. Aplikasi …","0,220582",0,0,1,1.0,1,Relevan,
+itu… , aplikasi Mobile JKN merupakan aplikasi yang dapat digunakan pada smartphone. Aplikasi …","0,220582",0,0,1,1.0,1,Relevan,,107,Matched
 81,aplikasi web,Web Application,16,86,web application,Rancang Bangun Web Service Api Aplikasi Sentralisasi Produk Umkm Pada Uptd Plut Kumkm Provinsi Lampung,"… Penelitian ini dilakukan untuk membuat sebuah aplikasi atau sistem yang dapat … aplikasi
-ini menggunakan metode Web Service API, yang akan menghubungkan antara website …","0,219964",0,1,1,1.0,1,Relevan,
+ini menggunakan metode Web Service API, yang akan menghubungkan antara website …","0,219964",0,1,1,1.0,1,Relevan,,160,Matched
 82,aplikasi web,Web Application,17,52,web application,A survey on web application penetration testing,"… Due to their nature, web applications and services are prone to security risks because they …
-the Internet and web applications become more widespread, every web application needs an …","0,208125",0,1,1,1.0,1,Relevan,
+the Internet and web applications become more widespread, every web application needs an …","0,208125",0,1,1,1.0,1,Relevan,,177,Matched
 83,aplikasi web,Web Application,18,84,web application,Perancangan Aplikasi Pemesanan Makanan Berbasis Web,"… berbasis web. Aplikasi ini membuat rancangan menu makanan dilengkapi dengan tampilan
-gambar dan daftar harga yang sesuai dengan jenis makanan yang tersedia. Aplikasi ini …","0,206702",0,1,1,1.0,1,Relevan,
+gambar dan daftar harga yang sesuai dengan jenis makanan yang tersedia. Aplikasi ini …","0,206702",0,1,1,1.0,1,Relevan,,159,Matched
 84,aplikasi web,Web Application,19,134,mobile application,Tingkat kepuasan masyarakat terhadap pendaftaran online pada aplikasi Mobile JKN,"… mudah menggunakan aplikasi, dan puas karena fitur yang ada pada aplikasi lengkap, hal
-… ini di analogikan aplikasi dan kelengkapan fitur aplikasi mobile JKN memiliki pengaruh …","0,205278",0,0,1,0.0,0,Tidak Relevan,
+… ini di analogikan aplikasi dan kelengkapan fitur aplikasi mobile JKN memiliki pengaruh …","0,205278",0,0,1,0.0,0,Tidak Relevan,,109,Matched
 85,aplikasi web,Web Application,20,130,mobile application,Peluang Penelitian UI/UX pada Pengembangan Aplikasi Mobile: Systematic literature review,"… oleh developer mobile apps [1]. Banyaknya aplikasi mobile yang ada di era digital ini
-membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,20093",0,0,1,0.0,0,Tidak Relevan,
+membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,20093",0,0,1,0.0,0,Tidak Relevan,,104,Matched
 86,sistem informasi berbasis web,Web Application,1,90,web application,Implementasi Web Service Sebagai Penyedia Informasi Untuk Aplikasi Pengelolaan Jadwal Pemberian Pakan Ikan (Studi Kasus: Pokdakan Karya Bersama),"… solusi dengan membangun web service sebagai … web service. Hasil dari penelitian ini
-adalah pengembangan sistem layanan web yang mampu memberikan informasi untuk aplikasi …","0,324498",1,1,1,1.0,1,Relevan,
+adalah pengembangan sistem layanan web yang mampu memberikan informasi untuk aplikasi …","0,324498",1,1,1,1.0,1,Relevan,,165,Matched
 87,sistem informasi berbasis web,Web Application,2,85,web application,Rancang bangun aplikasi e-cuti pegawai berbasis website (studi kasus: Pengadilan Tata Usaha Negara),"… Aplikasi yang direncanakan dalam bentuk website ini … Aplikasi web adalah suatu sistem
-informasi yang mendukung interaksi dengan pengguna melalui antarmuka berbasis web. …","0,303364",1,1,1,1.0,1,Relevan,
+informasi yang mendukung interaksi dengan pengguna melalui antarmuka berbasis web. …","0,303364",1,1,1,1.0,1,Relevan,,161,Matched
 88,sistem informasi berbasis web,Web Application,3,91,web application,Implementasi Aplikasi Kasir Berbasis Web pada Toko Ghafya Fruits Shop,"… Web adalah suatu layanan atau kumpulan halaman yang berisi informasi, iklan, serta program
-aplikasi yang … adalah sebuah aplikasi pendukung untuk membuka software aplikasi web …","0,22786",0,1,0,1.0,1,Relevan,
+aplikasi yang … adalah sebuah aplikasi pendukung untuk membuka software aplikasi web …","0,22786",0,1,0,1.0,1,Relevan,,167,Matched
 89,sistem informasi berbasis web,Web Application,4,181,cyber security,Analisis penerapan sistem keamanan siber terhadap kejahatan siber di indonesia,"… dari penelitian ini adalah untuk mengetahui bagaimana sistem keamanan siber serta
-menganalisis hambatan dan upaya untuk mengembangkan sistem keamanan siber di Indonesia. …","0,218606",0,0,1,0.0,0,Tidak Relevan,
+menganalisis hambatan dan upaya untuk mengembangkan sistem keamanan siber di Indonesia. …","0,218606",0,0,1,0.0,0,Tidak Relevan,,56,Matched
 90,sistem informasi berbasis web,Web Application,5,96,web application,Digitalisasi Usaha Mikro Kecil Dan Menengah Di Desa Melalui Aplikasi Kede Desa Berbasis Web,"… penjualan melalui sistem yang berbasis web. Aplikasi Web dapat berjalan pada jaringan …
-dalam akses adalah ciri utama yang membuat Aplikasi Web lebih banyak diminati dan lebih …","0,204012",0,1,1,1.0,1,Relevan,
+dalam akses adalah ciri utama yang membuat Aplikasi Web lebih banyak diminati dan lebih …","0,204012",0,1,1,1.0,1,Relevan,,171,Matched
 91,sistem informasi berbasis web,Web Application,6,98,web application,Pengembangan Aplikasi Reservasi Salon Keshoo Berbasis Web,"… Pada penelitian ini diajukan pengembangan aplikasi reservasi keshoo salon berbasis web
-… Sistem reservasi salon berbasis web ini mampu menjadi solusi agar pemesanan jadwal …","0,177377",0,1,1,1.0,1,Relevan,
+… Sistem reservasi salon berbasis web ini mampu menjadi solusi agar pemesanan jadwal …","0,177377",0,1,1,1.0,1,Relevan,,174,Matched
 92,sistem informasi berbasis web,Web Application,7,83,web application,Pengembangan Aplikasi Berbasis Web dan Android Sebagai Penunjang Kerja di Indonesia: Systematic Literature Review,"… aplikasi digunakan di Indonesia untuk mendukung kegiatan baik pemerintah maupun swasta.
-Makalah jurnal yang mencakup pembuatan aplikasi berbasis web … aplikasi berbasis web …","0,177209",0,1,1,1.0,1,Relevan,
+Makalah jurnal yang mencakup pembuatan aplikasi berbasis web … aplikasi berbasis web …","0,177209",0,1,1,1.0,1,Relevan,,158,Matched
 93,sistem informasi berbasis web,Web Application,8,188,cyber security,Perkembangan Sistem Pertahanan/Keamanan Siber Indonesia dalam Menghadapi Tantangan Perkembangan Teknologi dan Informasi:-,"… yaitu keamanan siber. Artikel ini akan menggambarkan bagaimana ancaman dan serangan
-siber itu … dan keamanan siber yang dimiliki oleh Indonesia saat ini Kata Kunci: Pertahanan, …","0,175047",0,0,1,0.0,0,Tidak Relevan,
+siber itu … dan keamanan siber yang dimiliki oleh Indonesia saat ini Kata Kunci: Pertahanan, …","0,175047",0,0,1,0.0,0,Tidak Relevan,,63,Matched
 94,sistem informasi berbasis web,Web Application,9,87,web application,Rancang Bangun Aplikasi Penjualan Kebutuhan Pokok Berbasis Web Pada Toko Khansaa,"… belum adanya aplikasi penjualan berbasis web kebutuhan … bangun aplikasi penjualan
-kebutuhan pokok berbasis web di … ini adalah sebuah aplikasi penjualan berbasis web di toko …","0,174343",0,1,1,1.0,1,Relevan,
+kebutuhan pokok berbasis web di … ini adalah sebuah aplikasi penjualan berbasis web di toko …","0,174343",0,1,1,1.0,1,Relevan,,162,Matched
+95,sistem informasi berbasis web,Web Application,10,173,web application,Rancang Bangun Aplikasi Computer Based Test Berbasis Web Pada Smpn 1 Katapang Kabupaten Bandung Selatan,"Seiring dengan berkembangnya kemajuan teknologi informasi, mungkin akan sangat terbantu
+dengan adanya internet. Dengan internet, kita akan mudah menghadirkan layanan yang …","0,169461",0,1,1,1.0,1,Relevan,,173,Unmatched
 96,sistem informasi berbasis web,Web Application,11,180,cyber security,Manajemen keamanan cyber di era digital,"… Abstrak : Di era digital yang berkembang pesat ini, keamanan siber menjadi salah satu
-aspek yang sangat penting untuk diperhatikan. Perkembangan teknologi informasi dan …","0,142169",0,0,1,0.0,0,Tidak Relevan,
+aspek yang sangat penting untuk diperhatikan. Perkembangan teknologi informasi dan …","0,142169",0,0,1,0.0,0,Tidak Relevan,,55,Matched
 97,sistem informasi berbasis web,Web Application,12,95,web application,Perancangan sistem aplikasi penjualan dan layanan jasa laundry sepatu berbasis website,"… sesuai dengan tujuan pembuatan aplikasi tersebut, aplikasi mempunyai arti yaitu pemecahan
-… dalam pembangunan aplikasi pelayanan jasa Laundry pada ShoesLab berbasis web. …","0,140811",0,1,0,1.0,1,Relevan,
+… dalam pembangunan aplikasi pelayanan jasa Laundry pada ShoesLab berbasis web. …","0,140811",0,1,0,1.0,1,Relevan,,172,Matched
 98,sistem informasi berbasis web,Web Application,13,82,web application,Rancang bangun aplikasi penjualan online berbasis web menggunakan metode scrum,"… aplikasi ini juga tidak banyak. Tujuan dari penelitian ini adalah untuk merancang dan
-membangun aplikasi penjualan online berbasis web … Hasil penelitian ini adalah sebuah aplikasi …","0,136614",0,1,1,1.0,1,Relevan,
+membangun aplikasi penjualan online berbasis web … Hasil penelitian ini adalah sebuah aplikasi …","0,136614",0,1,1,1.0,1,Relevan,,157,Matched
 99,sistem informasi berbasis web,Web Application,14,92,web application,Perancangan Sistem Aplikasi Pendataan Membership Gym Menggunakan Metode Unified Software Development Process (USDP) Berbasis Web,"… ini adalah sebuah aplikasi web untuk mengelola keanggotaan gym, yang dapat diakses
-oleh admin dan pengguna melalui komputer atau perangkat mobile. Aplikasi ini dikembangkan …","0,135586",0,1,1,1.0,1,Relevan,
+oleh admin dan pengguna melalui komputer atau perangkat mobile. Aplikasi ini dikembangkan …","0,135586",0,1,1,1.0,1,Relevan,,168,Matched
 100,sistem informasi berbasis web,Web Application,15,89,web application,Penerapan Metode Waterfall Pada Aplikasi Reservasi Lapangan Futsal Berbasis Web,"… Hasil dari penelitian ini berupa sebuah aplikasi berbasis web yang … Aplikasi yang telah
-dibuat dapat berjalan dengan baik. Kata Kunci: Aplikasi; Black Box; Penjadwalan; Waterfall; Web …","0,134463",0,1,1,1.0,1,Relevan,
+dibuat dapat berjalan dengan baik. Kata Kunci: Aplikasi; Black Box; Penjadwalan; Waterfall; Web …","0,134463",0,1,1,1.0,1,Relevan,,164,Matched
 101,sistem informasi berbasis web,Web Application,16,88,web application,Aplikasi Marketplace Pendamping Wisata Dengan Api Maps Berbasis Mobile Dan Web,"… Salah satu keuntungan membangun aplikasi berbasis website adalah karena website tidak
-… terhadap aplikasi web, karena pengguna mengakses server tempat website diletakkan …","0,122679",0,1,1,1.0,1,Relevan,
+… terhadap aplikasi web, karena pengguna mengakses server tempat website diletakkan …","0,122679",0,1,1,1.0,1,Relevan,,163,Matched
 102,sistem informasi berbasis web,Web Application,17,192,cyber security,Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya,"… Penelitian ini mengkaji pentingnya keamanan siber dalam … dalam tentang pentingnya
-keamanan siber dalam aplikasi … seperti lemahnya sistem keamanan, kurangnya pembaruan sistem…","0,120793",0,0,1,0.0,0,Tidak Relevan,
+keamanan siber dalam aplikasi … seperti lemahnya sistem keamanan, kurangnya pembaruan sistem…","0,120793",0,0,1,0.0,0,Tidak Relevan,,68,Matched
 103,sistem informasi berbasis web,Web Application,18,79,web application,Pembuatan aplikasi penjualan berbasis web monja store menggunakan php dan mysql,"… software ataupun tampilan website dengan lebih mudah, cepat, dan … Gunakan aplikasi web
-server ini sebagai tools bantuan … website perancangan aplikasi penjualan berbasis website …","0,113595",0,1,0,1.0,1,Relevan,
+server ini sebagai tools bantuan … website perancangan aplikasi penjualan berbasis website …","0,113595",0,1,0,1.0,1,Relevan,,154,Matched
 104,sistem informasi berbasis web,Web Application,19,128,mobile application,Penerapan metode design thinking dalam perancangan UI/UX aplikasi mobile SIPROPMAWA,"… (UI) sistem aplikasi berbasis mobile sangat penting karena hampir semua aplikasi mobile
-memiliki … ketika menggunakan aplikasi tersebut. Pengembangan system akan berfokus pada …","0,112023",0,0,0,0.0,0,Tidak Relevan,
+memiliki … ketika menggunakan aplikasi tersebut. Pengembangan system akan berfokus pada …","0,112023",0,0,0,0.0,0,Tidak Relevan,,103,Matched
 105,sistem informasi berbasis web,Web Application,20,78,web application,Penggunaan liveworksheet dengan aplikasi berbasis web untuk meningkatkan hasil belajar peserta didik,"… Hasil dari penelitian ini adalah penggunaan liveworksheet dengan aplikasi berbasis web
-dapat meningkatkan hasil belajar peserta yaitu pada prasiklus dengan ketutasan klasikal …","0,107389",0,1,1,1.0,1,Relevan,
+dapat meningkatkan hasil belajar peserta yaitu pada prasiklus dengan ketutasan klasikal …","0,107389",0,1,1,1.0,1,Relevan,,153,Matched
 106,cyber security,Cyber Security,1,155,cyber security,A systematic literature review on the cyber security,"… of cyber security kinds, why cyber security is important, cyber security framework, cyber
-security tools, and cyber security … Cyber security safeguards the data and integrity of computing …","0,808445",1,1,1,1.0,1,Relevan,
+security tools, and cyber security … Cyber security safeguards the data and integrity of computing …","0,808445",1,1,1,1.0,1,Relevan,,80,Matched
 107,cyber security,Cyber Security,2,162,cyber security,Analysis of cyber security knowledge gaps based on cyber security body of knowledge,"… gap between cyber security education and … in cyber security graduates who join the cyber
-security workforce. We designed and performed an opinion survey by using the Cyber Security …","0,629167",1,1,1,1.0,1,Relevan,
+security workforce. We designed and performed an opinion survey by using the Cyber Security …","0,629167",1,1,1,1.0,1,Relevan,,87,Matched
 108,cyber security,Cyber Security,3,167,cyber security,Artificial intelligence-based cyber security in the context of industry 4.0—a survey,"… technology has increased the cyber-attack surface. In this … of cyber criminals, to develop
-knowledge for cyber security … based cyber-attacks and to analyze them for deriving cyber security …","0,549152",1,1,1,1.0,1,Relevan,
+knowledge for cyber security … based cyber-attacks and to analyze them for deriving cyber security …","0,549152",1,1,1,1.0,1,Relevan,,92,Matched
 109,cyber security,Cyber Security,4,174,cyber security,"Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations","… cyber security principles, standards, and protocols. Finally, we discuss some challenges for
-SG cyber-physical systems, cyber-attacks, and cyber security … of the cyber security systems …","0,521917",1,1,1,1.0,1,Relevan,
+SG cyber-physical systems, cyber-attacks, and cyber security … of the cyber security systems …","0,521917",1,1,1,1.0,1,Relevan,,99,Matched
 110,cyber security,Cyber Security,5,153,cyber security,A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments,"… cyber-security methods. In addition, emerging trends and recent developments of cyber security
-and security … review study presented for IT and cyber security researchers will be useful. …","0,519774",1,1,1,1.0,1,Relevan,
+and security … review study presented for IT and cyber security researchers will be useful. …","0,519774",1,1,1,1.0,1,Relevan,,78,Matched
 111,cyber security,Cyber Security,6,172,cyber security,Cyber resilience and cyber security issues of intelligent cloud computing systems,"… It is necessary to provide the cyber security of cloud computing according to the … the cyber
-security of this technology is to accurately identify its threats. In this paper, a new cyber security …","0,490836",1,1,1,1.0,1,Relevan,
+security of this technology is to accurately identify its threats. In this paper, a new cyber security …","0,490836",1,1,1,1.0,1,Relevan,,97,Matched
 112,cyber security,Cyber Security,7,154,cyber security,The recent trends in cyber security: A review,"… advanced cyber security standards along with challenges faced by the cyber security domain…
-new researchers to get acquainted with the recent advancements in Cyber security domain. …","0,485449",1,1,1,1.0,1,Relevan,
+new researchers to get acquainted with the recent advancements in Cyber security domain. …","0,485449",1,1,1,1.0,1,Relevan,,79,Matched
 113,cyber security,Cyber Security,8,169,cyber security,Evaluating the cyber security readiness of organizations and its influence on performance,"… their cyber security to prevent and combat cyber-attacks, but studies of factors impacting the
-cyber security … set of factors influencing the cyber security readiness of organizations and the …","0,467244",1,1,1,1.0,1,Relevan,
+cyber security … set of factors influencing the cyber security readiness of organizations and the …","0,467244",1,1,1,1.0,1,Relevan,,94,Matched
 114,cyber security,Cyber Security,9,165,cyber security,Deep reinforcement learning for cyber security,"… , and especially high-dimensional cyber defense problems. This article presents a … for cyber
-security. We touch on different vital aspects, including DRL-based security methods for cyber…","0,445811",1,1,1,1.0,1,Relevan,
+security. We touch on different vital aspects, including DRL-based security methods for cyber…","0,445811",1,1,1,1.0,1,Relevan,,90,Matched
 115,cyber security,Cyber Security,10,152,cyber security,"Cyber security, cyber threats, implications and future perspectives: A Review","… To achieve proactive cyber security, not just businesses but the entire society requires high-…
-of cybersecurity from all industries' viewpoints. In this study, the prospects of cyber security …","0,417574",1,1,1,1.0,1,Relevan,
+of cybersecurity from all industries' viewpoints. In this study, the prospects of cyber security …","0,417574",1,1,1,1.0,1,Relevan,,77,Matched
 116,cyber security,Cyber Security,11,173,cyber security,Role of AI and its impact on the development of cyber security applications,"… its impact on cyber security as well as discuss various applications of AI in cyber security in
-detail. … on artificial intelligence and cyber security and how AI has evolved in providing better …","0,411761",1,1,1,1.0,1,Relevan,
+detail. … on artificial intelligence and cyber security and how AI has evolved in providing better …","0,411761",1,1,1,1.0,1,Relevan,,98,Matched
+117,cyber security,Cyber Security,12,89,cyber security,"Artificial intelligence in cyber security: Research advances, challenges, and opportunities.","… cyber security mentioned in this paper includes threats from outside2 and within systems (known
+as network security … systems, so the goal of cyber security is to protect threats as much …","0,40306",1,1,1,1.0,1,Relevan,,89,Unmatched
 118,cyber security,Cyber Security,13,151,cyber security,"Cyber security: State of the art, challenges and future directions","… shifting cyber threats. This article provides an overview of the state of the art in cyber
-security, … Moreover, we address the future direction of cyber security, presenting the possible …","0,397394",1,1,1,1.0,1,Relevan,
+security, … Moreover, we address the future direction of cyber security, presenting the possible …","0,397394",1,1,1,1.0,1,Relevan,,76,Matched
 119,cyber security,Cyber Security,14,166,cyber security,The role of user behaviour in improving cyber security management,"… to complying with security policies. Second, we discuss kinds of cyber security errors done
-by … Third, we discuss individual differences underlying cyber security behaviours in computer …","0,391117",1,1,1,1.0,1,Relevan,
+by … Third, we discuss individual differences underlying cyber security behaviours in computer …","0,391117",1,1,1,1.0,1,Relevan,,91,Matched
 120,cyber security,Cyber Security,15,171,cyber security,Artificial intelligence in cyber security,"… For security preparation, the instance of a cyber security device specialist is one. This skilled
-system enables substantially the collection and instruction of security initiatives to optimize …","0,386184",1,1,1,1.0,1,Relevan,
+system enables substantially the collection and instruction of security initiatives to optimize …","0,386184",1,1,1,1.0,1,Relevan,,96,Matched
 121,cyber security,Cyber Security,16,161,cyber security,Cyber security in the age of COVID-19: A timeline and analysis of cyber-crime and cyber-attacks during the pandemic,"… cyber-crime perspective and highlights the range of cyber-attacks experienced globally during
-the pandemic. Cyber… reveal the modus-operandi of cyber-attack campaigns. The analysis …","0,373834",1,1,1,1.0,1,Relevan,
+the pandemic. Cyber… reveal the modus-operandi of cyber-attack campaigns. The analysis …","0,373834",1,1,1,1.0,1,Relevan,,86,Matched
 122,cyber security,Cyber Security,17,164,cyber security,Cybersecurity of industrial cyber-physical systems: A review,"… of cybersecurity studies being funded by security companies, research councils, and state
-establishments. This allows the rapid development of security … for cyber security research. …","0,333227",1,1,1,1.0,1,Relevan,
+establishments. This allows the rapid development of security … for cyber security research. …","0,333227",1,1,1,1.0,1,Relevan,,88,Matched
 123,cyber security,Cyber Security,18,168,cyber security,"Navigating the cyber security landscape: A comprehensive review of cyber-attacks, emerging trends, and recent developments","… has heightened security concerns in cyberspace. The trend of cyber criminals offering cyber
-… of these attacks, emphasizing the need for robust cybersecurity defenses. The landscape of …","0,325223",1,1,1,1.0,1,Relevan,
+… of these attacks, emphasizing the need for robust cybersecurity defenses. The landscape of …","0,325223",1,1,1,1.0,1,Relevan,,93,Matched
 124,cyber security,Cyber Security,19,158,cyber security,Counterattacking cyber threats: A framework for the future of cybersecurity,"… for organizational security. This article presents a comprehensive framework that aims to
-shape the future of cyber security. This framework responds to the complexities of modern cyber …","0,318543",1,1,1,1.0,1,Relevan,
+shape the future of cyber security. This framework responds to the complexities of modern cyber …","0,318543",1,1,1,1.0,1,Relevan,,83,Matched
 125,cyber security,Cyber Security,20,157,cyber security,Cyber security in the metaverse,"… approach to security is vital to foster trust and safeguard the virtual realm. This chapter aims
-to provide an overview of cybersecurity in Metaverse. It discussed the various cyber stacks in …","0,248561",0,1,0,1.0,1,Relevan,
+to provide an overview of cybersecurity in Metaverse. It discussed the various cyber stacks in …","0,248561",0,1,0,1.0,1,Relevan,,82,Matched
 126,keamanan siber,Cyber Security,1,182,cyber security,Edukasi Keamanan Siber Berdigital dengan Aman,"… efektif meningkatkan keterampilan keamanan siber bagi para … yang lebih lanjut, seperti
-keamanan siber untuk usaha kecil dan … yang kurang memahami konsep dasar keamanan siber. …","0,659802",1,1,1,1.0,1,Relevan,
+keamanan siber untuk usaha kecil dan … yang kurang memahami konsep dasar keamanan siber. …","0,659802",1,1,1,1.0,1,Relevan,,57,Matched
 127,keamanan siber,Cyber Security,2,194,cyber security,Mengukur Keamanan Siber Indonesia Melalui Indikator Pilar Kerjasama Dalam Global Cybersecurity Index (GCI),"… siber dan keamanan siber yang menghubungkan domain satu dengan lainnya membuat
-ruang siber dan keamanan siber … eksistensi ruang siber dan keamanan siber tidak dapat …","0,633218",1,1,1,1.0,1,Relevan,
+ruang siber dan keamanan siber … eksistensi ruang siber dan keamanan siber tidak dapat …","0,633218",1,1,1,1.0,1,Relevan,,71,Matched
 128,keamanan siber,Cyber Security,3,184,cyber security,Peraturan dan Regulasi Keamanan Siber di Era Digital,"… membangun ekosistem keamanan siber yang … keamanan siber, artikel ini memberikan
-rekomendasi strategis bagi pembuat kebijakan, penegak hukum, dan praktisi keamanan siber …","0,591827",1,1,1,1.0,1,Relevan,
+rekomendasi strategis bagi pembuat kebijakan, penegak hukum, dan praktisi keamanan siber …","0,591827",1,1,1,1.0,1,Relevan,,59,Matched
 129,keamanan siber,Cyber Security,4,179,cyber security,Analisis risiko keamanan siber dalam transformasi digital pelayanan publik di Indonesia,"… regulasi keamanan siber … keamanan siber, serta memberikan refleksi sebagai bentuk
-upaya dibuatnya rekomendasi kebijakan yang dapat memperkuat perlindungan keamanan siber …","0,591614",1,1,1,1.0,1,Relevan,
+upaya dibuatnya rekomendasi kebijakan yang dapat memperkuat perlindungan keamanan siber …","0,591614",1,1,1,1.0,1,Relevan,,54,Matched
 130,keamanan siber,Cyber Security,5,181,cyber security,Analisis penerapan sistem keamanan siber terhadap kejahatan siber di indonesia,"… dari penelitian ini adalah untuk mengetahui bagaimana sistem keamanan siber serta
-menganalisis hambatan dan upaya untuk mengembangkan sistem keamanan siber di Indonesia. …","0,582863",1,1,1,1.0,1,Relevan,
+menganalisis hambatan dan upaya untuk mengembangkan sistem keamanan siber di Indonesia. …","0,582863",1,1,1,1.0,1,Relevan,,56,Matched
 131,keamanan siber,Cyber Security,6,187,cyber security,Upaya membangun kesadaran keamanan siber pada konsumen e-commerce di Indonesia,"… Pengamanan di dunia siber tidak hanya perangkat yang diperkuat, … keamanan siber. Oleh
-karena itu, penelitian ini bertujuan untuk mengetahui program kesadaran keamanan siber …","0,573617",1,1,1,1.0,1,Relevan,
+karena itu, penelitian ini bertujuan untuk mengetahui program kesadaran keamanan siber …","0,573617",1,1,1,1.0,1,Relevan,,62,Matched
 132,keamanan siber,Cyber Security,7,177,cyber security,Analisis hukum terhadap tantangan keamanan siber: Studi kasus penegakan hukum siber di Indonesia,"… mengadopsi beberapa regulasi terkait keamanan siber, seperti Undang… Serangkaian insiden
-keamanan siber yang terjadi di … dalam menangani masalah keamanan siber, dengan fokus …","0,560828",1,1,1,1.0,1,Relevan,
+keamanan siber yang terjadi di … dalam menangani masalah keamanan siber, dengan fokus …","0,560828",1,1,1,1.0,1,Relevan,,52,Matched
 133,keamanan siber,Cyber Security,8,176,cyber security,Teknologi Keamanan Siber (Cyber Security),"… keamanan di kalangan pengguna dan staf organisasi. Dengan meminimalkan dampak
-serangan siber, keamanan siber … , dan meningkatkan overall keamanan jaringan komputer serta …","0,555037",1,1,1,1.0,1,Relevan,
+serangan siber, keamanan siber … , dan meningkatkan overall keamanan jaringan komputer serta …","0,555037",1,1,1,1.0,1,Relevan,,51,Matched
 134,keamanan siber,Cyber Security,9,190,cyber security,Pentingnya Keamanan Siber Dalam Era Digital:: Tinjauan Global Dan Kondisi Di Indonesia,"… dalam sistem keamanan siber yang bisa berdampak besar pada keamanan data strategis
-negara. Penelitian ini bertujuan untuk menganalisis pentingnya keamanan siber dengan …","0,544865",1,1,1,1.0,1,Relevan,
+negara. Penelitian ini bertujuan untuk menganalisis pentingnya keamanan siber dengan …","0,544865",1,1,1,1.0,1,Relevan,,65,Matched
 135,keamanan siber,Cyber Security,10,186,cyber security,Sistem Keamanan Siber dan Kedaulatan Data di Indonesia dalam Perspektif Ekonomi Politik (Studi Kasus Perlindungan Data Pribadi)[Cyber Security System and …,"… perlindungan data siber dan keamanan siber. Jaminan … digunakan dalam pembangunan
-keamanan siber. Akan tetapi, … dalam pembangunan keamanan siber dan kedaulatan data …","0,527973",1,1,1,1.0,1,Relevan,
+keamanan siber. Akan tetapi, … dalam pembangunan keamanan siber dan kedaulatan data …","0,527973",1,1,1,1.0,1,Relevan,,60,Matched
 136,keamanan siber,Cyber Security,11,183,cyber security,Tinjauan Literatur Tentang Ancaman Cybercrime Dan Implementasi Keamanan Siber Di Industri Perbankan,"… peningkatan keamanan siber. Meskipun evaluasi kebijakan keamanan siber menghadapi
-kendala, langkahlangkah pencegahan telah diambil. Peningkatan keamanan siber dan …","0,523205",1,1,1,1.0,1,Relevan,
+kendala, langkahlangkah pencegahan telah diambil. Peningkatan keamanan siber dan …","0,523205",1,1,1,1.0,1,Relevan,,58,Matched
 137,keamanan siber,Cyber Security,12,199,cyber security,Keamanan siber di masa depan: Tantangan dan teknologi yang dibutuhkan,"… dan laporan terkini terkait keamanan siber. Hasil penelitian … berbasis blockchain dapat
-memperkuat keamanan data. Selain itu… mutakhir dengan kebijakan keamanan siber yang adaptif …","0,506787",1,1,1,1.0,1,Relevan,
+memperkuat keamanan data. Selain itu… mutakhir dengan kebijakan keamanan siber yang adaptif …","0,506787",1,1,1,1.0,1,Relevan,,75,Matched
 138,keamanan siber,Cyber Security,13,198,cyber security,Strategi Keamanan Siber Malaysia,"… strategi keamanan siber yang dibuat oleh pemerintah Malaysia dalam perlindungan dan
-pengembangan keamanan ruang siber … ruang siber Malaysia guna mengamankan ruang siber …","0,500465",1,1,1,1.0,1,Relevan,
+pengembangan keamanan ruang siber … ruang siber Malaysia guna mengamankan ruang siber …","0,500465",1,1,1,1.0,1,Relevan,,74,Matched
 139,keamanan siber,Cyber Security,14,178,cyber security,Data privasi dan keamanan siber pada smart-city: Tinjauan literatur,"… kebutuhan keamanan tidak mendukung. Maka dari itu, dalam penelitiannya menyarankan
-mitigasi terbaik dalam hal keamanan siber dan data privasi menggunakan keamanan siber …","0,500122",1,1,1,1.0,1,Relevan,
+mitigasi terbaik dalam hal keamanan siber dan data privasi menggunakan keamanan siber …","0,500122",1,1,1,1.0,1,Relevan,,53,Matched
+140,keamanan siber,Cyber Security,15,70,cyber security,Analisis Keamanan Siber Pada Platform Pendidikan Islam Berbasis Mobile Apps,"… bentuk ancaman keamanan siber, memetakan kerentanan … rekomendasi penguatan keamanan
+berdasarkan temuan … melalui telaah jurnal, laporan keamanan siber, serta regulasi terkait…","0,493324",1,1,1,1.0,1,Relevan,,70,Unmatched
+141,keamanan siber,Cyber Security,16,67,cyber security,Optimalisasi penanggulangan kebocoran data melalui regulatory blockchain guna mewujudkan keamanan siber di Indonesia,"… , salah satunya dalam sistem keamanan siber yang mengatur … membantu mewujudkan
+penegakan keamanan siber di Indonesia… , bahwa sistem keamanan siber di Indonesia masih …","0,489972",1,1,1,1.0,1,Relevan,,67,Unmatched
 142,keamanan siber,Cyber Security,17,192,cyber security,Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya,"… Penelitian ini mengkaji pentingnya keamanan siber dalam … dalam tentang pentingnya
-keamanan siber dalam aplikasi … seperti lemahnya sistem keamanan, kurangnya pembaruan sistem…","0,483101",1,1,1,1.0,1,Relevan,
+keamanan siber dalam aplikasi … seperti lemahnya sistem keamanan, kurangnya pembaruan sistem…","0,483101",1,1,1,1.0,1,Relevan,,68,Matched
 143,keamanan siber,Cyber Security,18,191,cyber security,Transformasi digital dan keamanan siber: Upaya penanggulangan kejahatan di era teknologi di Indonesia,"… dan penanggulangan kejahatan siber. Implementasi … siber.Strategi yang dapat diterapkan
-mencakup peningkatan pendidikan tentang keamanan siber, penerapan teknologi keamanan …","0,481358",1,1,1,1.0,1,Relevan,
+mencakup peningkatan pendidikan tentang keamanan siber, penerapan teknologi keamanan …","0,481358",1,1,1,1.0,1,Relevan,,69,Matched
 144,keamanan siber,Cyber Security,19,188,cyber security,Perkembangan Sistem Pertahanan/Keamanan Siber Indonesia dalam Menghadapi Tantangan Perkembangan Teknologi dan Informasi:-,"… yaitu keamanan siber. Artikel ini akan menggambarkan bagaimana ancaman dan serangan
-siber itu … dan keamanan siber yang dimiliki oleh Indonesia saat ini Kata Kunci: Pertahanan, …","0,478285",1,1,1,1.0,1,Relevan,
+siber itu … dan keamanan siber yang dimiliki oleh Indonesia saat ini Kata Kunci: Pertahanan, …","0,478285",1,1,1,1.0,1,Relevan,,63,Matched
 145,keamanan siber,Cyber Security,20,193,cyber security,Analisis Keamanan Siber Dan Hukum Dari Perspektif Gender Dan Filsafat Politik Alison M. Jaggar,"… keamanan siber dan hukum kebebasan, saya mengajukan pertanyaan, apakah para perumus
-keamanan siber dan … Artikel ini mencoba menganalisis keamanan siber dan perjuangan …","0,472929",1,1,1,1.0,1,Relevan,
+keamanan siber dan … Artikel ini mencoba menganalisis keamanan siber dan perjuangan …","0,472929",1,1,1,1.0,1,Relevan,,66,Matched
 146,keamanan jaringan,Cyber Security,1,176,cyber security,Teknologi Keamanan Siber (Cyber Security),"… keamanan di kalangan pengguna dan staf organisasi. Dengan meminimalkan dampak
-serangan siber, keamanan siber … , dan meningkatkan overall keamanan jaringan komputer serta …","0,41092",1,1,1,1.0,1,Relevan,
+serangan siber, keamanan siber … , dan meningkatkan overall keamanan jaringan komputer serta …","0,41092",1,1,1,1.0,1,Relevan,,51,Matched
 147,keamanan jaringan,Cyber Security,2,182,cyber security,Edukasi Keamanan Siber Berdigital dengan Aman,"… efektif meningkatkan keterampilan keamanan siber bagi para … yang lebih lanjut, seperti
-keamanan siber untuk usaha kecil dan … yang kurang memahami konsep dasar keamanan siber. …","0,213336",0,1,0,1.0,1,Relevan,
+keamanan siber untuk usaha kecil dan … yang kurang memahami konsep dasar keamanan siber. …","0,213336",0,1,0,1.0,1,Relevan,,57,Matched
 148,keamanan jaringan,Cyber Security,3,96,web application,Digitalisasi Usaha Mikro Kecil Dan Menengah Di Desa Melalui Aplikasi Kede Desa Berbasis Web,"… penjualan melalui sistem yang berbasis web. Aplikasi Web dapat berjalan pada jaringan …
-dalam akses adalah ciri utama yang membuat Aplikasi Web lebih banyak diminati dan lebih …","0,190725",0,0,0,1.0,0,Tidak Relevan,
+dalam akses adalah ciri utama yang membuat Aplikasi Web lebih banyak diminati dan lebih …","0,190725",0,0,0,1.0,0,Tidak Relevan,,171,Matched
 149,keamanan jaringan,Cyber Security,4,190,cyber security,Pentingnya Keamanan Siber Dalam Era Digital:: Tinjauan Global Dan Kondisi Di Indonesia,"… dalam sistem keamanan siber yang bisa berdampak besar pada keamanan data strategis
-negara. Penelitian ini bertujuan untuk menganalisis pentingnya keamanan siber dengan …","0,181206",0,1,0,1.0,1,Relevan,
+negara. Penelitian ini bertujuan untuk menganalisis pentingnya keamanan siber dengan …","0,181206",0,1,0,1.0,1,Relevan,,65,Matched
 150,keamanan jaringan,Cyber Security,5,184,cyber security,Peraturan dan Regulasi Keamanan Siber di Era Digital,"… membangun ekosistem keamanan siber yang … keamanan siber, artikel ini memberikan
-rekomendasi strategis bagi pembuat kebijakan, penegak hukum, dan praktisi keamanan siber …","0,172221",0,1,0,1.0,1,Relevan,
+rekomendasi strategis bagi pembuat kebijakan, penegak hukum, dan praktisi keamanan siber …","0,172221",0,1,0,1.0,1,Relevan,,59,Matched
 151,keamanan jaringan,Cyber Security,6,179,cyber security,Analisis risiko keamanan siber dalam transformasi digital pelayanan publik di Indonesia,"… regulasi keamanan siber … keamanan siber, serta memberikan refleksi sebagai bentuk
-upaya dibuatnya rekomendasi kebijakan yang dapat memperkuat perlindungan keamanan siber …","0,172159",0,1,0,1.0,1,Relevan,
+upaya dibuatnya rekomendasi kebijakan yang dapat memperkuat perlindungan keamanan siber …","0,172159",0,1,0,1.0,1,Relevan,,54,Matched
 152,keamanan jaringan,Cyber Security,7,199,cyber security,Keamanan siber di masa depan: Tantangan dan teknologi yang dibutuhkan,"… dan laporan terkini terkait keamanan siber. Hasil penelitian … berbasis blockchain dapat
-memperkuat keamanan data. Selain itu… mutakhir dengan kebijakan keamanan siber yang adaptif …","0,168543",0,1,0,1.0,1,Relevan,
+memperkuat keamanan data. Selain itu… mutakhir dengan kebijakan keamanan siber yang adaptif …","0,168543",0,1,0,1.0,1,Relevan,,75,Matched
 153,keamanan jaringan,Cyber Security,8,187,cyber security,Upaya membangun kesadaran keamanan siber pada konsumen e-commerce di Indonesia,"… Pengamanan di dunia siber tidak hanya perangkat yang diperkuat, … keamanan siber. Oleh
-karena itu, penelitian ini bertujuan untuk mengetahui program kesadaran keamanan siber …","0,166922",0,1,1,1.0,1,Relevan,
+karena itu, penelitian ini bertujuan untuk mengetahui program kesadaran keamanan siber …","0,166922",0,1,1,1.0,1,Relevan,,62,Matched
 154,keamanan jaringan,Cyber Security,9,178,cyber security,Data privasi dan keamanan siber pada smart-city: Tinjauan literatur,"… kebutuhan keamanan tidak mendukung. Maka dari itu, dalam penelitiannya menyarankan
-mitigasi terbaik dalam hal keamanan siber dan data privasi menggunakan keamanan siber …","0,166326",0,1,0,1.0,1,Relevan,
+mitigasi terbaik dalam hal keamanan siber dan data privasi menggunakan keamanan siber …","0,166326",0,1,0,1.0,1,Relevan,,53,Matched
 155,keamanan jaringan,Cyber Security,10,195,cyber security,Analisis dan peningkatan keamanan cyber: Studi kasus ancaman dan solusi dalam lingkungan digital untuk mengamankan objek vital dan file,"… Ancaman terhadap objek vital dan keamanan file berkembang pesat. Penjahat dunia
-maya … kerentanan keamanan dalam sistem digital. Untuk meningkatkan keamanan siber, …","0,164676",0,1,1,1.0,1,Relevan,
+maya … kerentanan keamanan dalam sistem digital. Untuk meningkatkan keamanan siber, …","0,164676",0,1,1,1.0,1,Relevan,,72,Matched
+156,keamanan jaringan,Cyber Security,11,70,cyber security,Analisis Keamanan Siber Pada Platform Pendidikan Islam Berbasis Mobile Apps,"… bentuk ancaman keamanan siber, memetakan kerentanan … rekomendasi penguatan keamanan
+berdasarkan temuan … melalui telaah jurnal, laporan keamanan siber, serta regulasi terkait…","0,164065",0,1,0,1.0,1,Relevan,,70,Unmatched
 157,keamanan jaringan,Cyber Security,12,192,cyber security,Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya,"… Penelitian ini mengkaji pentingnya keamanan siber dalam … dalam tentang pentingnya
-keamanan siber dalam aplikasi … seperti lemahnya sistem keamanan, kurangnya pembaruan sistem…","0,160665",0,1,1,1.0,1,Relevan,
+keamanan siber dalam aplikasi … seperti lemahnya sistem keamanan, kurangnya pembaruan sistem…","0,160665",0,1,1,1.0,1,Relevan,,68,Matched
 158,keamanan jaringan,Cyber Security,13,183,cyber security,Tinjauan Literatur Tentang Ancaman Cybercrime Dan Implementasi Keamanan Siber Di Industri Perbankan,"… peningkatan keamanan siber. Meskipun evaluasi kebijakan keamanan siber menghadapi
-kendala, langkahlangkah pencegahan telah diambil. Peningkatan keamanan siber dan …","0,152252",0,1,0,1.0,1,Relevan,
+kendala, langkahlangkah pencegahan telah diambil. Peningkatan keamanan siber dan …","0,152252",0,1,0,1.0,1,Relevan,,58,Matched
 159,keamanan jaringan,Cyber Security,14,196,cyber security,Serangan cyber dan kesiapan keamanan cyber terhadap bank indonesia,"… untuk menerapkan strategi keamanan cyber yang efektif. Strategi keamanan siber yang
-efektif … Dengan demikian, studi saat ini akan menjelaskan kondisi keamanan siber di bank-bank …","0,148286",0,1,0,1.0,1,Relevan,
+efektif … Dengan demikian, studi saat ini akan menjelaskan kondisi keamanan siber di bank-bank …","0,148286",0,1,0,1.0,1,Relevan,,73,Matched
 160,keamanan jaringan,Cyber Security,15,181,cyber security,Analisis penerapan sistem keamanan siber terhadap kejahatan siber di indonesia,"… dari penelitian ini adalah untuk mengetahui bagaimana sistem keamanan siber serta
-menganalisis hambatan dan upaya untuk mengembangkan sistem keamanan siber di Indonesia. …","0,145382",0,1,1,1.0,1,Relevan,
+menganalisis hambatan dan upaya untuk mengembangkan sistem keamanan siber di Indonesia. …","0,145382",0,1,1,1.0,1,Relevan,,56,Matched
 161,keamanan jaringan,Cyber Security,16,177,cyber security,Analisis hukum terhadap tantangan keamanan siber: Studi kasus penegakan hukum siber di Indonesia,"… mengadopsi beberapa regulasi terkait keamanan siber, seperti Undang… Serangkaian insiden
-keamanan siber yang terjadi di … dalam menangani masalah keamanan siber, dengan fokus …","0,145067",0,1,1,1.0,1,Relevan,
+keamanan siber yang terjadi di … dalam menangani masalah keamanan siber, dengan fokus …","0,145067",0,1,1,1.0,1,Relevan,,52,Matched
+162,keamanan jaringan,Cyber Security,17,67,cyber security,Optimalisasi penanggulangan kebocoran data melalui regulatory blockchain guna mewujudkan keamanan siber di Indonesia,"… , salah satunya dalam sistem keamanan siber yang mengatur … membantu mewujudkan
+penegakan keamanan siber di Indonesia… , bahwa sistem keamanan siber di Indonesia masih …","0,142582",0,1,1,1.0,1,Relevan,,67,Unmatched
 163,keamanan jaringan,Cyber Security,18,193,cyber security,Analisis Keamanan Siber Dan Hukum Dari Perspektif Gender Dan Filsafat Politik Alison M. Jaggar,"… keamanan siber dan hukum kebebasan, saya mengajukan pertanyaan, apakah para perumus
-keamanan siber dan … Artikel ini mencoba menganalisis keamanan siber dan perjuangan …","0,137622",0,1,0,1.0,1,Relevan,
+keamanan siber dan … Artikel ini mencoba menganalisis keamanan siber dan perjuangan …","0,137622",0,1,0,1.0,1,Relevan,,66,Matched
 164,keamanan jaringan,Cyber Security,19,186,cyber security,Sistem Keamanan Siber dan Kedaulatan Data di Indonesia dalam Perspektif Ekonomi Politik (Studi Kasus Perlindungan Data Pribadi)[Cyber Security System and …,"… perlindungan data siber dan keamanan siber. Jaminan … digunakan dalam pembangunan
-keamanan siber. Akan tetapi, … dalam pembangunan keamanan siber dan kedaulatan data …","0,136569",0,1,1,1.0,1,Relevan,
+keamanan siber. Akan tetapi, … dalam pembangunan keamanan siber dan kedaulatan data …","0,136569",0,1,1,1.0,1,Relevan,,60,Matched
 165,keamanan jaringan,Cyber Security,20,194,cyber security,Mengukur Keamanan Siber Indonesia Melalui Indikator Pilar Kerjasama Dalam Global Cybersecurity Index (GCI),"… siber dan keamanan siber yang menghubungkan domain satu dengan lainnya membuat
-ruang siber dan keamanan siber … eksistensi ruang siber dan keamanan siber tidak dapat …","0,134012",0,1,0,1.0,1,Relevan,
+ruang siber dan keamanan siber … eksistensi ruang siber dan keamanan siber tidak dapat …","0,134012",0,1,0,1.0,1,Relevan,,71,Matched
 166,mobile application,Mobile Application,1,111,mobile application,Deep learning methods for accurate skin cancer recognition and mobile application,"… to be used in a mobile application. To be able to build an effective mobile application, it is …
-for our mobile application to be able to classify skin lesions using a common smartphone. …","0,371184",1,1,1,1.0,1,Relevan,
+for our mobile application to be able to classify skin lesions using a common smartphone. …","0,371184",1,1,1,1.0,1,Relevan,,134,Matched
+167,mobile application,Mobile Application,2,141,mobile application,Towards a new learning experience through a mobile application with augmented reality in engineering education,"… The application of augmented reality (AR) in education … effect of an augmented reality mobile
+application (NetAR) that … established to work with the application for three weeks for three …","0,256785",0,1,0,1.0,1,Relevan,,141,Unmatched
 168,mobile application,Mobile Application,3,73,web application,Open Lab: A web application for running and sharing online experiments,"… as a web application on a desktop computer (the “Install app” link is displayed in the top
-navigation bar). Progressive web application technology makes the application accessible via …","0,227954",0,1,0,1.0,1,Relevan,
+navigation bar). Progressive web application technology makes the application accessible via …","0,227954",0,1,0,1.0,1,Relevan,,197,Matched
 169,mobile application,Mobile Application,4,107,mobile application,The role of mobile application acceptance in shaping e-customer service,"… This study focused on examining the role of mobile application (app) … the role of mobile app
-acceptance in shaping e-customer service. The multiple features associated with mobile app …","0,219308",0,1,0,1.0,1,Relevan,
+acceptance in shaping e-customer service. The multiple features associated with mobile app …","0,219308",0,1,0,1.0,1,Relevan,,132,Matched
 170,mobile application,Mobile Application,5,116,mobile application,Augmented reality technology adoption: Case of a mobile application in Turkey,"… ) technology has become widespread in mobile devices. As with user … of applications in
-mobile augmented reality (MAR) applications. In this study, the factors affecting the use of mobile …","0,21404",0,1,0,1.0,1,Relevan,
+mobile augmented reality (MAR) applications. In this study, the factors affecting the use of mobile …","0,21404",0,1,0,1.0,1,Relevan,,139,Matched
 171,mobile application,Mobile Application,6,149,mobile application,Perancangan Ulang UI & UX Menggunakan Metode Design Thinking Pada Aplikasi Siakadu Mahasiswa Berbasis Mobile,"… yaitu mobile apps / aplikasi mobile. Aplikasi mobile juga biasa disebut dengan mobile
-apps, yaitu istilah yang digunakan untuk medeskripsikan aplikasi internet yang berjalan …","0,211707",0,1,1,1.0,1,Relevan,
+apps, yaitu istilah yang digunakan untuk medeskripsikan aplikasi internet yang berjalan …","0,211707",0,1,1,1.0,1,Relevan,,124,Matched
 172,mobile application,Mobile Application,7,56,web application,DeepCrop: Deep learning-based crop disease prediction with web application,"… a smart web application for real-life crop disease prediction. The proposed web application
-aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …","0,210066",0,0,1,,0,Tidak Relevan,
+aims to … The proposed application uses the ResNet50 transfer learning model at its heart to …","0,210066",0,0,1,,0,Tidak Relevan,,181,Matched
 173,mobile application,Mobile Application,8,146,mobile application,Analisis kualitas layanan pada aplikasi Mobile JKN dengan tingkat kepuasan pengguna Mobile JKN BPJS Kesehatan di Kabupaten Demak,"… aplikasi mobile JKN dengan kepuasan pengguna mobile … hubungan kualitas layanan aplikasi
-mobile JKN dan kepuasan … pada aplikasi mobile JKN dengan kepuasan pengguna mobile …","0,193532",0,1,1,1.0,1,Relevan,
+mobile JKN dan kepuasan … pada aplikasi mobile JKN dengan kepuasan pengguna mobile …","0,193532",0,1,1,1.0,1,Relevan,,122,Matched
 174,mobile application,Mobile Application,9,136,mobile application,Analisis Technology Acceptance Model (TAM) Terhadap Pengguna Aplikasi Mobile Banking,"… The research was conducted on mobile banking application users in Tegal City using a
-purposive … to improve mobile banking services in order to increase the number of mobile banking …","0,186308",0,1,1,1.0,1,Relevan,
+purposive … to improve mobile banking services in order to increase the number of mobile banking …","0,186308",0,1,1,1.0,1,Relevan,,111,Matched
 175,mobile application,Mobile Application,10,130,mobile application,Peluang Penelitian UI/UX pada Pengembangan Aplikasi Mobile: Systematic literature review,"… oleh developer mobile apps [1]. Banyaknya aplikasi mobile yang ada di era digital ini
-membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,184014",0,1,1,1.0,1,Relevan,
+membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,184014",0,1,1,1.0,1,Relevan,,104,Matched
+176,mobile application,Mobile Application,11,200,web application,A hybrid fuzzy rule-based multi-criteria framework for sustainable-security assessment of web application,"… an institutional web application to corroborate the efficiency of this approach. Despite the
+web application's sensitivity, this study has used various versions of three web applications of …","0,177258",0,0,1,1.0,1,Relevan,,200,Unmatched
 177,mobile application,Mobile Application,12,143,mobile application,Analisis persepsi konsumen terhadap penggunaan aplikasi Mobile JKN,"… Pembuatan Aplikasi Mobile JKN ini tujuannya adalah untuk … aplikasi Mobile JKN, tetapi
-dalam perjalanan nya masih sangat minim sekali masyarakat yang mengakses aplikasi Mobile …","0,167959",0,1,1,1.0,1,Relevan,
+dalam perjalanan nya masih sangat minim sekali masyarakat yang mengakses aplikasi Mobile …","0,167959",0,1,1,1.0,1,Relevan,,119,Matched
 178,mobile application,Mobile Application,13,71,web application,ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application,"… for CKD classification and to develop a web-based application for CKD prediction. The proposed
-… Additionally, we present a real-time web-based application to operationalize the model, …","0,166237",0,0,1,1.0,1,Relevan,
+… Additionally, we present a real-time web-based application to operationalize the model, …","0,166237",0,0,1,1.0,1,Relevan,,195,Matched
 179,mobile application,Mobile Application,14,104,mobile application,A study of mobile app use for teaching and research in higher education,"… discusses mobile app use as opposed to mobile … mobile app use in academia, we identify
-library studies that have been conducted on the selection, use or development of mobile apps (…","0,165796",0,0,0,1.0,0,Tidak Relevan,
+library studies that have been conducted on the selection, use or development of mobile apps (…","0,165796",0,0,0,1.0,0,Tidak Relevan,,129,Matched
+180,mobile application,Mobile Application,15,199,web application,From prompt injections to sql injection attacks: How protected is your llm-integrated web application?,"… If an application remains vulnerable to these threats, the … -integrated applications, and what
+is their impact on application security? To study this question, we focus on web applications …","0,164218",0,0,0,1.0,0,Tidak Relevan,,199,Unmatched
 181,mobile application,Mobile Application,16,119,mobile application,What works best to engage participants in mobile app interventions and e-health: a scoping review,"… articles that featured the terms engagement, mobile app/mobile health, and adult. After
-applying … the shift toward mobile interventions and the benefits of using mobile apps, this review …","0,157669",0,1,0,1.0,1,Relevan,
+applying … the shift toward mobile interventions and the benefits of using mobile apps, this review …","0,157669",0,1,0,1.0,1,Relevan,,143,Matched
 182,mobile application,Mobile Application,17,102,mobile application,A survey of performance optimization for mobile applications,"… Finally, we explain how the function and performance of mobile applications can affect
-users. 2.1 Mobile Devices Mobile devices are embedded systems that consist of hardware and …","0,155037",0,1,0,1.0,1,Relevan,
+users. 2.1 Mobile Devices Mobile devices are embedded systems that consist of hardware and …","0,155037",0,1,0,1.0,1,Relevan,,127,Matched
 183,mobile application,Mobile Application,18,127,mobile application,Tren pengembangan aplikasi mobile: Sebuah tinjauan literatur,"… Pengembangan teknologi terhadap tren aplikasi mobile … tentang tren pengembangan
-aplikasi mobile ini. Tujuan dari … digunakan dalam pengembangan aplikasi mobile di Indonesia …","0,149175",0,1,1,1.0,1,Relevan,
+aplikasi mobile ini. Tujuan dari … digunakan dalam pengembangan aplikasi mobile di Indonesia …","0,149175",0,1,1,1.0,1,Relevan,,101,Matched
 184,mobile application,Mobile Application,19,108,mobile application,Determinants of mobile apps adoption among young adults: theoretical extension and analysis,"… Mobile applications (apps) are now the most essential part of daily life. In this context, this …
-to use mobile apps. b) analyze the factors determining the usage of mobile applications in an …","0,141754",0,1,0,1.0,1,Relevan,
+to use mobile apps. b) analyze the factors determining the usage of mobile applications in an …","0,141754",0,1,0,1.0,1,Relevan,,133,Matched
 185,mobile application,Mobile Application,20,138,mobile application,Perancangan UI/UX Aplikasi Mobile Produk Fashion Pria pada Toko Celcius di Kota Manado Menggunakan Design Thinking,"… Mobile Aplikasi atau kata lainnya disebut aplikasi mobile merupakan aplikasi perangkat
-lunak yang di aplikasinya ada di perangkat mobile seperti smartphone, tablet dan lain …","0,140706",0,1,0,1.0,1,Relevan,
+lunak yang di aplikasinya ada di perangkat mobile seperti smartphone, tablet dan lain …","0,140706",0,1,0,1.0,1,Relevan,,112,Matched
 186,aplikasi mobile,Mobile Application,1,149,mobile application,Perancangan Ulang UI & UX Menggunakan Metode Design Thinking Pada Aplikasi Siakadu Mahasiswa Berbasis Mobile,"… yaitu mobile apps / aplikasi mobile. Aplikasi mobile juga biasa disebut dengan mobile
-apps, yaitu istilah yang digunakan untuk medeskripsikan aplikasi internet yang berjalan …","0,435222",1,1,1,1.0,1,Relevan,
+apps, yaitu istilah yang digunakan untuk medeskripsikan aplikasi internet yang berjalan …","0,435222",1,1,1,1.0,1,Relevan,,124,Matched
 187,aplikasi mobile,Mobile Application,2,130,mobile application,Peluang Penelitian UI/UX pada Pengembangan Aplikasi Mobile: Systematic literature review,"… oleh developer mobile apps [1]. Banyaknya aplikasi mobile yang ada di era digital ini
-membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,420325",1,1,1,1.0,1,Relevan,
+membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,420325",1,1,1,1.0,1,Relevan,,104,Matched
 188,aplikasi mobile,Mobile Application,3,133,mobile application,Aplikasi Mobile JKN Edukasi Tentang Penggunaan Aplikasi Mobile JKN Pada Pasien Rawat Jalan RSUD Anugerah Tomohon,"… kurangnya pengetahuan masyarakat mengenai penggunaan aplikasi Mobile JKN. Selain
-itu… , aplikasi Mobile JKN merupakan aplikasi yang dapat digunakan pada smartphone. Aplikasi …","0,384529",1,1,1,1.0,1,Relevan,
+itu… , aplikasi Mobile JKN merupakan aplikasi yang dapat digunakan pada smartphone. Aplikasi …","0,384529",1,1,1,1.0,1,Relevan,,107,Matched
 189,aplikasi mobile,Mobile Application,4,143,mobile application,Analisis persepsi konsumen terhadap penggunaan aplikasi Mobile JKN,"… Pembuatan Aplikasi Mobile JKN ini tujuannya adalah untuk … aplikasi Mobile JKN, tetapi
-dalam perjalanan nya masih sangat minim sekali masyarakat yang mengakses aplikasi Mobile …","0,383652",1,1,1,1.0,1,Relevan,
+dalam perjalanan nya masih sangat minim sekali masyarakat yang mengakses aplikasi Mobile …","0,383652",1,1,1,1.0,1,Relevan,,119,Matched
 190,aplikasi mobile,Mobile Application,5,138,mobile application,Perancangan UI/UX Aplikasi Mobile Produk Fashion Pria pada Toko Celcius di Kota Manado Menggunakan Design Thinking,"… Mobile Aplikasi atau kata lainnya disebut aplikasi mobile merupakan aplikasi perangkat
-lunak yang di aplikasinya ada di perangkat mobile seperti smartphone, tablet dan lain …","0,361575",1,1,1,1.0,1,Relevan,
+lunak yang di aplikasinya ada di perangkat mobile seperti smartphone, tablet dan lain …","0,361575",1,1,1,1.0,1,Relevan,,112,Matched
 191,aplikasi mobile,Mobile Application,6,128,mobile application,Penerapan metode design thinking dalam perancangan UI/UX aplikasi mobile SIPROPMAWA,"… (UI) sistem aplikasi berbasis mobile sangat penting karena hampir semua aplikasi mobile
-memiliki … ketika menggunakan aplikasi tersebut. Pengembangan system akan berfokus pada …","0,351319",1,1,1,1.0,1,Relevan,
+memiliki … ketika menggunakan aplikasi tersebut. Pengembangan system akan berfokus pada …","0,351319",1,1,1,1.0,1,Relevan,,103,Matched
 192,aplikasi mobile,Mobile Application,7,147,mobile application,Analisis Penggunaan Aplikasi Mobile JKN dengan Metode EUCS,"… Dengan tingginya penggunaan terhadap aplikasi, maka … mengukur kualitas layanan Aplikasi
-Mobile JKN menggunakan … bahwa kualitas layanan aplikasi Mobile JKN berada pada level …","0,347549",1,1,1,1.0,1,Relevan,
+Mobile JKN menggunakan … bahwa kualitas layanan aplikasi Mobile JKN berada pada level …","0,347549",1,1,1,1.0,1,Relevan,,123,Matched
 193,aplikasi mobile,Mobile Application,8,146,mobile application,Analisis kualitas layanan pada aplikasi Mobile JKN dengan tingkat kepuasan pengguna Mobile JKN BPJS Kesehatan di Kabupaten Demak,"… aplikasi mobile JKN dengan kepuasan pengguna mobile … hubungan kualitas layanan aplikasi
-mobile JKN dan kepuasan … pada aplikasi mobile JKN dengan kepuasan pengguna mobile …","0,347338",1,1,1,1.0,1,Relevan,
+mobile JKN dan kepuasan … pada aplikasi mobile JKN dengan kepuasan pengguna mobile …","0,347338",1,1,1,1.0,1,Relevan,,122,Matched
 194,aplikasi mobile,Mobile Application,9,145,mobile application,Penggunaan metode heuristic evaluation sebagai analisis evaluasi user interface dan user experience pada aplikasi bca mobile,"… mendapatkan peringkat tertinggi dalam kategori aplikasi mobile banking pada … aplikasi
-mobile banking lainnya aplikasi BCA Mobile mendapat banyak kritik dari pengguna aplikasi …","0,341318",1,1,1,1.0,1,Relevan,
+mobile banking lainnya aplikasi BCA Mobile mendapat banyak kritik dari pengguna aplikasi …","0,341318",1,1,1,1.0,1,Relevan,,121,Matched
 195,aplikasi mobile,Mobile Application,10,127,mobile application,Tren pengembangan aplikasi mobile: Sebuah tinjauan literatur,"… Pengembangan teknologi terhadap tren aplikasi mobile … tentang tren pengembangan
-aplikasi mobile ini. Tujuan dari … digunakan dalam pengembangan aplikasi mobile di Indonesia …","0,340745",1,1,1,1.0,1,Relevan,
+aplikasi mobile ini. Tujuan dari … digunakan dalam pengembangan aplikasi mobile di Indonesia …","0,340745",1,1,1,1.0,1,Relevan,,101,Matched
 196,aplikasi mobile,Mobile Application,11,150,mobile application,Analisis Sentimen Ulasan Aplikasi Jamsostek Mobile Menggunakan Metode Support Vector Machine,"… aplikasi mobile yang dapat memberi kemudahan bagi masyarakat Indonesia, salah satunya
-yaitu JMO. Penelitian ini bertujuan untuk menganalisis kualitas aplikasi … ulasan aplikasi …","0,307331",1,1,1,1.0,1,Relevan,
+yaitu JMO. Penelitian ini bertujuan untuk menganalisis kualitas aplikasi … ulasan aplikasi …","0,307331",1,1,1,1.0,1,Relevan,,125,Matched
 197,aplikasi mobile,Mobile Application,12,134,mobile application,Tingkat kepuasan masyarakat terhadap pendaftaran online pada aplikasi Mobile JKN,"… mudah menggunakan aplikasi, dan puas karena fitur yang ada pada aplikasi lengkap, hal
-… ini di analogikan aplikasi dan kelengkapan fitur aplikasi mobile JKN memiliki pengaruh …","0,300594",1,1,1,1.0,1,Relevan,
+… ini di analogikan aplikasi dan kelengkapan fitur aplikasi mobile JKN memiliki pengaruh …","0,300594",1,1,1,1.0,1,Relevan,,109,Matched
 198,aplikasi mobile,Mobile Application,13,135,mobile application,Perancangan user experience aplikasi mobile Majuli menggunakan metode design thinking,"… aplikasi dan memberikan pengalaman yang meningkatkan keuntungan pada bisnis melalui
-aplikasi[6]. Pada penelitian ini dilakukan perancangan user experience aplikasi mobile …","0,298612",0,1,0,1.0,1,Relevan,
+aplikasi[6]. Pada penelitian ini dilakukan perancangan user experience aplikasi mobile …","0,298612",0,1,0,1.0,1,Relevan,,110,Matched
 199,aplikasi mobile,Mobile Application,14,137,mobile application,Pengembangan Aplikasi Kasir Mobile Yang Efisien,"… Untuk membuat aplikasi mobile diperlukan penggunaan flutter. Flutter adalah SDK yang
-dikembangkan oleh Google untuk membangun aplikasi mobile yang memiliki kinerja tinggi dan …","0,297284",0,1,1,1.0,1,Relevan,
+dikembangkan oleh Google untuk membangun aplikasi mobile yang memiliki kinerja tinggi dan …","0,297284",0,1,1,1.0,1,Relevan,,113,Matched
 200,aplikasi mobile,Mobile Application,15,140,mobile application,Aplikasi Mobile JKN untuk Memudahkan Akses Pelayanan BPJS,"… penggunaan aplikasi di smart phone melalui aplikasi mobile JKN, penyedia layanan aplikasi
-JKN telah … Fitur-fitur aplikasi mobile tersebut terdiri atas; (1). Fitur Peserta adalah fitur yang …","0,289336",0,1,1,1.0,1,Relevan,
+JKN telah … Fitur-fitur aplikasi mobile tersebut terdiri atas; (1). Fitur Peserta adalah fitur yang …","0,289336",0,1,1,1.0,1,Relevan,,115,Matched
+201,aplikasi mobile,Mobile Application,16,108,mobile application,Efektivitas penggunaan aplikasi mobile jkn dalam mengurangi antrian,"… mobile JKN sudah efektif atau belum. Tujuan penelitian ini untuk mengetahui penggunaan
+aplikasi mobile JKN dan bagaimana efektivitas penggunaan aplikasi tersebut di Kantor …","0,279628",0,1,1,1.0,1,Relevan,,108,Unmatched
 202,aplikasi mobile,Mobile Application,17,141,mobile application,Analisis Sentimen Berbasis Aspek pada Aplikasi Mobile Menggunakan Naïve Bayes berdasarkan Ulasan Pengguna Playstore (Studi Kasus: Jconnect Mobile),"… aplikasi JConnect Mobile. Ulasan dari pengguna dapat dimanfaatkan sebagai sumber untuk
-melakukan peningkatan aplikasi… pengguna terhadap aplikasi JConnect Mobile di playstore. …","0,278368",0,1,1,1.0,1,Relevan,
+melakukan peningkatan aplikasi… pengguna terhadap aplikasi JConnect Mobile di playstore. …","0,278368",0,1,1,1.0,1,Relevan,,117,Matched
 203,aplikasi mobile,Mobile Application,18,142,mobile application,Persepsi manfaat kemudahan terhadap niat dalam penggunaan aplikasi mobile banking,"… terhadap adopsi aplikasi mobile banking berdasarkan kajian … memengaruhi niat penggunaan
-aplikasi mobile banking. … niat perilaku pengguna terhadap aplikasi mobile banking. …","0,269971",0,1,1,1.0,1,Relevan,
+aplikasi mobile banking. … niat perilaku pengguna terhadap aplikasi mobile banking. …","0,269971",0,1,1,1.0,1,Relevan,,118,Matched
 204,aplikasi mobile,Mobile Application,19,144,mobile application,Analisis kualitas pelayanan aplikasi mobile JKN BPJS kesehatan menggunakan metode service quality (servqual),"… Populasi penelitian ini adalah peserta BPJS Kesehatan yang menggunakan aplikasi mobile
-JKN. Adapun jumlah pengguna aplikasi mobile JKN di seluruh Indonesia saat ini sebanyak …","0,250142",0,1,0,1.0,1,Relevan,
+JKN. Adapun jumlah pengguna aplikasi mobile JKN di seluruh Indonesia saat ini sebanyak …","0,250142",0,1,0,1.0,1,Relevan,,120,Matched
 205,aplikasi mobile,Mobile Application,20,148,mobile application,Aplikasi pembelajaran ilmu tajwid berbasis mobile,"… Tujuan dari penelitian ini adalah membuat aplikasi … Aplikasi pembelajaran ilmu tajwid
-dirancang berdasarkan … Pengujian menggunakan metode black box testing menunjukan aplikasi …","0,218443",0,1,1,1.0,1,Relevan,
+dirancang berdasarkan … Pengujian menggunakan metode black box testing menunjukan aplikasi …","0,218443",0,1,1,1.0,1,Relevan,,116,Matched
 206,aplikasi android,Mobile Application,1,83,web application,Pengembangan Aplikasi Berbasis Web dan Android Sebagai Penunjang Kerja di Indonesia: Systematic Literature Review,"… aplikasi digunakan di Indonesia untuk mendukung kegiatan baik pemerintah maupun swasta.
-Makalah jurnal yang mencakup pembuatan aplikasi berbasis web … aplikasi berbasis web …","0,31754",1,0,1,1.0,1,Relevan,
+Makalah jurnal yang mencakup pembuatan aplikasi berbasis web … aplikasi berbasis web …","0,31754",1,0,1,1.0,1,Relevan,,158,Matched
 207,aplikasi android,Mobile Application,2,133,mobile application,Aplikasi Mobile JKN Edukasi Tentang Penggunaan Aplikasi Mobile JKN Pada Pasien Rawat Jalan RSUD Anugerah Tomohon,"… kurangnya pengetahuan masyarakat mengenai penggunaan aplikasi Mobile JKN. Selain
-itu… , aplikasi Mobile JKN merupakan aplikasi yang dapat digunakan pada smartphone. Aplikasi …","0,078277",0,1,0,1.0,1,Relevan,
+itu… , aplikasi Mobile JKN merupakan aplikasi yang dapat digunakan pada smartphone. Aplikasi …","0,078277",0,1,0,1.0,1,Relevan,,107,Matched
 208,aplikasi android,Mobile Application,3,134,mobile application,Tingkat kepuasan masyarakat terhadap pendaftaran online pada aplikasi Mobile JKN,"… mudah menggunakan aplikasi, dan puas karena fitur yang ada pada aplikasi lengkap, hal
-… ini di analogikan aplikasi dan kelengkapan fitur aplikasi mobile JKN memiliki pengaruh …","0,072846",0,1,0,1.0,1,Relevan,
+… ini di analogikan aplikasi dan kelengkapan fitur aplikasi mobile JKN memiliki pengaruh …","0,072846",0,1,0,1.0,1,Relevan,,109,Matched
 209,aplikasi android,Mobile Application,4,82,web application,Rancang bangun aplikasi penjualan online berbasis web menggunakan metode scrum,"… aplikasi ini juga tidak banyak. Tujuan dari penelitian ini adalah untuk merancang dan
-membangun aplikasi penjualan online berbasis web … Hasil penelitian ini adalah sebuah aplikasi …","0,072089",0,0,0,1.0,0,Tidak Relevan,
+membangun aplikasi penjualan online berbasis web … Hasil penelitian ini adalah sebuah aplikasi …","0,072089",0,0,0,1.0,0,Tidak Relevan,,157,Matched
 210,aplikasi android,Mobile Application,5,130,mobile application,Peluang Penelitian UI/UX pada Pengembangan Aplikasi Mobile: Systematic literature review,"… oleh developer mobile apps [1]. Banyaknya aplikasi mobile yang ada di era digital ini
-membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,071303",0,1,0,1.0,1,Relevan,
+membuat para pengembang aplikasi mobile giat untuk membuat aplikasi yang menarik dan …","0,071303",0,1,0,1.0,1,Relevan,,104,Matched
 211,aplikasi android,Mobile Application,6,150,mobile application,Analisis Sentimen Ulasan Aplikasi Jamsostek Mobile Menggunakan Metode Support Vector Machine,"… aplikasi mobile yang dapat memberi kemudahan bagi masyarakat Indonesia, salah satunya
-yaitu JMO. Penelitian ini bertujuan untuk menganalisis kualitas aplikasi … ulasan aplikasi …","0,069514",0,1,1,1.0,1,Relevan,
+yaitu JMO. Penelitian ini bertujuan untuk menganalisis kualitas aplikasi … ulasan aplikasi …","0,069514",0,1,1,1.0,1,Relevan,,125,Matched
 212,aplikasi android,Mobile Application,7,138,mobile application,Perancangan UI/UX Aplikasi Mobile Produk Fashion Pria pada Toko Celcius di Kota Manado Menggunakan Design Thinking,"… Mobile Aplikasi atau kata lainnya disebut aplikasi mobile merupakan aplikasi perangkat
-lunak yang di aplikasinya ada di perangkat mobile seperti smartphone, tablet dan lain …","0,068152",0,1,0,1.0,1,Relevan,
+lunak yang di aplikasinya ada di perangkat mobile seperti smartphone, tablet dan lain …","0,068152",0,1,0,1.0,1,Relevan,,112,Matched
 213,aplikasi android,Mobile Application,8,128,mobile application,Penerapan metode design thinking dalam perancangan UI/UX aplikasi mobile SIPROPMAWA,"… (UI) sistem aplikasi berbasis mobile sangat penting karena hampir semua aplikasi mobile
-memiliki … ketika menggunakan aplikasi tersebut. Pengembangan system akan berfokus pada …","0,068111",0,1,0,1.0,1,Relevan,
+memiliki … ketika menggunakan aplikasi tersebut. Pengembangan system akan berfokus pada …","0,068111",0,1,0,1.0,1,Relevan,,103,Matched
 214,aplikasi android,Mobile Application,9,135,mobile application,Perancangan user experience aplikasi mobile Majuli menggunakan metode design thinking,"… aplikasi dan memberikan pengalaman yang meningkatkan keuntungan pada bisnis melalui
-aplikasi[6]. Pada penelitian ini dilakukan perancangan user experience aplikasi mobile …","0,067542",0,1,1,1.0,1,Relevan,
+aplikasi[6]. Pada penelitian ini dilakukan perancangan user experience aplikasi mobile …","0,067542",0,1,1,1.0,1,Relevan,,110,Matched
 215,aplikasi android,Mobile Application,10,147,mobile application,Analisis Penggunaan Aplikasi Mobile JKN dengan Metode EUCS,"… Dengan tingginya penggunaan terhadap aplikasi, maka … mengukur kualitas layanan Aplikasi
-Mobile JKN menggunakan … bahwa kualitas layanan aplikasi Mobile JKN berada pada level …","0,06738",0,1,1,1.0,1,Relevan,
+Mobile JKN menggunakan … bahwa kualitas layanan aplikasi Mobile JKN berada pada level …","0,06738",0,1,1,1.0,1,Relevan,,123,Matched
 216,aplikasi android,Mobile Application,11,149,mobile application,Perancangan Ulang UI & UX Menggunakan Metode Design Thinking Pada Aplikasi Siakadu Mahasiswa Berbasis Mobile,"… yaitu mobile apps / aplikasi mobile. Aplikasi mobile juga biasa disebut dengan mobile
-apps, yaitu istilah yang digunakan untuk medeskripsikan aplikasi internet yang berjalan …","0,065627",0,1,0,1.0,1,Relevan,
+apps, yaitu istilah yang digunakan untuk medeskripsikan aplikasi internet yang berjalan …","0,065627",0,1,0,1.0,1,Relevan,,124,Matched
 217,aplikasi android,Mobile Application,12,143,mobile application,Analisis persepsi konsumen terhadap penggunaan aplikasi Mobile JKN,"… Pembuatan Aplikasi Mobile JKN ini tujuannya adalah untuk … aplikasi Mobile JKN, tetapi
-dalam perjalanan nya masih sangat minim sekali masyarakat yang mengakses aplikasi Mobile …","0,065082",0,1,0,1.0,1,Relevan,
+dalam perjalanan nya masih sangat minim sekali masyarakat yang mengakses aplikasi Mobile …","0,065082",0,1,0,1.0,1,Relevan,,119,Matched
 218,aplikasi android,Mobile Application,13,145,mobile application,Penggunaan metode heuristic evaluation sebagai analisis evaluasi user interface dan user experience pada aplikasi bca mobile,"… mendapatkan peringkat tertinggi dalam kategori aplikasi mobile banking pada … aplikasi
-mobile banking lainnya aplikasi BCA Mobile mendapat banyak kritik dari pengguna aplikasi …","0,064334",0,1,0,1.0,1,Relevan,
+mobile banking lainnya aplikasi BCA Mobile mendapat banyak kritik dari pengguna aplikasi …","0,064334",0,1,0,1.0,1,Relevan,,121,Matched
 219,aplikasi android,Mobile Application,14,91,web application,Implementasi Aplikasi Kasir Berbasis Web pada Toko Ghafya Fruits Shop,"… Web adalah suatu layanan atau kumpulan halaman yang berisi informasi, iklan, serta program
-aplikasi yang … adalah sebuah aplikasi pendukung untuk membuka software aplikasi web …","0,063729",0,0,0,1.0,0,Tidak Relevan,
+aplikasi yang … adalah sebuah aplikasi pendukung untuk membuka software aplikasi web …","0,063729",0,0,0,1.0,0,Tidak Relevan,,167,Matched
 220,aplikasi android,Mobile Application,15,80,web application,Analisis Keretanan Website Dengan Aplikasi Owasp Zap,"… dirancang khusus untuk menguji aplikasi web dan fleksibel serta dapat … dan aplikasi web
-sehingga dapat mencegat dan memeriksa pesan yang dikirim antara browser dan aplikasi web…","0,063609",0,0,0,1.0,0,Tidak Relevan,
+sehingga dapat mencegat dan memeriksa pesan yang dikirim antara browser dan aplikasi web…","0,063609",0,0,0,1.0,0,Tidak Relevan,,155,Matched
 221,aplikasi android,Mobile Application,16,140,mobile application,Aplikasi Mobile JKN untuk Memudahkan Akses Pelayanan BPJS,"… penggunaan aplikasi di smart phone melalui aplikasi mobile JKN, penyedia layanan aplikasi
-JKN telah … Fitur-fitur aplikasi mobile tersebut terdiri atas; (1). Fitur Peserta adalah fitur yang …","0,061353",0,1,0,0.0,0,Tidak Relevan,
+JKN telah … Fitur-fitur aplikasi mobile tersebut terdiri atas; (1). Fitur Peserta adalah fitur yang …","0,061353",0,1,0,0.0,0,Tidak Relevan,,115,Matched
 222,aplikasi android,Mobile Application,17,89,web application,Penerapan Metode Waterfall Pada Aplikasi Reservasi Lapangan Futsal Berbasis Web,"… Hasil dari penelitian ini berupa sebuah aplikasi berbasis web yang … Aplikasi yang telah
-dibuat dapat berjalan dengan baik. Kata Kunci: Aplikasi; Black Box; Penjadwalan; Waterfall; Web …","0,060513",0,0,0,0.0,0,Tidak Relevan,
+dibuat dapat berjalan dengan baik. Kata Kunci: Aplikasi; Black Box; Penjadwalan; Waterfall; Web …","0,060513",0,0,0,0.0,0,Tidak Relevan,,164,Matched
 223,aplikasi android,Mobile Application,18,148,mobile application,Aplikasi pembelajaran ilmu tajwid berbasis mobile,"… Tujuan dari penelitian ini adalah membuat aplikasi … Aplikasi pembelajaran ilmu tajwid
-dirancang berdasarkan … Pengujian menggunakan metode black box testing menunjukan aplikasi …","0,05929",0,1,1,1.0,1,Relevan,
+dirancang berdasarkan … Pengujian menggunakan metode black box testing menunjukan aplikasi …","0,05929",0,1,1,1.0,1,Relevan,,116,Matched
 224,aplikasi android,Mobile Application,19,127,mobile application,Tren pengembangan aplikasi mobile: Sebuah tinjauan literatur,"… Pengembangan teknologi terhadap tren aplikasi mobile … tentang tren pengembangan
-aplikasi mobile ini. Tujuan dari … digunakan dalam pengembangan aplikasi mobile di Indonesia …","0,057804",0,1,1,1.0,1,Relevan,
+aplikasi mobile ini. Tujuan dari … digunakan dalam pengembangan aplikasi mobile di Indonesia …","0,057804",0,1,1,1.0,1,Relevan,,101,Matched
 225,aplikasi android,Mobile Application,20,95,web application,Perancangan sistem aplikasi penjualan dan layanan jasa laundry sepatu berbasis website,"… sesuai dengan tujuan pembuatan aplikasi tersebut, aplikasi mempunyai arti yaitu pemecahan
-… dalam pembangunan aplikasi pelayanan jasa Laundry pada ShoesLab berbasis web. …","0,05432",0,0,1,0.0,0,Tidak Relevan,
+… dalam pembangunan aplikasi pelayanan jasa Laundry pada ShoesLab berbasis web. …","0,05432",0,0,1,0.0,0,Tidak Relevan,,172,Matched
