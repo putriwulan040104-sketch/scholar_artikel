@@ -27,8 +27,6 @@ export type GraphModel = {
   gNodes: GraphNode[];
   gLinks: GraphLink[];
   degreeById: Map<number, number>;
-  inDegreeById: Map<number, number>;
-  outDegreeById: Map<number, number>;
 };
 
 export type GraphRelation = {

@@ -218,14 +218,12 @@ def build_sna_metrics(
             "year": pub_map[node_id].get("year"),
             "doi": doi_by_id.get(node_id),
             "degree": degree,
-            "in_degree": degree,
-            "out_degree": degree,
             "pagerank": round(float(pagerank.get(node_id, 0.0)), 8),
         })
 
-    top_by_in_degree = sorted(
+    top_by_degree = sorted(
         metrics_rows,
-        key=lambda x: (x["in_degree"], x["pagerank"]),
+        key=lambda x: (x["degree"], x["pagerank"]),
         reverse=True
     )[:top_n]
 
@@ -244,15 +242,13 @@ def build_sna_metrics(
         "component_count": component_count,
         "largest_component_size": largest_component_size,
         "average_degree": round(float(2 * edge_count / node_count), 8) if node_count else 0.0,
-        "average_in_degree": round(float(2 * edge_count / node_count), 8) if node_count else 0.0,
-        "average_out_degree": round(float(2 * edge_count / node_count), 8) if node_count else 0.0,
         "relation_type": relation_type,
     }
 
     return {
         "summary": summary,
-        "top_cited": top_by_in_degree,
-        "top_connected": top_by_in_degree,
+        "top_cited": top_by_degree,
+        "top_connected": top_by_degree,
         "top_pagerank": top_by_pagerank,
         "node_metrics": metrics_rows,
     }

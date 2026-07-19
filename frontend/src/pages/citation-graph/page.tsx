@@ -303,23 +303,13 @@ export default function CitationGraphPage() {
 
   const graphModel = useMemo(() => {
     const degreeById = new Map<number, number>();
-    const inDegreeById = new Map<number, number>();
-    const outDegreeById = new Map<number, number>();
-
     for (const n of displayNodes) degreeById.set(Number(n.id), 0);
-    for (const n of displayNodes) {
-      const id = Number(n.id);
-      inDegreeById.set(id, 0);
-      outDegreeById.set(id, 0);
-    }
 
     for (const e of displayEdges) {
       const s = Number(e.source);
       const t = Number(e.target);
       degreeById.set(s, (degreeById.get(s) || 0) + 1);
       degreeById.set(t, (degreeById.get(t) || 0) + 1);
-      outDegreeById.set(s, (outDegreeById.get(s) || 0) + 1);
-      inDegreeById.set(t, (inDegreeById.get(t) || 0) + 1);
     }
 
     const gNodes: GraphNode[] = displayNodes.map((n) => ({
@@ -353,7 +343,7 @@ export default function CitationGraphPage() {
           nodeIdSet.has(Number(e.target)),
       );
 
-    return { gNodes, gLinks, degreeById, inDegreeById, outDegreeById };
+    return { gNodes, gLinks, degreeById };
   }, [displayNodes, displayEdges, relationType]);
 
   const nodeById = useMemo(
