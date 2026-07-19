@@ -7,12 +7,14 @@ import {
   Database,
   FileSearch,
   FileText,
+  Filter,
   GitCompare,
   Layers,
   Loader2,
   Search,
   SearchX,
   Sparkles,
+  Tags,
 } from "lucide-react";
 import {
   Dialog,
@@ -33,22 +35,28 @@ import {
   type ScriptedStageView,
 } from "./search-progress-animation";
 
-// Ikon untuk tiap tahap mengikuti stage dari backend. Catatan: "article_
-// filtering" (Duplicate Grouping/Official Source Selection) dan "validation"
-// (DOI Resolution/PDF Validation) sudah dilebur menjadi bagian dari tahap
-// "scrape" (Scraping) -- bukan tahap terpisah -- jadi daftar ikon ini hanya
-// mengikuti 8 tahap utama: start, scrape, temporary, preprocessing, tfidf,
-// similarity, save_dataset, final.
-const stageIcons = [
-  Database,
-  Search,
-  FileText,
-  Sparkles,
-  ClipboardCheck,
-  GitCompare,
-  Layers,
-  FileSearch,
-];
+const stageIconsByKey = {
+  start: Database,
+  dataset: Database,
+  scrape: Search,
+  temporary: FileText,
+  "article-info": FileText,
+  preprocessing: Sparkles,
+  cleaning: Sparkles,
+  tfidf: ClipboardCheck,
+  "keyword-weight": ClipboardCheck,
+  similarity: GitCompare,
+  pattern: GitCompare,
+  matching: GitCompare,
+  article_filtering: Filter,
+  filtering: Filter,
+  validation: CheckCircle2,
+  save_dataset: Layers,
+  extraction: Tags,
+  relation_network: Tags,
+  "relation-network": Tags,
+  final: FileSearch,
+};
 
 const DEFAULT_MICRO_PHRASES = [
   "Menyiapkan proses pencarian...",
@@ -103,6 +111,18 @@ const STAGE_MICRO_PHRASES: Record<string, string[]> = {
     "Memperbarui artikel lama jika metadata berubah...",
     "Menyimpan artikel baru ke Final Dataset...",
     "Menyinkronkan dataset agar siap dihitung ulang...",
+  ],
+  extraction: [
+    "Membuka halaman artikel yang sudah lolos validasi...",
+    "Mengekstrak keyword dari HTML atau PDF artikel...",
+    "Mengambil daftar referensi untuk analisis relasi...",
+    "Menyimpan keyword dan referensi ke cleaned dataset...",
+  ],
+  relation_network: [
+    "Membaca keyword, author, atau reference list terbaru...",
+    "Membangun relasi artikel yang serupa...",
+    "Memperbarui bobot relasi antar artikel...",
+    "Menyiapkan graph relasi untuk divisualisasikan...",
   ],
   final: [
     "Memuat ulang indeks pencarian terbaru...",
@@ -189,7 +209,6 @@ function statusClass(status: ScriptedStageStatus) {
   return "text-slate-400";
 }
 
-/** Tiga titik berjalan ala "thinking indicator" (ChatGPT/Claude style). */
 function ThinkingDots({ className }: { className?: string }) {
   const tick = useDotTicker(3, 380);
   return (
@@ -263,7 +282,7 @@ function ProcessStep({
   stage: ScriptedStageView;
   index: number;
 }) {
-  const Icon = stageIcons[index] || FileText;
+  const Icon = stageIconsByKey[stage.key as keyof typeof stageIconsByKey] || FileText;
   const isRunning = stage.status === "running";
   const microPhrases = getStageMicroPhrases(stage.key);
   const microDetail = useMicroTicker(isRunning, microPhrases, 1700);
@@ -343,8 +362,7 @@ function TransitionScreen({
         <div>
           <p className="text-base font-semibold text-slate-700">Artikel tidak ditemukan</p>
           <p className="mt-1 text-sm text-slate-500">
-            Kata kunci "{query}" belum ditemukan pada Google Scholar maupun dataset yang tersedia.
-            Coba gunakan kata kunci lain.
+            Kata kunci "{query}" belum tersedia dalam sistem. Coba gunakan kata kunci lain.
           </p>
         </div>
         <Button onClick={onClose} className="mt-2 px-8">

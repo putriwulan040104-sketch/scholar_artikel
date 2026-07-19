@@ -80,7 +80,7 @@ def normalize_reference(reference):
 
     frontiers_expanded = []
     for ref in expanded:
-        if len(ref) > 2000:
+        if len(ref) > 400:
             parts = re.split(
                 r"(?<=\d)\s+(?=[A-Z][a-zÀ-ÿ?-]{2,}[A-Z]\.)",
                 ref,

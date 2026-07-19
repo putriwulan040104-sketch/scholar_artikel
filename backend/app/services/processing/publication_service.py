@@ -36,6 +36,10 @@ _REFERENCE_REPAIR_LOCK = threading.Lock()
 class ReferenceRepairInProgressError(RuntimeError):
     pass
 
+def _emit_progress(progress_callback, payload):
+    if callable(progress_callback):
+        progress_callback(payload)
+
 def _sanitize_for_postgres(value):
     if isinstance(value, str):
         return value.replace("\x00", "")
@@ -623,18 +627,36 @@ def _extract_article_fields(article):
 
     return result
 
-def process_articles(source_ids=None):
+def process_articles(source_ids=None, progress_callback=None):
     _ensure_target_columns()
     articles = get_articles(source_ids=source_ids)
     results = []
     total = len(articles)
 
+    _emit_progress(progress_callback, {
+        "stage": "extraction",
+        "event": "start",
+        "message": (
+            f"Mengekstrak keyword dan referensi untuk {total} artikel..."
+        ),
+        "article_count": total,
+    })
+
     for index, article in enumerate(articles, start=1):
         source_id = article.get("id")
+        title = article.get("title") or "-"
         print(
             f"[{index}/{total}] Extracting source_id={source_id} "
-            f"title={article.get('title') or '-'}"
+            f"title={title}"
         )
+        _emit_progress(progress_callback, {
+            "stage": "extraction",
+            "event": "article_start",
+            "message": f"Extract artikel {index}/{total}: {title}",
+            "current": index,
+            "total": total,
+            "source_id": source_id,
+        })
 
         try:
             extraction_result = _extract_article_fields(article)
@@ -650,6 +672,20 @@ def process_articles(source_ids=None):
                 "keywords_count": keywords_count,
                 "references_count": references_count,
             })
+            _emit_progress(progress_callback, {
+                "stage": "extraction",
+                "event": "article_done",
+                "message": (
+                    f"Extract selesai {index}/{total}: "
+                    f"{keywords_count} keyword, "
+                    f"{references_count} referensi"
+                ),
+                "current": index,
+                "total": total,
+                "source_id": source_id,
+                "keywords_count": keywords_count,
+                "references_count": references_count,
+            })
             print(
                 f"  Saved: keywords={keywords_count}, "
                 f"references={references_count}"
@@ -661,7 +697,24 @@ def process_articles(source_ids=None):
                 "status": "error",
                 "message": str(error),
             })
+            _emit_progress(progress_callback, {
+                "stage": "extraction",
+                "event": "article_error",
+                "message": f"Extract gagal untuk artikel {source_id}: {error}",
+                "current": index,
+                "total": total,
+                "source_id": source_id,
+            })
             print(f"  Extraction Error: {error}")
+
+    _emit_progress(progress_callback, {
+        "stage": "extraction",
+        "event": "done",
+        "message": "Extract keyword dan referensi selesai",
+        "article_count": total,
+        "saved_count": sum(item["status"] == "saved" for item in results),
+        "error_count": sum(item["status"] == "error" for item in results),
+    })
 
     return results
 

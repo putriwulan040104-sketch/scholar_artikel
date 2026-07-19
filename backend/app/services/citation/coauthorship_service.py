@@ -4,7 +4,6 @@ import threading
 import unicodedata
 from collections import defaultdict
 from itertools import combinations
-
 from app.db import supabase
 
 

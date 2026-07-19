@@ -252,84 +252,8 @@ export async function deleteUser(userId: string | number): Promise<{
   }
 }
 
-// export type ArticleRequestStatus = "pending" | "processing" | "done" | "rejected";
-
-// export interface ArticleRequest {
-//   id: string | number;
-//   nama?: string | null;
-//   email?: string | null;
-//   kataKunci?: string | null;
-//   judulArtikel?: string | null;
-//   keterangan?: string | null;
-//   status?: ArticleRequestStatus | string | null;
-//   createdAt?: string | null;
-//   updatedAt?: string | null;
-// }
-
-// export async function getArticleRequests(): Promise<{
-//   status: string;
-//   data?: ArticleRequest[];
-//   total?: number;
-//   message?: string;
-// }> {
-//   try {
-//     const { ok, data } = await requestWithToken(`${BASE_URL}/article-requests`);
-
-//     if (!ok) {
-//       return {
-//         status: "error",
-//         message: data.message || "Gagal mengambil data request artikel",
-//       };
-//     }
-
-//     return {
-//       status: "success",
-//       data: Array.isArray(data?.data) ? data.data : [],
-//       total: Number(data?.total ?? 0),
-//     };
-//   } catch {
-//     return {
-//       status: "error",
-//       message: "Gagal koneksi ke server",
-//     };
-//   }
-// }
-
-// export async function updateArticleRequestStatus(
-//   requestId: string | number,
-//   status: ArticleRequestStatus,
-// ): Promise<{
-//   status: string;
-//   data?: ArticleRequest;
-//   message?: string;
-// }> {
-//   try {
-//     const { ok, data } = await requestWithToken(
-//       `${BASE_URL}/article-requests/${requestId}/status`,
-//       {
-//         method: "PUT",
-//         body: JSON.stringify({ status }),
-//       },
-//     );
-
-//     if (!ok) {
-//       return {
-//         status: "error",
-//         message: data.message || "Gagal memperbarui status request",
-//       };
-//     }
-
-//     return data;
-//   } catch {
-//     return {
-//       status: "error",
-//       message: "Gagal koneksi ke server",
-//     };
-//   }
-// }
 
 export type PublicationExtractionStatus = "complete" | "partial" | "empty";
-
 export interface ManagedPublication {
   id: number;
   articleId?: number | null;
@@ -698,6 +622,7 @@ export function createSearchProgressSource(params: {
   jumlahKemunculan?: number | string;
   jumlahPublikasi?: string;
   forceScrape?: boolean;
+  buildRelations?: boolean;
 }) {
   const queryParams = new URLSearchParams({
     query: params.query,
@@ -723,6 +648,9 @@ export function createSearchProgressSource(params: {
   }
   if (params.forceScrape) {
     queryParams.set("force_scrape", "true");
+  }
+  if (params.buildRelations) {
+    queryParams.set("build_relations", "true");
   }
 
   return new EventSource(`${BASE_URL}/search-progress?${queryParams.toString()}`);

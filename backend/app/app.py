@@ -16,7 +16,6 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(publication_bp, url_prefix="/api")
     app.register_blueprint(search_bp, url_prefix="/api")
-    # app.register_blueprint(request_bp, url_prefix="/api")
     app.register_blueprint(users_bp, url_prefix="/api")
     app.register_blueprint(admin_publications_bp, url_prefix="/api")
     app.register_blueprint(activity_logs_bp, url_prefix="/api")

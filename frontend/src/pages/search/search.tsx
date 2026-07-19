@@ -190,6 +190,7 @@ export function Searchpage() {
         jenisAnalisis: jenisAnalisis || undefined,
         jumlahKemunculan: jumlahKemunculan || undefined,
         forceScrape,
+        buildRelations: forceScrape,
       });
       progressSourceRef.current = source;
 
@@ -223,11 +224,11 @@ export function Searchpage() {
               paper_count: payload.result?.paper_count ?? results.length,
             };
           }
-          // Catatan: kalau hasil kosong, dialog TIDAK ditutup di sini --
+          // Catatan: kalau hasil kosong, dialog TIDAK ditutup di sini.
           // SearchProgressDialog sendiri yang menghentikan animasi tepat di
           // tahap scraping ("dataset") lalu menampilkan popup "Artikel tidak
-          // ditemukan" berikut tombol Request, berdasarkan `progress.result`
-          // yang sudah diteruskan lewat prop `progress`.
+          // ditemukan" berdasarkan `progress.result` yang sudah diteruskan
+          // lewat prop `progress`.
         }
 
         if (payload.status === "error") {
