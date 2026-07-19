@@ -1,7 +1,6 @@
 import os
 import tempfile
 import time
-
 import requests
 from pdfminer.high_level import extract_text
 
