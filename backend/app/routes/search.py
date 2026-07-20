@@ -142,8 +142,10 @@ def _json_safe(value):
         return [_json_safe(item) for item in value]
     if isinstance(value, tuple):
         return [_json_safe(item) for item in value]
-    if isinstance(value, float) and math.isnan(value):
-        return None
+    if isinstance(value, float):
+        if math.isnan(value) or math.isinf(value):
+            return None
+        return value
     if hasattr(value, "item"):
         try:
             return _json_safe(value.item())
@@ -225,7 +227,6 @@ class SearchProgressReporter:
             "result": copy.deepcopy(self.result),
             "error": self.error,
         }
-
     def handle(self, payload):
         payload = payload or {}
         original_key = payload.get("stage")
@@ -407,7 +408,16 @@ def search_progress():
             event = event_queue.get()
             if event is None:
                 break
-            yield _sse_payload(event)
+            try:
+                yield _sse_payload(event)
+            except Exception as e:
+                yield _sse_payload({
+                    "event": "error",
+                    "status": "error",
+                    "message": f"Gagal serialisasi event: {e}",
+                    "error": str(e),
+                })
+                break
 
     return Response(
         generate(),
@@ -415,6 +425,7 @@ def search_progress():
         headers={
             "Cache-Control": "no-cache",
             "X-Accel-Buffering": "no",
+            "Access-Control-Allow-Origin": "*",
         },
     )
 
