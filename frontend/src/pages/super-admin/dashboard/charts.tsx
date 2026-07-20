@@ -1,5 +1,16 @@
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, XAxis } from "recharts";
-import type { ManagedPublication, PublicationExtractionStatus } from "@/api/api";
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  XAxis,
+} from "recharts";
+import type {
+  ManagedPublication,
+  PublicationExtractionStatus,
+} from "@/api/api";
 import {
   Card,
   CardContent,
@@ -83,7 +94,8 @@ export function PublicationCharts({
   const qualityData = QUALITY_ITEMS.map((item) => ({
     ...item,
     total: publications.filter(
-      (publication) => normalizeStatus(publication.extractionStatus) === item.status,
+      (publication) =>
+        normalizeStatus(publication.extractionStatus) === item.status,
     ).length,
   }));
 
@@ -92,7 +104,9 @@ export function PublicationCharts({
       <Card className="min-w-0">
         <CardHeader>
           <CardTitle>Publikasi Diperbarui</CardTitle>
-          <CardDescription>Jumlah publikasi berdasarkan update enam bulan terakhir</CardDescription>
+          <CardDescription>
+            Jumlah publikasi berdasarkan update enam bulan terakhir
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer
@@ -105,9 +119,23 @@ export function PublicationCharts({
               margin={{ left: 12, right: 12 }}
             >
               <defs>
-                <linearGradient id="publicationAreaFill" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--color-total)" stopOpacity={0.35} />
-                  <stop offset="95%" stopColor="var(--color-total)" stopOpacity={0.12} />
+                <linearGradient
+                  id="publicationAreaFill"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="1"
+                >
+                  <stop
+                    offset="5%"
+                    stopColor="var(--color-total)"
+                    stopOpacity={0.35}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor="var(--color-total)"
+                    stopOpacity={0.12}
+                  />
                 </linearGradient>
               </defs>
               <CartesianGrid vertical={false} />
@@ -138,7 +166,9 @@ export function PublicationCharts({
       <Card className="min-w-0">
         <CardHeader>
           <CardTitle>Kelengkapan Data</CardTitle>
-          <CardDescription>Distribusi publikasi berdasarkan hasil ekstraksi</CardDescription>
+          <CardDescription>
+            Distribusi publikasi berdasarkan hasil ekstraksi
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer

@@ -231,7 +231,11 @@ export function useScriptedStages(
     if (!isActive) return;
 
     const id = window.setInterval(() => {
-      if (initializedRef.current && startedAt !== null && !emptyHaltedRef.current) {
+      if (
+        initializedRef.current &&
+        startedAt !== null &&
+        !emptyHaltedRef.current
+      ) {
         const now = Date.now();
         const states = stateRef.current;
 
@@ -283,7 +287,14 @@ export function useScriptedStages(
 
   const stages: ScriptedStageView[] = SCRIPTED_STAGE_DEFS.map((def, i) => {
     const st = states[i];
-    if (!st) return { key: def.key, title: def.title, description: def.description, status: "waiting", duration_seconds: 0 };
+    if (!st)
+      return {
+        key: def.key,
+        title: def.title,
+        description: def.description,
+        status: "waiting",
+        duration_seconds: 0,
+      };
 
     let seconds = 0;
     if (st.status === "running" && st.startAt) {
@@ -292,7 +303,13 @@ export function useScriptedStages(
       seconds = (st.endAt - st.startAt) / 1000;
     }
 
-    return { key: def.key, title: def.title, description: def.description, status: st.status, duration_seconds: seconds };
+    return {
+      key: def.key,
+      title: def.title,
+      description: def.description,
+      status: st.status,
+      duration_seconds: seconds,
+    };
   });
 
   const elapsedSeconds = startedAt ? (now - startedAt) / 1000 : 0;
@@ -335,7 +352,9 @@ export function useScriptedStages(
           const waitElapsed = elapsedInStage - rampMs;
           const K = 15000;
           const rampVal = def.percentStart + span * 0.55;
-          percent = rampVal + (def.percentEnd - rampVal) * (1 - Math.exp(-waitElapsed / K));
+          percent =
+            rampVal +
+            (def.percentEnd - rampVal) * (1 - Math.exp(-waitElapsed / K));
         }
       } else {
         let ratio = Math.min(1, Math.max(0, elapsedInStage / st.durationMs));
@@ -362,7 +381,8 @@ export function useScriptedStages(
     }
   }
 
-  const isFinished = isComplete && states.length > 0 && states.every((s) => s.status === "done");
+  const isFinished =
+    isComplete && states.length > 0 && states.every((s) => s.status === "done");
 
   // Ditandai selesai lebih awal karena hasil kosong: tahap scraping ("dataset")
   // sudah "done" dan tidak ada tahap lain yang sedang berjalan.
@@ -410,14 +430,21 @@ export function useDotTicker(steps = 3, intervalMs = 380) {
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    const id = window.setInterval(() => setTick((t) => (t + 1) % steps), intervalMs);
+    const id = window.setInterval(
+      () => setTick((t) => (t + 1) % steps),
+      intervalMs,
+    );
     return () => window.clearInterval(id);
   }, [steps, intervalMs]);
 
   return tick;
 }
 
-export function useMicroTicker(active: boolean, phrases: string[], intervalMs = 1700) {
+export function useMicroTicker(
+  active: boolean,
+  phrases: string[],
+  intervalMs = 1700,
+) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {

@@ -188,7 +188,11 @@ export default function SuperAdminUsersPage() {
 
       <div className="flex flex-col gap-2">
         <div className="flex justify-stretch gap-2 sm:justify-end">
-          <Button onClick={loadUsers} disabled={loading} className="w-full sm:w-fit">
+          <Button
+            onClick={loadUsers}
+            disabled={loading}
+            className="w-full sm:w-fit"
+          >
             <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
             {loading ? "Memuat..." : "Refresh Data"}
           </Button>

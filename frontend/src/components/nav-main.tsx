@@ -61,7 +61,10 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
                     <span>{item.title}</span>
                   </div>
                 ) : (
-                  <Link to={item.url} className="flex w-full items-center gap-3">
+                  <Link
+                    to={item.url}
+                    className="flex w-full items-center gap-3"
+                  >
                     <div className="flex h-5 w-5 items-center justify-center [&_svg]:h-4 [&_svg]:w-4">
                       {item.icon}
                     </div>
@@ -87,7 +90,9 @@ export function NavMain({ groups }: { groups: NavGroup[] }) {
               <LogoIcon className="h-8 w-8 brightness-0 invert" />
             </div>
             <div className="min-w-0 group-data-[collapsible=icon]:hidden">
-              <span className="truncate text-lg font-semibold text-white">PaperCitation</span>
+              <span className="truncate text-lg font-semibold text-white">
+                PaperCitation
+              </span>
             </div>
           </a>
         </SidebarMenuItem>

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import type {
-  ManagedPublication,
-  PublicationMutationPayload,
-} from "@/api/api";
+import type { ManagedPublication, PublicationMutationPayload } from "@/api/api";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -27,9 +29,7 @@ function parseListText(value: string) {
     try {
       const parsed = JSON.parse(trimmedValue);
       if (Array.isArray(parsed)) {
-        return parsed
-          .map((item) => String(item).trim())
-          .filter(Boolean);
+        return parsed.map((item) => String(item).trim()).filter(Boolean);
       }
     } catch {
       // Fall back to comma splitting for manually edited values.
@@ -132,14 +132,19 @@ export function PublicationDialog({
         {mode === "delete" ? (
           <div className="space-y-5">
             <p className="text-sm text-muted-foreground">
-              Publikasi <strong>{publication?.title || "-"}</strong> akan dihapus permanen.
-              Relasi artikel yang masih terhubung dapat membuat penghapusan ditolak database.
+              Publikasi <strong>{publication?.title || "-"}</strong> akan
+              dihapus permanen. Relasi artikel yang masih terhubung dapat
+              membuat penghapusan ditolak database.
             </p>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
                 Batal
               </Button>
-              <Button variant="destructive" onClick={handleSubmit} disabled={loading}>
+              <Button
+                variant="destructive"
+                onClick={handleSubmit}
+                disabled={loading}
+              >
                 {loading ? "Menghapus..." : "Hapus"}
               </Button>
             </div>
@@ -244,7 +249,6 @@ export function PublicationDialog({
                 Total referensi: {splitReferences(references).length}
               </p>
             </div>
-
 
             <div className="flex justify-end gap-2 border-t pt-4">
               <Button variant="outline" onClick={() => onOpenChange(false)}>

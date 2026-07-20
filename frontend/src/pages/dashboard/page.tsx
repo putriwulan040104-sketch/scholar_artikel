@@ -68,7 +68,9 @@ const JENIS_ANALISIS_LABEL: Record<string, string> = {
 
 const TREND_TOP_K = 5000;
 
-function buildChips(filters: SearchFilters): { key: FilterKey; label: string }[] {
+function buildChips(
+  filters: SearchFilters,
+): { key: FilterKey; label: string }[] {
   const chips: { key: FilterKey; label: string }[] = [];
 
   if (filters.jenisArtikel) {
@@ -174,31 +176,36 @@ export default function Page() {
   };
 
   const [tableData, setTableData] = useState<Article[]>(
-    Array.isArray(location.state?.results) ? location.state.results : []
+    Array.isArray(location.state?.results) ? location.state.results : [],
   );
   const [trendData, setTrendData] = useState<Article[]>(
-    Array.isArray(location.state?.results) ? location.state.results : []
+    Array.isArray(location.state?.results) ? location.state.results : [],
   );
   const [totalMatched, setTotalMatched] = useState<number>(
     location.state?.total_matched ??
       location.state?.total ??
-      (Array.isArray(location.state?.results) ? location.state.results.length : 0)
+      (Array.isArray(location.state?.results)
+        ? location.state.results.length
+        : 0),
   );
   const [totalOccurrences, setTotalOccurrences] = useState<number>(
-    location.state?.total_occurrences ?? 0
+    location.state?.total_occurrences ?? 0,
   );
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<SearchFilters>(initFilters);
+  const [activeFilters, setActiveFilters] =
+    useState<SearchFilters>(initFilters);
   const [jenisArtikel, setJenisArtikel] = useState(initFilters.jenisArtikel);
   const [jenisAnalisis, setJenisAnalisis] = useState(initFilters.jenisAnalisis);
   const [yearStart, setYearStart] = useState(initFilters.yearStart);
   const [yearEnd, setYearEnd] = useState(initFilters.yearEnd);
   const [jumlahKemunculan, setJumlahKemunculan] = useState(
-    initFilters.jumlahKemunculan
+    initFilters.jumlahKemunculan,
   );
-  const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
+  const [analysisTypeOptions, setAnalysisTypeOptions] = useState<
+    AnalysisTypeOption[]
+  >([]);
   const chips = buildChips(activeFilters);
   const paperCount = tableData.length;
 
@@ -284,10 +291,11 @@ export default function Page() {
 
       if (res?.status === "success" && res.data) {
         const nextData = Array.isArray(res.data) ? res.data : [];
-        const nextTotalMatched = res.total_matched ?? res.total ?? nextData.length;
+        const nextTotalMatched =
+          res.total_matched ?? res.total ?? nextData.length;
         const nextTotalOccurrences = nextData.reduce(
           (acc, row) => acc + getOccurrenceValue(row as Article),
-          0
+          0,
         );
 
         setTableData(nextData);
@@ -346,10 +354,11 @@ export default function Page() {
 
       if (res?.status === "success" && res.data) {
         const nextData = Array.isArray(res.data) ? res.data : [];
-        const nextTotalMatched = res.total_matched ?? res.total ?? nextData.length;
+        const nextTotalMatched =
+          res.total_matched ?? res.total ?? nextData.length;
         const nextTotalOccurrences = nextData.reduce(
           (acc, row) => acc + getOccurrenceValue(row as Article),
-          0
+          0,
         );
 
         setTableData(nextData);
@@ -466,7 +475,10 @@ export default function Page() {
                       <div className="flex flex-col gap-2">
                         <label className="text-sm">Tahun terbit</label>
                         <div className="flex gap-2">
-                          <Select onValueChange={setYearStart} value={yearStart}>
+                          <Select
+                            onValueChange={setYearStart}
+                            value={yearStart}
+                          >
                             <SelectTrigger className="w-full">
                               <SelectValue placeholder="Awal" />
                             </SelectTrigger>
@@ -474,7 +486,10 @@ export default function Page() {
                               {Array.from({ length: 6 }, (_, i) => {
                                 const year = 2021 + i;
                                 return (
-                                  <SelectItem key={year} value={year.toString()}>
+                                  <SelectItem
+                                    key={year}
+                                    value={year.toString()}
+                                  >
                                     {year}
                                   </SelectItem>
                                 );
@@ -490,7 +505,10 @@ export default function Page() {
                               {Array.from({ length: 6 }, (_, i) => {
                                 const year = 2021 + i;
                                 return (
-                                  <SelectItem key={year} value={year.toString()}>
+                                  <SelectItem
+                                    key={year}
+                                    value={year.toString()}
+                                  >
                                     {year}
                                   </SelectItem>
                                 );
@@ -516,7 +534,10 @@ export default function Page() {
                               </SelectItem>
                             ) : (
                               analysisTypeOptions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
+                                <SelectItem
+                                  key={option.value}
+                                  value={option.value}
+                                >
                                   {option.label}
                                 </SelectItem>
                               ))

@@ -33,7 +33,9 @@ const loginSchema = z.object({
     .regex(/[0-9]/, "Password harus berisi angka"),
 });
 
-type LoginFormErrors = Partial<Record<keyof z.infer<typeof loginSchema>, string>>;
+type LoginFormErrors = Partial<
+  Record<keyof z.infer<typeof loginSchema>, string>
+>;
 
 function getLoginErrors(error: z.ZodError<z.infer<typeof loginSchema>>) {
   return error.issues.reduce<LoginFormErrors>((errors, issue) => {

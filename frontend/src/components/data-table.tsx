@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import {
   closestCenter,
@@ -10,21 +10,21 @@ import {
   useSensors,
   type DragEndEvent,
   type UniqueIdentifier,
-} from "@dnd-kit/core"
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
+} from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
-  getFilteredRowModel, 
+  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
   type ColumnDef,
@@ -32,22 +32,22 @@ import {
   type Row,
   type SortingState,
   type VisibilityState,
-} from "@tanstack/react-table"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import { z } from "zod"
-import { useIsMobile } from "@/hooks/use-mobile"
+} from "@tanstack/react-table";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { z } from "zod";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   isFavoriteArticle,
   readFavorites,
   writeFavorites,
-} from "@/lib/favorites"
-import { Button } from "@/components/ui/button"
+} from "@/lib/favorites";
+import { Button } from "@/components/ui/button";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/components/ui/chart"
+} from "@/components/ui/chart";
 import {
   Drawer,
   DrawerClose,
@@ -57,10 +57,10 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import {
   Table,
   TableBody,
@@ -68,50 +68,52 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import {
-  GripVerticalIcon,    
+  GripVerticalIcon,
   TrendingUpIcon,
   Star,
   FileText,
   ExternalLink,
-} from "lucide-react"
+} from "lucide-react";
 
 export const schema = z.object({
-  id              : z.number(),
-  rank            : z.number(),
-  title           : z.string(),
- authors: z.union([z.string(), z.array(z.string())]),
-  year            : z.number().optional(),
-  source          : z.string().optional(),
-  category        : z.string().optional(),
-  abstract        : z.string().optional(),
+  id: z.number(),
+  rank: z.number(),
+  title: z.string(),
+  authors: z.union([z.string(), z.array(z.string())]),
+  year: z.number().optional(),
+  source: z.string().optional(),
+  category: z.string().optional(),
+  abstract: z.string().optional(),
   similarity_score: z.number(),
-  pdf_url         : z.string().nullable().optional(),
-  url             : z.string().nullable().optional(),
-  access_url      : z.string().nullable().optional(),
-  is_pdf          : z.union([z.boolean(), z.string()]).optional(),
-  scrape_status   : z.string().optional(),
-  favorite        : z.boolean().default(false),   // ← bukan favorite?: boolean
-})
+  pdf_url: z.string().nullable().optional(),
+  url: z.string().nullable().optional(),
+  access_url: z.string().nullable().optional(),
+  is_pdf: z.union([z.boolean(), z.string()]).optional(),
+  scrape_status: z.string().optional(),
+  favorite: z.boolean().default(false), // ← bukan favorite?: boolean
+});
 
 function isValidUrl(url?: string | null): boolean {
-  if (!url) return false
-  const trimmed = url.trim()
+  if (!url) return false;
+  const trimmed = url.trim();
   return (
     trimmed !== "" &&
     trimmed !== "nan" &&
     trimmed !== "None" &&
     trimmed !== "null" &&
     trimmed.startsWith("http")
-  )
+  );
 }
 
 // ─── Helper: cek apakah link langsung ke PDF ──────────────────────────────────
 function isPdfLink(url: string, isPdf?: boolean | string): boolean {
   // is_pdf dari CSV bisa berupa string "True"
-  if (isPdf === true || isPdf === "True") return true
-  return url.toLowerCase().endsWith(".pdf") || url.toLowerCase().includes(".pdf")
+  if (isPdf === true || isPdf === "True") return true;
+  return (
+    url.toLowerCase().endsWith(".pdf") || url.toLowerCase().includes(".pdf")
+  );
 }
 function formatAuthors(authors: string | string[] | undefined): string {
   if (!authors) return "-";
@@ -121,7 +123,7 @@ function formatAuthors(authors: string | string[] | undefined): string {
 
 // ─── DragHandle ────────────────────────────────────────────────────────────────
 function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({ id })
+  const { attributes, listeners } = useSortable({ id });
   return (
     <Button
       {...attributes}
@@ -133,7 +135,7 @@ function DragHandle({ id }: { id: number }) {
       <GripVerticalIcon className="size-3 text-muted-foreground" />
       <span className="sr-only">Drag to reorder</span>
     </Button>
-  )
+  );
 }
 
 // ─── Columns ───────────────────────────────────────────────────────────────────
@@ -175,16 +177,16 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     id: "akses",
     header: "Akses",
     cell: ({ row }) => {
-      const { pdf_url, url, access_url, is_pdf } = row.original
+      const { pdf_url, url, access_url, is_pdf } = row.original;
 
       // Prioritas: access_url → pdf_url → url
       const pdfCandidate = isValidUrl(access_url)
         ? access_url!
         : isValidUrl(pdf_url)
-        ? pdf_url!
-        : null
+          ? pdf_url!
+          : null;
 
-      const articleUrl = isValidUrl(url) ? url! : null
+      const articleUrl = isValidUrl(url) ? url! : null;
 
       // Jika ada URL yang merupakan PDF langsung → tampilkan Download PDF
       if (pdfCandidate && isPdfLink(pdfCandidate, is_pdf)) {
@@ -198,7 +200,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             <FileText className="h-3.5 w-3.5" />
             Download PDF
           </a>
-        )
+        );
       }
 
       // Jika tidak ada PDF tapi ada URL artikel → tampilkan Lihat Artikel
@@ -213,7 +215,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             <ExternalLink className="h-3.5 w-3.5" />
             Lihat Artikel
           </a>
-        )
+        );
       }
 
       // Jika pdfCandidate ada tapi bukan PDF (misal halaman web berbayar) → Lihat Artikel
@@ -228,63 +230,70 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
             <ExternalLink className="h-3.5 w-3.5" />
             Lihat Artikel
           </a>
-        )
+        );
       }
 
-      return <span className="text-slate-400 text-xs">Tidak tersedia</span>
+      return <span className="text-slate-400 text-xs">Tidak tersedia</span>;
     },
   },
   {
-  id: "favorite",
-  header: "Favorit",
-  cell: ({ row }) => {
-    const isAlreadyFavorite = (): boolean => {
-      return isFavoriteArticle(row.original.id)
-    }
+    id: "favorite",
+    header: "Favorit",
+    cell: ({ row }) => {
+      const isAlreadyFavorite = (): boolean => {
+        return isFavoriteArticle(row.original.id);
+      };
 
-    const [favorite, setFavorite] = React.useState(() => 
-      row.original.favorite || isAlreadyFavorite()
-    )
+      const [favorite, setFavorite] = React.useState(
+        () => row.original.favorite || isAlreadyFavorite(),
+      );
 
-    const toggleFavorite = () => {
-      const updated = !favorite
-      setFavorite(updated)
+      const toggleFavorite = () => {
+        const updated = !favorite;
+        setFavorite(updated);
 
-      try {
-        const existing = readFavorites<z.infer<typeof schema>>()
+        try {
+          const existing = readFavorites<z.infer<typeof schema>>();
 
-        if (updated) {
-          // ── Tolak duplikat: cek id dulu sebelum push ──
-          const alreadyExists = existing.some((item) => item.id === row.original.id)
-          if (!alreadyExists) {
-            writeFavorites([...existing, row.original])
+          if (updated) {
+            // ── Tolak duplikat: cek id dulu sebelum push ──
+            const alreadyExists = existing.some(
+              (item) => item.id === row.original.id,
+            );
+            if (!alreadyExists) {
+              writeFavorites([...existing, row.original]);
+            }
+          } else {
+            writeFavorites(
+              existing.filter((item) => item.id !== row.original.id),
+            );
           }
-        } else {
-          writeFavorites(existing.filter((item) => item.id !== row.original.id))
-        }
-      } catch (_) {}
-    }
+        } catch (_) {}
+      };
 
-    return (
-      <button onClick={toggleFavorite} className="flex items-center justify-center">
-        <Star
-          className={`h-5 w-5 transition-colors ${
-            favorite
-              ? "fill-yellow-400 text-yellow-400"
-              : "text-slate-300 hover:text-slate-400"
-          }`}
-        />
-      </button>
-    )
+      return (
+        <button
+          onClick={toggleFavorite}
+          className="flex items-center justify-center"
+        >
+          <Star
+            className={`h-5 w-5 transition-colors ${
+              favorite
+                ? "fill-yellow-400 text-yellow-400"
+                : "text-slate-300 hover:text-slate-400"
+            }`}
+          />
+        </button>
+      );
+    },
   },
-},
-]
+];
 
 // ─── DraggableRow ──────────────────────────────────────────────────────────────
 function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
-  })
+  });
   return (
     <TableRow
       data-state={row.getIsSelected() && "selected"}
@@ -302,42 +311,45 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
         </TableCell>
       ))}
     </TableRow>
-  )
+  );
 }
 
 // ─── DataTable ─────────────────────────────────────────────────────────────────
 export function DataTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[]
+  data: z.infer<typeof schema>[];
 }) {
-  const [data, setData] = React.useState(() => initialData)
-  const [rowSelection, setRowSelection]         = React.useState({})
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters]       = React.useState<ColumnFiltersState>([])
-  const [sorting, setSorting]                   = React.useState<SortingState>([])
+  const [data, setData] = React.useState(() => initialData);
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   React.useEffect(() => {
-    setData(initialData)
-    setRowSelection({})
-  }, [initialData])
-  
-  const sortableId = React.useId()
+    setData(initialData);
+    setRowSelection({});
+  }, [initialData]);
+
+  const sortableId = React.useId();
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
-    useSensor(KeyboardSensor, {})
-  )
+    useSensor(KeyboardSensor, {}),
+  );
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => data?.map(({ id }) => id) || [],
-    [data]
-  )
+    [data],
+  );
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting, columnVisibility, rowSelection, columnFilters,  },
+    state: { sorting, columnVisibility, rowSelection, columnFilters },
     getRowId: (row) => row.id.toString(),
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
@@ -349,16 +361,16 @@ export function DataTable({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-  })
+  });
 
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event
+    const { active, over } = event;
     if (active && over && active.id !== over.id) {
       setData((data) => {
-        const oldIndex = dataIds.indexOf(active.id)
-        const newIndex = dataIds.indexOf(over.id)
-        return arrayMove(data, oldIndex, newIndex)
-      })
+        const oldIndex = dataIds.indexOf(active.id);
+        const newIndex = dataIds.indexOf(over.id);
+        return arrayMove(data, oldIndex, newIndex);
+      });
     }
   }
 
@@ -393,7 +405,10 @@ export function DataTable({
                       >
                         {header.isPlaceholder
                           ? null
-                          : flexRender(header.column.columnDef.header, header.getContext())}
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
                       </TableHead>
                     ))}
                   </TableRow>
@@ -401,14 +416,20 @@ export function DataTable({
               </TableHeader>
               <TableBody className="**:data-[slot=table-cell]:first:w-8">
                 {table.getRowModel().rows?.length ? (
-                  <SortableContext items={dataIds} strategy={verticalListSortingStrategy}>
+                  <SortableContext
+                    items={dataIds}
+                    strategy={verticalListSortingStrategy}
+                  >
                     {table.getRowModel().rows.map((row) => (
                       <DraggableRow key={row.id} row={row} />
                     ))}
                   </SortableContext>
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={columns.length} className="h-24 text-center">
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
                       No results.
                     </TableCell>
                   </TableRow>
@@ -419,49 +440,49 @@ export function DataTable({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // ─── Chart (template asli dipertahankan) ──────────────────────────────────────
 const chartData = [
-  { month: "January",  desktop: 186, mobile: 80  },
+  { month: "January", desktop: 186, mobile: 80 },
   { month: "February", desktop: 305, mobile: 200 },
-  { month: "March",    desktop: 237, mobile: 120 },
-  { month: "April",    desktop: 73,  mobile: 190 },
-  { month: "May",      desktop: 209, mobile: 130 },
-  { month: "June",     desktop: 214, mobile: 140 },
-]
+  { month: "March", desktop: 237, mobile: 120 },
+  { month: "April", desktop: 73, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "June", desktop: 214, mobile: 140 },
+];
 const chartConfig = {
   desktop: { label: "Desktop", color: "var(--primary)" },
-  mobile:  { label: "Mobile",  color: "var(--primary)" },
-} satisfies ChartConfig
+  mobile: { label: "Mobile", color: "var(--primary)" },
+} satisfies ChartConfig;
 
 // ─── TableCellViewer (drawer detail artikel) ───────────────────────────────────
 function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   // Tentukan URL akses terbaik
   const pdfCandidate = isValidUrl(item.access_url)
     ? item.access_url!
     : isValidUrl(item.pdf_url)
-    ? item.pdf_url!
-    : null
+      ? item.pdf_url!
+      : null;
 
-  const hasPdf = pdfCandidate !== null && isPdfLink(pdfCandidate, item.is_pdf)
-  const articleUrl = isValidUrl(item.url) ? item.url! : null
+  const hasPdf = pdfCandidate !== null && isPdfLink(pdfCandidate, item.is_pdf);
+  const articleUrl = isValidUrl(item.url) ? item.url! : null;
 
   return (
     <Drawer direction={isMobile ? "bottom" : "right"}>
       <DrawerTrigger asChild>
         <Button
-      variant="link"
-      className="w-fit px-0 text-left text-foreground leading-snug"
-      onClick={() => navigate(`/detail/${item.id}`)}
-    >
-      <span className="line-clamp-2 max-w-[350px] text-sm font-medium">
-        {item.title}
-      </span>
-    </Button>
+          variant="link"
+          className="w-fit px-0 text-left text-foreground leading-snug"
+          onClick={() => navigate(`/detail/${item.id}`)}
+        >
+          <span className="line-clamp-2 max-w-[350px] text-sm font-medium">
+            {item.title}
+          </span>
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="gap-1">
@@ -473,7 +494,11 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
           {!isMobile && (
             <>
               <ChartContainer config={chartConfig}>
-                <AreaChart accessibilityLayer data={chartData} margin={{ left: 0, right: 10 }}>
+                <AreaChart
+                  accessibilityLayer
+                  data={chartData}
+                  margin={{ left: 0, right: 10 }}
+                >
                   <CartesianGrid vertical={false} />
                   <XAxis
                     dataKey="month"
@@ -483,15 +508,33 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     tickFormatter={(v) => v.slice(0, 3)}
                     hide
                   />
-                  <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
-                  <Area dataKey="mobile"  type="natural" fill="var(--color-mobile)"  fillOpacity={0.6} stroke="var(--color-mobile)"  stackId="a" />
-                  <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
+                  <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent indicator="dot" />}
+                  />
+                  <Area
+                    dataKey="mobile"
+                    type="natural"
+                    fill="var(--color-mobile)"
+                    fillOpacity={0.6}
+                    stroke="var(--color-mobile)"
+                    stackId="a"
+                  />
+                  <Area
+                    dataKey="desktop"
+                    type="natural"
+                    fill="var(--color-desktop)"
+                    fillOpacity={0.4}
+                    stroke="var(--color-desktop)"
+                    stackId="a"
+                  />
                 </AreaChart>
               </ChartContainer>
               <Separator />
               <div className="grid gap-2">
                 <div className="flex gap-2 leading-none font-medium">
-                  Trending up by 5.2% this month <TrendingUpIcon className="size-4" />
+                  Trending up by 5.2% this month{" "}
+                  <TrendingUpIcon className="size-4" />
                 </div>
                 <div className="text-muted-foreground">
                   Showing total visitors for the last 6 months.
@@ -516,7 +559,9 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               <span>{item.category ?? "-"}</span>
             </div>
             <div className="flex flex-col gap-1">
-              <Label className="text-xs text-muted-foreground">Similarity Score</Label>
+              <Label className="text-xs text-muted-foreground">
+                Similarity Score
+              </Label>
               <span className="inline-flex w-fit bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs font-semibold">
                 {item.similarity_score.toFixed(4)}
               </span>
@@ -534,11 +579,17 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3">
                 <Label htmlFor="authors">Penulis</Label>
-                <Input id="authors" defaultValue={formatAuthors(item.authors)} />
+                <Input
+                  id="authors"
+                  defaultValue={formatAuthors(item.authors)}
+                />
               </div>
               <div className="flex flex-col gap-3">
                 <Label htmlFor="similarity_score">Similarity Score</Label>
-                <Input id="similarity_score" defaultValue={item.similarity_score.toString()} />
+                <Input
+                  id="similarity_score"
+                  defaultValue={item.similarity_score.toString()}
+                />
               </div>
             </div>
           </form>
@@ -557,7 +608,6 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               Download PDF
             </a>
           ) : articleUrl ? (
-            
             <a
               href={articleUrl}
               target="_blank"
@@ -568,7 +618,9 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
               Lihat Artikel
             </a>
           ) : (
-            <Button disabled variant="outline">Tidak tersedia</Button>
+            <Button disabled variant="outline">
+              Tidak tersedia
+            </Button>
           )}
           <Button>Submit</Button>
           <DrawerClose asChild>
@@ -577,5 +629,5 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
-  )
+  );
 }

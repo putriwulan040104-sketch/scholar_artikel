@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Activity,
-  BookOpenText,
-  RefreshCw,
-  UsersRound,
-} from "lucide-react";
+import { Activity, BookOpenText, RefreshCw, UsersRound } from "lucide-react";
 import {
   getActivityLogs,
   getManagedPublications,
@@ -69,15 +64,19 @@ export default function SuperAdminDashboardPage() {
     setLoading(true);
     setMessage("");
 
-    const [usersResult, publicationsResult, activityResult] = await Promise.all([
-      getUsers(),
-      getManagedPublications(),
-      getActivityLogs({ page: 1, pageSize: 1 }),
-    ]);
+    const [usersResult, publicationsResult, activityResult] = await Promise.all(
+      [
+        getUsers(),
+        getManagedPublications(),
+        getActivityLogs({ page: 1, pageSize: 1 }),
+      ],
+    );
 
     setUsers(usersResult.status === "success" ? usersResult.data || [] : []);
     setPublications(
-      publicationsResult.status === "success" ? publicationsResult.data || [] : [],
+      publicationsResult.status === "success"
+        ? publicationsResult.data || []
+        : [],
     );
     setActivityTotal(
       activityResult.status === "success" ? activityResult.total || 0 : 0,
@@ -111,7 +110,10 @@ export default function SuperAdminDashboardPage() {
   const latestUsers = useMemo(
     () =>
       [...regularUsers]
-        .sort((left, right) => timestamp(right.createdAt) - timestamp(left.createdAt))
+        .sort(
+          (left, right) =>
+            timestamp(right.createdAt) - timestamp(left.createdAt),
+        )
         .slice(0, 6),
     [regularUsers],
   );
@@ -207,7 +209,9 @@ export default function SuperAdminDashboardPage() {
           <CardHeader className="flex flex-row items-center justify-between gap-3">
             <div>
               <CardTitle>Publikasi Terbaru</CardTitle>
-              <CardDescription>Data publikasi yang terakhir diperbarui</CardDescription>
+              <CardDescription>
+                Data publikasi yang terakhir diperbarui
+              </CardDescription>
             </div>
             <Button
               variant="outline"
@@ -266,7 +270,9 @@ export default function SuperAdminDashboardPage() {
           <CardHeader className="flex flex-row items-center justify-between gap-3">
             <div>
               <CardTitle>Pengguna Terbaru</CardTitle>
-              <CardDescription>Akun pengguna yang baru terdaftar</CardDescription>
+              <CardDescription>
+                Akun pengguna yang baru terdaftar
+              </CardDescription>
             </div>
             <Button
               variant="outline"

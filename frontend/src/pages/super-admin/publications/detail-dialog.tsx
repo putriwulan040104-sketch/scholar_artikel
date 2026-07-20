@@ -66,9 +66,7 @@ export function PublicationDetailDialog({
               {publication.category || "Tanpa kategori"}
             </DetailItem>
             <DetailItem label="Tahun">{publication.year || "-"}</DetailItem>
-            <DetailItem label="Jurnal">
-              {publication.journal || "-"}
-            </DetailItem>
+            <DetailItem label="Jurnal">{publication.journal || "-"}</DetailItem>
             <DetailItem label="DOI">{publication.doi || "-"}</DetailItem>
           </div>
 
@@ -94,7 +92,10 @@ export function PublicationDetailDialog({
             {references.length ? (
               <ol className="max-h-64 space-y-2 overflow-y-auto rounded-md border bg-muted/20 p-3 pl-8 text-sm">
                 {references.map((reference, index) => (
-                  <li key={`${index}-${reference.slice(0, 24)}`} className="list-decimal">
+                  <li
+                    key={`${index}-${reference.slice(0, 24)}`}
+                    className="list-decimal"
+                  >
                     {reference}
                   </li>
                 ))}

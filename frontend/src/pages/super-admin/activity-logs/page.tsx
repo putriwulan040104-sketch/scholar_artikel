@@ -37,7 +37,10 @@ export default function SuperAdminActivityLogsPage() {
   const [selectedLog, setSelectedLog] = useState<ActivityLog | null>(null);
 
   useEffect(() => {
-    const timeout = window.setTimeout(() => setDebouncedQuery(query.trim()), 300);
+    const timeout = window.setTimeout(
+      () => setDebouncedQuery(query.trim()),
+      300,
+    );
     return () => window.clearTimeout(timeout);
   }, [query]);
 
@@ -112,7 +115,11 @@ export default function SuperAdminActivityLogsPage() {
   return (
     <div className="flex w-full min-w-0 max-w-full flex-1 flex-col gap-4 px-0 py-3 sm:gap-6 sm:px-4 sm:py-4 lg:px-6">
       <div className="flex justify-stretch sm:justify-end">
-        <Button onClick={loadLogs} disabled={loading} className="w-full sm:w-fit">
+        <Button
+          onClick={loadLogs}
+          disabled={loading}
+          className="w-full sm:w-fit"
+        >
           <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
           {loading ? "Memuat..." : "Refresh Data"}
         </Button>

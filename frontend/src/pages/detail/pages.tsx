@@ -49,10 +49,16 @@ export default function DetailPublicationPage() {
     }
 
     if (raw.includes(";")) {
-      return raw.split(";").map((v) => v.trim()).filter(Boolean);
+      return raw
+        .split(";")
+        .map((v) => v.trim())
+        .filter(Boolean);
     }
     if (raw.includes(",")) {
-      return raw.split(",").map((v) => v.trim()).filter(Boolean);
+      return raw
+        .split(",")
+        .map((v) => v.trim())
+        .filter(Boolean);
     }
     return [raw];
   };

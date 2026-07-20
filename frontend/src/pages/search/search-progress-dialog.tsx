@@ -158,13 +158,20 @@ function getStageMicroPhrases(stageKey: string) {
 const SCRAPE_KEY = "scrape";
 const ABSORBED_INTO_SCRAPE_KEYS = ["article_filtering", "validation"];
 
-function foldIntoScrapeStage(rawStages: ScriptedStageView[]): ScriptedStageView[] {
+function foldIntoScrapeStage(
+  rawStages: ScriptedStageView[],
+): ScriptedStageView[] {
   const scrapeIndex = rawStages.findIndex((stage) => stage.key === SCRAPE_KEY);
   const absorbedIndexes = rawStages
-    .map((stage, index) => (ABSORBED_INTO_SCRAPE_KEYS.includes(stage.key) ? index : -1))
+    .map((stage, index) =>
+      ABSORBED_INTO_SCRAPE_KEYS.includes(stage.key) ? index : -1,
+    )
     .filter((index) => index !== -1);
 
-  if (scrapeIndex === -1 || absorbedIndexes.length !== ABSORBED_INTO_SCRAPE_KEYS.length) {
+  if (
+    scrapeIndex === -1 ||
+    absorbedIndexes.length !== ABSORBED_INTO_SCRAPE_KEYS.length
+  ) {
     return rawStages;
   }
 
@@ -185,9 +192,13 @@ function foldIntoScrapeStage(rawStages: ScriptedStageView[]): ScriptedStageView[
     // sumber resmi, serta validasi DOI/PDF TIDAK dimasukkan ke sini, tapi
     // sudah tercakup lewat micro-phrase yang berjalan (lihat
     // STAGE_MICRO_PHRASES.scrape) di kotak status berjalan saat tahap ini aktif.
-    description: "Mengambil metadata artikel baru dari Google Scholar jika diperlukan.",
+    description:
+      "Mengambil metadata artikel baru dari Google Scholar jika diperlukan.",
     status,
-    duration_seconds: allInvolved.reduce((total, stage) => total + (stage.duration_seconds || 0), 0),
+    duration_seconds: allInvolved.reduce(
+      (total, stage) => total + (stage.duration_seconds || 0),
+      0,
+    ),
   };
 
   return rawStages
@@ -269,7 +280,9 @@ function StepMarker({ status }: { status: ScriptedStageStatus }) {
     <span
       className={cn(
         "h-5 w-5 rounded-full border-2 bg-white transition-all duration-500",
-        status === "running" ? "border-blue-600 bg-blue-600 ring-4 ring-blue-100" : "border-slate-300",
+        status === "running"
+          ? "border-blue-600 bg-blue-600 ring-4 ring-blue-100"
+          : "border-slate-300",
       )}
     />
   );
@@ -282,7 +295,8 @@ function ProcessStep({
   stage: ScriptedStageView;
   index: number;
 }) {
-  const Icon = stageIconsByKey[stage.key as keyof typeof stageIconsByKey] || FileText;
+  const Icon =
+    stageIconsByKey[stage.key as keyof typeof stageIconsByKey] || FileText;
   const isRunning = stage.status === "running";
   const microPhrases = getStageMicroPhrases(stage.key);
   const microDetail = useMicroTicker(isRunning, microPhrases, 1700);
@@ -298,7 +312,8 @@ function ProcessStep({
         className={cn(
           "flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-500",
           stage.status === "done" && "bg-emerald-50 text-emerald-600",
-          stage.status === "running" && "bg-blue-100 text-blue-600 animate-[sp-pulse-soft_1.6s_ease-in-out_infinite]",
+          stage.status === "running" &&
+            "bg-blue-100 text-blue-600 animate-[sp-pulse-soft_1.6s_ease-in-out_infinite]",
           stage.status === "waiting" && "bg-slate-100 text-slate-400",
         )}
       >
@@ -311,23 +326,39 @@ function ProcessStep({
             {index + 1}. {stage.title}
           </h3>
           {isRunning && <ThinkingDots className="text-blue-500" />}
-          <span className={cn("text-xs font-medium md:hidden", statusClass(stage.status))}>
+          <span
+            className={cn(
+              "text-xs font-medium md:hidden",
+              statusClass(stage.status),
+            )}
+          >
             {statusLabel(stage.status)}
           </span>
         </div>
-        <p className="mt-1 text-sm leading-snug text-slate-500">{stage.description}</p>
+        <p className="mt-1 text-sm leading-snug text-slate-500">
+          {stage.description}
+        </p>
 
         {isRunning && (
           <div className="mt-3 rounded-md border border-blue-100 bg-white px-3 py-2 text-xs text-slate-600 shadow-sm">
             <p className="italic text-slate-400">
-              <TypingText key={`${stage.key}-micro-${microDetail}`} text={microDetail} speed={22} />
+              <TypingText
+                key={`${stage.key}-micro-${microDetail}`}
+                text={microDetail}
+                speed={22}
+              />
             </p>
           </div>
         )}
       </div>
 
       <div className="hidden min-w-[6.5rem] text-right md:block">
-        <p className={cn("text-sm font-medium transition-colors duration-500", statusClass(stage.status))}>
+        <p
+          className={cn(
+            "text-sm font-medium transition-colors duration-500",
+            statusClass(stage.status),
+          )}
+        >
           {statusLabel(stage.status)}
         </p>
       </div>
@@ -360,9 +391,12 @@ function TransitionScreen({
       <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
         <SearchX className="h-10 w-10 text-slate-300" />
         <div>
-          <p className="text-base font-semibold text-slate-700">Artikel tidak ditemukan</p>
+          <p className="text-base font-semibold text-slate-700">
+            Artikel tidak ditemukan
+          </p>
           <p className="mt-1 text-sm text-slate-500">
-            Kata kunci "{query}" belum tersedia dalam sistem. Coba gunakan kata kunci lain.
+            Kata kunci "{query}" belum tersedia dalam sistem. Coba gunakan kata
+            kunci lain.
           </p>
         </div>
         <Button onClick={onClose} className="mt-2 px-8">
@@ -379,7 +413,9 @@ function TransitionScreen({
         <CheckCircle2 className="absolute h-7 w-7 text-emerald-500" />
       </div>
       <div>
-        <p className="text-lg font-semibold text-slate-900">Artikel ditemukan!</p>
+        <p className="text-lg font-semibold text-slate-900">
+          Artikel ditemukan!
+        </p>
         <p className="mt-1 text-sm text-slate-500">
           {canRescrape
             ? "Hasil ditemukan pada Initial Dataset. Anda dapat memakai hasil ini atau melakukan scraping ulang."
@@ -399,7 +435,6 @@ function TransitionScreen({
     </div>
   );
 }
-
 
 export function SearchProgressDialog({
   open,
@@ -425,7 +460,9 @@ export function SearchProgressDialog({
 }) {
   const isComplete = progress?.status === "complete";
   const isActive = open && !!progress;
-  const articleCount = Array.isArray(progress?.result?.articles) ? progress!.result!.articles.length : 0;
+  const articleCount = Array.isArray(progress?.result?.articles)
+    ? progress!.result!.articles.length
+    : 0;
   const canRescrape =
     progress?.result?.pipeline_summary?.search_mode === "initial_dataset";
 
@@ -434,8 +471,8 @@ export function SearchProgressDialog({
   const resultStatus: ScriptedResultStatus = !isComplete
     ? "pending"
     : articleCount > 0
-    ? "found"
-    : "empty";
+      ? "found"
+      : "empty";
 
   const scriptedProgress = useScriptedStages(
     isComplete,
@@ -443,22 +480,27 @@ export function SearchProgressDialog({
     startedAt ?? null,
     resultStatus,
   );
-  const backendStages = Array.isArray(progress?.stages) && progress!.stages.length > 0
-    ? progress!.stages.map((stage) => ({
-        key: stage.key,
-        title: stage.title,
-        description: stage.description,
-        status: stage.status,
-        duration_seconds: stage.duration_seconds || 0,
-      }))
-    : null;
+  const backendStages =
+    Array.isArray(progress?.stages) && progress!.stages.length > 0
+      ? progress!.stages.map((stage) => ({
+          key: stage.key,
+          title: stage.title,
+          description: stage.description,
+          status: stage.status,
+          duration_seconds: stage.duration_seconds || 0,
+        }))
+      : null;
   const rawStages = backendStages || scriptedProgress.stages;
   const stages = foldIntoScrapeStage(rawStages);
-  const percent = backendStages ? progress?.progress ?? scriptedProgress.percent : scriptedProgress.percent;
+  const percent = backendStages
+    ? (progress?.progress ?? scriptedProgress.percent)
+    : scriptedProgress.percent;
   const isFinished = backendStages ? isComplete : scriptedProgress.isFinished;
   const isEmptyHalted = backendStages ? false : scriptedProgress.isEmptyHalted;
 
-  const [transitionKind, setTransitionKind] = useState<TransitionKind | null>(null);
+  const [transitionKind, setTransitionKind] = useState<TransitionKind | null>(
+    null,
+  );
   const firedRef = useRef(false);
 
   useEffect(() => {
@@ -567,13 +609,17 @@ export function SearchProgressDialog({
             />
           </div>
         ) : (
-          <div key="stages" className="sp-fade-in max-h-[calc(92vh-8.5rem)] overflow-y-auto">
+          <div
+            key="stages"
+            className="sp-fade-in max-h-[calc(92vh-8.5rem)] overflow-y-auto"
+          >
             <div className="border-b px-5 py-5">
               <div className="flex items-start gap-4">
                 <div
                   className={cn(
                     "flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600",
-                    !isComplete && "animate-[sp-pulse-soft_1.8s_ease-in-out_infinite]",
+                    !isComplete &&
+                      "animate-[sp-pulse-soft_1.8s_ease-in-out_infinite]",
                   )}
                 >
                   <Bot className="h-7 w-7" />
@@ -583,10 +629,17 @@ export function SearchProgressDialog({
                     <div>
                       <p className="flex items-center gap-2 font-semibold text-slate-950">
                         Saya sedang mencari artikel untuk Anda
-                        {!isComplete && <ThinkingDots className="text-slate-500" />}
+                        {!isComplete && (
+                          <ThinkingDots className="text-slate-500" />
+                        )}
                       </p>
                       <p className="mt-1 min-h-[1.25rem] text-sm text-slate-500">
-                        <TypingText key={activeMessage} text={activeMessage} speed={24} cursor={!isComplete} />
+                        <TypingText
+                          key={activeMessage}
+                          text={activeMessage}
+                          speed={24}
+                          cursor={!isComplete}
+                        />
                       </p>
                     </div>
                   </div>
@@ -611,7 +664,9 @@ export function SearchProgressDialog({
                 {stages.map((stage, index) => (
                   <div key={stage.key} className="flex flex-col items-center">
                     <StepMarker status={stage.status} />
-                    {index < stages.length - 1 && <span className="h-12 w-px bg-slate-200" />}
+                    {index < stages.length - 1 && (
+                      <span className="h-12 w-px bg-slate-200" />
+                    )}
                   </div>
                 ))}
               </div>

@@ -66,7 +66,8 @@ export function Searchpage() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [progressOpen, setProgressOpen] = useState(false);
-  const [searchProgress, setSearchProgress] = useState<SearchProgressEvent | null>(null);
+  const [searchProgress, setSearchProgress] =
+    useState<SearchProgressEvent | null>(null);
   const progressSourceRef = useRef<EventSource | null>(null);
   const navigateTimerRef = useRef<number | null>(null);
   const searchStartAtRef = useRef<number>(0);
@@ -87,7 +88,9 @@ export function Searchpage() {
   const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
   const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
-  const [analysisTypeOptions, setAnalysisTypeOptions] = useState<AnalysisTypeOption[]>([]);
+  const [analysisTypeOptions, setAnalysisTypeOptions] = useState<
+    AnalysisTypeOption[]
+  >([]);
 
   const [searchHistory, setSearchHistory] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
@@ -153,7 +156,10 @@ export function Searchpage() {
     const clean = keyword.trim();
     if (!clean) return;
 
-    const updated = [clean, ...searchHistory.filter((item) => item !== clean)].slice(0, 6);
+    const updated = [
+      clean,
+      ...searchHistory.filter((item) => item !== clean),
+    ].slice(0, 6);
     setSearchHistory(updated);
     window.localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(updated));
   };
@@ -219,7 +225,9 @@ export function Searchpage() {
               query,
               filters: activeFilters,
               total_matched:
-                payload.result?.total_matched ?? payload.result?.total ?? results.length,
+                payload.result?.total_matched ??
+                payload.result?.total ??
+                results.length,
               total_occurrences: payload.result?.total_occurrences ?? 0,
               paper_count: payload.result?.paper_count ?? results.length,
             };
@@ -327,14 +335,19 @@ export function Searchpage() {
 
               <DialogContent className="max-w-xl min-h-[350px] rounded-2xl border border-black shadow-md">
                 <DialogHeader>
-                  <DialogTitle className="text-center">Pencarian Publikasi</DialogTitle>
+                  <DialogTitle className="text-center">
+                    Pencarian Publikasi
+                  </DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-8 py-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col gap-2">
                       <label className="text-sm">Jenis artikel</label>
-                      <Select onValueChange={setJenisArtikel} value={jenisArtikel}>
+                      <Select
+                        onValueChange={setJenisArtikel}
+                        value={jenisArtikel}
+                      >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Jenis artikel" />
                         </SelectTrigger>
@@ -395,7 +408,10 @@ export function Searchpage() {
                             </SelectItem>
                           ) : (
                             categoryOptions.map((category) => (
-                              <SelectItem key={category.value} value={category.value}>
+                              <SelectItem
+                                key={category.value}
+                                value={category.value}
+                              >
                                 {category.label}
                               </SelectItem>
                             ))
@@ -406,7 +422,10 @@ export function Searchpage() {
 
                     <div className="flex flex-col gap-2">
                       <label className="text-sm">Jenis analisis</label>
-                      <Select onValueChange={setJenisAnalisis} value={jenisAnalisis}>
+                      <Select
+                        onValueChange={setJenisAnalisis}
+                        value={jenisAnalisis}
+                      >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Pilih analisis" />
                         </SelectTrigger>
@@ -417,7 +436,10 @@ export function Searchpage() {
                             </SelectItem>
                           ) : (
                             analysisTypeOptions.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
                                 {option.label}
                               </SelectItem>
                             ))
@@ -427,7 +449,9 @@ export function Searchpage() {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium">Jumlah kemunculan</label>
+                      <label className="text-sm font-medium">
+                        Jumlah kemunculan
+                      </label>
                       <Input
                         type="number"
                         placeholder="Contoh: 5"
@@ -465,7 +489,9 @@ export function Searchpage() {
           )}
 
           <div className="mt-6">
-            <p className="text-sm text-slate-500 mb-3">Coba pencarian lainnya</p>
+            <p className="text-sm text-slate-500 mb-3">
+              Coba pencarian lainnya
+            </p>
             <div className="flex flex-wrap gap-3">
               {popularSearches.map((keyword) => (
                 <button
@@ -486,7 +512,9 @@ export function Searchpage() {
         <Card className="w-full shadow-sm rounded-xl p-6">
           <h3 className="font-semibold mb-4">Pencarian Terakhir</h3>
           {searchHistory.length === 0 ? (
-            <p className="text-sm text-slate-400">Belum ada riwayat pencarian.</p>
+            <p className="text-sm text-slate-400">
+              Belum ada riwayat pencarian.
+            </p>
           ) : (
             <div className="space-y-2">
               {searchHistory.map((item) => (
@@ -511,8 +539,12 @@ export function Searchpage() {
                 <Lightbulb className="h-4 w-4" />
               </div>
               <div>
-                <p className="font-medium text-slate-800">Gunakan kata kunci spesifik</p>
-                <p className="text-slate-500">Semakin spesifik kata kunci, semakin akurat hasilnya.</p>
+                <p className="font-medium text-slate-800">
+                  Gunakan kata kunci spesifik
+                </p>
+                <p className="text-slate-500">
+                  Semakin spesifik kata kunci, semakin akurat hasilnya.
+                </p>
               </div>
             </div>
 
@@ -521,8 +553,12 @@ export function Searchpage() {
                 <Filter className="h-4 w-4" />
               </div>
               <div>
-                <p className="font-medium text-slate-800">Gunakan filter untuk hasil terbaik</p>
-                <p className="text-slate-500">Manfaatkan filter tahun, bidang, dan jenis publikasi.</p>
+                <p className="font-medium text-slate-800">
+                  Gunakan filter untuk hasil terbaik
+                </p>
+                <p className="text-slate-500">
+                  Manfaatkan filter tahun, bidang, dan jenis publikasi.
+                </p>
               </div>
             </div>
 
@@ -531,7 +567,9 @@ export function Searchpage() {
                 <Network className="h-4 w-4" />
               </div>
               <div>
-                <p className="font-medium text-slate-800">Eksplorasi relasi artikel</p>
+                <p className="font-medium text-slate-800">
+                  Eksplorasi relasi artikel
+                </p>
                 <p className="text-slate-500">
                   Temukan artikel yang terhubung melalui referensi yang sama.
                 </p>
@@ -540,7 +578,6 @@ export function Searchpage() {
           </div>
         </Card>
       </div>
-
     </div>
   );
 }

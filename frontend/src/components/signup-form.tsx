@@ -82,11 +82,7 @@ export function SignupForm({
     setFieldErrors({});
     setLoading(true);
 
-    const res = await register(
-      name,
-      email,
-      parsed.data.password,
-    );
+    const res = await register(name, email, parsed.data.password);
     setLoading(false);
 
     if (res.status === "error") {
@@ -163,8 +159,8 @@ export function SignupForm({
                               ? passwordMismatchMessage
                               : current.confirmPassword ===
                                   passwordMismatchMessage
-                              ? undefined
-                              : current.confirmPassword,
+                                ? undefined
+                                : current.confirmPassword,
                         }));
                       }}
                     />

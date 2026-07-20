@@ -31,7 +31,8 @@ export default function HeroSection() {
               <span className="text-primary">Citation Network</span>
             </h1>
             <p className="mt-6 max-w-xl text-md leading-8 text-slate-600">
-              Sistem Pencarian dengan Sumber Data Google Scholar dalam Membantu Menemukan Artikel yang Relavan.
+              Sistem Pencarian dengan Sumber Data Google Scholar dalam Membantu
+              Menemukan Artikel yang Relavan.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-4">

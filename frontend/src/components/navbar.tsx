@@ -39,11 +39,14 @@ export default function Navbar() {
     if (pathname.startsWith("/citation-graph")) return "Jaringan Sitasi";
     if (pathname.startsWith("/daftar-artikel")) return "Daftar Artikel";
     if (pathname.startsWith("/favorite")) return "Artikel Tersimpan";
-    if (pathname.startsWith("/super-admin/dashboard")) return "Dashboard Super Admin";
-    if (pathname.startsWith("/super-admin/publications")) return "Kelola Publikasi";
+    if (pathname.startsWith("/super-admin/dashboard"))
+      return "Dashboard Super Admin";
+    if (pathname.startsWith("/super-admin/publications"))
+      return "Kelola Publikasi";
     if (pathname.startsWith("/super-admin/users")) return "Kelola Pengguna";
     if (pathname.startsWith("/super-admin/requests")) return "Kelola Request";
-    if (pathname.startsWith("/super-admin/activity-logs")) return "Log Aktivitas";
+    if (pathname.startsWith("/super-admin/activity-logs"))
+      return "Log Aktivitas";
     if (pathname.startsWith("/detail")) return "Detail Publikasi";
 
     return "Dashboard";
@@ -111,8 +114,12 @@ export default function Navbar() {
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 rounded-full hover:bg-white/10 p-1 transition">
                 <Avatar className="h-8 w-8">
-                  {avatarUrl ? <AvatarImage src={avatarUrl} alt={name || "User"} /> : null}
-                  <AvatarFallback>{userInitial ? userInitial : <User />}</AvatarFallback>
+                  {avatarUrl ? (
+                    <AvatarImage src={avatarUrl} alt={name || "User"} />
+                  ) : null}
+                  <AvatarFallback>
+                    {userInitial ? userInitial : <User />}
+                  </AvatarFallback>
                 </Avatar>
                 <ChevronDown className="h-4 w-4 text-white/80" />
               </button>
@@ -140,15 +147,21 @@ export default function Navbar() {
         <DialogContent className="max-w-lg rounded-xl p-0 overflow-hidden">
           <div className="border-b px-6 py-4 text-center">
             <h2 className="text-lg font-semibold">Profile</h2>
-            <p className="text-sm text-muted-foreground">Kelola informasi akun Anda</p>
+            <p className="text-sm text-muted-foreground">
+              Kelola informasi akun Anda
+            </p>
           </div>
 
           <div className="space-y-4 px-6 py-5">
             <div className="flex flex-col items-center gap-3 text-center">
               <div className="relative">
                 <Avatar className="h-24 w-24">
-                  {avatarUrl ? <AvatarImage src={avatarUrl} alt={name || "User"} /> : null}
-                  <AvatarFallback className="text-2xl font-semibold">{userInitial}</AvatarFallback>
+                  {avatarUrl ? (
+                    <AvatarImage src={avatarUrl} alt={name || "User"} />
+                  ) : null}
+                  <AvatarFallback className="text-2xl font-semibold">
+                    {userInitial}
+                  </AvatarFallback>
                 </Avatar>
                 <button
                   type="button"
@@ -164,11 +177,12 @@ export default function Navbar() {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={(e) => handleAvatarFile(e.target.files?.[0] || null)}
+                  onChange={(e) =>
+                    handleAvatarFile(e.target.files?.[0] || null)
+                  }
                 />
               </div>
-              <div>
-              </div>
+              <div></div>
             </div>
 
             <div className="grid gap-4">
@@ -194,7 +208,9 @@ export default function Navbar() {
               </div>
             </div>
 
-            {message ? <p className="text-sm text-muted-foreground">{message}</p> : null}
+            {message ? (
+              <p className="text-sm text-muted-foreground">{message}</p>
+            ) : null}
 
             <div className="flex items-center justify-end gap-2 border-t pt-4">
               <Button variant="outline" onClick={() => setProfileOpen(false)}>

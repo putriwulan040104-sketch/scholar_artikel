@@ -2,10 +2,7 @@ import { Link2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import type { ReferenceMatch } from "@/api/api";
 import type { ArticleRelationType } from "@/api/api";
-import type {
-  GraphNode,
-  SelectedRelations,
-} from "./citation-graph.types";
+import type { GraphNode, SelectedRelations } from "./citation-graph.types";
 import { shortTitle } from "./citation-graph.utils";
 
 interface RelationDetailsProps {
@@ -35,16 +32,14 @@ const RELATION_COPY: Record<
   keyword_cooccurrence: {
     description:
       "Artikel terhubung ketika memiliki satu atau lebih keyword yang sama.",
-    emptyText:
-      "Tidak ada artikel dengan keyword yang sama dalam jaringan ini.",
+    emptyText: "Tidak ada artikel dengan keyword yang sama dalam jaringan ini.",
     weightLabel: "keyword yang sama",
     detailLabel: "Keyword yang sama",
   },
   co_authorship: {
     description:
       "Artikel terhubung ketika memiliki satu atau lebih penulis yang sama.",
-    emptyText:
-      "Tidak ada artikel dengan penulis yang sama dalam jaringan ini.",
+    emptyText: "Tidak ada artikel dengan penulis yang sama dalam jaringan ini.",
     weightLabel: "penulis yang sama",
     detailLabel: "Penulis yang sama",
   },
@@ -67,9 +62,7 @@ function getRelationItems(
   return relation.sharedReferences || [];
 }
 
-function getReferenceMatches(
-  relation: SelectedRelations["connected"][number],
-) {
+function getReferenceMatches(relation: SelectedRelations["connected"][number]) {
   return relation.sharedReferenceMatches?.length
     ? relation.sharedReferenceMatches
     : (relation.sharedReferences || []).map((reference) => ({
@@ -161,46 +154,46 @@ export default function RelationDetails({
                   const referenceMatches = getReferenceMatches(relation);
 
                   return (
-                  <button
-                    key={`connected-${node.id}`}
-                    type="button"
-                    onClick={() => onSelectNode(node.id)}
-                    className="flex w-full items-start gap-2 rounded-lg border p-3 text-left transition hover:border-blue-300 hover:bg-blue-50"
-                  >
-                    <Link2 className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" />
-                    <span className="min-w-0">
-                      <span className="block text-sm">
-                        <strong>{shortTitle(selectedNode.title, 48)}</strong>{" "}
-                        memiliki relasi yang sama dengan{" "}
-                        <strong>
-                          {node.title || `Publication ${node.id}`}
-                        </strong>
-                      </span>
-                      <span className="mt-1 block text-xs text-muted-foreground">
-                        {weight} {relationCopy.weightLabel}
-                      </span>
-                      {String(relationType || "") ===
-                      "bibliographic_coupling" ? (
-                        referenceMatches.length > 0 ? (
-                          <ReferenceMatchList matches={referenceMatches} />
-                        ) : null
-                      ) : relationItems.length > 0 ? (
-                        <span className="mt-2 block space-y-1 border-t pt-2">
-                          <span className="block text-xs font-semibold text-slate-700">
-                            {relationCopy.detailLabel}
-                          </span>
-                          {relationItems.map((item, index) => (
-                            <span
-                              key={`${node.id}-relation-item-${index}`}
-                              className="block text-xs text-slate-600"
-                            >
-                              {index + 1}. {item}
-                            </span>
-                          ))}
+                    <button
+                      key={`connected-${node.id}`}
+                      type="button"
+                      onClick={() => onSelectNode(node.id)}
+                      className="flex w-full items-start gap-2 rounded-lg border p-3 text-left transition hover:border-blue-300 hover:bg-blue-50"
+                    >
+                      <Link2 className="mt-0.5 h-4 w-4 shrink-0 text-blue-600" />
+                      <span className="min-w-0">
+                        <span className="block text-sm">
+                          <strong>{shortTitle(selectedNode.title, 48)}</strong>{" "}
+                          memiliki relasi yang sama dengan{" "}
+                          <strong>
+                            {node.title || `Publication ${node.id}`}
+                          </strong>
                         </span>
-                      ) : null}
-                    </span>
-                  </button>
+                        <span className="mt-1 block text-xs text-muted-foreground">
+                          {weight} {relationCopy.weightLabel}
+                        </span>
+                        {String(relationType || "") ===
+                        "bibliographic_coupling" ? (
+                          referenceMatches.length > 0 ? (
+                            <ReferenceMatchList matches={referenceMatches} />
+                          ) : null
+                        ) : relationItems.length > 0 ? (
+                          <span className="mt-2 block space-y-1 border-t pt-2">
+                            <span className="block text-xs font-semibold text-slate-700">
+                              {relationCopy.detailLabel}
+                            </span>
+                            {relationItems.map((item, index) => (
+                              <span
+                                key={`${node.id}-relation-item-${index}`}
+                                className="block text-xs text-slate-600"
+                              >
+                                {index + 1}. {item}
+                              </span>
+                            ))}
+                          </span>
+                        ) : null}
+                      </span>
+                    </button>
                   );
                 })}
               </div>

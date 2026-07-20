@@ -127,7 +127,10 @@ export function ChartBarLabel({
         </div>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="h-[300px] w-full sm:h-[320px]">
+        <ChartContainer
+          config={chartConfig}
+          className="h-[300px] w-full sm:h-[320px]"
+        >
           <AreaChart
             accessibilityLayer
             data={chartData}
@@ -184,7 +187,9 @@ export function ChartBarLabel({
                   labelFormatter={(label) => `Tahun ${String(label)}`}
                   formatter={(value) => (
                     <div className="flex w-full items-center justify-between gap-3">
-                      <span className="text-muted-foreground">Jumlah Publikasi</span>
+                      <span className="text-muted-foreground">
+                        Jumlah Publikasi
+                      </span>
                       <span className="font-mono font-medium tabular-nums">
                         {Number(value || 0).toLocaleString()}
                       </span>

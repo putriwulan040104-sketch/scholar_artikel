@@ -1,5 +1,10 @@
 import { BookOpen, CircleAlert, CircleCheck } from "lucide-react";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface PublicationStatCardsProps {
   total: number;
@@ -22,7 +27,9 @@ export function PublicationStatCards(props: PublicationStatCardsProps) {
           <CardHeader className="flex flex-row items-center justify-between gap-3 p-4 sm:p-6">
             <div>
               <CardDescription>{label}</CardDescription>
-              <CardTitle className="mt-1 text-2xl sm:text-3xl">{props[key]}</CardTitle>
+              <CardTitle className="mt-1 text-2xl sm:text-3xl">
+                {props[key]}
+              </CardTitle>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 text-primary">
               <Icon className="h-5 w-5" />

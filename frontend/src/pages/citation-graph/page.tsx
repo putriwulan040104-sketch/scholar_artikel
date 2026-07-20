@@ -35,6 +35,11 @@ import RelationDetails from "./relation-details";
 import TopArticles from "./top-articles";
 
 const GRAPH_QUERY_TOP_K = 5000;
+const RELATION_TYPE_LABELS: Record<ArticleRelationType, string> = {
+  bibliographic_coupling: "Bibliographic Coupling",
+  keyword_cooccurrence: "Keyword Co-occurrence",
+  co_authorship: "Co-authorship",
+};
 
 function readStoredFilters(): StoredFilters {
   try {
@@ -61,9 +66,7 @@ export default function CitationGraphPage() {
       const raw = localStorage.getItem("lastSearchPublicationIds");
       const parsed = raw ? JSON.parse(raw) : [];
       return Array.isArray(parsed)
-        ? parsed
-            .map((id) => Number(id))
-            .filter((id) => Number.isFinite(id))
+        ? parsed.map((id) => Number(id)).filter((id) => Number.isFinite(id))
         : [];
     } catch {
       return [];
@@ -71,7 +74,9 @@ export default function CitationGraphPage() {
   });
   const [queryMatchedIds, setQueryMatchedIds] = useState<number[]>([]);
   const [queryArticles, setQueryArticles] = useState<QueryArticleLite[]>([]);
-  const [dashboardArticles, setDashboardArticles] = useState<CosineArticle[]>([]);
+  const [dashboardArticles, setDashboardArticles] = useState<CosineArticle[]>(
+    [],
+  );
   const [queryTotalMatched, setQueryTotalMatched] = useState<number>(0);
   const [relationType, setRelationType] = useState<ArticleRelationType>(
     "bibliographic_coupling",
@@ -84,9 +89,7 @@ export default function CitationGraphPage() {
         const parsed = raw ? JSON.parse(raw) : [];
         if (Array.isArray(parsed)) {
           setSavedIds(
-            parsed
-              .map((id) => Number(id))
-              .filter((id) => Number.isFinite(id)),
+            parsed.map((id) => Number(id)).filter((id) => Number.isFinite(id)),
           );
         } else {
           setSavedIds([]);
@@ -164,7 +167,9 @@ export default function CitationGraphPage() {
               title: item.title || null,
               authors: item.authors || null,
               year:
-                item.year !== undefined && item.year !== null && item.year !== ""
+                item.year !== undefined &&
+                item.year !== null &&
+                item.year !== ""
                   ? Number(item.year)
                   : null,
               doi: item.doi || null,
@@ -210,10 +215,7 @@ export default function CitationGraphPage() {
     [activeIds],
   );
   const filterIds = useMemo(
-    () =>
-      new Set(
-        activeArticleIds,
-      ),
+    () => new Set(activeArticleIds),
     [activeArticleIds],
   );
 
@@ -382,9 +384,7 @@ export default function CitationGraphPage() {
 
   const selectedNode = useMemo(
     () =>
-      selectedNodeId === null
-        ? null
-        : nodeById.get(selectedNodeId) || null,
+      selectedNodeId === null ? null : nodeById.get(selectedNodeId) || null,
     [nodeById, selectedNodeId],
   );
 
@@ -402,9 +402,7 @@ export default function CitationGraphPage() {
       .map((link) => {
         const sourceId = getLinkNodeId(link.source);
         const otherId =
-          sourceId === selectedNodeId
-            ? getLinkNodeId(link.target)
-            : sourceId;
+          sourceId === selectedNodeId ? getLinkNodeId(link.target) : sourceId;
         return {
           node: nodeById.get(otherId),
           weight: link.weight,
@@ -426,8 +424,7 @@ export default function CitationGraphPage() {
           sharedKeywords: string[];
           sharedAuthors: string[];
           relationType: string | null;
-        } =>
-          Boolean(relation.node),
+        } => Boolean(relation.node),
       )
       .sort((left, right) => right.weight - left.weight);
 
@@ -436,9 +433,7 @@ export default function CitationGraphPage() {
 
   const connectedNodeIds = useMemo(
     () =>
-      new Set(
-        selectedRelations.connected.map((relation) => relation.node.id),
-      ),
+      new Set(selectedRelations.connected.map((relation) => relation.node.id)),
     [selectedRelations.connected],
   );
 
@@ -532,7 +527,7 @@ export default function CitationGraphPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-3 gap-3">
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Total Publikasi</p>
           <p className="text-2xl font-semibold">
@@ -544,11 +539,9 @@ export default function CitationGraphPage() {
           <p className="text-2xl font-semibold">{displayEdges.length}</p>
         </Card>
         <Card className="p-4">
-          <p className="text-sm text-muted-foreground">Rata-rata Degree</p>
-          <p className="text-2xl font-semibold">
-            {displayNodes.length
-              ? ((displayEdges.length * 2) / displayNodes.length).toFixed(2)
-              : "0.00"}
+          <p className="text-sm text-muted-foreground">Jenis Analisis</p>
+          <p className="break-words text-md font-semibold leading-tight">
+            {RELATION_TYPE_LABELS[relationType]}
           </p>
         </Card>
       </div>

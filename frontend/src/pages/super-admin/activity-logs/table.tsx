@@ -162,21 +162,40 @@ export default function ActivityLogTable({
             <Table className="min-w-[1180px]">
               <TableHeader>
                 <TableRow className="bg-muted/60">
-                  <TableHead className="w-[65px] whitespace-nowrap">No</TableHead>
-                  <TableHead className="w-[180px] whitespace-nowrap">Waktu</TableHead>
-                  <TableHead className="w-[180px] whitespace-nowrap">Role</TableHead>
-                  <TableHead className="w-[190px] whitespace-nowrap">Aktivitas</TableHead>
-                  <TableHead className="w-[160px] whitespace-nowrap">Objek</TableHead>
-                  <TableHead className="w-[300px] whitespace-nowrap">Deskripsi</TableHead>
-                  <TableHead className="w-[120px] whitespace-nowrap">Status</TableHead>
-                  <TableHead className="w-[130px] whitespace-nowrap">IP</TableHead>
+                  <TableHead className="w-[65px] whitespace-nowrap">
+                    No
+                  </TableHead>
+                  <TableHead className="w-[180px] whitespace-nowrap">
+                    Waktu
+                  </TableHead>
+                  <TableHead className="w-[180px] whitespace-nowrap">
+                    Role
+                  </TableHead>
+                  <TableHead className="w-[190px] whitespace-nowrap">
+                    Aktivitas
+                  </TableHead>
+                  <TableHead className="w-[160px] whitespace-nowrap">
+                    Objek
+                  </TableHead>
+                  <TableHead className="w-[300px] whitespace-nowrap">
+                    Deskripsi
+                  </TableHead>
+                  <TableHead className="w-[120px] whitespace-nowrap">
+                    Status
+                  </TableHead>
+                  <TableHead className="w-[130px] whitespace-nowrap">
+                    IP
+                  </TableHead>
                   <TableHead className="w-[70px] text-center">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={9} className="h-24 text-center text-muted-foreground">
+                    <TableCell
+                      colSpan={9}
+                      className="h-24 text-center text-muted-foreground"
+                    >
                       Mengambil log aktivitas...
                     </TableCell>
                   </TableRow>
@@ -218,7 +237,11 @@ export default function ActivityLogTable({
                       <TableCell className="text-center">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon-sm" aria-label="Aksi log">
+                            <Button
+                              variant="ghost"
+                              size="icon-sm"
+                              aria-label="Aksi log"
+                            >
                               <Ellipsis className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -234,7 +257,10 @@ export default function ActivityLogTable({
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={9} className="h-24 text-center text-muted-foreground">
+                    <TableCell
+                      colSpan={9}
+                      className="h-24 text-center text-muted-foreground"
+                    >
                       Belum ada log aktivitas yang sesuai.
                     </TableCell>
                   </TableRow>

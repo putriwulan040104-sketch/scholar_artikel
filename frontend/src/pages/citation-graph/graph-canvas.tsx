@@ -60,9 +60,7 @@ export default function GraphCanvas({
     svg.attr("viewBox", `0 0 ${WIDTH} ${HEIGHT}`);
 
     const root = svg.append("g");
-    const nodeById = new Map(
-      graphModel.gNodes.map((node) => [node.id, node]),
-    );
+    const nodeById = new Map(graphModel.gNodes.map((node) => [node.id, node]));
     const zoomBehavior = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.35, 3])
@@ -78,10 +76,7 @@ export default function GraphCanvas({
       .attr("stroke", (edge) => {
         const sourceId = getLinkNodeId(edge.source);
         const targetId = getLinkNodeId(edge.target);
-        if (
-          sourceId === selectedNodeId ||
-          targetId === selectedNodeId
-        ) {
+        if (sourceId === selectedNodeId || targetId === selectedNodeId) {
           return "#2563eb";
         }
         return "#64748b";
@@ -133,10 +128,9 @@ export default function GraphCanvas({
       })
       .attr("opacity", (node) => {
         if (selectedNodeId === null || node.id === selectedNodeId) return 1;
-        const connected =
-          selectedRelations.connected.some(
-            (relation) => relation.node.id === node.id,
-          );
+        const connected = selectedRelations.connected.some(
+          (relation) => relation.node.id === node.id,
+        );
         return connected ? 1 : 0.25;
       })
       .attr("stroke", "#ffffff")
@@ -235,9 +229,7 @@ export default function GraphCanvas({
       .force("center", d3.forceCenter(WIDTH / 2, HEIGHT / 2))
       .force(
         "collision",
-        d3.forceCollide<GraphNode>(
-          (node) => getNodeRadius(node.degree) + 2,
-        ),
+        d3.forceCollide<GraphNode>((node) => getNodeRadius(node.degree) + 2),
       )
       .on("tick", () => {
         link
@@ -250,10 +242,7 @@ export default function GraphCanvas({
           .attr("cx", (node) => node.x || 0)
           .attr("cy", (node) => node.y || 0);
         labels
-          .attr(
-            "x",
-            (node) => (node.x || 0) + getNodeRadius(node.degree) + 5,
-          )
+          .attr("x", (node) => (node.x || 0) + getNodeRadius(node.degree) + 5)
           .attr("y", (node) => (node.y || 0) + 4);
 
         relationArrows.attr("transform", (edge) => {

@@ -8,28 +8,27 @@ import {
 } from "@/components/ui/card";
 
 interface SectionCardsProps {
-  query?            : string;
-  jumlahKemunculan? : string;
-  totalOccurrences? : number;
-  paperCount?       : number;
-  totalMatched?     : number;
+  query?: string;
+  jumlahKemunculan?: string;
+  totalOccurrences?: number;
+  paperCount?: number;
+  totalMatched?: number;
 }
 
 export function SectionCards({
   query: _query,
   jumlahKemunculan: _jumlahKemunculan,
   totalOccurrences = 0,
-  paperCount       = 0,
-  totalMatched     = 0,
+  paperCount = 0,
+  totalMatched = 0,
 }: SectionCardsProps) {
-
-const safeTotalOccurrences = Number.isFinite(totalOccurrences)
+  const safeTotalOccurrences = Number.isFinite(totalOccurrences)
     ? totalOccurrences
     : 0;
   const safePaperCount = Number.isFinite(paperCount) ? paperCount : 0;
   const safeTotalMatched = Number.isFinite(totalMatched) ? totalMatched : 0;
-  const finalTotalMatched = safeTotalMatched > 0 ? safeTotalMatched : safePaperCount;
-
+  const finalTotalMatched =
+    safeTotalMatched > 0 ? safeTotalMatched : safePaperCount;
 
   return (
     <>
@@ -42,8 +41,7 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
         </p>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 px-4 text-center *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-2 dark:*:data-[slot=card]:bg-card">
-
+      <div className="grid grid-cols-2 gap-4 px-4 text-center *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 dark:*:data-[slot=card]:bg-card">
         <Card className="@container/card">
           <CardHeader>
             <CardDescription>Jumlah Publikasi</CardDescription>
@@ -61,7 +59,6 @@ const safeTotalOccurrences = Number.isFinite(totalOccurrences)
             </CardTitle>
           </CardHeader>
         </Card>
-
       </div>
     </>
   );

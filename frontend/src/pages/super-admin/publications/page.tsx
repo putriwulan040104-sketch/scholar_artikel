@@ -155,7 +155,7 @@ export default function SuperAdminPublicationsPage() {
     Math.ceil(filteredPublications.length / ITEMS_PER_PAGE),
   );
   const activePage = Math.min(page, totalPages);
-  
+
   const paginatedPublications = useMemo(() => {
     const start = (activePage - 1) * ITEMS_PER_PAGE;
     return filteredPublications.slice(start, start + ITEMS_PER_PAGE);
@@ -237,40 +237,40 @@ export default function SuperAdminPublicationsPage() {
       ) : null}
 
       <PublicationTable
-            publications={paginatedPublications}
-            loading={loading}
-            page={activePage}
-            totalPages={totalPages}
-            itemsPerPage={ITEMS_PER_PAGE}
-            query={query}
-            statusFilter={statusFilter}
-            categoryFilter={categoryFilter}
-            yearFilter={yearFilter}
-            categoryOptions={categoryOptions}
-            yearOptions={yearOptions}
-            hasUncategorizedPublications={hasUncategorizedPublications}
-            hasPublicationsWithoutYear={hasPublicationsWithoutYear}
-            onQueryChange={(value) => {
-              setQuery(value);
-              setPage(1);
-            }}
-            onStatusFilterChange={(value) => {
-              setStatusFilter(value);
-              setPage(1);
-            }}
-            onCategoryFilterChange={(value) => {
-              setCategoryFilter(value);
-              setPage(1);
-            }}
-            onYearFilterChange={(value) => {
-              setYearFilter(value);
-              setPage(1);
-            }}
-            onPageChange={setPage}
-            onDetail={openDetail}
-            onEdit={(publication) => openDialog("edit", publication)}
-            onDelete={(publication) => openDialog("delete", publication)}
-          />
+        publications={paginatedPublications}
+        loading={loading}
+        page={activePage}
+        totalPages={totalPages}
+        itemsPerPage={ITEMS_PER_PAGE}
+        query={query}
+        statusFilter={statusFilter}
+        categoryFilter={categoryFilter}
+        yearFilter={yearFilter}
+        categoryOptions={categoryOptions}
+        yearOptions={yearOptions}
+        hasUncategorizedPublications={hasUncategorizedPublications}
+        hasPublicationsWithoutYear={hasPublicationsWithoutYear}
+        onQueryChange={(value) => {
+          setQuery(value);
+          setPage(1);
+        }}
+        onStatusFilterChange={(value) => {
+          setStatusFilter(value);
+          setPage(1);
+        }}
+        onCategoryFilterChange={(value) => {
+          setCategoryFilter(value);
+          setPage(1);
+        }}
+        onYearFilterChange={(value) => {
+          setYearFilter(value);
+          setPage(1);
+        }}
+        onPageChange={setPage}
+        onDetail={openDetail}
+        onEdit={(publication) => openDialog("edit", publication)}
+        onDelete={(publication) => openDialog("delete", publication)}
+      />
 
       <PublicationDetailDialog
         open={detailOpen}
