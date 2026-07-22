@@ -126,7 +126,7 @@ const STAGE_MICRO_PHRASES: Record<string, string[]> = {
   ],
   final: [
     "Memuat ulang indeks pencarian terbaru...",
-    "Menerapkan filter tahun, kategori, dan akses artikel...",
+    "Menerapkan filter tahun dan akses artikel...",
     "Menyiapkan daftar artikel terbaik untuk ditampilkan...",
   ],
 };
@@ -440,7 +440,6 @@ export function SearchProgressDialog({
   open,
   progress,
   query,
-  category,
   onOpenChange,
   startedAt,
   onFinished,
@@ -449,7 +448,6 @@ export function SearchProgressDialog({
   open: boolean;
   progress: SearchProgressEvent | null;
   query: string;
-  category: string;
   onOpenChange: (open: boolean) => void;
   /** Timestamp (Date.now()) saat pencarian dimulai, dipakai untuk timeline tahapan. */
   startedAt?: number | null;

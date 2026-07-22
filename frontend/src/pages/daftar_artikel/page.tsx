@@ -3,8 +3,6 @@
 import {
   searchArticles,
   type CosineArticle,
-  getCosineResults,
-  type CategoryOption,
 } from "@/api/api";
 import { readFavorites, writeFavorites } from "@/lib/favorites";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -44,7 +42,6 @@ interface StoredFilters {
   jenisArtikel?: string;
   yearStart?: string;
   yearEnd?: string;
-  kategori?: string;
   jumlahKemunculan?: string;
 }
 
@@ -134,7 +131,7 @@ export default function DaftarArtikelPage() {
         Number.isFinite(yearStart) ? yearStart : undefined,
         Number.isFinite(yearEnd) ? yearEnd : undefined,
         filters.jenisArtikel || undefined,
-        filters.kategori || undefined,
+        undefined,
         jumlahKemunculan,
       );
 
@@ -453,11 +450,19 @@ export default function DaftarArtikelPage() {
 
                             <td className="px-4 py-3 text-center w-16">
                               <button
+                                type="button"
                                 onClick={() => toggleFavorite(article)}
+                                data-testid="favorite-toggle"
+                                data-article-id={article.id}
                                 title={
                                   isFavorite
                                     ? "Hapus dari favorit"
                                     : "Simpan ke favorit"
+                                }
+                                aria-label={
+                                  isFavorite
+                                    ? `Hapus ${article.title} dari favorit`
+                                    : `Simpan ${article.title} ke favorit`
                                 }
                                 className="p-1 rounded-full hover:bg-yellow-50 transition-colors"
                               >

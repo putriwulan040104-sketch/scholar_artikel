@@ -16,7 +16,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
+  // FieldSeparator,
 } from "./ui/field";
 import { Input } from "./ui/input";
 import { useState } from "react";
@@ -148,10 +148,10 @@ export function LoginForm({
                   {loading ? "Loading..." : "Login"}
                 </Button>
               </Field>
-              <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+              {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 atau
-              </FieldSeparator>
-              <Field>
+              </FieldSeparator> */}
+              {/* <Field>
                 <Button variant="outline" type="button">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path
@@ -161,7 +161,7 @@ export function LoginForm({
                   </svg>
                   Masuk dengan Google
                 </Button>
-              </Field>
+              </Field> */}
               <FieldDescription className="text-center">
                 Tidak punya akun? <Link to="/register">Daftar</Link>
               </FieldDescription>

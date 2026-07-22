@@ -28,10 +28,8 @@ import {
 import {
   createSearchProgressSource,
   getAnalysisTypeOptions,
-  getCategoryOptions,
   getUser,
   type AnalysisTypeOption,
-  type CategoryOption,
   type SearchProgressEvent,
 } from "@/api/api";
 import { SearchProgressDialog } from "./search-progress-dialog";
@@ -41,7 +39,6 @@ export interface SearchFilters {
   jenisAnalisis: string;
   yearStart: string;
   yearEnd: string;
-  kategori: string;
   jumlahKemunculan: string;
 }
 
@@ -85,9 +82,7 @@ export function Searchpage() {
   const [yearEnd, setYearEnd] = useState<string>("");
   const [jenisArtikel, setJenisArtikel] = useState<string>("");
   const [jenisAnalisis, setJenisAnalisis] = useState<string>("");
-  const [kategori, setKategori] = useState<string>("");
   const [jumlahKemunculan, setJumlahKemunculan] = useState<string>("");
-  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
   const [analysisTypeOptions, setAnalysisTypeOptions] = useState<
     AnalysisTypeOption[]
   >([]);
@@ -123,13 +118,7 @@ export function Searchpage() {
 
   useEffect(() => {
     const loadFilterOptions = async () => {
-      const [categoryRes, analysisRes] = await Promise.all([
-        getCategoryOptions(),
-        getAnalysisTypeOptions(),
-      ]);
-      if (categoryRes.status === "success" && Array.isArray(categoryRes.data)) {
-        setCategoryOptions(categoryRes.data);
-      }
+      const analysisRes = await getAnalysisTypeOptions();
       if (analysisRes.status === "success" && Array.isArray(analysisRes.data)) {
         setAnalysisTypeOptions(analysisRes.data);
       }
@@ -181,14 +170,12 @@ export function Searchpage() {
       jenisAnalisis,
       yearStart,
       yearEnd,
-      kategori,
       jumlahKemunculan,
     };
 
     try {
       const source = createSearchProgressSource({
         query: query.trim(),
-        kategori: kategori || undefined,
         target: 10,
         yearStart: yearStart ? parseInt(yearStart) : undefined,
         yearEnd: yearEnd ? parseInt(yearEnd) : undefined,
@@ -287,7 +274,6 @@ export function Searchpage() {
         open={progressOpen}
         progress={searchProgress}
         query={query}
-        category={searchProgress?.category || kategori || "Otomatis"}
         onOpenChange={setProgressOpen}
         startedAt={searchStartAtRef.current}
         onFinished={handleProgressFinished}
@@ -393,31 +379,6 @@ export function Searchpage() {
                           </SelectContent>
                         </Select>
                       </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm">Kategori penelitian</label>
-                      <Select onValueChange={setKategori} value={kategori}>
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Pilih kategori" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categoryOptions.length === 0 ? (
-                            <SelectItem value="category-empty" disabled>
-                              Kategori belum tersedia
-                            </SelectItem>
-                          ) : (
-                            categoryOptions.map((category) => (
-                              <SelectItem
-                                key={category.value}
-                                value={category.value}
-                              >
-                                {category.label}
-                              </SelectItem>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -557,7 +518,7 @@ export function Searchpage() {
                   Gunakan filter untuk hasil terbaik
                 </p>
                 <p className="text-slate-500">
-                  Manfaatkan filter tahun, bidang, dan jenis publikasi.
+                  Manfaatkan filter tahun, jenis publikasi, dan jenis analisis.
                 </p>
               </div>
             </div>

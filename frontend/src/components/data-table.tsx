@@ -273,14 +273,22 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
 
       return (
         <button
+          type="button"
           onClick={toggleFavorite}
-          className="flex items-center justify-center"
+          data-testid="favorite-toggle"
+          data-article-id={row.original.id}
+          aria-label={
+            favorite
+              ? `Hapus ${row.original.title} dari favorit`
+              : `Simpan ${row.original.title} ke favorit`
+          }
+          className="inline-flex h-6 w-6 items-center justify-center rounded-md border text-slate-500 transition-colors hover:bg-slate-50"
         >
           <Star
-            className={`h-5 w-5 transition-colors ${
+            className={`h-3.5 w-3.5 transition-colors ${
               favorite
                 ? "fill-yellow-400 text-yellow-400"
-                : "text-slate-300 hover:text-slate-400"
+                : ""
             }`}
           />
         </button>

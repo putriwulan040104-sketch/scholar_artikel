@@ -527,7 +527,7 @@ export default function CitationGraphPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3 text-center">
         <Card className="p-4">
           <p className="text-sm text-muted-foreground">Total Publikasi</p>
           <p className="text-2xl font-semibold">
