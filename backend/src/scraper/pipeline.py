@@ -785,8 +785,6 @@ def scrape_and_save_to_supabase(keyword, category, max_results=50, progress_call
 
 # =============================================================================
 # STEP-BY-STEP PIPELINE FUNCTIONS (UNTUK WEB UI)
-# Berdasarkan arahan dosen: Sistem tidak boleh langsung insert ke DB.
-# Seluruh tahapan harus bisa ditampilkan secara bertahap di web.
 # =============================================================================
 
 def pipeline_step_1_scraping(keyword, category, max_results=50, start_page=0, pages_to_collect=1):

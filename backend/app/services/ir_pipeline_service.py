@@ -133,7 +133,6 @@ def run_web_ir_pipeline(
     build_relations=False,
     progress_callback=None,
 ):
-    """Menjalankan pipeline penelitian dari web dengan perubahan minimal."""
     keyword = (keyword or "").strip()
     if not keyword:
         raise ValueError("Keyword tidak boleh kosong")
