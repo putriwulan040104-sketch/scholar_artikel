@@ -176,7 +176,7 @@ export function Searchpage() {
     try {
       const source = createSearchProgressSource({
         query: query.trim(),
-        target: 10,
+        target: 5,
         yearStart: yearStart ? parseInt(yearStart) : undefined,
         yearEnd: yearEnd ? parseInt(yearEnd) : undefined,
         jenisArtikel: jenisArtikel || undefined,

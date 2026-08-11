@@ -312,8 +312,8 @@ def search_progress():
     ).strip()
     display_category = selected_category or "Semua kategori"
 
-    target = request.args.get("target", request.args.get("top_k", default=10), type=int)
-    target = max(1, min(int(target or 10), 50))
+    target = request.args.get("target", request.args.get("top_k", default=5), type=int)
+    target = max(1, min(int(target or 5), 50))
     year_start = request.args.get("year_start")
     year_end = request.args.get("year_end")
     jenis_artikel = request.args.get("jenis_artikel")
@@ -351,7 +351,7 @@ def search_progress():
             if not force_scrape:
                 initial_result = search_articles(
                     query=keyword,
-                    top_k=target,
+                    top_k=10,
                     year_start=year_start,
                     year_end=year_end,
                     jenis_artikel=jenis_artikel,

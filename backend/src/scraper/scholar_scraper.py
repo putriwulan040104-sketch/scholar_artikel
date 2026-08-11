@@ -315,6 +315,7 @@ def scrape_and_collect_google_scholar(
 
             result_data = _snapshot_scholar_results(results)
             page_valid_start = scraped_count
+
             
 #Kriteria metadata valid: title, year, source, abstract. Jika salah satu tidak valid, skip dan catat alasan.
             for rd in result_data:

@@ -137,9 +137,9 @@ def run_web_ir_pipeline(
     if not keyword:
         raise ValueError("Keyword tidak boleh kosong")
 
-    target = max(1, min(int(target or 10), 50))
+    target = max(1, min(int(target or 5), 50))
     dataset_category = _category_for_dataset(keyword, selected_category)
-    scrape_target = max(target, 10)
+    scrape_target = max(target, 5)
 
     _emit(progress_callback, {
         "stage": "start",
@@ -358,7 +358,7 @@ def run_web_ir_pipeline(
     reload_info = reload_search_index()
     result = search_articles(
         query=keyword,
-        top_k=target,
+        top_k=10,
         year_start=year_start,
         year_end=year_end,
         jenis_artikel=jenis_artikel,

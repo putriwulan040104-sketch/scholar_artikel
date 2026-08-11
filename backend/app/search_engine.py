@@ -725,8 +725,8 @@ def _cosine_base_dataframe():
 
     df["interpretation"] = np.select(
         [
-            df["similarity_score"] >= 0.45,
-            df["similarity_score"] >= 0.20,
+            df["similarity_score"] >= 0.70,
+            df["similarity_score"] >= 0.40,
             df["similarity_score"] > 0,
         ],
         ["Relevan Tinggi", "Relevan Sedang", "Relevan Rendah"],
