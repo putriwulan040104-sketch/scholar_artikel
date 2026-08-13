@@ -20,18 +20,15 @@ from src.scraper.pipeline import (
 from src.scraper.scholar_scraper import scrape_and_collect_google_scholar
 from src.scraper.similarity_service import filter_articles_by_similarity_and_source
 
-
 def _emit(progress_callback, payload):
     if callable(progress_callback):
         progress_callback(payload)
-
 
 def _category_for_dataset(keyword, selected_category=None):
     category = (selected_category or "").strip()
     if category:
         return category
     return keyword.strip().lower()
-
 
 def _validation_progress_mapper(progress_callback):
     def handle(payload):
@@ -58,7 +55,6 @@ def _validation_progress_mapper(progress_callback):
         _emit(progress_callback, payload)
 
     return handle
-
 
 def _build_relation_network(relation_type, progress_callback=None):
     active_relation_type = relation_type or "bibliographic_coupling"

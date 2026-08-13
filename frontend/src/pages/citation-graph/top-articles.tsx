@@ -34,6 +34,7 @@ export default function TopArticles({
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
+  // diurutkan secara descending
   const rankedNodes = useMemo(
     () =>
       [...graphModel.gNodes].sort((left, right) => {

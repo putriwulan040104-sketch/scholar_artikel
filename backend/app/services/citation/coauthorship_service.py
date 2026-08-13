@@ -6,20 +6,16 @@ from collections import defaultdict
 from itertools import combinations
 from app.db import supabase
 
-
 PUBLICATIONS_TABLE = "cleaned_papers_results"
 RELATIONS_TABLE = "article_relations"
 RELATION_TYPE = "co_authorship"
 _BUILD_LOCK = threading.Lock()
 
-
 class CoauthorshipBuildInProgressError(RuntimeError):
     pass
 
-
 def _log(message):
     print(f"[CO-AUTHORSHIP] {message}", flush=True)
-
 
 def _get_publications(limit=None):
     rows = []
@@ -38,7 +34,6 @@ def _get_publications(limit=None):
         batch = response.data or []
         if not batch:
             break
-
         rows.extend(batch)
         offset += page_size
         if len(batch) < page_size:
@@ -47,7 +42,6 @@ def _get_publications(limit=None):
     if limit:
         return rows[:int(limit)]
     return rows
-
 
 def _as_author_list(value):
     if isinstance(value, list):
@@ -69,7 +63,6 @@ def _as_author_list(value):
             pass
 
     return re.split(r"\s*[,;]\s*|\s+\band\b\s+", value)
-
 
 def _normalize_author(value):
     if value is None:
@@ -95,7 +88,6 @@ def _normalize_author(value):
         return None
 
     return normalized
-
 
 def _load_existing_relations():
     rows = []
@@ -126,7 +118,6 @@ def _load_existing_relations():
         for row in rows
     }
 
-
 def _is_unique_conflict(error):
     message = str(error).lower()
     return (
@@ -134,7 +125,6 @@ def _is_unique_conflict(error):
         or "'code': '23505'" in message
         or "duplicate key value" in message
     )
-
 
 def _delete_stale_relations(existing, current_pairs):
     stale_rows = [
@@ -164,7 +154,6 @@ def _delete_stale_relations(existing, current_pairs):
             )
 
     return deleted, errors
-
 
 def _build_coauthorship(limit=None, min_shared=1):
     _log(
@@ -348,7 +337,6 @@ def _build_coauthorship(limit=None, min_shared=1):
         "relation_type": RELATION_TYPE,
         "minimum_shared_authors": int(min_shared),
     }
-
 
 def build_coauthorship(limit=None, min_shared=1):
     if not _BUILD_LOCK.acquire(blocking=False):

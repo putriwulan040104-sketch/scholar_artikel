@@ -150,3 +150,68 @@ Pada Tabel 4.x, kategori Cyber Security menunjukkan performa paling stabil denga
 
 Sementara itu, kategori Machine Learning memperoleh nilai rata-rata yang menurun signifikan pada P@10 (0,5000) dan P@20 (0,4667). Hal ini disebabkan oleh query "pembelajaran mesin" yang hanya menghasilkan 6 artikel retrieved dengan relevansi terbatas, serta query "data mining" yang memunculkan artikel dari luar kategori Machine Learning pada peringkat bawah. Kondisi ini menunjukkan bahwa variasi query berbahasa Indonesia pada kategori Machine Learning memiliki tantangan dalam hal kecocokan term dengan korpus yang didominasi bahasa Inggris.
 
+Pengujian Perbandingan Metode Relasi Citation Graph
+
+Selain evaluasi ketepatan pencarian menggunakan Precision@K, perlu dilakukan pengujian terhadap metode citation graph yang diusulkan. Pengujian ini bertujuan untuk membandingkan struktur jaringan relasi yang dihasilkan oleh tiga metode relasi yang diimplementasikan pada sistem, yaitu bibliographic coupling, keyword co-occurrence, dan co-authorship. Perbandingan dilakukan terhadap kumpulan artikel yang sama sehingga perbedaan struktur graf yang tampil murni disebabkan oleh perbedaan karakteristik metode relasi, bukan oleh perbedaan data yang digunakan.
+
+Prosedur Pengujian
+
+Pengujian perbandingan metode relasi dilakukan melalui beberapa tahap. Tahap pertama, seluruh artikel pada korpus dimuat dari basis data beserta metadata yang dibutuhkan masing-masing metode, yaitu daftar referensi untuk bibliographic coupling, kata kunci untuk keyword co-occurrence, dan penulis untuk co-authorship. Tahap kedua, setiap metode membangun indeks elemen pembentuk relasi kemudian mencocokkan pasangan artikel yang saling berbagi elemen yang sama untuk menghasilkan edge pada graf. Tahap ketiga, struktur graf dari ketiga metode dianalisis menggunakan pendekatan Social Network Analysis (SNA) untuk memperoleh metrik jaringan. Tahap keempat, metrik dari ketiga metode dibandingkan untuk mengetahui perbedaan dan keunggulan masing-masing.
+
+Kode Program 4.x membangun graf menggunakan fungsi build pada masing-masing layanan relasi. Fungsi tersebut mengembalikan ringkasan hasil pembangunan graf berupa jumlah artikel yang diproses, jumlah relasi yang berhasil dicocokkan, serta jumlah edge yang ditambahkan, diperbarui, atau dilewati.
+
+Kode Program 4.x Pembangunan Graf Bibliographic Coupling
+
+def build_bibliographic_coupling(limit=None, min_shared=1, title_similarity_threshold=0.90):
+    return _build_bibliographic_coupling(
+        limit=limit,
+        min_shared=min_shared,
+        title_similarity_threshold=title_similarity_threshold,
+    )
+
+Kode Program 4.x Pembangunan Graf Keyword Co-occurrence
+
+def build_keyword_cooccurrence(limit=None, min_shared=2):
+    return _build_keyword_cooccurrence(
+        limit=limit,
+        min_shared=min_shared,
+    )
+
+Kode Program 4.x Pembangunan Graf Co-authorship
+
+def build_coauthorship(limit=None, min_shared=1):
+    return _build_coauthorship(
+        limit=limit,
+        min_shared=min_shared,
+    )
+
+Berdasarkan Kode Program 4.x, metode bibliographic coupling menghubungkan dua artikel apabila keduanya mengutip referensi yang sama dengan jumlah referensi bersama minimal 1. Metode keyword co-occurrence menghubungkan dua artikel apabila keduanya memiliki minimal 2 kata kunci yang sama. Metode co-authorship menghubungkan dua artikel apabila keduanya ditulis oleh minimal 1 penulis yang sama. Nilai threshold tersebut digunakan sebagai ambang batas awal pembentukan relasi pada masing-masing metode.
+
+Perhitungan Metrik Jaringan
+
+Setelah graf terbentuk, struktur jaringan dianalisis menggunakan metrik Social Network Analysis (SNA). Metrik yang dihitung meliputi jumlah node, jumlah edge, densitas graf, jumlah komponen terhubung, ukuran komponen terbesar, jumlah node terisolasi, rata-rata derajat, degree centrality, dan betweenness centrality. Metrik-metrik tersebut digunakan untuk menggambarkan karakteristik jaringan yang dihasilkan oleh setiap metode relasi.
+
+Kode Program 4.x Perhitungan Metrik SNA
+
+def build_sna_metrics(top_n=10, relation_type="bibliographic_coupling"):
+    publications = _load_publications()
+    relations = _load_relations(relation_type)
+    node_ids, edges, adjacency = _build_graph(publications, relations)
+    graph = nx.Graph()
+    graph.add_nodes_from(node_ids)
+    graph.add_edges_from((source, target) for source, target, _weight in edges)
+    betweenness = nx.betweenness_centrality(graph)
+    degree_centrality_map = nx.degree_centrality(graph)
+
+Berdasarkan Kode Program 4.x, node pada graf merepresentasikan artikel, sedangkan edge merepresentasikan relasi antar artikel sesuai metode yang digunakan. Degree centrality menunjukkan banyaknya artikel lain yang terhubung langsung dengan suatu artikel, sedangkan betweenness centrality menunjukkan seberapa besar peran suatu artikel sebagai penghubung antar kelompok dalam jaringan. Metrik jaringan dihitung menggunakan library NetworkX pada Python.
+
+Hasil Pengujian
+
+Rekapitulasi perbandingan struktur jaringan dari ketiga metode relasi disajikan pada Tabel 4.x.
+
+Tabel 4.x Perbandingan Metrik Jaringan Antar Metode Relasi
+
+Berdasarkan Tabel 4.x, ... (uraian hasil perbandingan node, edge, densitas, komponen, node terisolasi, rata-rata derajat, dan artikel dengan degree/betweenness tertinggi untuk masing-masing metode relasi).
+
+Berdasarkan perbandingan tersebut, ... (uraian kesimpulan metode mana yang menghasilkan jaringan paling padat/terhubung dan interpretasinya terhadap karakteristik data korpus).
+

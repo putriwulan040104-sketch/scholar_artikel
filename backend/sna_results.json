@@ -1,0 +1,5681 @@
+{
+  "bibliographic_coupling": {
+    "summary": {
+      "node_count": 219,
+      "edge_count": 34,
+      "density": 0.00142432,
+      "total_edge_weight": 46,
+      "isolated_nodes": 179,
+      "component_count": 188,
+      "largest_component_size": 17,
+      "average_degree": 0.31050228,
+      "relation_type": "bibliographic_coupling"
+    },
+    "top_degree_centrality": [
+      {
+        "id": 163,
+        "title": "Artificial intelligence in cyber security: research advances, challenges, and opportunities",
+        "year": 2022,
+        "doi": "10.1007/s10462-021-09976-0",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00388957
+      },
+      {
+        "id": 5,
+        "title": "A guide to machine learning for biologists",
+        "year": 2022,
+        "doi": "10.1038/s41580-021-00407-0",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00122606
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00215617
+      },
+      {
+        "id": 10,
+        "title": "A survey on the explainability of supervised machine learning",
+        "year": 2021,
+        "doi": "10.1613/jair.1.12228",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00202934
+      },
+      {
+        "id": 192,
+        "title": "Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya",
+        "year": 2024,
+        "doi": "10.24123/jati.v17i2.6409",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00029595
+      }
+    ],
+    "top_connected": [
+      {
+        "id": 163,
+        "title": "Artificial intelligence in cyber security: research advances, challenges, and opportunities",
+        "year": 2022,
+        "doi": "10.1007/s10462-021-09976-0",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00388957
+      },
+      {
+        "id": 5,
+        "title": "A guide to machine learning for biologists",
+        "year": 2022,
+        "doi": "10.1038/s41580-021-00407-0",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00122606
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00215617
+      },
+      {
+        "id": 10,
+        "title": "A survey on the explainability of supervised machine learning",
+        "year": 2021,
+        "doi": "10.1613/jair.1.12228",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00202934
+      },
+      {
+        "id": 192,
+        "title": "Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya",
+        "year": 2024,
+        "doi": "10.24123/jati.v17i2.6409",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00029595
+      }
+    ],
+    "top_betweenness": [
+      {
+        "id": 163,
+        "title": "Artificial intelligence in cyber security: research advances, challenges, and opportunities",
+        "year": 2022,
+        "doi": "10.1007/s10462-021-09976-0",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00388957
+      },
+      {
+        "id": 54,
+        "title": "Front-end deep learning web apps development and deployment: a review",
+        "year": 2023,
+        "doi": "10.1007/s10489-022-04278-6",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.00232529
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00215617
+      },
+      {
+        "id": 10,
+        "title": "A survey on the explainability of supervised machine learning",
+        "year": 2021,
+        "doi": "10.1613/jair.1.12228",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00202934
+      },
+      {
+        "id": 5,
+        "title": "A guide to machine learning for biologists",
+        "year": 2022,
+        "doi": "10.1038/s41580-021-00407-0",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00122606
+      }
+    ],
+    "node_metrics": [
+      {
+        "id": 1,
+        "title": "What is machine learning?",
+        "year": 2022,
+        "doi": "10.1002/9781119815075.ch18",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 2,
+        "title": "Machine learning for microbiologists",
+        "year": 2024,
+        "doi": "10.1038/s41579-023-00984-1",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 3,
+        "title": "Amnesiac machine learning",
+        "year": 2021,
+        "doi": "10.1609/aaai.v35i13.17371",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 4,
+        "title": "Designing nanotheranostics with machine learning",
+        "year": 2024,
+        "doi": "10.1038/s41565-024-01753-8",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 5,
+        "title": "A guide to machine learning for biologists",
+        "year": 2022,
+        "doi": "10.1038/s41580-021-00407-0",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00122606
+      },
+      {
+        "id": 6,
+        "title": "Machine learning and deep learning: C. Janiesch et al.",
+        "year": 2021,
+        "doi": "10.1007/s12525-021-00475-2",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 7,
+        "title": "Financial machine learning",
+        "year": 2023,
+        "doi": "10.3386/w31502",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 8,
+        "title": "Open-environment machine learning",
+        "year": 2022,
+        "doi": "10.1093/nsr/nwac123/45957092/nwac123.pdf",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 9,
+        "title": "Using machine learning to detect misstatements",
+        "year": 2021,
+        "doi": "10.1007/s11142-020-09563-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 10,
+        "title": "A survey on the explainability of supervised machine learning",
+        "year": 2021,
+        "doi": "10.1613/jair.1.12228",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00202934
+      },
+      {
+        "id": 11,
+        "title": "Challenges in deploying machine learning: a survey of case studies",
+        "year": 2022,
+        "doi": "10.1145/3533378",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 12,
+        "title": "Machine learning operations (mlops): Overview, definition, and architecture",
+        "year": 2023,
+        "doi": "10.1109/access.2023.3262138",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 13,
+        "title": "A survey on dataset quality in machine learning",
+        "year": 2023,
+        "doi": "10.1016/j.infsof.2023.107268",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 14,
+        "title": "A review of the application of machine learning in water quality evaluation",
+        "year": 2022,
+        "doi": "10.1016/j.eehl.2022.06.001",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 15,
+        "title": "Research on machine learning with algorithms and development",
+        "year": 2023,
+        "doi": "10.53469/jtpes.2023.03(12).02",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 16,
+        "title": "An overview of machine learning classification techniques",
+        "year": 2024,
+        "doi": "10.1051/bioconf/20249700133",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 17,
+        "title": "A systematic review of teaching and learning machine learning in K-12 education",
+        "year": 2023,
+        "doi": "10.1007/s10639-022-11416-7",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 18,
+        "title": "A survey of human-in-the-loop for machine learning",
+        "year": 2022,
+        "doi": "10.1016/j.future.2022.05.014",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 19,
+        "title": "Machine learning in economics and finance",
+        "year": 2021,
+        "doi": "10.1007/s10614-021-10094-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 20,
+        "title": "Machine learning and applications in microbiology",
+        "year": 2021,
+        "doi": "10.1093/femsre/fuab015",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 21,
+        "title": "OMLT: Optimization & machine learning toolkit",
+        "year": 2022,
+        "doi": "10.2172/2432248",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 22,
+        "title": "Machine learning in chemical engineering: A perspective",
+        "year": 2021,
+        "doi": "10.1002/cite.202100083",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 23,
+        "title": "Human-in-the-loop machine learning: a state of the art",
+        "year": 2023,
+        "doi": "10.1007/s10462-022-10246-w",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 24,
+        "title": "Causality for machine learning",
+        "year": 2022,
+        "doi": "10.1145/3501714.3501755",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 25,
+        "title": "Machine learning: new ideas and tools in environmental science and engineering",
+        "year": 2021,
+        "doi": "10.1021/acs.est.1c01339",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 26,
+        "title": "Penerapan machine learning dalam prediksi tingkat kasus penyakit di Indonesia",
+        "year": 2023,
+        "doi": "10.24076/joism.2023v5i1.1136",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 27,
+        "title": "Tinjauan Pustaka Sistematis: Penerapan Metode Machine Learning untuk Deteksi Bencana Banjir",
+        "year": 2022,
+        "doi": "10.33395/jmp.v11i2.11657",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 28,
+        "title": "Penerapan Machine Learning, Deep Learning, Dan Data Mining Dalam Deteksi Kecurangan Laporan Keuangan-a Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.54373/imeij.v6i6.4112",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 29,
+        "title": "Penerapan machine learning untuk prediksi bencana banjir",
+        "year": 2024,
+        "doi": "10.35718/specta.v8i2.1211",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 30,
+        "title": "Penerapan Machine Learning dan Deep Learning pada Peningkatan Deteksi Credit Card Fraud-A Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.17265/1548-6583/2025.03.003",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 31,
+        "title": "Penerapan Machine Learning dengan Konsep Data Mining Rough Set (Prediksi Tingkat Pemahaman Mahasiswa terhadap Matakuliah)",
+        "year": 2021,
+        "doi": "10.30865/mib.v5i1.2745",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 32,
+        "title": "Penerapan Metode Machine Learning dalam Klasifikasi Risiko Kejadian Berat Badan Lahir Rendah di Indonesia",
+        "year": 2021,
+        "doi": "10.30812/matrik.v20i2.1174",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 33,
+        "title": "Penerapan Machine Learning Untuk Menentukan Tingkat Kepuasan Tamu Hotel Dymens Menggunakan Metode Vader",
+        "year": 2023,
+        "doi": "10.47233/jteksis.v5i3.866",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 34,
+        "title": "Klasifikasi kualitas air minum menggunakan penerapan algoritma machine learning dengan pendekatan supervised learning",
+        "year": 2023,
+        "doi": "10.33369/diophantine.v2i01.28260",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 35,
+        "title": "Penerapan Machine Learning Pada Analisis Sentimen Aplikasi Mytelkomsel Mengunakan Data Ulasan Google Playstore",
+        "year": 2024,
+        "doi": "10.33022/ijcs.v13i3.4024",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 36,
+        "title": "Visualisasi Data dan Penerapan Machine Learning Menggunakan Decision Tree Untuk Keputusan Layanan Kesehatan COVID-19",
+        "year": 2023,
+        "doi": "10.33365/jtk.v17i2.2438",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 37,
+        "title": "Penerapan Konsep Machine Learning & Deep Learning",
+        "year": 2024,
+        "doi": "10.37824/rrwd4c57",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 38,
+        "title": "Penerapan Machine Learning Untuk Mengategorikan Sampah Plastik Rumah Tangga",
+        "year": 2021,
+        "doi": "10.51351/jtm.10.1.2021645",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 39,
+        "title": "Penerapan Teachable Machine pada klasifikasi machine learning untuk identifikasi bibit tanaman",
+        "year": 2022,
+        "doi": "10.35969/inotek.v2i1.207",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 40,
+        "title": "Penerapan Machine Learning dengan Algoritma Logistik Regresi untuk Memprediksi Diabetes",
+        "year": 2023,
+        "doi": "10.30871/jaic.v7i1.4998",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 41,
+        "title": "Penerapan Machine Learning Algoritma Random Forest Untuk Prediksi Penyakit Jantung",
+        "year": 2024,
+        "doi": "10.33005/senada.v4i1.376",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 42,
+        "title": "Penerapan Machine Learning menggunakan algoritma C4. 5 berbasis PSO dalam Menganalisa Data Siswa Putus Sekolah",
+        "year": 2021,
+        "doi": "10.51211/itbi.v5i2.1530",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 43,
+        "title": "Penerapan machine learning dengan algoritma support vector machine untuk prediksi kelembapan udara rata-rata",
+        "year": 2024,
+        "doi": "10.65624/tridi.v2i2.38",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 44,
+        "title": "penerapan machine learning dalam melakukan prediksi harga saham pt. Bank mandiri (persero) tbk dengan algoritma linear regression",
+        "year": 2024,
+        "doi": "10.36040/jati.v8i1.8958",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 45,
+        "title": "Penerapan Algoritma Machine Learning dalam Prediksi Prestasi Akademik Mahasiswa",
+        "year": 2025,
+        "doi": "10.62951/router.v3i1.389",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 46,
+        "title": "Penerapan Machine Learning Clustering K-Means dan Linear Regression Dalam Penentuan Tingkat Resiko Tuberkulosis Paru",
+        "year": 2023,
+        "doi": "10.33022/ijcs.v12i1.3162",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 47,
+        "title": "Penerapan Teknologi Machine Learning dalam Deteksi Dini Penyakit Pada Tanaman Pangan",
+        "year": 2024,
+        "doi": "10.54082/jupin.643",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 48,
+        "title": "Pemanfaatan machine learning di bidang kesehatan",
+        "year": 2025,
+        "doi": "10.36040/jati.v9i1.12663",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 49,
+        "title": "Penerapan Metode Machine Learning dalam Mengidentifikasi Berita Hoaks",
+        "year": 2024,
+        "doi": "10.33884/cbis.v12i1.8442",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 50,
+        "title": "Penerapan Algoritma Machine learning untuk Prediksi Gangguan Kesehatan Mental: Systematic Literature Review",
+        "year": 2025,
+        "doi": "10.36787/jti.v19i1.1895",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 51,
+        "title": "Web application development with streamlit",
+        "year": 2022,
+        "doi": "10.1007/978-1-4842-8111-6.pdf",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 52,
+        "title": "A survey on web application penetration testing",
+        "year": 2023,
+        "doi": "10.3390/electronics12051229",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 53,
+        "title": "A comparative study of web application security parameters: Current trends and future directions",
+        "year": 2022,
+        "doi": "10.3390/app12084077",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 54,
+        "title": "Front-end deep learning web apps development and deployment: a review",
+        "year": 2023,
+        "doi": "10.1007/s10489-022-04278-6",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.00232529
+      },
+      {
+        "id": 55,
+        "title": "BEST: a web application for comprehensive biomarker exploration on large-scale data in solid tumors",
+        "year": 2023,
+        "doi": "10.1186/s40537-023-00844-y",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 56,
+        "title": "DeepCrop: Deep learning-based crop disease prediction with web application",
+        "year": 2023,
+        "doi": "10.1016/j.jafr.2023.100764",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 57,
+        "title": "LCZ Generator: a web application to create Local Climate Zone maps",
+        "year": 2021,
+        "doi": "10.3389/fenvs.2021.637455/full",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 58,
+        "title": "Tree Visualization By One Table (tvBOT): a web application for visualizing, modifying and annotating phylogenetic trees",
+        "year": 2023,
+        "doi": "10.1093/nar/gkad359",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 59,
+        "title": "iDEP web application for RNA-seq data analysis",
+        "year": 2021,
+        "doi": "10.1007/978-1-0716-1307-8_22",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 60,
+        "title": "MiBiOmics: an interactive web application for multi-omics data exploration and integration",
+        "year": 2021,
+        "doi": "10.1186/s12859-020-03921-8",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 61,
+        "title": "Coronapp: A web application to annotate and monitor SARS‐CoV‐2 mutations",
+        "year": 2021,
+        "doi": "10.1002/jmv.26678",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 62,
+        "title": "Development of interactive biological web applications with R/Shiny",
+        "year": 2022,
+        "doi": "10.1093/bib/bbab415",
+        "degree_centrality": 0.00917431,
+        "betweenness": 4.228e-05
+      },
+      {
+        "id": 63,
+        "title": "Machine learning based diabetes prediction and development of smart web application",
+        "year": 2021,
+        "doi": "10.1016/j.ijcce.2021.12.001",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 64,
+        "title": "A systematic literature review on the characteristics and effectiveness of web application vulnerability scanners",
+        "year": 2022,
+        "doi": "10.1109/access.2022.3161522",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 65,
+        "title": "ATON: An open-source framework for creating immersive, collaborative and liquid web-apps for cultural heritage",
+        "year": 2021,
+        "doi": "10.3390/app112211062",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 66,
+        "title": "Security testing of web applications: A systematic mapping of the literature",
+        "year": 2022,
+        "doi": "10.1016/j.jksuci.2021.09.018",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 67,
+        "title": "Signature-based and machine-learning-based web application firewalls: A short survey",
+        "year": 2021,
+        "doi": "10.1016/j.procs.2021.05.105",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 68,
+        "title": "Atomistica. online–web application for generating input files for ORCA molecular modelling package made with the Anvil platform",
+        "year": 2023,
+        "doi": "10.1080/08927022.2022.2126865",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 69,
+        "title": "Securing web applications against XSS and SQLi attacks using a novel deep learning approach",
+        "year": 2024,
+        "doi": "10.1038/s41598-023-48845-4",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 70,
+        "title": "DeepVenn--a web application for the creation of area-proportional Venn diagrams using the deep learning framework Tensorflow. js",
+        "year": 2022,
+        "doi": "10.32614/cran.package.biovenn",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 71,
+        "title": "ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application",
+        "year": 2024,
+        "doi": "10.1016/j.jpi.2024.100371",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 72,
+        "title": "A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture",
+        "year": 2023,
+        "doi": "10.1016/j.iswa.2023.200278",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 73,
+        "title": "Open Lab: A web application for running and sharing online experiments",
+        "year": 2022,
+        "doi": "10.3758/s13428-021-01776-2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 74,
+        "title": "CBE Clima Tool: A free and open-source web application for climate analysis tailored to sustainable building design",
+        "year": 2024,
+        "doi": "10.1007/s12273-023-1090-5",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 75,
+        "title": "CemGEMS–an easy-to-use web application for thermodynamic modelling of cementitious materials",
+        "year": 2021,
+        "doi": "10.21809/rilemtechlett.2021.140",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 76,
+        "title": "Pengenalan pemrograman web: Pembuatan aplikasi web sederhana dengan PHP dan MySQL",
+        "year": 2024,
+        "doi": "10.38035/jsmd.v2i2.156",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 77,
+        "title": "Aplikasi Supervisi Dosen Berbasis Web Di Universitas XYZ",
+        "year": 2023,
+        "doi": "10.33365/jatika.v4i3.3100",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 78,
+        "title": "Penggunaan liveworksheet dengan aplikasi berbasis web untuk meningkatkan hasil belajar peserta didik",
+        "year": 2021,
+        "doi": "10.52436/1.jpti.87",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 79,
+        "title": "Pembuatan aplikasi penjualan berbasis web monja store menggunakan php dan mysql",
+        "year": 2022,
+        "doi": "10.56127/jts.v1i2.128",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 80,
+        "title": "Analisis Keretanan Website Dengan Aplikasi Owasp Zap",
+        "year": 2023,
+        "doi": "10.70340/jirsi.v2i2.51",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 81,
+        "title": "F,“Aplikasi E-Learning Siswa Smk Berbasis Web,” J",
+        "year": 2021,
+        "doi": "10.31850/jsilog.v1i1.672",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 82,
+        "title": "Rancang bangun aplikasi penjualan online berbasis web menggunakan metode scrum",
+        "year": 2021,
+        "doi": "10.33364/algoritma/v.18-1.869",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 83,
+        "title": "Pengembangan Aplikasi Berbasis Web dan Android Sebagai Penunjang Kerja di Indonesia: Systematic Literature Review",
+        "year": 2022,
+        "doi": "10.31294/ijcs.v1i2.1428",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 84,
+        "title": "Perancangan Aplikasi Pemesanan Makanan Berbasis Web",
+        "year": 2022,
+        "doi": "10.25134/nuansa.v16i1.4771",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 85,
+        "title": "Rancang bangun aplikasi e-cuti pegawai berbasis website (studi kasus: Pengadilan Tata Usaha Negara)",
+        "year": 2021,
+        "doi": "10.36040/jati.v7i2.6669",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 86,
+        "title": "Rancang Bangun Web Service Api Aplikasi Sentralisasi Produk Umkm Pada Uptd Plut Kumkm Provinsi Lampung",
+        "year": 2021,
+        "doi": "10.47233/jteksis.v1i1.23",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 87,
+        "title": "Rancang Bangun Aplikasi Penjualan Kebutuhan Pokok Berbasis Web Pada Toko Khansaa",
+        "year": 2023,
+        "doi": "10.36040/jati.v7i1.6353",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 88,
+        "title": "Aplikasi Marketplace Pendamping Wisata Dengan Api Maps Berbasis Mobile Dan Web",
+        "year": 2022,
+        "doi": "10.31219/osf.io/3jpdt",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 89,
+        "title": "Penerapan Metode Waterfall Pada Aplikasi Reservasi Lapangan Futsal Berbasis Web",
+        "year": 2023,
+        "doi": "10.58602/itsecs.v1i1.8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 90,
+        "title": "Implementasi Web Service Sebagai Penyedia Informasi Untuk Aplikasi Pengelolaan Jadwal Pemberian Pakan Ikan (Studi Kasus: Pokdakan Karya Bersama)",
+        "year": 2023,
+        "doi": "10.33365/jatika.v4i3.2720",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 91,
+        "title": "Implementasi Aplikasi Kasir Berbasis Web pada Toko Ghafya Fruits Shop",
+        "year": 2022,
+        "doi": "10.59581/jkts-widyakarya.v2i1.2120",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 92,
+        "title": "Perancangan Sistem Aplikasi Pendataan Membership Gym Menggunakan Metode Unified Software Development Process (USDP) Berbasis Web",
+        "year": 2024,
+        "doi": "10.56211/helloworld.v3i1.523",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 93,
+        "title": "Aplikasi sistem pembayaran administrasi sekolah berbasis web di SMPI Nurush Shodiqin",
+        "year": 2025,
+        "doi": "10.62383/polygon.v3i1.329",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 94,
+        "title": "Pengembangan pelayanan administrasi aplikasi website Desa Lontar",
+        "year": 2023,
+        "doi": "10.35311/jmpm.v4i1.140",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 95,
+        "title": "Perancangan sistem aplikasi penjualan dan layanan jasa laundry sepatu berbasis website",
+        "year": 2022,
+        "doi": "10.56211/blendsains.v1i1.67",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 96,
+        "title": "Digitalisasi Usaha Mikro Kecil Dan Menengah Di Desa Melalui Aplikasi Kede Desa Berbasis Web",
+        "year": 2023,
+        "doi": "10.58486/jsr.v7i1.226",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 97,
+        "title": "Pengujian aplikasi berbasis web data SKA menggunakan metode Black Box Testing",
+        "year": 2024,
+        "doi": "10.59840/ieed.v1i2.203",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 98,
+        "title": "Pengembangan Aplikasi Reservasi Salon Keshoo Berbasis Web",
+        "year": 2023,
+        "doi": "10.58991/eemisas.v2i2.42",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 99,
+        "title": "Optimalisasi penjualan dengan aplikasi web berbasis CodeIgniter pada toko kelontong",
+        "year": 2024,
+        "doi": "10.51903/jtikp.v15i2.860",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 100,
+        "title": "Rancang bangun aplikasi pembayaran spp berbasis web",
+        "year": 2022,
+        "doi": "10.22441/incomtech.v14i3.24275",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 101,
+        "title": "Marketing research on Mobile apps: past, present and future",
+        "year": 2022,
+        "doi": "10.1007/s11747-021-00815-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 102,
+        "title": "A survey of performance optimization for mobile applications",
+        "year": 2021,
+        "doi": "10.1109/tse.2021.3071193",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 103,
+        "title": "Why people choose Apps: An evaluation of the ecology and user experience of mobile applications",
+        "year": 2023,
+        "doi": "10.2139/ssrn.4070390",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 104,
+        "title": "A study of mobile app use for teaching and research in higher education",
+        "year": 2023,
+        "doi": "10.1007/s10758-022-09599-6",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 105,
+        "title": "Ethical issues of the use of AI-driven mobile apps for education",
+        "year": 2023,
+        "doi": "10.3389/fpubh.2022.1118116/full",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 106,
+        "title": "Design guidelines of mobile apps for older adults: systematic review and thematic analysis",
+        "year": 2023,
+        "doi": "10.2196/43186",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 107,
+        "title": "The role of mobile application acceptance in shaping e-customer service",
+        "year": 2021,
+        "doi": "10.3390/fi13030077",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 108,
+        "title": "Determinants of mobile apps adoption among young adults: theoretical extension and analysis",
+        "year": 2021,
+        "doi": "10.1080/13527266.2020.1725780",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 109,
+        "title": "Service quality of online food delivery mobile application: an examination of the spillover effects of mobile app satisfaction",
+        "year": 2024,
+        "doi": "10.1108/ijchm-09-2022-1103",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 110,
+        "title": "Analyzing user perspectives on mobile app privacy at scale",
+        "year": 2022,
+        "doi": "10.1145/3510003.3510079",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 111,
+        "title": "Deep learning methods for accurate skin cancer recognition and mobile application",
+        "year": 2022,
+        "doi": "10.3390/electronics11091294",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 112,
+        "title": "Features and Functionalities of Medical Mobile Applications for the Endemic Phase of COVID‐19: Review and Content Analysis",
+        "year": 2022,
+        "doi": "10.36877/pmmb.a0000285",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 113,
+        "title": "Enhancing user engagement: The role of gamification in mobile apps",
+        "year": 2021,
+        "doi": "10.1016/j.jbusres.2021.04.028",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 114,
+        "title": "Mobile apps for SME business sustainability during COVID-19 and onwards",
+        "year": 2021,
+        "doi": "10.1016/j.jbusres.2021.06.005",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 115,
+        "title": "Evaluating the quality and safety of health-related apps and e-tools: Adapting the Mobile App Rating Scale and developing a quality assurance protocol",
+        "year": 2021,
+        "doi": "10.1016/j.invent.2021.100379",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 116,
+        "title": "Augmented reality technology adoption: Case of a mobile application in Turkey",
+        "year": 2021,
+        "doi": "10.1016/j.techsoc.2021.101598",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 117,
+        "title": "Faster segment anything: Towards lightweight sam for mobile applications",
+        "year": 2023,
+        "doi": "10.1145/3613307.3613315",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 118,
+        "title": "Augmented reality advertising via a mobile app",
+        "year": 2022,
+        "doi": "10.1002/mar.21632",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 119,
+        "title": "What works best to engage participants in mobile app interventions and e-health: a scoping review",
+        "year": 2022,
+        "doi": "10.1089/tmj.2021.0176",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.00118378
+      },
+      {
+        "id": 120,
+        "title": "Combating against potentially harmful mobile apps",
+        "year": 2021,
+        "doi": "10.1007/978-3-030-76346-6_15",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 121,
+        "title": "Mobile apps for older adults: systematic search and evaluation within online stores",
+        "year": 2021,
+        "doi": "10.2196/23313",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.00063417
+      },
+      {
+        "id": 122,
+        "title": "Mobile apps to improve medication adherence in cardiovascular disease: systematic review and meta-analysis",
+        "year": 2021,
+        "doi": "10.2196/24190",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 123,
+        "title": "Engaging shoppers through mobile apps: the role of gamification",
+        "year": 2021,
+        "doi": "10.1108/ijrdm-09-2020-0360",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 124,
+        "title": "A review of mobile applications available in the app and google play stores used during the COVID-19 outbreak",
+        "year": 2021,
+        "doi": "10.2147/jmdh.s285014",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 125,
+        "title": "Would you like to shop via mobile app technology? The technology acceptance model, social factors and purchase intention",
+        "year": 2021,
+        "doi": "10.1016/j.ausmj.2020.01.002",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 126,
+        "title": "Systematic literature review analisis metode agile dalam pengembangan aplikasi mobile",
+        "year": 2021,
+        "doi": "10.32520/stmsi.v10i2.1237",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 127,
+        "title": "Tren pengembangan aplikasi mobile: Sebuah tinjauan literatur",
+        "year": 2023,
+        "doi": "10.55606/jtmei.v2i4.2848",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 128,
+        "title": "Penerapan metode design thinking dalam perancangan UI/UX aplikasi mobile SIPROPMAWA",
+        "year": 2023,
+        "doi": "10.47065/josh.v4i4.3648",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 129,
+        "title": "Implemetasi aplikasi mobile pengenalan kampus pada masa pandemi Covid-19",
+        "year": 2022,
+        "doi": "10.47111/jti.v16i2.5416",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 130,
+        "title": "Peluang Penelitian UI/UX pada Pengembangan Aplikasi Mobile: Systematic literature review",
+        "year": 2022,
+        "doi": "10.33633/tc.v21i3.6059",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 131,
+        "title": "Aplikasi E-Sewa Barang Berbasis Mobile",
+        "year": 2022,
+        "doi": "10.58982/krisnadana.v1i3.190",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 132,
+        "title": "Pelatihan membangun aplikasi mobile menggunakan kodular untuk siswa smpn 1 selorejo",
+        "year": 2022,
+        "doi": "10.25157/ag.v4i1.7259",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 133,
+        "title": "Aplikasi Mobile JKN Edukasi Tentang Penggunaan Aplikasi Mobile JKN Pada Pasien Rawat Jalan RSUD Anugerah Tomohon",
+        "year": 2023,
+        "doi": "10.31004/prepotif.v8i3.22001",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 134,
+        "title": "Tingkat kepuasan masyarakat terhadap pendaftaran online pada aplikasi Mobile JKN",
+        "year": 2021,
+        "doi": "10.36763/healthcare.v10i1.114",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 135,
+        "title": "Perancangan user experience aplikasi mobile Majuli menggunakan metode design thinking",
+        "year": 2022,
+        "doi": "10.51519/journalita.volume3.isssue2.year2022.page108-123",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 136,
+        "title": "Analisis Technology Acceptance Model (TAM) Terhadap Pengguna Aplikasi Mobile Banking",
+        "year": 2023,
+        "doi": "10.33395/owner.v7i2.1440",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 137,
+        "title": "Pengembangan Aplikasi Kasir Mobile Yang Efisien",
+        "year": 2024,
+        "doi": "10.36040/jati.v8i4.9829",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 138,
+        "title": "Perancangan UI/UX Aplikasi Mobile Produk Fashion Pria pada Toko Celcius di Kota Manado Menggunakan Design Thinking",
+        "year": 2023,
+        "doi": "10.58602/jima-ilkom.v2i2.17",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 139,
+        "title": "Redesign User Interface Dan User Experience Aplikasi Wastu Mobile Menggunakan Metode Design Thinking",
+        "year": 2022,
+        "doi": "10.36050/betrik.v13i2.506",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 140,
+        "title": "Aplikasi Mobile JKN untuk Memudahkan Akses Pelayanan BPJS",
+        "year": 2022,
+        "doi": "10.23917/jk.v15i1.15977",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 141,
+        "title": "Analisis Sentimen Berbasis Aspek pada Aplikasi Mobile Menggunakan Naïve Bayes berdasarkan Ulasan Pengguna Playstore (Studi Kasus: Jconnect Mobile)",
+        "year": 2025,
+        "doi": "10.25126/jtiik.1227556",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 142,
+        "title": "Persepsi manfaat kemudahan terhadap niat dalam penggunaan aplikasi mobile banking",
+        "year": 2024,
+        "doi": "10.38035/jemsi.v6i2.3402",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 143,
+        "title": "Analisis persepsi konsumen terhadap penggunaan aplikasi Mobile JKN",
+        "year": 2024,
+        "doi": "10.55606/jurimbik.v5i2.1078",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 144,
+        "title": "Analisis kualitas pelayanan aplikasi mobile JKN BPJS kesehatan menggunakan metode service quality (servqual)",
+        "year": 2022,
+        "doi": "10.53912/iej.v11i2.837",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 145,
+        "title": "Penggunaan metode heuristic evaluation sebagai analisis evaluasi user interface dan user experience pada aplikasi bca mobile",
+        "year": 2021,
+        "doi": "10.33627/ge.v2i2.94",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 146,
+        "title": "Analisis kualitas layanan pada aplikasi Mobile JKN dengan tingkat kepuasan pengguna Mobile JKN BPJS Kesehatan di Kabupaten Demak",
+        "year": 2024,
+        "doi": "10.31331/ijheco.v5i1.3161",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 147,
+        "title": "Analisis Penggunaan Aplikasi Mobile JKN dengan Metode EUCS",
+        "year": 2023,
+        "doi": "10.36040/jati.v9i2.13040",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 148,
+        "title": "Aplikasi pembelajaran ilmu tajwid berbasis mobile",
+        "year": 2022,
+        "doi": "10.35959/jik.v10i1.300",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 149,
+        "title": "Perancangan Ulang UI & UX Menggunakan Metode Design Thinking Pada Aplikasi Siakadu Mahasiswa Berbasis Mobile",
+        "year": 2022,
+        "doi": "10.26740/jeisbi.v3i4.47740",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 150,
+        "title": "Analisis Sentimen Ulasan Aplikasi Jamsostek Mobile Menggunakan Metode Support Vector Machine",
+        "year": 2023,
+        "doi": "10.24002/jbi.v14i01.6909",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 151,
+        "title": "Cyber security: State of the art, challenges and future directions",
+        "year": 2024,
+        "doi": "10.1016/j.csa.2023.100031",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 152,
+        "title": "Cyber security, cyber threats, implications and future perspectives: A Review",
+        "year": 2022,
+        "doi": "10.22541/au.166385207.73483369",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 153,
+        "title": "A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments",
+        "year": 2021,
+        "doi": "10.1016/j.egyr.2021.08.126",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 154,
+        "title": "The recent trends in cyber security: A review",
+        "year": 2022,
+        "doi": "10.1016/j.jksuci.2021.01.018",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 155,
+        "title": "A systematic literature review on the cyber security",
+        "year": 2021,
+        "doi": "10.18535/ijsrm/v9i12.ec04",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 156,
+        "title": "Cyber security",
+        "year": 2021,
+        "doi": "10.1007/978-981-16-1665-5_2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 157,
+        "title": "Cyber security in the metaverse",
+        "year": 2023,
+        "doi": "10.4018/978-1-6684-8851-5.ch023",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 158,
+        "title": "Counterattacking cyber threats: A framework for the future of cybersecurity",
+        "year": 2023,
+        "doi": "10.3390/su151813369",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 159,
+        "title": "Cyber governance studies in ensuring cybersecurity: an overview of cybersecurity governance",
+        "year": 2022,
+        "doi": "10.1365/s43439-021-00045-4",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 160,
+        "title": "Cyber security in New Space: M. Manulis et al.",
+        "year": 2021,
+        "doi": "10.1007/s10207-020-00503-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 161,
+        "title": "Cyber security in the age of COVID-19: A timeline and analysis of cyber-crime and cyber-attacks during the pandemic",
+        "year": 2021,
+        "doi": "10.1016/j.cose.2021.102248",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 162,
+        "title": "Analysis of cyber security knowledge gaps based on cyber security body of knowledge",
+        "year": 2023,
+        "doi": "10.1007/s10639-022-11261-8",
+        "degree_centrality": 0.01376147,
+        "betweenness": 8.456e-05
+      },
+      {
+        "id": 163,
+        "title": "Artificial intelligence in cyber security: research advances, challenges, and opportunities",
+        "year": 2022,
+        "doi": "10.1007/s10462-021-09976-0",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00388957
+      },
+      {
+        "id": 164,
+        "title": "Cybersecurity of industrial cyber-physical systems: A review",
+        "year": 2022,
+        "doi": "10.1145/3510410",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 165,
+        "title": "Deep reinforcement learning for cyber security",
+        "year": 2021,
+        "doi": "10.1109/tnnls.2021.3121870",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 166,
+        "title": "The role of user behaviour in improving cyber security management",
+        "year": 2021,
+        "doi": "10.3389/fpsyg.2021.561011/full",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00215617
+      },
+      {
+        "id": 168,
+        "title": "Navigating the cyber security landscape: A comprehensive review of cyber-attacks, emerging trends, and recent developments",
+        "year": 2024,
+        "doi": "10.1080/1206212x.2024.2380652",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.00118378
+      },
+      {
+        "id": 169,
+        "title": "Evaluating the cyber security readiness of organizations and its influence on performance",
+        "year": 2021,
+        "doi": "10.1016/j.jisa.2020.102726",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 170,
+        "title": "Cybersecurity risk",
+        "year": 2023,
+        "doi": "10.2139/ssrn.3748961",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 171,
+        "title": "Artificial intelligence in cyber security",
+        "year": 2021,
+        "doi": "10.1088/1742-6596/1964/4/042072/meta",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 172,
+        "title": "Cyber resilience and cyber security issues of intelligent cloud computing systems",
+        "year": 2023,
+        "doi": "10.1016/j.rico.2023.100268",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 173,
+        "title": "Role of AI and its impact on the development of cyber security applications",
+        "year": 2023,
+        "doi": "10.1007/978-981-99-2115-7_2",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 174,
+        "title": "Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations",
+        "year": 2023,
+        "doi": "10.1016/j.jnca.2022.103540",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 175,
+        "title": "Cyber risk and cybersecurity: a systematic review of data availability",
+        "year": 2022,
+        "doi": "10.1057/s41288-022-00266-6",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 176,
+        "title": "Teknologi Keamanan Siber (Cyber Security)",
+        "year": 2023,
+        "doi": "10.31599/v0xr7273",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00025367
+      },
+      {
+        "id": 177,
+        "title": "Analisis hukum terhadap tantangan keamanan siber: Studi kasus penegakan hukum siber di Indonesia",
+        "year": 2024,
+        "doi": "10.32520/albahts.v2i1.3044",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 178,
+        "title": "Data privasi dan keamanan siber pada smart-city: Tinjauan literatur",
+        "year": 2022,
+        "doi": "10.20885/snati.v2i1.19",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 179,
+        "title": "Analisis risiko keamanan siber dalam transformasi digital pelayanan publik di Indonesia",
+        "year": 2023,
+        "doi": "10.30997/karimahtauhid.v3i2.11899",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 180,
+        "title": "Manajemen keamanan cyber di era digital",
+        "year": 2023,
+        "doi": "10.46273/jobe.v11i1.365",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 181,
+        "title": "Analisis penerapan sistem keamanan siber terhadap kejahatan siber di indonesia",
+        "year": 2023,
+        "doi": "10.31004/joe.v5i4.2032",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 182,
+        "title": "Edukasi Keamanan Siber Berdigital dengan Aman",
+        "year": 2024,
+        "doi": "10.37478/abdika.v4i4.4967",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 183,
+        "title": "Tinjauan Literatur Tentang Ancaman Cybercrime Dan Implementasi Keamanan Siber Di Industri Perbankan",
+        "year": 2024,
+        "doi": "10.31004/riggs.v4i4.4796",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 184,
+        "title": "Peraturan dan Regulasi Keamanan Siber di Era Digital",
+        "year": 2024,
+        "doi": "10.33363/bb.v15i1.1483",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 185,
+        "title": "Tantangan keamanan siber dalam manajemen likuiditas bank syariah: Menjaga stabilitas keuangan di era digital",
+        "year": 2023,
+        "doi": "10.30983/krigan.v1i2.7929",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 186,
+        "title": "Sistem Keamanan Siber dan Kedaulatan Data di Indonesia dalam Perspektif Ekonomi Politik (Studi Kasus Perlindungan Data Pribadi)[Cyber Security System and …",
+        "year": 2023,
+        "doi": "10.22212/jp.v13i2.3299",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 187,
+        "title": "Upaya membangun kesadaran keamanan siber pada konsumen e-commerce di Indonesia",
+        "year": 2022,
+        "doi": "10.52391/jcn.v6i1.629",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 188,
+        "title": "Perkembangan Sistem Pertahanan/Keamanan Siber Indonesia dalam Menghadapi Tantangan Perkembangan Teknologi dan Informasi:-",
+        "year": 2022,
+        "doi": "10.32734/politeia.v14i1.6351",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 189,
+        "title": "Strategi efektif untuk implementasi keamanan siber di era digital",
+        "year": 2024,
+        "doi": "10.31599/fzg80847",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 190,
+        "title": "Pentingnya Keamanan Siber Dalam Era Digital:: Tinjauan Global Dan Kondisi Di Indonesia",
+        "year": 2025,
+        "doi": "10.35132/assyifa.v1i2.267",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 191,
+        "title": "Transformasi digital dan keamanan siber: Upaya penanggulangan kejahatan di era teknologi di Indonesia",
+        "year": 2025,
+        "doi": "10.59024/jipa.v1i1.134",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 192,
+        "title": "Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya",
+        "year": 2024,
+        "doi": "10.24123/jati.v17i2.6409",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00029595
+      },
+      {
+        "id": 193,
+        "title": "Analisis Keamanan Siber Dan Hukum Dari Perspektif Gender Dan Filsafat Politik Alison M. Jaggar",
+        "year": 2021,
+        "doi": "10.31602/al-adl.v13i2.4396",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 194,
+        "title": "Mengukur Keamanan Siber Indonesia Melalui Indikator Pilar Kerjasama Dalam Global Cybersecurity Index (GCI)",
+        "year": 2023,
+        "doi": "10.47313/pjsh.v8i1.1957",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 195,
+        "title": "Analisis dan peningkatan keamanan cyber: Studi kasus ancaman dan solusi dalam lingkungan digital untuk mengamankan objek vital dan file",
+        "year": 2023,
+        "doi": "10.47861/sammajiva.v1i2.226",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 196,
+        "title": "Serangan cyber dan kesiapan keamanan cyber terhadap bank indonesia",
+        "year": 2023,
+        "doi": "10.60083/jidt.v5i3.364",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 197,
+        "title": "Sosialisasi Keamanan Siber Bagi Pelajar Dalam Menghadapi Era Digital",
+        "year": 2025,
+        "doi": "10.70585/abdidalem.v2i1.113",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 198,
+        "title": "Strategi Keamanan Siber Malaysia",
+        "year": 2021,
+        "doi": "10.31599/jki.v21i1.447",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.00063417
+      },
+      {
+        "id": 199,
+        "title": "Keamanan siber di masa depan: Tantangan dan teknologi yang dibutuhkan",
+        "year": 2024,
+        "doi": "10.30587/jcaa.v2i2.6474",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 200,
+        "title": "Peluang dan Tantangan Diplomasi Digital dalam Meningkatkan Keamanan Siber Indonesia",
+        "year": 2024,
+        "doi": "10.31004/innovative.v4i3.10537",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 201,
+        "title": "Machine learning foundations",
+        "year": 2021,
+        "doi": "10.1007/978-3-030-65900-4.pdf",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 202,
+        "title": "Machine learning in environmental research: common pitfalls and best practices",
+        "year": 2023,
+        "doi": "10.1021/acs.est.3c00026",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 203,
+        "title": "Measuring corporate culture using machine learning",
+        "year": 2021,
+        "doi": "10.1093/rfs/hhaa079",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 204,
+        "title": "Financial applications of machine learning: A literature review",
+        "year": 2023,
+        "doi": "10.1016/j.eswa.2023.119640",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 205,
+        "title": "Machine learning fundamentals",
+        "year": 2026,
+        "doi": "10.1016/b978-0-443-26789-5.00006-7",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 206,
+        "title": "When machine learning meets privacy: A survey and outlook",
+        "year": 2021,
+        "doi": "10.1145/3436755",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 207,
+        "title": "Applying machine learning to study fluid mechanics",
+        "year": 2021,
+        "doi": "10.1007/s10409-021-01143-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 208,
+        "title": "Machine learning for the educational sciences",
+        "year": 2021,
+        "doi": "10.1002/rev3.3310",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 209,
+        "title": "Machine learning in nanozymes: from design to application",
+        "year": 2024,
+        "doi": "10.1039/d4bm00169a",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 210,
+        "title": "Machine learning at the network edge: A survey",
+        "year": 2021,
+        "doi": "10.1145/3469029",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 211,
+        "title": "Machine learning and deep learning applications-a vision",
+        "year": 2021,
+        "doi": "10.1016/j.gltp.2021.01.004",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 212,
+        "title": "Tackling climate change with machine learning",
+        "year": 2022,
+        "doi": "10.1145/3485128",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 213,
+        "title": "Evolutionary machine learning: A survey",
+        "year": 2021,
+        "doi": "10.1145/3467477",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 214,
+        "title": "The difference between cyber security vs information security",
+        "year": 2022,
+        "doi": "10.52326/jes.utm.2022.29(4).08",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 215,
+        "title": "The role of cyber security in advancing sustainable digitalization: Opportunities and challenges",
+        "year": 2023,
+        "doi": "10.31181/jdaic10018122023g",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 216,
+        "title": "The role of national cybersecurity strategies on the improvement of cybersecurity education",
+        "year": 2022,
+        "doi": "10.1016/j.cose.2022.102754",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 217,
+        "title": "Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation",
+        "year": 2022,
+        "doi": "10.1111/risa.13687",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 218,
+        "title": "Deep learning",
+        "year": 2026,
+        "doi": "10.1007/978-981-95-1184-6_16",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 219,
+        "title": "Deep learning for AI",
+        "year": 2021,
+        "doi": "10.1145/3448250",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      }
+    ]
+  },
+  "keyword_cooccurrence": {
+    "summary": {
+      "node_count": 219,
+      "edge_count": 97,
+      "density": 0.00406351,
+      "total_edge_weight": 209,
+      "isolated_nodes": 158,
+      "component_count": 169,
+      "largest_component_size": 33,
+      "average_degree": 0.88584475,
+      "relation_type": "keyword_cooccurrence"
+    },
+    "top_degree_centrality": [
+      {
+        "id": 126,
+        "title": "Systematic literature review analisis metode agile dalam pengembangan aplikasi mobile",
+        "year": 2021,
+        "doi": "10.32520/stmsi.v10i2.1237",
+        "degree_centrality": 0.06422018,
+        "betweenness": 0.01035739
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.04587156,
+        "betweenness": 0.00582731
+      },
+      {
+        "id": 38,
+        "title": "Penerapan Machine Learning Untuk Mengategorikan Sampah Plastik Rumah Tangga",
+        "year": 2021,
+        "doi": "10.51351/jtm.10.1.2021645",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00213504
+      },
+      {
+        "id": 28,
+        "title": "Penerapan Machine Learning, Deep Learning, Dan Data Mining Dalam Deteksi Kecurangan Laporan Keuangan-a Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.54373/imeij.v6i6.4112",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00102947
+      },
+      {
+        "id": 207,
+        "title": "Applying machine learning to study fluid mechanics",
+        "year": 2021,
+        "doi": "10.1007/s10409-021-01143-6",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00064051
+      }
+    ],
+    "top_connected": [
+      {
+        "id": 126,
+        "title": "Systematic literature review analisis metode agile dalam pengembangan aplikasi mobile",
+        "year": 2021,
+        "doi": "10.32520/stmsi.v10i2.1237",
+        "degree_centrality": 0.06422018,
+        "betweenness": 0.01035739
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.04587156,
+        "betweenness": 0.00582731
+      },
+      {
+        "id": 38,
+        "title": "Penerapan Machine Learning Untuk Mengategorikan Sampah Plastik Rumah Tangga",
+        "year": 2021,
+        "doi": "10.51351/jtm.10.1.2021645",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00213504
+      },
+      {
+        "id": 28,
+        "title": "Penerapan Machine Learning, Deep Learning, Dan Data Mining Dalam Deteksi Kecurangan Laporan Keuangan-a Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.54373/imeij.v6i6.4112",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00102947
+      },
+      {
+        "id": 207,
+        "title": "Applying machine learning to study fluid mechanics",
+        "year": 2021,
+        "doi": "10.1007/s10409-021-01143-6",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00064051
+      }
+    ],
+    "top_betweenness": [
+      {
+        "id": 126,
+        "title": "Systematic literature review analisis metode agile dalam pengembangan aplikasi mobile",
+        "year": 2021,
+        "doi": "10.32520/stmsi.v10i2.1237",
+        "degree_centrality": 0.06422018,
+        "betweenness": 0.01035739
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.04587156,
+        "betweenness": 0.00582731
+      },
+      {
+        "id": 71,
+        "title": "ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application",
+        "year": 2024,
+        "doi": "10.1016/j.jpi.2024.100371",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00426303
+      },
+      {
+        "id": 165,
+        "title": "Deep reinforcement learning for cyber security",
+        "year": 2021,
+        "doi": "10.1109/tnnls.2021.3121870",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00385434
+      },
+      {
+        "id": 47,
+        "title": "Penerapan Teknologi Machine Learning dalam Deteksi Dini Penyakit Pada Tanaman Pangan",
+        "year": 2024,
+        "doi": "10.54082/jupin.643",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00256486
+      }
+    ],
+    "node_metrics": [
+      {
+        "id": 1,
+        "title": "What is machine learning?",
+        "year": 2022,
+        "doi": "10.1002/9781119815075.ch18",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 2,
+        "title": "Machine learning for microbiologists",
+        "year": 2024,
+        "doi": "10.1038/s41579-023-00984-1",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 3,
+        "title": "Amnesiac machine learning",
+        "year": 2021,
+        "doi": "10.1609/aaai.v35i13.17371",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 4,
+        "title": "Designing nanotheranostics with machine learning",
+        "year": 2024,
+        "doi": "10.1038/s41565-024-01753-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 5,
+        "title": "A guide to machine learning for biologists",
+        "year": 2022,
+        "doi": "10.1038/s41580-021-00407-0",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 6,
+        "title": "Machine learning and deep learning: C. Janiesch et al.",
+        "year": 2021,
+        "doi": "10.1007/s12525-021-00475-2",
+        "degree_centrality": 0.03669725,
+        "betweenness": 0.00049324
+      },
+      {
+        "id": 7,
+        "title": "Financial machine learning",
+        "year": 2023,
+        "doi": "10.3386/w31502",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 8,
+        "title": "Open-environment machine learning",
+        "year": 2022,
+        "doi": "10.1093/nsr/nwac123/45957092/nwac123.pdf",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 9,
+        "title": "Using machine learning to detect misstatements",
+        "year": 2021,
+        "doi": "10.1007/s11142-020-09563-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 10,
+        "title": "A survey on the explainability of supervised machine learning",
+        "year": 2021,
+        "doi": "10.1613/jair.1.12228",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.255e-05
+      },
+      {
+        "id": 11,
+        "title": "Challenges in deploying machine learning: a survey of case studies",
+        "year": 2022,
+        "doi": "10.1145/3533378",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 12,
+        "title": "Machine learning operations (mlops): Overview, definition, and architecture",
+        "year": 2023,
+        "doi": "10.1109/access.2023.3262138",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 13,
+        "title": "A survey on dataset quality in machine learning",
+        "year": 2023,
+        "doi": "10.1016/j.infsof.2023.107268",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 14,
+        "title": "A review of the application of machine learning in water quality evaluation",
+        "year": 2022,
+        "doi": "10.1016/j.eehl.2022.06.001",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 15,
+        "title": "Research on machine learning with algorithms and development",
+        "year": 2023,
+        "doi": "10.53469/jtpes.2023.03(12).02",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 16,
+        "title": "An overview of machine learning classification techniques",
+        "year": 2024,
+        "doi": "10.1051/bioconf/20249700133",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 17,
+        "title": "A systematic review of teaching and learning machine learning in K-12 education",
+        "year": 2023,
+        "doi": "10.1007/s10639-022-11416-7",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 18,
+        "title": "A survey of human-in-the-loop for machine learning",
+        "year": 2022,
+        "doi": "10.1016/j.future.2022.05.014",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 19,
+        "title": "Machine learning in economics and finance",
+        "year": 2021,
+        "doi": "10.1007/s10614-021-10094-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 20,
+        "title": "Machine learning and applications in microbiology",
+        "year": 2021,
+        "doi": "10.1093/femsre/fuab015",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.00017968
+      },
+      {
+        "id": 21,
+        "title": "OMLT: Optimization & machine learning toolkit",
+        "year": 2022,
+        "doi": "10.2172/2432248",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 22,
+        "title": "Machine learning in chemical engineering: A perspective",
+        "year": 2021,
+        "doi": "10.1002/cite.202100083",
+        "degree_centrality": 0.03211009,
+        "betweenness": 0.0
+      },
+      {
+        "id": 23,
+        "title": "Human-in-the-loop machine learning: a state of the art",
+        "year": 2023,
+        "doi": "10.1007/s10462-022-10246-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 24,
+        "title": "Causality for machine learning",
+        "year": 2022,
+        "doi": "10.1145/3501714.3501755",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 25,
+        "title": "Machine learning: new ideas and tools in environmental science and engineering",
+        "year": 2021,
+        "doi": "10.1021/acs.est.1c01339",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 26,
+        "title": "Penerapan machine learning dalam prediksi tingkat kasus penyakit di Indonesia",
+        "year": 2023,
+        "doi": "10.24076/joism.2023v5i1.1136",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 27,
+        "title": "Tinjauan Pustaka Sistematis: Penerapan Metode Machine Learning untuk Deteksi Bencana Banjir",
+        "year": 2022,
+        "doi": "10.33395/jmp.v11i2.11657",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 28,
+        "title": "Penerapan Machine Learning, Deep Learning, Dan Data Mining Dalam Deteksi Kecurangan Laporan Keuangan-a Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.54373/imeij.v6i6.4112",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00102947
+      },
+      {
+        "id": 29,
+        "title": "Penerapan machine learning untuk prediksi bencana banjir",
+        "year": 2024,
+        "doi": "10.35718/specta.v8i2.1211",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 30,
+        "title": "Penerapan Machine Learning dan Deep Learning pada Peningkatan Deteksi Credit Card Fraud-A Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.17265/1548-6583/2025.03.003",
+        "degree_centrality": 0.03669725,
+        "betweenness": 0.0006088
+      },
+      {
+        "id": 31,
+        "title": "Penerapan Machine Learning dengan Konsep Data Mining Rough Set (Prediksi Tingkat Pemahaman Mahasiswa terhadap Matakuliah)",
+        "year": 2021,
+        "doi": "10.30865/mib.v5i1.2745",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 32,
+        "title": "Penerapan Metode Machine Learning dalam Klasifikasi Risiko Kejadian Berat Badan Lahir Rendah di Indonesia",
+        "year": 2021,
+        "doi": "10.30812/matrik.v20i2.1174",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 33,
+        "title": "Penerapan Machine Learning Untuk Menentukan Tingkat Kepuasan Tamu Hotel Dymens Menggunakan Metode Vader",
+        "year": 2023,
+        "doi": "10.47233/jteksis.v5i3.866",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 34,
+        "title": "Klasifikasi kualitas air minum menggunakan penerapan algoritma machine learning dengan pendekatan supervised learning",
+        "year": 2023,
+        "doi": "10.33369/diophantine.v2i01.28260",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 35,
+        "title": "Penerapan Machine Learning Pada Analisis Sentimen Aplikasi Mytelkomsel Mengunakan Data Ulasan Google Playstore",
+        "year": 2024,
+        "doi": "10.33022/ijcs.v13i3.4024",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.00131062
+      },
+      {
+        "id": 36,
+        "title": "Visualisasi Data dan Penerapan Machine Learning Menggunakan Decision Tree Untuk Keputusan Layanan Kesehatan COVID-19",
+        "year": 2023,
+        "doi": "10.33365/jtk.v17i2.2438",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 37,
+        "title": "Penerapan Konsep Machine Learning & Deep Learning",
+        "year": 2024,
+        "doi": "10.37824/rrwd4c57",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 38,
+        "title": "Penerapan Machine Learning Untuk Mengategorikan Sampah Plastik Rumah Tangga",
+        "year": 2021,
+        "doi": "10.51351/jtm.10.1.2021645",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00213504
+      },
+      {
+        "id": 39,
+        "title": "Penerapan Teachable Machine pada klasifikasi machine learning untuk identifikasi bibit tanaman",
+        "year": 2022,
+        "doi": "10.35969/inotek.v2i1.207",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 40,
+        "title": "Penerapan Machine Learning dengan Algoritma Logistik Regresi untuk Memprediksi Diabetes",
+        "year": 2023,
+        "doi": "10.30871/jaic.v7i1.4998",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 41,
+        "title": "Penerapan Machine Learning Algoritma Random Forest Untuk Prediksi Penyakit Jantung",
+        "year": 2024,
+        "doi": "10.33005/senada.v4i1.376",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 42,
+        "title": "Penerapan Machine Learning menggunakan algoritma C4. 5 berbasis PSO dalam Menganalisa Data Siswa Putus Sekolah",
+        "year": 2021,
+        "doi": "10.51211/itbi.v5i2.1530",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 43,
+        "title": "Penerapan machine learning dengan algoritma support vector machine untuk prediksi kelembapan udara rata-rata",
+        "year": 2024,
+        "doi": "10.65624/tridi.v2i2.38",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 44,
+        "title": "penerapan machine learning dalam melakukan prediksi harga saham pt. Bank mandiri (persero) tbk dengan algoritma linear regression",
+        "year": 2024,
+        "doi": "10.36040/jati.v8i1.8958",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 45,
+        "title": "Penerapan Algoritma Machine Learning dalam Prediksi Prestasi Akademik Mahasiswa",
+        "year": 2025,
+        "doi": "10.62951/router.v3i1.389",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 46,
+        "title": "Penerapan Machine Learning Clustering K-Means dan Linear Regression Dalam Penentuan Tingkat Resiko Tuberkulosis Paru",
+        "year": 2023,
+        "doi": "10.33022/ijcs.v12i1.3162",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 47,
+        "title": "Penerapan Teknologi Machine Learning dalam Deteksi Dini Penyakit Pada Tanaman Pangan",
+        "year": 2024,
+        "doi": "10.54082/jupin.643",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00256486
+      },
+      {
+        "id": 48,
+        "title": "Pemanfaatan machine learning di bidang kesehatan",
+        "year": 2025,
+        "doi": "10.36040/jati.v9i1.12663",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00131062
+      },
+      {
+        "id": 49,
+        "title": "Penerapan Metode Machine Learning dalam Mengidentifikasi Berita Hoaks",
+        "year": 2024,
+        "doi": "10.33884/cbis.v12i1.8442",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 50,
+        "title": "Penerapan Algoritma Machine learning untuk Prediksi Gangguan Kesehatan Mental: Systematic Literature Review",
+        "year": 2025,
+        "doi": "10.36787/jti.v19i1.1895",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 51,
+        "title": "Web application development with streamlit",
+        "year": 2022,
+        "doi": "10.1007/978-1-4842-8111-6.pdf",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 52,
+        "title": "A survey on web application penetration testing",
+        "year": 2023,
+        "doi": "10.3390/electronics12051229",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 53,
+        "title": "A comparative study of web application security parameters: Current trends and future directions",
+        "year": 2022,
+        "doi": "10.3390/app12084077",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 54,
+        "title": "Front-end deep learning web apps development and deployment: a review",
+        "year": 2023,
+        "doi": "10.1007/s10489-022-04278-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 55,
+        "title": "BEST: a web application for comprehensive biomarker exploration on large-scale data in solid tumors",
+        "year": 2023,
+        "doi": "10.1186/s40537-023-00844-y",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 56,
+        "title": "DeepCrop: Deep learning-based crop disease prediction with web application",
+        "year": 2023,
+        "doi": "10.1016/j.jafr.2023.100764",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 57,
+        "title": "LCZ Generator: a web application to create Local Climate Zone maps",
+        "year": 2021,
+        "doi": "10.3389/fenvs.2021.637455/full",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 58,
+        "title": "Tree Visualization By One Table (tvBOT): a web application for visualizing, modifying and annotating phylogenetic trees",
+        "year": 2023,
+        "doi": "10.1093/nar/gkad359",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 59,
+        "title": "iDEP web application for RNA-seq data analysis",
+        "year": 2021,
+        "doi": "10.1007/978-1-0716-1307-8_22",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 60,
+        "title": "MiBiOmics: an interactive web application for multi-omics data exploration and integration",
+        "year": 2021,
+        "doi": "10.1186/s12859-020-03921-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 61,
+        "title": "Coronapp: A web application to annotate and monitor SARS‐CoV‐2 mutations",
+        "year": 2021,
+        "doi": "10.1002/jmv.26678",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 62,
+        "title": "Development of interactive biological web applications with R/Shiny",
+        "year": 2022,
+        "doi": "10.1093/bib/bbab415",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 63,
+        "title": "Machine learning based diabetes prediction and development of smart web application",
+        "year": 2021,
+        "doi": "10.1016/j.ijcce.2021.12.001",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 64,
+        "title": "A systematic literature review on the characteristics and effectiveness of web application vulnerability scanners",
+        "year": 2022,
+        "doi": "10.1109/access.2022.3161522",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 65,
+        "title": "ATON: An open-source framework for creating immersive, collaborative and liquid web-apps for cultural heritage",
+        "year": 2021,
+        "doi": "10.3390/app112211062",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 66,
+        "title": "Security testing of web applications: A systematic mapping of the literature",
+        "year": 2022,
+        "doi": "10.1016/j.jksuci.2021.09.018",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 67,
+        "title": "Signature-based and machine-learning-based web application firewalls: A short survey",
+        "year": 2021,
+        "doi": "10.1016/j.procs.2021.05.105",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 68,
+        "title": "Atomistica. online–web application for generating input files for ORCA molecular modelling package made with the Anvil platform",
+        "year": 2023,
+        "doi": "10.1080/08927022.2022.2126865",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 69,
+        "title": "Securing web applications against XSS and SQLi attacks using a novel deep learning approach",
+        "year": 2024,
+        "doi": "10.1038/s41598-023-48845-4",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 70,
+        "title": "DeepVenn--a web application for the creation of area-proportional Venn diagrams using the deep learning framework Tensorflow. js",
+        "year": 2022,
+        "doi": "10.32614/cran.package.biovenn",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 71,
+        "title": "ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application",
+        "year": 2024,
+        "doi": "10.1016/j.jpi.2024.100371",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00426303
+      },
+      {
+        "id": 72,
+        "title": "A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture",
+        "year": 2023,
+        "doi": "10.1016/j.iswa.2023.200278",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 73,
+        "title": "Open Lab: A web application for running and sharing online experiments",
+        "year": 2022,
+        "doi": "10.3758/s13428-021-01776-2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 74,
+        "title": "CBE Clima Tool: A free and open-source web application for climate analysis tailored to sustainable building design",
+        "year": 2024,
+        "doi": "10.1007/s12273-023-1090-5",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 75,
+        "title": "CemGEMS–an easy-to-use web application for thermodynamic modelling of cementitious materials",
+        "year": 2021,
+        "doi": "10.21809/rilemtechlett.2021.140",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 76,
+        "title": "Pengenalan pemrograman web: Pembuatan aplikasi web sederhana dengan PHP dan MySQL",
+        "year": 2024,
+        "doi": "10.38035/jsmd.v2i2.156",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 77,
+        "title": "Aplikasi Supervisi Dosen Berbasis Web Di Universitas XYZ",
+        "year": 2023,
+        "doi": "10.33365/jatika.v4i3.3100",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 78,
+        "title": "Penggunaan liveworksheet dengan aplikasi berbasis web untuk meningkatkan hasil belajar peserta didik",
+        "year": 2021,
+        "doi": "10.52436/1.jpti.87",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 79,
+        "title": "Pembuatan aplikasi penjualan berbasis web monja store menggunakan php dan mysql",
+        "year": 2022,
+        "doi": "10.56127/jts.v1i2.128",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.00021139
+      },
+      {
+        "id": 80,
+        "title": "Analisis Keretanan Website Dengan Aplikasi Owasp Zap",
+        "year": 2023,
+        "doi": "10.70340/jirsi.v2i2.51",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 81,
+        "title": "F,“Aplikasi E-Learning Siswa Smk Berbasis Web,” J",
+        "year": 2021,
+        "doi": "10.31850/jsilog.v1i1.672",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 82,
+        "title": "Rancang bangun aplikasi penjualan online berbasis web menggunakan metode scrum",
+        "year": 2021,
+        "doi": "10.33364/algoritma/v.18-1.869",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 83,
+        "title": "Pengembangan Aplikasi Berbasis Web dan Android Sebagai Penunjang Kerja di Indonesia: Systematic Literature Review",
+        "year": 2022,
+        "doi": "10.31294/ijcs.v1i2.1428",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 84,
+        "title": "Perancangan Aplikasi Pemesanan Makanan Berbasis Web",
+        "year": 2022,
+        "doi": "10.25134/nuansa.v16i1.4771",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 85,
+        "title": "Rancang bangun aplikasi e-cuti pegawai berbasis website (studi kasus: Pengadilan Tata Usaha Negara)",
+        "year": 2021,
+        "doi": "10.36040/jati.v7i2.6669",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 86,
+        "title": "Rancang Bangun Web Service Api Aplikasi Sentralisasi Produk Umkm Pada Uptd Plut Kumkm Provinsi Lampung",
+        "year": 2021,
+        "doi": "10.47233/jteksis.v1i1.23",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 87,
+        "title": "Rancang Bangun Aplikasi Penjualan Kebutuhan Pokok Berbasis Web Pada Toko Khansaa",
+        "year": 2023,
+        "doi": "10.36040/jati.v7i1.6353",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 88,
+        "title": "Aplikasi Marketplace Pendamping Wisata Dengan Api Maps Berbasis Mobile Dan Web",
+        "year": 2022,
+        "doi": "10.31219/osf.io/3jpdt",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 89,
+        "title": "Penerapan Metode Waterfall Pada Aplikasi Reservasi Lapangan Futsal Berbasis Web",
+        "year": 2023,
+        "doi": "10.58602/itsecs.v1i1.8",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 90,
+        "title": "Implementasi Web Service Sebagai Penyedia Informasi Untuk Aplikasi Pengelolaan Jadwal Pemberian Pakan Ikan (Studi Kasus: Pokdakan Karya Bersama)",
+        "year": 2023,
+        "doi": "10.33365/jatika.v4i3.2720",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 91,
+        "title": "Implementasi Aplikasi Kasir Berbasis Web pada Toko Ghafya Fruits Shop",
+        "year": 2022,
+        "doi": "10.59581/jkts-widyakarya.v2i1.2120",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 92,
+        "title": "Perancangan Sistem Aplikasi Pendataan Membership Gym Menggunakan Metode Unified Software Development Process (USDP) Berbasis Web",
+        "year": 2024,
+        "doi": "10.56211/helloworld.v3i1.523",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 93,
+        "title": "Aplikasi sistem pembayaran administrasi sekolah berbasis web di SMPI Nurush Shodiqin",
+        "year": 2025,
+        "doi": "10.62383/polygon.v3i1.329",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 94,
+        "title": "Pengembangan pelayanan administrasi aplikasi website Desa Lontar",
+        "year": 2023,
+        "doi": "10.35311/jmpm.v4i1.140",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 95,
+        "title": "Perancangan sistem aplikasi penjualan dan layanan jasa laundry sepatu berbasis website",
+        "year": 2022,
+        "doi": "10.56211/blendsains.v1i1.67",
+        "degree_centrality": 0.01834862,
+        "betweenness": 4.228e-05
+      },
+      {
+        "id": 96,
+        "title": "Digitalisasi Usaha Mikro Kecil Dan Menengah Di Desa Melalui Aplikasi Kede Desa Berbasis Web",
+        "year": 2023,
+        "doi": "10.58486/jsr.v7i1.226",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 97,
+        "title": "Pengujian aplikasi berbasis web data SKA menggunakan metode Black Box Testing",
+        "year": 2024,
+        "doi": "10.59840/ieed.v1i2.203",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 98,
+        "title": "Pengembangan Aplikasi Reservasi Salon Keshoo Berbasis Web",
+        "year": 2023,
+        "doi": "10.58991/eemisas.v2i2.42",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 99,
+        "title": "Optimalisasi penjualan dengan aplikasi web berbasis CodeIgniter pada toko kelontong",
+        "year": 2024,
+        "doi": "10.51903/jtikp.v15i2.860",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 100,
+        "title": "Rancang bangun aplikasi pembayaran spp berbasis web",
+        "year": 2022,
+        "doi": "10.22441/incomtech.v14i3.24275",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 101,
+        "title": "Marketing research on Mobile apps: past, present and future",
+        "year": 2022,
+        "doi": "10.1007/s11747-021-00815-w",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 102,
+        "title": "A survey of performance optimization for mobile applications",
+        "year": 2021,
+        "doi": "10.1109/tse.2021.3071193",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 103,
+        "title": "Why people choose Apps: An evaluation of the ecology and user experience of mobile applications",
+        "year": 2023,
+        "doi": "10.2139/ssrn.4070390",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 104,
+        "title": "A study of mobile app use for teaching and research in higher education",
+        "year": 2023,
+        "doi": "10.1007/s10758-022-09599-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 105,
+        "title": "Ethical issues of the use of AI-driven mobile apps for education",
+        "year": 2023,
+        "doi": "10.3389/fpubh.2022.1118116/full",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 106,
+        "title": "Design guidelines of mobile apps for older adults: systematic review and thematic analysis",
+        "year": 2023,
+        "doi": "10.2196/43186",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 107,
+        "title": "The role of mobile application acceptance in shaping e-customer service",
+        "year": 2021,
+        "doi": "10.3390/fi13030077",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 108,
+        "title": "Determinants of mobile apps adoption among young adults: theoretical extension and analysis",
+        "year": 2021,
+        "doi": "10.1080/13527266.2020.1725780",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 109,
+        "title": "Service quality of online food delivery mobile application: an examination of the spillover effects of mobile app satisfaction",
+        "year": 2024,
+        "doi": "10.1108/ijchm-09-2022-1103",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 110,
+        "title": "Analyzing user perspectives on mobile app privacy at scale",
+        "year": 2022,
+        "doi": "10.1145/3510003.3510079",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 111,
+        "title": "Deep learning methods for accurate skin cancer recognition and mobile application",
+        "year": 2022,
+        "doi": "10.3390/electronics11091294",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 112,
+        "title": "Features and Functionalities of Medical Mobile Applications for the Endemic Phase of COVID‐19: Review and Content Analysis",
+        "year": 2022,
+        "doi": "10.36877/pmmb.a0000285",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 113,
+        "title": "Enhancing user engagement: The role of gamification in mobile apps",
+        "year": 2021,
+        "doi": "10.1016/j.jbusres.2021.04.028",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 114,
+        "title": "Mobile apps for SME business sustainability during COVID-19 and onwards",
+        "year": 2021,
+        "doi": "10.1016/j.jbusres.2021.06.005",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 115,
+        "title": "Evaluating the quality and safety of health-related apps and e-tools: Adapting the Mobile App Rating Scale and developing a quality assurance protocol",
+        "year": 2021,
+        "doi": "10.1016/j.invent.2021.100379",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 116,
+        "title": "Augmented reality technology adoption: Case of a mobile application in Turkey",
+        "year": 2021,
+        "doi": "10.1016/j.techsoc.2021.101598",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 117,
+        "title": "Faster segment anything: Towards lightweight sam for mobile applications",
+        "year": 2023,
+        "doi": "10.1145/3613307.3613315",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 118,
+        "title": "Augmented reality advertising via a mobile app",
+        "year": 2022,
+        "doi": "10.1002/mar.21632",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 119,
+        "title": "What works best to engage participants in mobile app interventions and e-health: a scoping review",
+        "year": 2022,
+        "doi": "10.1089/tmj.2021.0176",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 120,
+        "title": "Combating against potentially harmful mobile apps",
+        "year": 2021,
+        "doi": "10.1007/978-3-030-76346-6_15",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 121,
+        "title": "Mobile apps for older adults: systematic search and evaluation within online stores",
+        "year": 2021,
+        "doi": "10.2196/23313",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 122,
+        "title": "Mobile apps to improve medication adherence in cardiovascular disease: systematic review and meta-analysis",
+        "year": 2021,
+        "doi": "10.2196/24190",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 123,
+        "title": "Engaging shoppers through mobile apps: the role of gamification",
+        "year": 2021,
+        "doi": "10.1108/ijrdm-09-2020-0360",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 124,
+        "title": "A review of mobile applications available in the app and google play stores used during the COVID-19 outbreak",
+        "year": 2021,
+        "doi": "10.2147/jmdh.s285014",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 125,
+        "title": "Would you like to shop via mobile app technology? The technology acceptance model, social factors and purchase intention",
+        "year": 2021,
+        "doi": "10.1016/j.ausmj.2020.01.002",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 126,
+        "title": "Systematic literature review analisis metode agile dalam pengembangan aplikasi mobile",
+        "year": 2021,
+        "doi": "10.32520/stmsi.v10i2.1237",
+        "degree_centrality": 0.06422018,
+        "betweenness": 0.01035739
+      },
+      {
+        "id": 127,
+        "title": "Tren pengembangan aplikasi mobile: Sebuah tinjauan literatur",
+        "year": 2023,
+        "doi": "10.55606/jtmei.v2i4.2848",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 128,
+        "title": "Penerapan metode design thinking dalam perancangan UI/UX aplikasi mobile SIPROPMAWA",
+        "year": 2023,
+        "doi": "10.47065/josh.v4i4.3648",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 129,
+        "title": "Implemetasi aplikasi mobile pengenalan kampus pada masa pandemi Covid-19",
+        "year": 2022,
+        "doi": "10.47111/jti.v16i2.5416",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 130,
+        "title": "Peluang Penelitian UI/UX pada Pengembangan Aplikasi Mobile: Systematic literature review",
+        "year": 2022,
+        "doi": "10.33633/tc.v21i3.6059",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 131,
+        "title": "Aplikasi E-Sewa Barang Berbasis Mobile",
+        "year": 2022,
+        "doi": "10.58982/krisnadana.v1i3.190",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 132,
+        "title": "Pelatihan membangun aplikasi mobile menggunakan kodular untuk siswa smpn 1 selorejo",
+        "year": 2022,
+        "doi": "10.25157/ag.v4i1.7259",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 133,
+        "title": "Aplikasi Mobile JKN Edukasi Tentang Penggunaan Aplikasi Mobile JKN Pada Pasien Rawat Jalan RSUD Anugerah Tomohon",
+        "year": 2023,
+        "doi": "10.31004/prepotif.v8i3.22001",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 134,
+        "title": "Tingkat kepuasan masyarakat terhadap pendaftaran online pada aplikasi Mobile JKN",
+        "year": 2021,
+        "doi": "10.36763/healthcare.v10i1.114",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 135,
+        "title": "Perancangan user experience aplikasi mobile Majuli menggunakan metode design thinking",
+        "year": 2022,
+        "doi": "10.51519/journalita.volume3.isssue2.year2022.page108-123",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 136,
+        "title": "Analisis Technology Acceptance Model (TAM) Terhadap Pengguna Aplikasi Mobile Banking",
+        "year": 2023,
+        "doi": "10.33395/owner.v7i2.1440",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 137,
+        "title": "Pengembangan Aplikasi Kasir Mobile Yang Efisien",
+        "year": 2024,
+        "doi": "10.36040/jati.v8i4.9829",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 138,
+        "title": "Perancangan UI/UX Aplikasi Mobile Produk Fashion Pria pada Toko Celcius di Kota Manado Menggunakan Design Thinking",
+        "year": 2023,
+        "doi": "10.58602/jima-ilkom.v2i2.17",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 139,
+        "title": "Redesign User Interface Dan User Experience Aplikasi Wastu Mobile Menggunakan Metode Design Thinking",
+        "year": 2022,
+        "doi": "10.36050/betrik.v13i2.506",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 140,
+        "title": "Aplikasi Mobile JKN untuk Memudahkan Akses Pelayanan BPJS",
+        "year": 2022,
+        "doi": "10.23917/jk.v15i1.15977",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 141,
+        "title": "Analisis Sentimen Berbasis Aspek pada Aplikasi Mobile Menggunakan Naïve Bayes berdasarkan Ulasan Pengguna Playstore (Studi Kasus: Jconnect Mobile)",
+        "year": 2025,
+        "doi": "10.25126/jtiik.1227556",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 142,
+        "title": "Persepsi manfaat kemudahan terhadap niat dalam penggunaan aplikasi mobile banking",
+        "year": 2024,
+        "doi": "10.38035/jemsi.v6i2.3402",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 143,
+        "title": "Analisis persepsi konsumen terhadap penggunaan aplikasi Mobile JKN",
+        "year": 2024,
+        "doi": "10.55606/jurimbik.v5i2.1078",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 144,
+        "title": "Analisis kualitas pelayanan aplikasi mobile JKN BPJS kesehatan menggunakan metode service quality (servqual)",
+        "year": 2022,
+        "doi": "10.53912/iej.v11i2.837",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 145,
+        "title": "Penggunaan metode heuristic evaluation sebagai analisis evaluasi user interface dan user experience pada aplikasi bca mobile",
+        "year": 2021,
+        "doi": "10.33627/ge.v2i2.94",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 146,
+        "title": "Analisis kualitas layanan pada aplikasi Mobile JKN dengan tingkat kepuasan pengguna Mobile JKN BPJS Kesehatan di Kabupaten Demak",
+        "year": 2024,
+        "doi": "10.31331/ijheco.v5i1.3161",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 147,
+        "title": "Analisis Penggunaan Aplikasi Mobile JKN dengan Metode EUCS",
+        "year": 2023,
+        "doi": "10.36040/jati.v9i2.13040",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 148,
+        "title": "Aplikasi pembelajaran ilmu tajwid berbasis mobile",
+        "year": 2022,
+        "doi": "10.35959/jik.v10i1.300",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 149,
+        "title": "Perancangan Ulang UI & UX Menggunakan Metode Design Thinking Pada Aplikasi Siakadu Mahasiswa Berbasis Mobile",
+        "year": 2022,
+        "doi": "10.26740/jeisbi.v3i4.47740",
+        "degree_centrality": 0.01376147,
+        "betweenness": 8.456e-05
+      },
+      {
+        "id": 150,
+        "title": "Analisis Sentimen Ulasan Aplikasi Jamsostek Mobile Menggunakan Metode Support Vector Machine",
+        "year": 2023,
+        "doi": "10.24002/jbi.v14i01.6909",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 151,
+        "title": "Cyber security: State of the art, challenges and future directions",
+        "year": 2024,
+        "doi": "10.1016/j.csa.2023.100031",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 152,
+        "title": "Cyber security, cyber threats, implications and future perspectives: A Review",
+        "year": 2022,
+        "doi": "10.22541/au.166385207.73483369",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 153,
+        "title": "A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments",
+        "year": 2021,
+        "doi": "10.1016/j.egyr.2021.08.126",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 154,
+        "title": "The recent trends in cyber security: A review",
+        "year": 2022,
+        "doi": "10.1016/j.jksuci.2021.01.018",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 155,
+        "title": "A systematic literature review on the cyber security",
+        "year": 2021,
+        "doi": "10.18535/ijsrm/v9i12.ec04",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00203639
+      },
+      {
+        "id": 156,
+        "title": "Cyber security",
+        "year": 2021,
+        "doi": "10.1007/978-981-16-1665-5_2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 157,
+        "title": "Cyber security in the metaverse",
+        "year": 2023,
+        "doi": "10.4018/978-1-6684-8851-5.ch023",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 158,
+        "title": "Counterattacking cyber threats: A framework for the future of cybersecurity",
+        "year": 2023,
+        "doi": "10.3390/su151813369",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 159,
+        "title": "Cyber governance studies in ensuring cybersecurity: an overview of cybersecurity governance",
+        "year": 2022,
+        "doi": "10.1365/s43439-021-00045-4",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 160,
+        "title": "Cyber security in New Space: M. Manulis et al.",
+        "year": 2021,
+        "doi": "10.1007/s10207-020-00503-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 161,
+        "title": "Cyber security in the age of COVID-19: A timeline and analysis of cyber-crime and cyber-attacks during the pandemic",
+        "year": 2021,
+        "doi": "10.1016/j.cose.2021.102248",
+        "degree_centrality": 0.02293578,
+        "betweenness": 0.0023887
+      },
+      {
+        "id": 162,
+        "title": "Analysis of cyber security knowledge gaps based on cyber security body of knowledge",
+        "year": 2023,
+        "doi": "10.1007/s10639-022-11261-8",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 163,
+        "title": "Artificial intelligence in cyber security: research advances, challenges, and opportunities",
+        "year": 2022,
+        "doi": "10.1007/s10462-021-09976-0",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 164,
+        "title": "Cybersecurity of industrial cyber-physical systems: A review",
+        "year": 2022,
+        "doi": "10.1145/3510410",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 165,
+        "title": "Deep reinforcement learning for cyber security",
+        "year": 2021,
+        "doi": "10.1109/tnnls.2021.3121870",
+        "degree_centrality": 0.01834862,
+        "betweenness": 0.00385434
+      },
+      {
+        "id": 166,
+        "title": "The role of user behaviour in improving cyber security management",
+        "year": 2021,
+        "doi": "10.3389/fpsyg.2021.561011/full",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.04587156,
+        "betweenness": 0.00582731
+      },
+      {
+        "id": 168,
+        "title": "Navigating the cyber security landscape: A comprehensive review of cyber-attacks, emerging trends, and recent developments",
+        "year": 2024,
+        "doi": "10.1080/1206212x.2024.2380652",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 169,
+        "title": "Evaluating the cyber security readiness of organizations and its influence on performance",
+        "year": 2021,
+        "doi": "10.1016/j.jisa.2020.102726",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 170,
+        "title": "Cybersecurity risk",
+        "year": 2023,
+        "doi": "10.2139/ssrn.3748961",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 171,
+        "title": "Artificial intelligence in cyber security",
+        "year": 2021,
+        "doi": "10.1088/1742-6596/1964/4/042072/meta",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 172,
+        "title": "Cyber resilience and cyber security issues of intelligent cloud computing systems",
+        "year": 2023,
+        "doi": "10.1016/j.rico.2023.100268",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 173,
+        "title": "Role of AI and its impact on the development of cyber security applications",
+        "year": 2023,
+        "doi": "10.1007/978-981-99-2115-7_2",
+        "degree_centrality": 0.01376147,
+        "betweenness": 0.0
+      },
+      {
+        "id": 174,
+        "title": "Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations",
+        "year": 2023,
+        "doi": "10.1016/j.jnca.2022.103540",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 175,
+        "title": "Cyber risk and cybersecurity: a systematic review of data availability",
+        "year": 2022,
+        "doi": "10.1057/s41288-022-00266-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 176,
+        "title": "Teknologi Keamanan Siber (Cyber Security)",
+        "year": 2023,
+        "doi": "10.31599/v0xr7273",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 177,
+        "title": "Analisis hukum terhadap tantangan keamanan siber: Studi kasus penegakan hukum siber di Indonesia",
+        "year": 2024,
+        "doi": "10.32520/albahts.v2i1.3044",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 178,
+        "title": "Data privasi dan keamanan siber pada smart-city: Tinjauan literatur",
+        "year": 2022,
+        "doi": "10.20885/snati.v2i1.19",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 179,
+        "title": "Analisis risiko keamanan siber dalam transformasi digital pelayanan publik di Indonesia",
+        "year": 2023,
+        "doi": "10.30997/karimahtauhid.v3i2.11899",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 180,
+        "title": "Manajemen keamanan cyber di era digital",
+        "year": 2023,
+        "doi": "10.46273/jobe.v11i1.365",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 181,
+        "title": "Analisis penerapan sistem keamanan siber terhadap kejahatan siber di indonesia",
+        "year": 2023,
+        "doi": "10.31004/joe.v5i4.2032",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 182,
+        "title": "Edukasi Keamanan Siber Berdigital dengan Aman",
+        "year": 2024,
+        "doi": "10.37478/abdika.v4i4.4967",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 183,
+        "title": "Tinjauan Literatur Tentang Ancaman Cybercrime Dan Implementasi Keamanan Siber Di Industri Perbankan",
+        "year": 2024,
+        "doi": "10.31004/riggs.v4i4.4796",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 184,
+        "title": "Peraturan dan Regulasi Keamanan Siber di Era Digital",
+        "year": 2024,
+        "doi": "10.33363/bb.v15i1.1483",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 185,
+        "title": "Tantangan keamanan siber dalam manajemen likuiditas bank syariah: Menjaga stabilitas keuangan di era digital",
+        "year": 2023,
+        "doi": "10.30983/krigan.v1i2.7929",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 186,
+        "title": "Sistem Keamanan Siber dan Kedaulatan Data di Indonesia dalam Perspektif Ekonomi Politik (Studi Kasus Perlindungan Data Pribadi)[Cyber Security System and …",
+        "year": 2023,
+        "doi": "10.22212/jp.v13i2.3299",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 187,
+        "title": "Upaya membangun kesadaran keamanan siber pada konsumen e-commerce di Indonesia",
+        "year": 2022,
+        "doi": "10.52391/jcn.v6i1.629",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 188,
+        "title": "Perkembangan Sistem Pertahanan/Keamanan Siber Indonesia dalam Menghadapi Tantangan Perkembangan Teknologi dan Informasi:-",
+        "year": 2022,
+        "doi": "10.32734/politeia.v14i1.6351",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 189,
+        "title": "Strategi efektif untuk implementasi keamanan siber di era digital",
+        "year": 2024,
+        "doi": "10.31599/fzg80847",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 190,
+        "title": "Pentingnya Keamanan Siber Dalam Era Digital:: Tinjauan Global Dan Kondisi Di Indonesia",
+        "year": 2025,
+        "doi": "10.35132/assyifa.v1i2.267",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 191,
+        "title": "Transformasi digital dan keamanan siber: Upaya penanggulangan kejahatan di era teknologi di Indonesia",
+        "year": 2025,
+        "doi": "10.59024/jipa.v1i1.134",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 192,
+        "title": "Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya",
+        "year": 2024,
+        "doi": "10.24123/jati.v17i2.6409",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 193,
+        "title": "Analisis Keamanan Siber Dan Hukum Dari Perspektif Gender Dan Filsafat Politik Alison M. Jaggar",
+        "year": 2021,
+        "doi": "10.31602/al-adl.v13i2.4396",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 194,
+        "title": "Mengukur Keamanan Siber Indonesia Melalui Indikator Pilar Kerjasama Dalam Global Cybersecurity Index (GCI)",
+        "year": 2023,
+        "doi": "10.47313/pjsh.v8i1.1957",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 195,
+        "title": "Analisis dan peningkatan keamanan cyber: Studi kasus ancaman dan solusi dalam lingkungan digital untuk mengamankan objek vital dan file",
+        "year": 2023,
+        "doi": "10.47861/sammajiva.v1i2.226",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 196,
+        "title": "Serangan cyber dan kesiapan keamanan cyber terhadap bank indonesia",
+        "year": 2023,
+        "doi": "10.60083/jidt.v5i3.364",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 197,
+        "title": "Sosialisasi Keamanan Siber Bagi Pelajar Dalam Menghadapi Era Digital",
+        "year": 2025,
+        "doi": "10.70585/abdidalem.v2i1.113",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 198,
+        "title": "Strategi Keamanan Siber Malaysia",
+        "year": 2021,
+        "doi": "10.31599/jki.v21i1.447",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 199,
+        "title": "Keamanan siber di masa depan: Tantangan dan teknologi yang dibutuhkan",
+        "year": 2024,
+        "doi": "10.30587/jcaa.v2i2.6474",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 200,
+        "title": "Peluang dan Tantangan Diplomasi Digital dalam Meningkatkan Keamanan Siber Indonesia",
+        "year": 2024,
+        "doi": "10.31004/innovative.v4i3.10537",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 201,
+        "title": "Machine learning foundations",
+        "year": 2021,
+        "doi": "10.1007/978-3-030-65900-4.pdf",
+        "degree_centrality": 0.03211009,
+        "betweenness": 0.00088784
+      },
+      {
+        "id": 202,
+        "title": "Machine learning in environmental research: common pitfalls and best practices",
+        "year": 2023,
+        "doi": "10.1021/acs.est.3c00026",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 203,
+        "title": "Measuring corporate culture using machine learning",
+        "year": 2021,
+        "doi": "10.1093/rfs/hhaa079",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 204,
+        "title": "Financial applications of machine learning: A literature review",
+        "year": 2023,
+        "doi": "10.1016/j.eswa.2023.119640",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 205,
+        "title": "Machine learning fundamentals",
+        "year": 2026,
+        "doi": "10.1016/b978-0-443-26789-5.00006-7",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 206,
+        "title": "When machine learning meets privacy: A survey and outlook",
+        "year": 2021,
+        "doi": "10.1145/3436755",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 207,
+        "title": "Applying machine learning to study fluid mechanics",
+        "year": 2021,
+        "doi": "10.1007/s10409-021-01143-6",
+        "degree_centrality": 0.0412844,
+        "betweenness": 0.00064051
+      },
+      {
+        "id": 208,
+        "title": "Machine learning for the educational sciences",
+        "year": 2021,
+        "doi": "10.1002/rev3.3310",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 209,
+        "title": "Machine learning in nanozymes: from design to application",
+        "year": 2024,
+        "doi": "10.1039/d4bm00169a",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 210,
+        "title": "Machine learning at the network edge: A survey",
+        "year": 2021,
+        "doi": "10.1145/3469029",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 211,
+        "title": "Machine learning and deep learning applications-a vision",
+        "year": 2021,
+        "doi": "10.1016/j.gltp.2021.01.004",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 212,
+        "title": "Tackling climate change with machine learning",
+        "year": 2022,
+        "doi": "10.1145/3485128",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 213,
+        "title": "Evolutionary machine learning: A survey",
+        "year": 2021,
+        "doi": "10.1145/3467477",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 214,
+        "title": "The difference between cyber security vs information security",
+        "year": 2022,
+        "doi": "10.52326/jes.utm.2022.29(4).08",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 215,
+        "title": "The role of cyber security in advancing sustainable digitalization: Opportunities and challenges",
+        "year": 2023,
+        "doi": "10.31181/jdaic10018122023g",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 216,
+        "title": "The role of national cybersecurity strategies on the improvement of cybersecurity education",
+        "year": 2022,
+        "doi": "10.1016/j.cose.2022.102754",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 217,
+        "title": "Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation",
+        "year": 2022,
+        "doi": "10.1111/risa.13687",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 218,
+        "title": "Deep learning",
+        "year": 2026,
+        "doi": "10.1007/978-981-95-1184-6_16",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 219,
+        "title": "Deep learning for AI",
+        "year": 2021,
+        "doi": "10.1145/3448250",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      }
+    ]
+  },
+  "co_authorship": {
+    "summary": {
+      "node_count": 219,
+      "edge_count": 12,
+      "density": 0.0005027,
+      "total_edge_weight": 14,
+      "isolated_nodes": 201,
+      "component_count": 209,
+      "largest_component_size": 4,
+      "average_degree": 0.10958904,
+      "relation_type": "co_authorship"
+    },
+    "top_degree_centrality": [
+      {
+        "id": 63,
+        "title": "Machine learning based diabetes prediction and development of smart web application",
+        "year": 2021,
+        "doi": "10.1016/j.ijcce.2021.12.001",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 72,
+        "title": "A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture",
+        "year": 2023,
+        "doi": "10.1016/j.iswa.2023.200278",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 56,
+        "title": "DeepCrop: Deep learning-based crop disease prediction with web application",
+        "year": 2023,
+        "doi": "10.1016/j.jafr.2023.100764",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 71,
+        "title": "ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application",
+        "year": 2024,
+        "doi": "10.1016/j.jpi.2024.100371",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 14,
+        "title": "A review of the application of machine learning in water quality evaluation",
+        "year": 2022,
+        "doi": "10.1016/j.eehl.2022.06.001",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      }
+    ],
+    "top_connected": [
+      {
+        "id": 63,
+        "title": "Machine learning based diabetes prediction and development of smart web application",
+        "year": 2021,
+        "doi": "10.1016/j.ijcce.2021.12.001",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 72,
+        "title": "A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture",
+        "year": 2023,
+        "doi": "10.1016/j.iswa.2023.200278",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 56,
+        "title": "DeepCrop: Deep learning-based crop disease prediction with web application",
+        "year": 2023,
+        "doi": "10.1016/j.jafr.2023.100764",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 71,
+        "title": "ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application",
+        "year": 2024,
+        "doi": "10.1016/j.jpi.2024.100371",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 14,
+        "title": "A review of the application of machine learning in water quality evaluation",
+        "year": 2022,
+        "doi": "10.1016/j.eehl.2022.06.001",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      }
+    ],
+    "top_betweenness": [
+      {
+        "id": 63,
+        "title": "Machine learning based diabetes prediction and development of smart web application",
+        "year": 2021,
+        "doi": "10.1016/j.ijcce.2021.12.001",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 72,
+        "title": "A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture",
+        "year": 2023,
+        "doi": "10.1016/j.iswa.2023.200278",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 1,
+        "title": "What is machine learning?",
+        "year": 2022,
+        "doi": "10.1002/9781119815075.ch18",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 2,
+        "title": "Machine learning for microbiologists",
+        "year": 2024,
+        "doi": "10.1038/s41579-023-00984-1",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 3,
+        "title": "Amnesiac machine learning",
+        "year": 2021,
+        "doi": "10.1609/aaai.v35i13.17371",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      }
+    ],
+    "node_metrics": [
+      {
+        "id": 1,
+        "title": "What is machine learning?",
+        "year": 2022,
+        "doi": "10.1002/9781119815075.ch18",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 2,
+        "title": "Machine learning for microbiologists",
+        "year": 2024,
+        "doi": "10.1038/s41579-023-00984-1",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 3,
+        "title": "Amnesiac machine learning",
+        "year": 2021,
+        "doi": "10.1609/aaai.v35i13.17371",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 4,
+        "title": "Designing nanotheranostics with machine learning",
+        "year": 2024,
+        "doi": "10.1038/s41565-024-01753-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 5,
+        "title": "A guide to machine learning for biologists",
+        "year": 2022,
+        "doi": "10.1038/s41580-021-00407-0",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 6,
+        "title": "Machine learning and deep learning: C. Janiesch et al.",
+        "year": 2021,
+        "doi": "10.1007/s12525-021-00475-2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 7,
+        "title": "Financial machine learning",
+        "year": 2023,
+        "doi": "10.3386/w31502",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 8,
+        "title": "Open-environment machine learning",
+        "year": 2022,
+        "doi": "10.1093/nsr/nwac123/45957092/nwac123.pdf",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 9,
+        "title": "Using machine learning to detect misstatements",
+        "year": 2021,
+        "doi": "10.1007/s11142-020-09563-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 10,
+        "title": "A survey on the explainability of supervised machine learning",
+        "year": 2021,
+        "doi": "10.1613/jair.1.12228",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 11,
+        "title": "Challenges in deploying machine learning: a survey of case studies",
+        "year": 2022,
+        "doi": "10.1145/3533378",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 12,
+        "title": "Machine learning operations (mlops): Overview, definition, and architecture",
+        "year": 2023,
+        "doi": "10.1109/access.2023.3262138",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 13,
+        "title": "A survey on dataset quality in machine learning",
+        "year": 2023,
+        "doi": "10.1016/j.infsof.2023.107268",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 14,
+        "title": "A review of the application of machine learning in water quality evaluation",
+        "year": 2022,
+        "doi": "10.1016/j.eehl.2022.06.001",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 15,
+        "title": "Research on machine learning with algorithms and development",
+        "year": 2023,
+        "doi": "10.53469/jtpes.2023.03(12).02",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 16,
+        "title": "An overview of machine learning classification techniques",
+        "year": 2024,
+        "doi": "10.1051/bioconf/20249700133",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 17,
+        "title": "A systematic review of teaching and learning machine learning in K-12 education",
+        "year": 2023,
+        "doi": "10.1007/s10639-022-11416-7",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 18,
+        "title": "A survey of human-in-the-loop for machine learning",
+        "year": 2022,
+        "doi": "10.1016/j.future.2022.05.014",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 19,
+        "title": "Machine learning in economics and finance",
+        "year": 2021,
+        "doi": "10.1007/s10614-021-10094-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 20,
+        "title": "Machine learning and applications in microbiology",
+        "year": 2021,
+        "doi": "10.1093/femsre/fuab015",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 21,
+        "title": "OMLT: Optimization & machine learning toolkit",
+        "year": 2022,
+        "doi": "10.2172/2432248",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 22,
+        "title": "Machine learning in chemical engineering: A perspective",
+        "year": 2021,
+        "doi": "10.1002/cite.202100083",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 23,
+        "title": "Human-in-the-loop machine learning: a state of the art",
+        "year": 2023,
+        "doi": "10.1007/s10462-022-10246-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 24,
+        "title": "Causality for machine learning",
+        "year": 2022,
+        "doi": "10.1145/3501714.3501755",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 25,
+        "title": "Machine learning: new ideas and tools in environmental science and engineering",
+        "year": 2021,
+        "doi": "10.1021/acs.est.1c01339",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 26,
+        "title": "Penerapan machine learning dalam prediksi tingkat kasus penyakit di Indonesia",
+        "year": 2023,
+        "doi": "10.24076/joism.2023v5i1.1136",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 27,
+        "title": "Tinjauan Pustaka Sistematis: Penerapan Metode Machine Learning untuk Deteksi Bencana Banjir",
+        "year": 2022,
+        "doi": "10.33395/jmp.v11i2.11657",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 28,
+        "title": "Penerapan Machine Learning, Deep Learning, Dan Data Mining Dalam Deteksi Kecurangan Laporan Keuangan-a Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.54373/imeij.v6i6.4112",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 29,
+        "title": "Penerapan machine learning untuk prediksi bencana banjir",
+        "year": 2024,
+        "doi": "10.35718/specta.v8i2.1211",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 30,
+        "title": "Penerapan Machine Learning dan Deep Learning pada Peningkatan Deteksi Credit Card Fraud-A Systematic Literature Review",
+        "year": 2024,
+        "doi": "10.17265/1548-6583/2025.03.003",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 31,
+        "title": "Penerapan Machine Learning dengan Konsep Data Mining Rough Set (Prediksi Tingkat Pemahaman Mahasiswa terhadap Matakuliah)",
+        "year": 2021,
+        "doi": "10.30865/mib.v5i1.2745",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 32,
+        "title": "Penerapan Metode Machine Learning dalam Klasifikasi Risiko Kejadian Berat Badan Lahir Rendah di Indonesia",
+        "year": 2021,
+        "doi": "10.30812/matrik.v20i2.1174",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 33,
+        "title": "Penerapan Machine Learning Untuk Menentukan Tingkat Kepuasan Tamu Hotel Dymens Menggunakan Metode Vader",
+        "year": 2023,
+        "doi": "10.47233/jteksis.v5i3.866",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 34,
+        "title": "Klasifikasi kualitas air minum menggunakan penerapan algoritma machine learning dengan pendekatan supervised learning",
+        "year": 2023,
+        "doi": "10.33369/diophantine.v2i01.28260",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 35,
+        "title": "Penerapan Machine Learning Pada Analisis Sentimen Aplikasi Mytelkomsel Mengunakan Data Ulasan Google Playstore",
+        "year": 2024,
+        "doi": "10.33022/ijcs.v13i3.4024",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 36,
+        "title": "Visualisasi Data dan Penerapan Machine Learning Menggunakan Decision Tree Untuk Keputusan Layanan Kesehatan COVID-19",
+        "year": 2023,
+        "doi": "10.33365/jtk.v17i2.2438",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 37,
+        "title": "Penerapan Konsep Machine Learning & Deep Learning",
+        "year": 2024,
+        "doi": "10.37824/rrwd4c57",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 38,
+        "title": "Penerapan Machine Learning Untuk Mengategorikan Sampah Plastik Rumah Tangga",
+        "year": 2021,
+        "doi": "10.51351/jtm.10.1.2021645",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 39,
+        "title": "Penerapan Teachable Machine pada klasifikasi machine learning untuk identifikasi bibit tanaman",
+        "year": 2022,
+        "doi": "10.35969/inotek.v2i1.207",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 40,
+        "title": "Penerapan Machine Learning dengan Algoritma Logistik Regresi untuk Memprediksi Diabetes",
+        "year": 2023,
+        "doi": "10.30871/jaic.v7i1.4998",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 41,
+        "title": "Penerapan Machine Learning Algoritma Random Forest Untuk Prediksi Penyakit Jantung",
+        "year": 2024,
+        "doi": "10.33005/senada.v4i1.376",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 42,
+        "title": "Penerapan Machine Learning menggunakan algoritma C4. 5 berbasis PSO dalam Menganalisa Data Siswa Putus Sekolah",
+        "year": 2021,
+        "doi": "10.51211/itbi.v5i2.1530",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 43,
+        "title": "Penerapan machine learning dengan algoritma support vector machine untuk prediksi kelembapan udara rata-rata",
+        "year": 2024,
+        "doi": "10.65624/tridi.v2i2.38",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 44,
+        "title": "penerapan machine learning dalam melakukan prediksi harga saham pt. Bank mandiri (persero) tbk dengan algoritma linear regression",
+        "year": 2024,
+        "doi": "10.36040/jati.v8i1.8958",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 45,
+        "title": "Penerapan Algoritma Machine Learning dalam Prediksi Prestasi Akademik Mahasiswa",
+        "year": 2025,
+        "doi": "10.62951/router.v3i1.389",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 46,
+        "title": "Penerapan Machine Learning Clustering K-Means dan Linear Regression Dalam Penentuan Tingkat Resiko Tuberkulosis Paru",
+        "year": 2023,
+        "doi": "10.33022/ijcs.v12i1.3162",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 47,
+        "title": "Penerapan Teknologi Machine Learning dalam Deteksi Dini Penyakit Pada Tanaman Pangan",
+        "year": 2024,
+        "doi": "10.54082/jupin.643",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 48,
+        "title": "Pemanfaatan machine learning di bidang kesehatan",
+        "year": 2025,
+        "doi": "10.36040/jati.v9i1.12663",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 49,
+        "title": "Penerapan Metode Machine Learning dalam Mengidentifikasi Berita Hoaks",
+        "year": 2024,
+        "doi": "10.33884/cbis.v12i1.8442",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 50,
+        "title": "Penerapan Algoritma Machine learning untuk Prediksi Gangguan Kesehatan Mental: Systematic Literature Review",
+        "year": 2025,
+        "doi": "10.36787/jti.v19i1.1895",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 51,
+        "title": "Web application development with streamlit",
+        "year": 2022,
+        "doi": "10.1007/978-1-4842-8111-6.pdf",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 52,
+        "title": "A survey on web application penetration testing",
+        "year": 2023,
+        "doi": "10.3390/electronics12051229",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 53,
+        "title": "A comparative study of web application security parameters: Current trends and future directions",
+        "year": 2022,
+        "doi": "10.3390/app12084077",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 54,
+        "title": "Front-end deep learning web apps development and deployment: a review",
+        "year": 2023,
+        "doi": "10.1007/s10489-022-04278-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 55,
+        "title": "BEST: a web application for comprehensive biomarker exploration on large-scale data in solid tumors",
+        "year": 2023,
+        "doi": "10.1186/s40537-023-00844-y",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 56,
+        "title": "DeepCrop: Deep learning-based crop disease prediction with web application",
+        "year": 2023,
+        "doi": "10.1016/j.jafr.2023.100764",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 57,
+        "title": "LCZ Generator: a web application to create Local Climate Zone maps",
+        "year": 2021,
+        "doi": "10.3389/fenvs.2021.637455/full",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 58,
+        "title": "Tree Visualization By One Table (tvBOT): a web application for visualizing, modifying and annotating phylogenetic trees",
+        "year": 2023,
+        "doi": "10.1093/nar/gkad359",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 59,
+        "title": "iDEP web application for RNA-seq data analysis",
+        "year": 2021,
+        "doi": "10.1007/978-1-0716-1307-8_22",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 60,
+        "title": "MiBiOmics: an interactive web application for multi-omics data exploration and integration",
+        "year": 2021,
+        "doi": "10.1186/s12859-020-03921-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 61,
+        "title": "Coronapp: A web application to annotate and monitor SARS‐CoV‐2 mutations",
+        "year": 2021,
+        "doi": "10.1002/jmv.26678",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 62,
+        "title": "Development of interactive biological web applications with R/Shiny",
+        "year": 2022,
+        "doi": "10.1093/bib/bbab415",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 63,
+        "title": "Machine learning based diabetes prediction and development of smart web application",
+        "year": 2021,
+        "doi": "10.1016/j.ijcce.2021.12.001",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 64,
+        "title": "A systematic literature review on the characteristics and effectiveness of web application vulnerability scanners",
+        "year": 2022,
+        "doi": "10.1109/access.2022.3161522",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 65,
+        "title": "ATON: An open-source framework for creating immersive, collaborative and liquid web-apps for cultural heritage",
+        "year": 2021,
+        "doi": "10.3390/app112211062",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 66,
+        "title": "Security testing of web applications: A systematic mapping of the literature",
+        "year": 2022,
+        "doi": "10.1016/j.jksuci.2021.09.018",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 67,
+        "title": "Signature-based and machine-learning-based web application firewalls: A short survey",
+        "year": 2021,
+        "doi": "10.1016/j.procs.2021.05.105",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 68,
+        "title": "Atomistica. online–web application for generating input files for ORCA molecular modelling package made with the Anvil platform",
+        "year": 2023,
+        "doi": "10.1080/08927022.2022.2126865",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 69,
+        "title": "Securing web applications against XSS and SQLi attacks using a novel deep learning approach",
+        "year": 2024,
+        "doi": "10.1038/s41598-023-48845-4",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 70,
+        "title": "DeepVenn--a web application for the creation of area-proportional Venn diagrams using the deep learning framework Tensorflow. js",
+        "year": 2022,
+        "doi": "10.32614/cran.package.biovenn",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 71,
+        "title": "ML-CKDP: Machine learning-based chronic kidney disease prediction with smart web application",
+        "year": 2024,
+        "doi": "10.1016/j.jpi.2024.100371",
+        "degree_centrality": 0.00917431,
+        "betweenness": 0.0
+      },
+      {
+        "id": 72,
+        "title": "A deep learning model for cotton disease prediction using fine-tuning with smart web application in agriculture",
+        "year": 2023,
+        "doi": "10.1016/j.iswa.2023.200278",
+        "degree_centrality": 0.01376147,
+        "betweenness": 2.114e-05
+      },
+      {
+        "id": 73,
+        "title": "Open Lab: A web application for running and sharing online experiments",
+        "year": 2022,
+        "doi": "10.3758/s13428-021-01776-2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 74,
+        "title": "CBE Clima Tool: A free and open-source web application for climate analysis tailored to sustainable building design",
+        "year": 2024,
+        "doi": "10.1007/s12273-023-1090-5",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 75,
+        "title": "CemGEMS–an easy-to-use web application for thermodynamic modelling of cementitious materials",
+        "year": 2021,
+        "doi": "10.21809/rilemtechlett.2021.140",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 76,
+        "title": "Pengenalan pemrograman web: Pembuatan aplikasi web sederhana dengan PHP dan MySQL",
+        "year": 2024,
+        "doi": "10.38035/jsmd.v2i2.156",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 77,
+        "title": "Aplikasi Supervisi Dosen Berbasis Web Di Universitas XYZ",
+        "year": 2023,
+        "doi": "10.33365/jatika.v4i3.3100",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 78,
+        "title": "Penggunaan liveworksheet dengan aplikasi berbasis web untuk meningkatkan hasil belajar peserta didik",
+        "year": 2021,
+        "doi": "10.52436/1.jpti.87",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 79,
+        "title": "Pembuatan aplikasi penjualan berbasis web monja store menggunakan php dan mysql",
+        "year": 2022,
+        "doi": "10.56127/jts.v1i2.128",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 80,
+        "title": "Analisis Keretanan Website Dengan Aplikasi Owasp Zap",
+        "year": 2023,
+        "doi": "10.70340/jirsi.v2i2.51",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 81,
+        "title": "F,“Aplikasi E-Learning Siswa Smk Berbasis Web,” J",
+        "year": 2021,
+        "doi": "10.31850/jsilog.v1i1.672",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 82,
+        "title": "Rancang bangun aplikasi penjualan online berbasis web menggunakan metode scrum",
+        "year": 2021,
+        "doi": "10.33364/algoritma/v.18-1.869",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 83,
+        "title": "Pengembangan Aplikasi Berbasis Web dan Android Sebagai Penunjang Kerja di Indonesia: Systematic Literature Review",
+        "year": 2022,
+        "doi": "10.31294/ijcs.v1i2.1428",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 84,
+        "title": "Perancangan Aplikasi Pemesanan Makanan Berbasis Web",
+        "year": 2022,
+        "doi": "10.25134/nuansa.v16i1.4771",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 85,
+        "title": "Rancang bangun aplikasi e-cuti pegawai berbasis website (studi kasus: Pengadilan Tata Usaha Negara)",
+        "year": 2021,
+        "doi": "10.36040/jati.v7i2.6669",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 86,
+        "title": "Rancang Bangun Web Service Api Aplikasi Sentralisasi Produk Umkm Pada Uptd Plut Kumkm Provinsi Lampung",
+        "year": 2021,
+        "doi": "10.47233/jteksis.v1i1.23",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 87,
+        "title": "Rancang Bangun Aplikasi Penjualan Kebutuhan Pokok Berbasis Web Pada Toko Khansaa",
+        "year": 2023,
+        "doi": "10.36040/jati.v7i1.6353",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 88,
+        "title": "Aplikasi Marketplace Pendamping Wisata Dengan Api Maps Berbasis Mobile Dan Web",
+        "year": 2022,
+        "doi": "10.31219/osf.io/3jpdt",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 89,
+        "title": "Penerapan Metode Waterfall Pada Aplikasi Reservasi Lapangan Futsal Berbasis Web",
+        "year": 2023,
+        "doi": "10.58602/itsecs.v1i1.8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 90,
+        "title": "Implementasi Web Service Sebagai Penyedia Informasi Untuk Aplikasi Pengelolaan Jadwal Pemberian Pakan Ikan (Studi Kasus: Pokdakan Karya Bersama)",
+        "year": 2023,
+        "doi": "10.33365/jatika.v4i3.2720",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 91,
+        "title": "Implementasi Aplikasi Kasir Berbasis Web pada Toko Ghafya Fruits Shop",
+        "year": 2022,
+        "doi": "10.59581/jkts-widyakarya.v2i1.2120",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 92,
+        "title": "Perancangan Sistem Aplikasi Pendataan Membership Gym Menggunakan Metode Unified Software Development Process (USDP) Berbasis Web",
+        "year": 2024,
+        "doi": "10.56211/helloworld.v3i1.523",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 93,
+        "title": "Aplikasi sistem pembayaran administrasi sekolah berbasis web di SMPI Nurush Shodiqin",
+        "year": 2025,
+        "doi": "10.62383/polygon.v3i1.329",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 94,
+        "title": "Pengembangan pelayanan administrasi aplikasi website Desa Lontar",
+        "year": 2023,
+        "doi": "10.35311/jmpm.v4i1.140",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 95,
+        "title": "Perancangan sistem aplikasi penjualan dan layanan jasa laundry sepatu berbasis website",
+        "year": 2022,
+        "doi": "10.56211/blendsains.v1i1.67",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 96,
+        "title": "Digitalisasi Usaha Mikro Kecil Dan Menengah Di Desa Melalui Aplikasi Kede Desa Berbasis Web",
+        "year": 2023,
+        "doi": "10.58486/jsr.v7i1.226",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 97,
+        "title": "Pengujian aplikasi berbasis web data SKA menggunakan metode Black Box Testing",
+        "year": 2024,
+        "doi": "10.59840/ieed.v1i2.203",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 98,
+        "title": "Pengembangan Aplikasi Reservasi Salon Keshoo Berbasis Web",
+        "year": 2023,
+        "doi": "10.58991/eemisas.v2i2.42",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 99,
+        "title": "Optimalisasi penjualan dengan aplikasi web berbasis CodeIgniter pada toko kelontong",
+        "year": 2024,
+        "doi": "10.51903/jtikp.v15i2.860",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 100,
+        "title": "Rancang bangun aplikasi pembayaran spp berbasis web",
+        "year": 2022,
+        "doi": "10.22441/incomtech.v14i3.24275",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 101,
+        "title": "Marketing research on Mobile apps: past, present and future",
+        "year": 2022,
+        "doi": "10.1007/s11747-021-00815-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 102,
+        "title": "A survey of performance optimization for mobile applications",
+        "year": 2021,
+        "doi": "10.1109/tse.2021.3071193",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 103,
+        "title": "Why people choose Apps: An evaluation of the ecology and user experience of mobile applications",
+        "year": 2023,
+        "doi": "10.2139/ssrn.4070390",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 104,
+        "title": "A study of mobile app use for teaching and research in higher education",
+        "year": 2023,
+        "doi": "10.1007/s10758-022-09599-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 105,
+        "title": "Ethical issues of the use of AI-driven mobile apps for education",
+        "year": 2023,
+        "doi": "10.3389/fpubh.2022.1118116/full",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 106,
+        "title": "Design guidelines of mobile apps for older adults: systematic review and thematic analysis",
+        "year": 2023,
+        "doi": "10.2196/43186",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 107,
+        "title": "The role of mobile application acceptance in shaping e-customer service",
+        "year": 2021,
+        "doi": "10.3390/fi13030077",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 108,
+        "title": "Determinants of mobile apps adoption among young adults: theoretical extension and analysis",
+        "year": 2021,
+        "doi": "10.1080/13527266.2020.1725780",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 109,
+        "title": "Service quality of online food delivery mobile application: an examination of the spillover effects of mobile app satisfaction",
+        "year": 2024,
+        "doi": "10.1108/ijchm-09-2022-1103",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 110,
+        "title": "Analyzing user perspectives on mobile app privacy at scale",
+        "year": 2022,
+        "doi": "10.1145/3510003.3510079",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 111,
+        "title": "Deep learning methods for accurate skin cancer recognition and mobile application",
+        "year": 2022,
+        "doi": "10.3390/electronics11091294",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 112,
+        "title": "Features and Functionalities of Medical Mobile Applications for the Endemic Phase of COVID‐19: Review and Content Analysis",
+        "year": 2022,
+        "doi": "10.36877/pmmb.a0000285",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 113,
+        "title": "Enhancing user engagement: The role of gamification in mobile apps",
+        "year": 2021,
+        "doi": "10.1016/j.jbusres.2021.04.028",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 114,
+        "title": "Mobile apps for SME business sustainability during COVID-19 and onwards",
+        "year": 2021,
+        "doi": "10.1016/j.jbusres.2021.06.005",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 115,
+        "title": "Evaluating the quality and safety of health-related apps and e-tools: Adapting the Mobile App Rating Scale and developing a quality assurance protocol",
+        "year": 2021,
+        "doi": "10.1016/j.invent.2021.100379",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 116,
+        "title": "Augmented reality technology adoption: Case of a mobile application in Turkey",
+        "year": 2021,
+        "doi": "10.1016/j.techsoc.2021.101598",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 117,
+        "title": "Faster segment anything: Towards lightweight sam for mobile applications",
+        "year": 2023,
+        "doi": "10.1145/3613307.3613315",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 118,
+        "title": "Augmented reality advertising via a mobile app",
+        "year": 2022,
+        "doi": "10.1002/mar.21632",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 119,
+        "title": "What works best to engage participants in mobile app interventions and e-health: a scoping review",
+        "year": 2022,
+        "doi": "10.1089/tmj.2021.0176",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 120,
+        "title": "Combating against potentially harmful mobile apps",
+        "year": 2021,
+        "doi": "10.1007/978-3-030-76346-6_15",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 121,
+        "title": "Mobile apps for older adults: systematic search and evaluation within online stores",
+        "year": 2021,
+        "doi": "10.2196/23313",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 122,
+        "title": "Mobile apps to improve medication adherence in cardiovascular disease: systematic review and meta-analysis",
+        "year": 2021,
+        "doi": "10.2196/24190",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 123,
+        "title": "Engaging shoppers through mobile apps: the role of gamification",
+        "year": 2021,
+        "doi": "10.1108/ijrdm-09-2020-0360",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 124,
+        "title": "A review of mobile applications available in the app and google play stores used during the COVID-19 outbreak",
+        "year": 2021,
+        "doi": "10.2147/jmdh.s285014",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 125,
+        "title": "Would you like to shop via mobile app technology? The technology acceptance model, social factors and purchase intention",
+        "year": 2021,
+        "doi": "10.1016/j.ausmj.2020.01.002",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 126,
+        "title": "Systematic literature review analisis metode agile dalam pengembangan aplikasi mobile",
+        "year": 2021,
+        "doi": "10.32520/stmsi.v10i2.1237",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 127,
+        "title": "Tren pengembangan aplikasi mobile: Sebuah tinjauan literatur",
+        "year": 2023,
+        "doi": "10.55606/jtmei.v2i4.2848",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 128,
+        "title": "Penerapan metode design thinking dalam perancangan UI/UX aplikasi mobile SIPROPMAWA",
+        "year": 2023,
+        "doi": "10.47065/josh.v4i4.3648",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 129,
+        "title": "Implemetasi aplikasi mobile pengenalan kampus pada masa pandemi Covid-19",
+        "year": 2022,
+        "doi": "10.47111/jti.v16i2.5416",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 130,
+        "title": "Peluang Penelitian UI/UX pada Pengembangan Aplikasi Mobile: Systematic literature review",
+        "year": 2022,
+        "doi": "10.33633/tc.v21i3.6059",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 131,
+        "title": "Aplikasi E-Sewa Barang Berbasis Mobile",
+        "year": 2022,
+        "doi": "10.58982/krisnadana.v1i3.190",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 132,
+        "title": "Pelatihan membangun aplikasi mobile menggunakan kodular untuk siswa smpn 1 selorejo",
+        "year": 2022,
+        "doi": "10.25157/ag.v4i1.7259",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 133,
+        "title": "Aplikasi Mobile JKN Edukasi Tentang Penggunaan Aplikasi Mobile JKN Pada Pasien Rawat Jalan RSUD Anugerah Tomohon",
+        "year": 2023,
+        "doi": "10.31004/prepotif.v8i3.22001",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 134,
+        "title": "Tingkat kepuasan masyarakat terhadap pendaftaran online pada aplikasi Mobile JKN",
+        "year": 2021,
+        "doi": "10.36763/healthcare.v10i1.114",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 135,
+        "title": "Perancangan user experience aplikasi mobile Majuli menggunakan metode design thinking",
+        "year": 2022,
+        "doi": "10.51519/journalita.volume3.isssue2.year2022.page108-123",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 136,
+        "title": "Analisis Technology Acceptance Model (TAM) Terhadap Pengguna Aplikasi Mobile Banking",
+        "year": 2023,
+        "doi": "10.33395/owner.v7i2.1440",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 137,
+        "title": "Pengembangan Aplikasi Kasir Mobile Yang Efisien",
+        "year": 2024,
+        "doi": "10.36040/jati.v8i4.9829",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 138,
+        "title": "Perancangan UI/UX Aplikasi Mobile Produk Fashion Pria pada Toko Celcius di Kota Manado Menggunakan Design Thinking",
+        "year": 2023,
+        "doi": "10.58602/jima-ilkom.v2i2.17",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 139,
+        "title": "Redesign User Interface Dan User Experience Aplikasi Wastu Mobile Menggunakan Metode Design Thinking",
+        "year": 2022,
+        "doi": "10.36050/betrik.v13i2.506",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 140,
+        "title": "Aplikasi Mobile JKN untuk Memudahkan Akses Pelayanan BPJS",
+        "year": 2022,
+        "doi": "10.23917/jk.v15i1.15977",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 141,
+        "title": "Analisis Sentimen Berbasis Aspek pada Aplikasi Mobile Menggunakan Naïve Bayes berdasarkan Ulasan Pengguna Playstore (Studi Kasus: Jconnect Mobile)",
+        "year": 2025,
+        "doi": "10.25126/jtiik.1227556",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 142,
+        "title": "Persepsi manfaat kemudahan terhadap niat dalam penggunaan aplikasi mobile banking",
+        "year": 2024,
+        "doi": "10.38035/jemsi.v6i2.3402",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 143,
+        "title": "Analisis persepsi konsumen terhadap penggunaan aplikasi Mobile JKN",
+        "year": 2024,
+        "doi": "10.55606/jurimbik.v5i2.1078",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 144,
+        "title": "Analisis kualitas pelayanan aplikasi mobile JKN BPJS kesehatan menggunakan metode service quality (servqual)",
+        "year": 2022,
+        "doi": "10.53912/iej.v11i2.837",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 145,
+        "title": "Penggunaan metode heuristic evaluation sebagai analisis evaluasi user interface dan user experience pada aplikasi bca mobile",
+        "year": 2021,
+        "doi": "10.33627/ge.v2i2.94",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 146,
+        "title": "Analisis kualitas layanan pada aplikasi Mobile JKN dengan tingkat kepuasan pengguna Mobile JKN BPJS Kesehatan di Kabupaten Demak",
+        "year": 2024,
+        "doi": "10.31331/ijheco.v5i1.3161",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 147,
+        "title": "Analisis Penggunaan Aplikasi Mobile JKN dengan Metode EUCS",
+        "year": 2023,
+        "doi": "10.36040/jati.v9i2.13040",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 148,
+        "title": "Aplikasi pembelajaran ilmu tajwid berbasis mobile",
+        "year": 2022,
+        "doi": "10.35959/jik.v10i1.300",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 149,
+        "title": "Perancangan Ulang UI & UX Menggunakan Metode Design Thinking Pada Aplikasi Siakadu Mahasiswa Berbasis Mobile",
+        "year": 2022,
+        "doi": "10.26740/jeisbi.v3i4.47740",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 150,
+        "title": "Analisis Sentimen Ulasan Aplikasi Jamsostek Mobile Menggunakan Metode Support Vector Machine",
+        "year": 2023,
+        "doi": "10.24002/jbi.v14i01.6909",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 151,
+        "title": "Cyber security: State of the art, challenges and future directions",
+        "year": 2024,
+        "doi": "10.1016/j.csa.2023.100031",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 152,
+        "title": "Cyber security, cyber threats, implications and future perspectives: A Review",
+        "year": 2022,
+        "doi": "10.22541/au.166385207.73483369",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 153,
+        "title": "A comprehensive review study of cyber-attacks and cyber security; Emerging trends and recent developments",
+        "year": 2021,
+        "doi": "10.1016/j.egyr.2021.08.126",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 154,
+        "title": "The recent trends in cyber security: A review",
+        "year": 2022,
+        "doi": "10.1016/j.jksuci.2021.01.018",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 155,
+        "title": "A systematic literature review on the cyber security",
+        "year": 2021,
+        "doi": "10.18535/ijsrm/v9i12.ec04",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 156,
+        "title": "Cyber security",
+        "year": 2021,
+        "doi": "10.1007/978-981-16-1665-5_2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 157,
+        "title": "Cyber security in the metaverse",
+        "year": 2023,
+        "doi": "10.4018/978-1-6684-8851-5.ch023",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 158,
+        "title": "Counterattacking cyber threats: A framework for the future of cybersecurity",
+        "year": 2023,
+        "doi": "10.3390/su151813369",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 159,
+        "title": "Cyber governance studies in ensuring cybersecurity: an overview of cybersecurity governance",
+        "year": 2022,
+        "doi": "10.1365/s43439-021-00045-4",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 160,
+        "title": "Cyber security in New Space: M. Manulis et al.",
+        "year": 2021,
+        "doi": "10.1007/s10207-020-00503-w",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 161,
+        "title": "Cyber security in the age of COVID-19: A timeline and analysis of cyber-crime and cyber-attacks during the pandemic",
+        "year": 2021,
+        "doi": "10.1016/j.cose.2021.102248",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 162,
+        "title": "Analysis of cyber security knowledge gaps based on cyber security body of knowledge",
+        "year": 2023,
+        "doi": "10.1007/s10639-022-11261-8",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 163,
+        "title": "Artificial intelligence in cyber security: research advances, challenges, and opportunities",
+        "year": 2022,
+        "doi": "10.1007/s10462-021-09976-0",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 164,
+        "title": "Cybersecurity of industrial cyber-physical systems: A review",
+        "year": 2022,
+        "doi": "10.1145/3510410",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 165,
+        "title": "Deep reinforcement learning for cyber security",
+        "year": 2021,
+        "doi": "10.1109/tnnls.2021.3121870",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 166,
+        "title": "The role of user behaviour in improving cyber security management",
+        "year": 2021,
+        "doi": "10.3389/fpsyg.2021.561011/full",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 167,
+        "title": "Artificial intelligence-based cyber security in the context of industry 4.0—a survey",
+        "year": 2023,
+        "doi": "10.3390/electronics12081920",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 168,
+        "title": "Navigating the cyber security landscape: A comprehensive review of cyber-attacks, emerging trends, and recent developments",
+        "year": 2024,
+        "doi": "10.1080/1206212x.2024.2380652",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 169,
+        "title": "Evaluating the cyber security readiness of organizations and its influence on performance",
+        "year": 2021,
+        "doi": "10.1016/j.jisa.2020.102726",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 170,
+        "title": "Cybersecurity risk",
+        "year": 2023,
+        "doi": "10.2139/ssrn.3748961",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 171,
+        "title": "Artificial intelligence in cyber security",
+        "year": 2021,
+        "doi": "10.1088/1742-6596/1964/4/042072/meta",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 172,
+        "title": "Cyber resilience and cyber security issues of intelligent cloud computing systems",
+        "year": 2023,
+        "doi": "10.1016/j.rico.2023.100268",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 173,
+        "title": "Role of AI and its impact on the development of cyber security applications",
+        "year": 2023,
+        "doi": "10.1007/978-981-99-2115-7_2",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 174,
+        "title": "Review on cyber-physical and cyber-security system in smart grid: Standards, protocols, constraints, and recommendations",
+        "year": 2023,
+        "doi": "10.1016/j.jnca.2022.103540",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 175,
+        "title": "Cyber risk and cybersecurity: a systematic review of data availability",
+        "year": 2022,
+        "doi": "10.1057/s41288-022-00266-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 176,
+        "title": "Teknologi Keamanan Siber (Cyber Security)",
+        "year": 2023,
+        "doi": "10.31599/v0xr7273",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 177,
+        "title": "Analisis hukum terhadap tantangan keamanan siber: Studi kasus penegakan hukum siber di Indonesia",
+        "year": 2024,
+        "doi": "10.32520/albahts.v2i1.3044",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 178,
+        "title": "Data privasi dan keamanan siber pada smart-city: Tinjauan literatur",
+        "year": 2022,
+        "doi": "10.20885/snati.v2i1.19",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 179,
+        "title": "Analisis risiko keamanan siber dalam transformasi digital pelayanan publik di Indonesia",
+        "year": 2023,
+        "doi": "10.30997/karimahtauhid.v3i2.11899",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 180,
+        "title": "Manajemen keamanan cyber di era digital",
+        "year": 2023,
+        "doi": "10.46273/jobe.v11i1.365",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 181,
+        "title": "Analisis penerapan sistem keamanan siber terhadap kejahatan siber di indonesia",
+        "year": 2023,
+        "doi": "10.31004/joe.v5i4.2032",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 182,
+        "title": "Edukasi Keamanan Siber Berdigital dengan Aman",
+        "year": 2024,
+        "doi": "10.37478/abdika.v4i4.4967",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 183,
+        "title": "Tinjauan Literatur Tentang Ancaman Cybercrime Dan Implementasi Keamanan Siber Di Industri Perbankan",
+        "year": 2024,
+        "doi": "10.31004/riggs.v4i4.4796",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 184,
+        "title": "Peraturan dan Regulasi Keamanan Siber di Era Digital",
+        "year": 2024,
+        "doi": "10.33363/bb.v15i1.1483",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 185,
+        "title": "Tantangan keamanan siber dalam manajemen likuiditas bank syariah: Menjaga stabilitas keuangan di era digital",
+        "year": 2023,
+        "doi": "10.30983/krigan.v1i2.7929",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 186,
+        "title": "Sistem Keamanan Siber dan Kedaulatan Data di Indonesia dalam Perspektif Ekonomi Politik (Studi Kasus Perlindungan Data Pribadi)[Cyber Security System and …",
+        "year": 2023,
+        "doi": "10.22212/jp.v13i2.3299",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 187,
+        "title": "Upaya membangun kesadaran keamanan siber pada konsumen e-commerce di Indonesia",
+        "year": 2022,
+        "doi": "10.52391/jcn.v6i1.629",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 188,
+        "title": "Perkembangan Sistem Pertahanan/Keamanan Siber Indonesia dalam Menghadapi Tantangan Perkembangan Teknologi dan Informasi:-",
+        "year": 2022,
+        "doi": "10.32734/politeia.v14i1.6351",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 189,
+        "title": "Strategi efektif untuk implementasi keamanan siber di era digital",
+        "year": 2024,
+        "doi": "10.31599/fzg80847",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 190,
+        "title": "Pentingnya Keamanan Siber Dalam Era Digital:: Tinjauan Global Dan Kondisi Di Indonesia",
+        "year": 2025,
+        "doi": "10.35132/assyifa.v1i2.267",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 191,
+        "title": "Transformasi digital dan keamanan siber: Upaya penanggulangan kejahatan di era teknologi di Indonesia",
+        "year": 2025,
+        "doi": "10.59024/jipa.v1i1.134",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 192,
+        "title": "Keamanan siber sebagai fondasi pengembangan aplikasi keuangan mobile: Studi literatur mengenai cybercrime dan mitigasinya",
+        "year": 2024,
+        "doi": "10.24123/jati.v17i2.6409",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 193,
+        "title": "Analisis Keamanan Siber Dan Hukum Dari Perspektif Gender Dan Filsafat Politik Alison M. Jaggar",
+        "year": 2021,
+        "doi": "10.31602/al-adl.v13i2.4396",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 194,
+        "title": "Mengukur Keamanan Siber Indonesia Melalui Indikator Pilar Kerjasama Dalam Global Cybersecurity Index (GCI)",
+        "year": 2023,
+        "doi": "10.47313/pjsh.v8i1.1957",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 195,
+        "title": "Analisis dan peningkatan keamanan cyber: Studi kasus ancaman dan solusi dalam lingkungan digital untuk mengamankan objek vital dan file",
+        "year": 2023,
+        "doi": "10.47861/sammajiva.v1i2.226",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 196,
+        "title": "Serangan cyber dan kesiapan keamanan cyber terhadap bank indonesia",
+        "year": 2023,
+        "doi": "10.60083/jidt.v5i3.364",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 197,
+        "title": "Sosialisasi Keamanan Siber Bagi Pelajar Dalam Menghadapi Era Digital",
+        "year": 2025,
+        "doi": "10.70585/abdidalem.v2i1.113",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 198,
+        "title": "Strategi Keamanan Siber Malaysia",
+        "year": 2021,
+        "doi": "10.31599/jki.v21i1.447",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 199,
+        "title": "Keamanan siber di masa depan: Tantangan dan teknologi yang dibutuhkan",
+        "year": 2024,
+        "doi": "10.30587/jcaa.v2i2.6474",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 200,
+        "title": "Peluang dan Tantangan Diplomasi Digital dalam Meningkatkan Keamanan Siber Indonesia",
+        "year": 2024,
+        "doi": "10.31004/innovative.v4i3.10537",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 201,
+        "title": "Machine learning foundations",
+        "year": 2021,
+        "doi": "10.1007/978-3-030-65900-4.pdf",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 202,
+        "title": "Machine learning in environmental research: common pitfalls and best practices",
+        "year": 2023,
+        "doi": "10.1021/acs.est.3c00026",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 203,
+        "title": "Measuring corporate culture using machine learning",
+        "year": 2021,
+        "doi": "10.1093/rfs/hhaa079",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 204,
+        "title": "Financial applications of machine learning: A literature review",
+        "year": 2023,
+        "doi": "10.1016/j.eswa.2023.119640",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 205,
+        "title": "Machine learning fundamentals",
+        "year": 2026,
+        "doi": "10.1016/b978-0-443-26789-5.00006-7",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 206,
+        "title": "When machine learning meets privacy: A survey and outlook",
+        "year": 2021,
+        "doi": "10.1145/3436755",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 207,
+        "title": "Applying machine learning to study fluid mechanics",
+        "year": 2021,
+        "doi": "10.1007/s10409-021-01143-6",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 208,
+        "title": "Machine learning for the educational sciences",
+        "year": 2021,
+        "doi": "10.1002/rev3.3310",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 209,
+        "title": "Machine learning in nanozymes: from design to application",
+        "year": 2024,
+        "doi": "10.1039/d4bm00169a",
+        "degree_centrality": 0.00458716,
+        "betweenness": 0.0
+      },
+      {
+        "id": 210,
+        "title": "Machine learning at the network edge: A survey",
+        "year": 2021,
+        "doi": "10.1145/3469029",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 211,
+        "title": "Machine learning and deep learning applications-a vision",
+        "year": 2021,
+        "doi": "10.1016/j.gltp.2021.01.004",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 212,
+        "title": "Tackling climate change with machine learning",
+        "year": 2022,
+        "doi": "10.1145/3485128",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 213,
+        "title": "Evolutionary machine learning: A survey",
+        "year": 2021,
+        "doi": "10.1145/3467477",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 214,
+        "title": "The difference between cyber security vs information security",
+        "year": 2022,
+        "doi": "10.52326/jes.utm.2022.29(4).08",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 215,
+        "title": "The role of cyber security in advancing sustainable digitalization: Opportunities and challenges",
+        "year": 2023,
+        "doi": "10.31181/jdaic10018122023g",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 216,
+        "title": "The role of national cybersecurity strategies on the improvement of cybersecurity education",
+        "year": 2022,
+        "doi": "10.1016/j.cose.2022.102754",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 217,
+        "title": "Defining cyber security and cyber security risk within a multidisciplinary context using expert elicitation",
+        "year": 2022,
+        "doi": "10.1111/risa.13687",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 218,
+        "title": "Deep learning",
+        "year": 2026,
+        "doi": "10.1007/978-981-95-1184-6_16",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      },
+      {
+        "id": 219,
+        "title": "Deep learning for AI",
+        "year": 2021,
+        "doi": "10.1145/3448250",
+        "degree_centrality": 0.0,
+        "betweenness": 0.0
+      }
+    ]
+  }
+}

@@ -4,12 +4,13 @@ from app.utils.cleaner import (
     lowercase_text
 )
 
-
+# mendeteksi apakah suatu teks merupakan awal dari referensi ilmiah
 def _starts_like_reference(ref):
-    ref = re.sub(r"\s+", " ", str(ref or "")).strip()
+    ref = re.sub(r"\s+", " ", str(ref or "")).strip() # membersihkan spasi berlebih
     if len(ref) < 20:
         return False
 
+    # mengecek referensi diawali dengan format nomor
     if re.match(r"^(?:[-*•]\s+|\[\d+\]|\(\d+\)|\d{1,3}[\.)]\s+)", ref):
         return True
 
@@ -33,7 +34,7 @@ def _starts_like_reference(ref):
     ]
     return has_year and any(re.search(pattern, author_part) for pattern in author_patterns)
 
-
+# memisahkan dua/lebih referensi yang tertulis dalam satu baris
 def _split_joined_references(ref):
     parts = re.split(r"\s+-\s+", str(ref or ""))
     if len(parts) <= 1:

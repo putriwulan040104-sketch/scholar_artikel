@@ -1,3 +1,4 @@
+// type definition
 import type * as d3 from "d3";
 import type { ArticleRelationType, ReferenceMatch } from "@/api/api";
 
@@ -10,12 +11,14 @@ export type GraphNode = d3.SimulationNodeDatum & {
   authors?: string[] | string | null;
   referenceCount?: number;
   degree: number;
+  degreeCentrality: number;
 };
 
 export type GraphLink = d3.SimulationLinkDatum<GraphNode> & {
   source: number | string | GraphNode;
   target: number | string | GraphNode;
   weight: number;
+  edgeBetweenness: number;
   sharedReferences: string[];
   sharedReferenceMatches: ReferenceMatch[];
   sharedKeywords: string[];
@@ -81,4 +84,5 @@ export type GraphTooltip = {
   year: string;
   relations: number;
   references: number;
+  degreeCentrality: number;
 };

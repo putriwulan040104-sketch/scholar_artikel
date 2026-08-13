@@ -19,7 +19,6 @@ TARGET_TABLE = "cleaned_papers_results"
 SOURCE_COLUMNS = "id,title,doi,url,pdf_url,authors"
 MIN_KEYWORDS_BEFORE_HTML_CHECK = 3
 MIN_REFERENCE_SCORE_BEFORE_ALTERNATE_CHECK = 85
-
 NON_REFERENCE_PHRASES = (
     "abstract",
     "introduction",
@@ -52,6 +51,7 @@ def _sanitize_for_postgres(value):
         }
     return value
 
+# menggabungkan keyword dari berbagai sumber
 def _merge_keywords(*keyword_lists):
     merged = []
     seen = set()
@@ -71,6 +71,7 @@ def _merge_keywords(*keyword_lists):
 
     return merged
 
+# menilai apakah nilai referensi sudah benar
 def analyze_reference_quality(references):
     if not isinstance(references, list) or not references:
         return {
@@ -190,6 +191,7 @@ def _needs_reference_enrichment(references):
         or quality["score"] < MIN_REFERENCE_SCORE_BEFORE_ALTERNATE_CHECK
     )
 
+# mengambil artikel sesuai id
 def get_articles(source_ids=None):
     if source_ids:
         response = (
@@ -718,6 +720,7 @@ def process_articles(source_ids=None, progress_callback=None):
 
     return results
 
+# mengecek referensi yang sudah ada di DB
 def audit_reference_data():
     rows = []
     page_size = 100
@@ -764,6 +767,7 @@ def audit_reference_data():
         "issues": issues,
     }
 
+# menemukana referensi yang buruk
 def _repair_reference_data(source_ids=None, limit=None):
     audit = audit_reference_data()
     issue_ids = {
@@ -884,6 +888,7 @@ def _repair_reference_data(source_ids=None, limit=None):
         "results": results,
     }
 
+# pembungkus repair
 def repair_reference_data(source_ids=None, limit=None):
     if not _REFERENCE_REPAIR_LOCK.acquire(blocking=False):
         raise ReferenceRepairInProgressError(

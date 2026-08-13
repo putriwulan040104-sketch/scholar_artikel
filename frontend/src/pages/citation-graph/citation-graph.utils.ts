@@ -1,3 +1,4 @@
+// helper function
 import type { FavoriteItem, GraphLink } from "./citation-graph.types";
 import {
   readFavorites as readUserFavorites,
@@ -5,7 +6,7 @@ import {
 } from "@/lib/favorites";
 
 const NODE_RADIUS_MIN = 5;
-const NODE_RADIUS_MAX = 18;
+const NODE_RADIUS_MAX = 20;
 
 export function readFavorites(): FavoriteItem[] {
   return readUserFavorites<FavoriteItem>();
@@ -43,6 +44,7 @@ export function formatAuthors(raw: unknown): string {
   return "-";
 }
 
+// pagination
 export function buildPageItems(
   current: number,
   total: number,
@@ -63,9 +65,10 @@ export function buildPageItems(
   return items;
 }
 
-export function getNodeRadius(degree: number): number {
-  const safeDegree = Number.isFinite(degree) ? Math.max(0, degree) : 0;
-  const r = NODE_RADIUS_MIN + Math.sqrt(safeDegree) * 2.8;
+// ukuran node berdasarkan degree centrality (0–1)
+export function getNodeRadius(degreeCentrality: number): number {
+  const safe = Number.isFinite(degreeCentrality) ? Math.max(0, degreeCentrality) : 0;
+  const r = NODE_RADIUS_MIN + Math.sqrt(safe) * (NODE_RADIUS_MAX - NODE_RADIUS_MIN);
   return Math.max(NODE_RADIUS_MIN, Math.min(NODE_RADIUS_MAX, r));
 }
 
@@ -75,6 +78,7 @@ export function getLinkNodeId(
   return typeof value === "object" ? Number(value.id) : Number(value);
 }
 
+// mempersingkat judul
 export function shortTitle(title?: string | null, maxLength = 34) {
   const value = title || "Artikel tanpa judul";
   return value.length > maxLength

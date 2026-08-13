@@ -843,9 +843,7 @@ export async function getAnalysisTypeOptions(): Promise<{
 }
 
 export type ArticleRelationType =
-  | "bibliographic_coupling"
-  | "keyword_cooccurrence"
-  | "co_authorship";
+  | "bibliographic_coupling" | "keyword_cooccurrence" | "co_authorship";
 
 export interface CitationGraphEdge {
   source: number;

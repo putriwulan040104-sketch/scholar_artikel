@@ -50,6 +50,7 @@ export default function GraphCanvas({
     year: "-",
     relations: 0,
     references: 0,
+    degreeCentrality: 0,
   });
 
   useEffect(() => {
@@ -65,9 +66,9 @@ export default function GraphCanvas({
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.35, 3])
       .on("zoom", (event) => root.attr("transform", event.transform));
-
     svg.call(zoomBehavior);
 
+    // membuat edge
     const link = root
       .append("g")
       .selectAll("line")
@@ -89,24 +90,30 @@ export default function GraphCanvas({
           ? 0.95
           : 0.1;
       })
+      // ketebalan edge berdasarkan jumlah referensi bersama (weight)
       .attr("stroke-width", (edge) => {
         const sourceId = getLinkNodeId(edge.source);
         const targetId = getLinkNodeId(edge.target);
         const selected =
           sourceId === selectedNodeId || targetId === selectedNodeId;
-        return Math.min(4, (selected ? 1.8 : 0.8) + edge.weight * 0.35);
+        return Math.min(4, (selected ? 1 : 0.6) + edge.weight * 0.4);
       });
 
+    // tooltip
     link.append("title").text((edge) => {
       const source = nodeById.get(getLinkNodeId(edge.source));
       const target = nodeById.get(getLinkNodeId(edge.target));
       return (
         `${source?.title || "Artikel"} dan ` +
-        `${target?.title || "artikel"} memiliki ${edge.weight} ` +
-        "referensi yang sama"
+        `${target?.title || "artikel"} — ` +
+        `${edge.weight} referensi bersama` +
+        (edge.edgeBetweenness > 0
+          ? `\nEdge betweenness: ${edge.edgeBetweenness.toFixed(4)}`
+          : "")
       );
     });
 
+    // node
     const circles = root
       .append("g")
       .attr("stroke", "#ffffff")
@@ -114,7 +121,7 @@ export default function GraphCanvas({
       .selectAll<SVGCircleElement, GraphNode>("circle")
       .data(graphModel.gNodes)
       .join("circle")
-      .attr("r", (node) => getNodeRadius(node.degree))
+      .attr("r", (node) => getNodeRadius(node.degreeCentrality))
       .attr("fill", (node) => {
         if (node.id === selectedNodeId) return "#f59e0b";
         if (
@@ -140,9 +147,7 @@ export default function GraphCanvas({
         onSelectNode(node.id === selectedNodeId ? null : node.id);
       });
 
-    circles
-      .append("title")
-      .text((node) => node.title || `Publication ${node.id}`);
+    circles.append("title").text((node) => node.title || `Publication ${node.id}`);
 
     const labelNodes =
       selectedNodeId === null
@@ -170,34 +175,7 @@ export default function GraphCanvas({
       .style("pointer-events", "none")
       .text((node) => shortTitle(node.title));
 
-    const relationArrows = root
-      .append("g")
-      .attr("aria-label", "Penanda seluruh relasi artikel")
-      .selectAll<SVGPathElement, GraphLink>("path")
-      .data(graphModel.gLinks)
-      .join("path")
-      .attr("d", "M-5,-4 L5,0 L-5,4 Z")
-      .attr("fill", (edge) => {
-        const sourceId = getLinkNodeId(edge.source);
-        const targetId = getLinkNodeId(edge.target);
-        return sourceId === selectedNodeId || targetId === selectedNodeId
-          ? "#2563eb"
-          : "#64748b";
-      })
-      .attr("opacity", (edge) => {
-        if (selectedNodeId === null) return 0.8;
-        const sourceId = getLinkNodeId(edge.source);
-        const targetId = getLinkNodeId(edge.target);
-        return sourceId === selectedNodeId || targetId === selectedNodeId
-          ? 1
-          : 0.12;
-      })
-      .attr("stroke", "#ffffff")
-      .attr("stroke-width", 1)
-      .style("pointer-events", "none");
-
-    circles
-      .on("mousemove", (event, node) => {
+    circles.on("mousemove", (event, node) => {
         if (!graphWrapRef.current) return;
         const rect = graphWrapRef.current.getBoundingClientRect();
         setTooltip({
@@ -209,6 +187,7 @@ export default function GraphCanvas({
           year: node.year ? String(node.year) : "-",
           relations: graphModel.degreeById.get(node.id) || 0,
           references: Number(node.referenceCount || 0),
+          degreeCentrality: node.degreeCentrality || 0,
         });
       })
       .on("mouseleave", () => {
@@ -225,11 +204,11 @@ export default function GraphCanvas({
           .distance((edge) => Math.max(40, 80 - edge.weight * 6))
           .strength(0.6),
       )
-      .force("charge", d3.forceManyBody().strength(-100))
+      .force("charge", d3.forceManyBody().strength(-50))
       .force("center", d3.forceCenter(WIDTH / 2, HEIGHT / 2))
       .force(
         "collision",
-        d3.forceCollide<GraphNode>((node) => getNodeRadius(node.degree) + 2),
+        d3.forceCollide<GraphNode>((node) => getNodeRadius(node.degreeCentrality) + 2),
       )
       .on("tick", () => {
         link
@@ -238,29 +217,13 @@ export default function GraphCanvas({
           .attr("x2", (edge) => (edge.target as GraphNode).x || 0)
           .attr("y2", (edge) => (edge.target as GraphNode).y || 0);
 
+        // posisi node
         circles
           .attr("cx", (node) => node.x || 0)
           .attr("cy", (node) => node.y || 0);
         labels
           .attr("x", (node) => (node.x || 0) + getNodeRadius(node.degree) + 5)
           .attr("y", (node) => (node.y || 0) + 4);
-
-        relationArrows.attr("transform", (edge) => {
-          const source = edge.source as GraphNode;
-          const target = edge.target as GraphNode;
-          const sourceX = source.x || 0;
-          const sourceY = source.y || 0;
-          const targetX = target.x || 0;
-          const targetY = target.y || 0;
-          const deltaX = targetX - sourceX;
-          const deltaY = targetY - sourceY;
-          const distance = Math.hypot(deltaX, deltaY) || 1;
-          const targetOffset = getNodeRadius(target.degree) + 9;
-          const x = targetX - (deltaX / distance) * targetOffset;
-          const y = targetY - (deltaY / distance) * targetOffset;
-          const angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
-          return `translate(${x}, ${y}) rotate(${angle})`;
-        });
       });
 
     const drag = d3
@@ -294,7 +257,6 @@ export default function GraphCanvas({
           const transform = d3.zoomIdentity
             .translate(WIDTH / 2 - x * scale, HEIGHT / 2 - y * scale)
             .scale(scale);
-
           svg
             .transition()
             .duration(650)
@@ -366,6 +328,9 @@ export default function GraphCanvas({
                 Authors: {tooltip.authors}
               </p>
               <p className="text-muted-foreground">Year: {tooltip.year}</p>
+              <p className="text-muted-foreground">
+                Centrality: {(tooltip.degreeCentrality * 100).toFixed(1)}%
+              </p>
             </div>
           )}
         </div>

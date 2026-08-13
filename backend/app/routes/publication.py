@@ -115,11 +115,19 @@ def build_bibliographic_relations():
         type=int,
     )
     min_shared = max(1, min(min_shared, 100))
+    title_similarity = request.args.get(
+        "title_similarity",
+        default=0.90,
+        type=float,
+    )
+    if title_similarity < 0 or title_similarity > 1:
+        title_similarity = 0.90
 
     try:
         summary = build_bibliographic_coupling(
             limit=limit,
             min_shared=min_shared,
+            title_similarity_threshold=title_similarity,
         )
     except BibliographicBuildInProgressError as error:
         return jsonify({"message": str(error)}), 409

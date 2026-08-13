@@ -1,3 +1,4 @@
+import networkx as nx
 from app.db import supabase
 from app.services.doi_lookup_service import load_doi_by_publication_id
 
@@ -30,7 +31,6 @@ def _load_publications():
             break
 
     return all_rows
-
 
 def _reference_count(reference_value):
     if reference_value is None:
@@ -65,7 +65,6 @@ def _reference_count(reference_value):
 
     return 0
 
-
 def _load_relations(relation_type="bibliographic_coupling"):
     try:
         response = (
@@ -87,30 +86,25 @@ def _load_relations(relation_type="bibliographic_coupling"):
         )
     return response.data or []
 
-
-def _build_graph(publications, relations, directed=False):
+def _build_graph(publications, relations):
     node_ids = [int(p["id"]) for p in publications if p.get("id") is not None]
     node_set = set(node_ids)
-    out_adj = {node_id: set() for node_id in node_ids}
-    in_adj = {node_id: set() for node_id in node_ids}
+    adjacency = {node_id: set() for node_id in node_ids}
 
     edge_weights = {}
     for row in relations:
-        citing_id = row.get("source_id")
-        cited_id = row.get("target_id")
-        if citing_id is None or cited_id is None:
+        left_id = row.get("source_id")
+        right_id = row.get("target_id")
+        if left_id is None or right_id is None:
             continue
 
-        c1 = int(citing_id)
-        c2 = int(cited_id)
+        c1 = int(left_id)
+        c2 = int(right_id)
         if c1 not in node_set or c2 not in node_set:
             continue
 
-        out_adj[c1].add(c2)
-        in_adj[c2].add(c1)
-        if not directed:
-            out_adj[c2].add(c1)
-            in_adj[c1].add(c2)
+        adjacency[c1].add(c2)
+        adjacency[c2].add(c1)
 
         edge = (c1, c2)
         weight = int(row.get("weight") or 1)
@@ -118,38 +112,9 @@ def _build_graph(publications, relations, directed=False):
 
     edges = [(src, dst, wt) for (src, dst), wt in edge_weights.items()]
 
-    return node_ids, edges, out_adj, in_adj
+    return node_ids, edges, adjacency
 
-
-def _compute_pagerank(node_ids, out_adj, damping=0.85, max_iter=50, tol=1e-6):
-    n = len(node_ids)
-    if n == 0:
-        return {}
-
-    base = (1.0 - damping) / n
-    ranks = {node_id: 1.0 / n for node_id in node_ids}
-
-    for _ in range(max_iter):
-        sink_sum = sum(ranks[node_id] for node_id in node_ids if len(out_adj[node_id]) == 0)
-        next_ranks = {node_id: base + damping * sink_sum / n for node_id in node_ids}
-
-        for src in node_ids:
-            out_neighbors = out_adj[src]
-            if not out_neighbors:
-                continue
-            share = damping * ranks[src] / len(out_neighbors)
-            for dst in out_neighbors:
-                next_ranks[dst] += share
-
-        delta = sum(abs(next_ranks[node_id] - ranks[node_id]) for node_id in node_ids)
-        ranks = next_ranks
-        if delta < tol:
-            break
-
-    return ranks
-
-
-def _weak_component_stats(node_ids, out_adj, in_adj):
+def _weak_component_stats(node_ids, adjacency):
     visited = set()
     component_sizes = []
 
@@ -164,8 +129,7 @@ def _weak_component_stats(node_ids, out_adj, in_adj):
         while stack:
             current = stack.pop()
             size += 1
-            neighbors = out_adj[current] | in_adj[current]
-            for nxt in neighbors:
+            for nxt in adjacency[current]:
                 if nxt in visited:
                     continue
                 visited.add(nxt)
@@ -178,7 +142,6 @@ def _weak_component_stats(node_ids, out_adj, in_adj):
 
     return component_count, largest_component_size
 
-
 def build_sna_metrics(
     top_n=10,
     relation_type="bibliographic_coupling",
@@ -188,12 +151,16 @@ def build_sna_metrics(
     pub_map = {int(p["id"]): p for p in publications if p.get("id") is not None}
     doi_by_id = load_doi_by_publication_id(pub_map.keys())
 
-    node_ids, edges, out_adj, in_adj = _build_graph(
+    node_ids, edges, adjacency = _build_graph(
         publications,
         relations,
-        directed=False,
     )
-    pagerank = _compute_pagerank(node_ids, out_adj)
+
+    graph = nx.Graph()
+    graph.add_nodes_from(node_ids)
+    graph.add_edges_from((source, target) for source, target, _weight in edges)
+    betweenness = nx.betweenness_centrality(graph)
+    degree_centrality_map = nx.degree_centrality(graph)
 
     node_count = len(node_ids)
     edge_count = len(edges)
@@ -203,33 +170,31 @@ def build_sna_metrics(
         density = (2 * edge_count) / (node_count * (node_count - 1))
 
     isolated_nodes = sum(
-        1 for node_id in node_ids
-        if len(out_adj[node_id]) == 0 and len(in_adj[node_id]) == 0
+        1 for node in graph.nodes if graph.degree(node) == 0
     )
 
-    component_count, largest_component_size = _weak_component_stats(node_ids, out_adj, in_adj)
+    component_count, largest_component_size = _weak_component_stats(node_ids, adjacency)
 
     metrics_rows = []
     for node_id in node_ids:
-        degree = len(out_adj[node_id])
         metrics_rows.append({
             "id": node_id,
             "title": pub_map[node_id].get("title"),
             "year": pub_map[node_id].get("year"),
             "doi": doi_by_id.get(node_id),
-            "degree": degree,
-            "pagerank": round(float(pagerank.get(node_id, 0.0)), 8),
+            "degree_centrality": round(float(degree_centrality_map.get(node_id, 0.0)), 8),
+            "betweenness": round(float(betweenness.get(node_id, 0.0)), 8),
         })
 
     top_by_degree = sorted(
         metrics_rows,
-        key=lambda x: (x["degree"], x["pagerank"]),
+        key=lambda x: (x["degree_centrality"], x["betweenness"]),
         reverse=True
     )[:top_n]
 
-    top_by_pagerank = sorted(
+    top_by_betweenness = sorted(
         metrics_rows,
-        key=lambda x: x["pagerank"],
+        key=lambda x: x["betweenness"],
         reverse=True
     )[:top_n]
 
@@ -247,12 +212,11 @@ def build_sna_metrics(
 
     return {
         "summary": summary,
-        "top_cited": top_by_degree,
+        "top_degree_centrality": top_by_degree,
         "top_connected": top_by_degree,
-        "top_pagerank": top_by_pagerank,
+        "top_betweenness": top_by_betweenness,
         "node_metrics": metrics_rows,
     }
-
 
 def build_graph_payload(
     article_ids=None,
@@ -286,11 +250,17 @@ def build_graph_payload(
 
     pub_map = {int(p["id"]): p for p in publications if p.get("id") is not None}
     doi_by_id = load_doi_by_publication_id(pub_map.keys())
-    node_ids, edges, _out_adj, _in_adj = _build_graph(
+    node_ids, edges, _adjacency = _build_graph(
         publications,
         citations,
-        directed=False,
     )
+
+    graph = nx.Graph()
+    graph.add_nodes_from(node_ids)
+    graph.add_edges_from((source, target) for source, target, _weight in edges)
+
+    degree_cent = nx.degree_centrality(graph)
+    edge_betweenness = nx.edge_betweenness_centrality(graph)
 
     nodes = []
     for node_id in node_ids:
@@ -303,6 +273,7 @@ def build_graph_payload(
             "doi": doi_by_id.get(node_id),
             "authors": data.get("authors"),
             "reference_count": _reference_count(data.get("reference_list")),
+            "degree_centrality": round(float(degree_cent.get(node_id, 0.0)), 8),
         })
 
     edge_payload = []
@@ -315,10 +286,15 @@ def build_graph_payload(
         and row.get("target_id") is not None
     }
     for c1, c2, weight in edges:
+        edge_betweenness_val = edge_betweenness.get(
+            (c1, c2),
+            edge_betweenness.get((c2, c1), 0.0),
+        )
         edge_payload.append({
             "source": c1,
             "target": c2,
             "weight": weight,
+            "edge_betweenness": round(float(edge_betweenness_val), 8),
             "relation_type": relation_type,
             "details": relation_details.get((c1, c2), {}),
         })

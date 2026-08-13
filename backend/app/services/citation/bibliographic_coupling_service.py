@@ -1,10 +1,11 @@
 import json
 import re
 import threading
+from bisect import bisect_left
 from collections import defaultdict
 from itertools import combinations
+from rapidfuzz import fuzz
 from app.db import supabase
-
 
 PUBLICATIONS_TABLE = "cleaned_papers_results"
 RELATIONS_TABLE = "article_relations"
@@ -21,16 +22,18 @@ REFERENCE_BOUNDARY_PATTERN = re.compile(
     r"(?:\s+[A-ZÀ-ÖØ-Þ][\wÀ-ÖØ-öø-ÿ'’-]{1,})*,\s+"
     r"[^()]{0,240}?\((?:19|20)\d{2}[a-z]?\)\.?)",
 )
+URL_NOISE_PATTERN = re.compile(r"https?://|www\.", re.I)
+ACCESS_DATE_PATTERN = re.compile(
+    r"^accessed on? \d{1,2}\s+[a-z]+\s+\d{4}$",
+    re.I,
+)
 _BUILD_LOCK = threading.Lock()
-
 
 class BibliographicBuildInProgressError(RuntimeError):
     pass
 
-
 def _log(message):
     print(f"[BIBLIOGRAPHIC] {message}", flush=True)
-
 
 def _get_publications(limit=None):
     rows = []
@@ -58,10 +61,8 @@ def _get_publications(limit=None):
         return rows[:int(limit)]
     return rows
 
-
 def _clean_text(value):
     return re.sub(r"\s+", " ", str(value or "")).strip()
-
 
 def _split_reference_entries(reference):
     value = _clean_text(reference)
@@ -74,7 +75,6 @@ def _split_reference_entries(reference):
         if _clean_text(entry)
     ]
     return entries or [value]
-
 
 def _extract_reference_title(reference):
     value = _clean_text(reference)
@@ -94,7 +94,6 @@ def _extract_reference_title(reference):
     title = re.split(r"\.\s+", candidate, maxsplit=1)[0]
     return _clean_text(title.strip(" .:-;"))
 
-
 def _extract_reference_authors(reference):
     value = _clean_text(reference)
     if not value:
@@ -108,7 +107,6 @@ def _extract_reference_authors(reference):
     first_sentence = re.split(r"\.\s+", value, maxsplit=1)[0]
     return _clean_text(first_sentence.strip(" .:-;"))
 
-
 def _extract_reference_year(reference):
     match = YEAR_PATTERN.search(_clean_text(reference))
     if not match:
@@ -116,7 +114,6 @@ def _extract_reference_year(reference):
 
     year_match = re.search(r"(?:19|20)\d{2}[a-z]?", match.group(0), re.I)
     return year_match.group(0) if year_match else ""
-
 
 def _extract_reference_metadata(reference):
     original_reference = _clean_text(reference)
@@ -128,7 +125,6 @@ def _extract_reference_metadata(reference):
         "year": _extract_reference_year(original_reference),
         "title": title,
     }
-
 
 def _normalize_reference_title(title):
     value = _clean_text(title)
@@ -148,7 +144,153 @@ def _normalize_reference_title(title):
 
     return value
 
+def _title_similarity(left, right):
+    left = _normalize_reference_title(left)
+    right = _normalize_reference_title(right)
+    if not left or not right:
+        return 0
 
+    return fuzz.ratio(left, right) / 100.0
+
+# Hanya judul yang "layak" ikut pencocokan fuzzy. Menghindari false
+# positive dari referensi web (URL), tanggal akses, atau fragmen
+# pengarang/penerbit yang bukan judul sebenarnya
+def _fuzzy_title_eligible(metadata, normalized_title):
+    if len(normalized_title.split()) < 4:
+        return False
+
+    original = _clean_text(
+        metadata.get("original_reference")
+        or metadata.get("reference")
+        or ""
+    )
+    if URL_NOISE_PATTERN.search(original):
+        return False
+    if ACCESS_DATE_PATTERN.match(normalized_title):
+        return False
+
+    return True
+
+# Menggabungkan judul referensi yang mirip ke satu identity.
+# Hanya antar referensi yang tahunnya sama
+def _fuzzy_merge_title_identities(
+    reference_index,
+    reference_metadata,
+    reference_labels,
+    min_similarity,
+):
+    parent = {}
+    def find(node):
+        while parent[node] != node:
+            parent[node] = parent[parent[node]]
+            node = parent[node]
+        return node
+
+    def union(left, right):
+        root_left = find(left)
+        root_right = find(right)
+        if root_left != root_right:
+            parent[root_right] = root_left
+
+    title_identities = []
+    for identity in reference_index:
+        if not identity.startswith("title:"):
+            continue
+        title = _normalize_reference_title(identity[len("title:"):])
+        if not title:
+            continue
+        metadata = reference_metadata.get(identity) or {}
+        if not _fuzzy_title_eligible(metadata, title):
+            continue
+        year = _clean_text(metadata.get("year"))
+        title_identities.append((identity, title, year))
+
+    if len(title_identities) < 2:
+        return reference_index, reference_metadata, reference_labels, 0
+
+    # Untuk rasio >= min_similarity, selisih panjang tidak boleh terlalu
+    # mencapai threshold, jadi bisa di-skip dengan aman.
+    max_len_ratio = (2 - min_similarity) / min_similarity
+
+    merged_count = 0
+    by_year = defaultdict(list)
+    for identity, title, year in title_identities:
+        by_year[year].append((identity, title))
+
+    for year, items in by_year.items():
+        items.sort(key=lambda pair: len(pair[1]))
+        lengths = [len(title) for _, title in items]
+        for i in range(len(items)):
+            identity, title = items[i]
+            parent[identity] = identity
+            lower = bisect_left(lengths, lengths[i] / max_len_ratio, 0, i)
+            for j in range(lower, i):
+                other_identity, other_title = items[j]
+                if fuzz.ratio(title, other_title) / 100.0 >= min_similarity:
+                    union(identity, other_identity)
+                    merged_count += 1
+
+    groups = defaultdict(list)
+    for identity, _, _ in title_identities:
+        groups[find(identity)].append(identity)
+
+    alias_map = {}
+    for members in groups.values():
+        if len(members) < 2:
+            continue
+
+        representative = max(
+            members,
+            key=lambda identity: (
+                len(reference_labels.get(identity, "")),
+                reference_labels.get(identity, ""),
+            ),
+        )
+        for identity in members:
+            alias_map[identity] = representative
+
+    if not alias_map:
+        return reference_index, reference_metadata, reference_labels, 0
+
+    merged_index = {}
+    merged_metadata = {}
+    merged_labels = {}
+    merged_counts = defaultdict(int)
+
+    for identity, publication_ids in reference_index.items():
+        target = alias_map.get(identity, identity)
+        merged_index.setdefault(target, set()).update(publication_ids)
+        merged_counts[target] += 1
+
+    for identity, publication_ids in reference_index.items():
+        target = alias_map.get(identity, identity)
+        if target not in merged_labels:
+            merged_labels[target] = reference_labels.get(
+                target,
+                reference_labels.get(identity, ""),
+            )
+        if target not in merged_metadata:
+            merged_metadata[target] = dict(
+                reference_metadata.get(target, reference_metadata.get(identity, {}))
+            )
+
+    for identity, publication_ids in reference_index.items():
+        target = alias_map.get(identity, identity)
+        if identity == target:
+            continue
+        aliases = merged_metadata[target].setdefault("aliases", [])
+        if identity not in aliases:
+            aliases.append(identity)
+        merged_metadata[target]["fuzzy_match"] = True
+        if not merged_metadata[target].get("reference"):
+            merged_metadata[target]["reference"] = reference_labels.get(
+                identity,
+                merged_labels[target],
+            )
+
+    return merged_index, merged_metadata, merged_labels, merged_count
+
+# Mengekstrak identity dari satu referensi mentah
 def _reference_identity_items(reference):
     identities = []
 
@@ -175,7 +317,6 @@ def _reference_identity_items(reference):
                 "match_type": "title",
                 **metadata,
             })
-
     return identities
 
 def _load_existing_relations():
@@ -206,14 +347,12 @@ def _load_existing_relations():
         for row in rows
     }
 
-
 def _normalize_detail_items(items):
     return {
         re.sub(r"\s+", " ", str(item or "")).strip().lower()
         for item in items or []
         if str(item or "").strip()
     }
-
 
 def _extract_current_shared_references(details):
     if isinstance(details, str):
@@ -228,7 +367,6 @@ def _extract_current_shared_references(details):
     shared = details.get("shared_references")
     return shared if isinstance(shared, list) else []
 
-
 def _extract_current_shared_reference_matches(details):
     if isinstance(details, str):
         try:
@@ -241,7 +379,6 @@ def _extract_current_shared_reference_matches(details):
 
     shared = details.get("shared_reference_matches")
     return shared if isinstance(shared, list) else []
-
 
 def _normalize_match_items(items):
     normalized = []
@@ -269,7 +406,6 @@ def _normalize_match_items(items):
         ),
     )
 
-
 def _is_unique_conflict(error):
     message = str(error).lower()
     return (
@@ -278,11 +414,11 @@ def _is_unique_conflict(error):
         or "duplicate key value" in message
     )
 
-
-def _build_bibliographic_coupling(limit=None, min_shared=1):
+def _build_bibliographic_coupling(limit=None, min_shared=1, title_similarity_threshold=0.90):
     _log(
         "Starting build "
-        f"(limit={limit or 'all'}, min_shared={min_shared})"
+        f"(limit={limit or 'all'}, min_shared={min_shared}, "
+        f"title_similarity_threshold={title_similarity_threshold})"
     )
     publications = _get_publications(limit=limit)
     _log(f"Loaded {len(publications)} publications")
@@ -332,6 +468,25 @@ def _build_bibliographic_coupling(limit=None, min_shared=1):
         "Reference index completed | "
         f"unique_references={len(reference_index)}"
     )
+
+    fuzzy_merged_references = 0
+    if title_similarity_threshold and title_similarity_threshold > 0:
+        (
+            reference_index,
+            reference_metadata,
+            reference_labels,
+            fuzzy_merged_references,
+        ) = _fuzzy_merge_title_identities(
+            reference_index,
+            reference_metadata,
+            reference_labels,
+            title_similarity_threshold,
+        )
+        _log(
+            "Fuzzy title merge completed | "
+            f"merged_aliases={fuzzy_merged_references} "
+            f"unique_references={len(reference_index)}"
+        )
 
     shared_by_pair = defaultdict(list)
     indexed_references = list(reference_index.items())
@@ -487,10 +642,16 @@ def _build_bibliographic_coupling(limit=None, min_shared=1):
         "errors": errors,
         "relation_type": RELATION_TYPE,
         "minimum_shared_references": int(min_shared),
+        "title_similarity_threshold": title_similarity_threshold,
+        "fuzzy_merged_references": fuzzy_merged_references,
     }
 
 
-def build_bibliographic_coupling(limit=None, min_shared=1):
+def build_bibliographic_coupling(
+    limit=None,
+    min_shared=1,
+    title_similarity_threshold=0.90,
+):
     if not _BUILD_LOCK.acquire(blocking=False):
         raise BibliographicBuildInProgressError(
             "Proses bibliographic coupling sedang berjalan"
@@ -500,6 +661,7 @@ def build_bibliographic_coupling(limit=None, min_shared=1):
         return _build_bibliographic_coupling(
             limit=limit,
             min_shared=min_shared,
+            title_similarity_threshold=title_similarity_threshold,
         )
     finally:
         _BUILD_LOCK.release()

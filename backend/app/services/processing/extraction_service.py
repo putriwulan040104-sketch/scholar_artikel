@@ -7,39 +7,24 @@ def _looks_like_reference_entry(ref):
     if not ref:
         return False
 
-    ref = re.sub(
-        r"\s+",
-        " ",
-        ref
-    ).strip()
+    ref = re.sub(r"\s+", " ", ref).strip()
 
     if len(ref) < 20:
         return False
 
     lower = ref.lower()
-
-    has_year = bool(
-        re.search(r"(19|20)\d{2}", ref)
-    )
+    has_year = bool(re.search(r"(19|20)\d{2}", ref))
     has_doi = bool(
-        re.search(
-            r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+\b",
-            ref,
-            re.I
-        )
+        re.search(r"\b10\.\d{4,9}/[-._;()/:A-Z0-9]+\b", ref, re.I)
     )
-
     has_url = (
         "http://" in lower
         or "https://" in lower
         or "www." in lower
     )
-
     has_citation_marker = bool(
         re.match(
-            r"^\s*(\[\d{1,3}\]|\(\d{1,3}\)|\d{1,3}[\.\)]|•|-|\*)\s*",
-            ref
-        )
+            r"^\s*(\[\d{1,3}\]|\(\d{1,3}\)|\d{1,3}[\.\)]|•|-|\*)\s*", ref)
     )
     has_author_pattern = _has_reference_author_pattern(ref)
 
@@ -86,15 +71,14 @@ def _has_author_year_pattern(ref):
         for pattern in author_patterns
     )
 
-
+# menghapus nomor referensi di depan text
 def _strip_reference_marker(ref):
     return re.sub(
         r"^\s*(?:[-*â€¢Ã¢â‚¬Â¢]\s+|\[\d+\]|\(\d+\)|\d+[\.\)])\s*",
-        "",
-        str(ref or ""),
+        "", str(ref or ""),
     ).strip()
 
-
+# mengenali apakah bagian awal merupakan nama penulis
 def _has_reference_author_pattern(ref):
     if not ref:
         return False
@@ -123,15 +107,12 @@ def _has_reference_author_pattern(ref):
 
 
 def _starts_like_reference_entry(ref):
-    if re.match(
-        r"^\s*(?:[-*â€¢]\s+|\[\d+\]|\(\d+\)|\d+[\.\)])",
-        ref,
-    ):
+    if re.match(r"^\s*(?:[-*â€¢]\s+|\[\d+\]|\(\d+\)|\d+[\.\)])", ref):
         return True
 
     return _has_reference_author_pattern(ref)
 
-
+#  normalisasi karakter aneh
 def _normalize_pdf_artifacts(text):
     if not text:
         return ""
@@ -151,7 +132,7 @@ def _normalize_pdf_artifacts(text):
 
     return out
 
-# KEYWORDS
+# KEYWORDS dengan heading
 def _extract_keywords_legacy(text):
     patterns = [
         r"^[ \t]*(?:keywords?|key\s+words?|index terms?|kata kunci|"
@@ -178,10 +159,7 @@ def _extract_keywords_legacy(text):
         if not match:
             continue
         keyword_text = match.group(1)
-        keywords = re.split(
-            r",|;|\||â€¢|â€”|â€“",
-            keyword_text
-        )
+        keywords = re.split(r",|;|\||â€¢|â€”|â€“", keyword_text)
 
         cleaned = []
 
@@ -203,6 +181,7 @@ def _extract_keywords_legacy(text):
             return list(dict.fromkeys(cleaned))
 
     return []
+
 
 def extract_keywords(text):
     if not text:
@@ -263,10 +242,7 @@ def extract_keywords(text):
 
         cleaned = []
         for keyword_line in keyword_lines:
-            for keyword in re.split(
-                r"\s*(?:,|;|\|)\s*",
-                keyword_line,
-            ):
+            for keyword in re.split(r"\s*(?:,|;|\|)\s*", keyword_line):
                 keyword = clean_text(keyword).strip(" -–—.,;:")
                 if not keyword:
                     continue
@@ -303,8 +279,7 @@ def extract_reference(text):
         heading_matches.extend(
             re.finditer(
                 rf"(?im)^[ \t]*(?:\d+[.)]?[ \t]+)?{pattern}"
-                r"[ \t]*[:.]?[ \t]*$",
-                text,
+                r"[ \t]*[:.]?[ \t]*$", text,
             )
         )
 
@@ -326,23 +301,14 @@ def extract_reference(text):
     ]
 
     for stop in stop_patterns:
-        stop_match = re.search(
-            stop,
-            reference_text,
-            re.I
-        )
+        stop_match = re.search(stop, reference_text, re.I)
 
         if stop_match:
             reference_text = reference_text[
                 :stop_match.start()
             ]
 
-    reference_text = re.sub(
-        r"\n+",
-        "\n",
-        reference_text
-    )
-
+    reference_text = re.sub(r"\n+", "\n", reference_text)
     reference_text = re.sub(r"\n\s*\d+\s*\n", "\n", reference_text)
 
     lines = reference_text.split("\n")
@@ -353,8 +319,7 @@ def extract_reference(text):
     ]
     line_counts = Counter(line.lower() for line in cleaned_lines)
     numbered_mode = sum(
-        1
-        for line in cleaned_lines
+        1 for line in cleaned_lines
         if re.match(r"^\d{1,3}[.)]\s+", line)
     ) >= 2
 
@@ -366,13 +331,10 @@ def extract_reference(text):
 
         if not line:
             continue
-
         if re.fullmatch(r"\d{1,4}", line):
             continue
 
-        is_numbered_ref = bool(
-            re.match(r"^\d{1,3}[.)]\s+", line)
-        )
+        is_numbered_ref = bool(re.match(r"^\d{1,3}[.)]\s+", line))
         
         if (
             line_counts[line.lower()] > 1
@@ -381,25 +343,16 @@ def extract_reference(text):
             continue
 
         is_new_ref = re.match(
-            r"""
-            ^
-            (
-                [-*•]\s+|
-                \[\d+\]|
-                \(\d+\)|
-                \d+[\.\)]|
-                [A-Z][a-z]+,\s*[A-Z]|
-                [A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2}\s*\(\d{4}\)
+            r""" ^(
+                [-*•]\s+|\[\d+\]|\(\d+\)|\d+[\.\)]|
+                [A-Z][a-z]+,\s*[A-Z] | [A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2}\s*\(\d{4}\)
             )
-            """,
-            line,
-            re.X
+            """, line, re.X
         )
         is_new_ref = is_new_ref or _starts_like_reference_entry(line)
 
         if numbered_mode:
             is_new_ref = is_numbered_ref
-
         if len(line) < 5:
             continue
         if is_new_ref:
@@ -413,10 +366,7 @@ def extract_reference(text):
             current_ref += " " + line
 
     if current_ref:
-        references.append(
-            current_ref.strip()
-        )
-
+        references.append(current_ref.strip())
     if len(references) <= 1:
         dense = []
         for line in lines:
@@ -450,7 +400,6 @@ def extract_reference(text):
 
         if buf:
             rebuilt.append(buf.strip())
-
         if rebuilt:
             references = rebuilt
 
@@ -458,11 +407,7 @@ def extract_reference(text):
     seen = set()
 
     for ref in references:
-        ref = re.sub(
-            r"\s+",
-            " ",
-            ref
-        )
+        ref = re.sub(r"\s+", " ", ref)
 
         if len(ref) < 30:
             continue
@@ -472,7 +417,6 @@ def extract_reference(text):
             continue
 
         normalized = ref.lower()
-
         if normalized in seen:
             continue
 

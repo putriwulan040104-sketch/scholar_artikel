@@ -253,6 +253,7 @@ export default function CitationGraphPage() {
     run();
   }, [activeArticleIds, relationType]);
 
+  // menmapilkan node
   const displayNodes = useMemo(() => {
     if (!filterIds.size) return [];
 
@@ -293,6 +294,7 @@ export default function CitationGraphPage() {
     return [...matchedGraphNodes, ...syntheticNodes];
   }, [nodes, filterIds, queryArticles]);
 
+  // menmapilkan edge/garis
   const displayEdges = useMemo(() => {
     if (!displayNodes.length) return [];
     const nodeIds = new Set(
@@ -314,6 +316,7 @@ export default function CitationGraphPage() {
       degreeById.set(t, (degreeById.get(t) || 0) + 1);
     }
 
+    // membentuk node
     const gNodes: GraphNode[] = displayNodes.map((n) => ({
       id: Number(n.id),
       articleId: n.article_id ?? null,
@@ -323,14 +326,17 @@ export default function CitationGraphPage() {
       authors: n.authors ?? null,
       referenceCount: Number(n.reference_count || 0),
       degree: degreeById.get(Number(n.id)) || 0,
+      degreeCentrality: Number(n.degree_centrality || 0),
     }));
 
     const nodeIdSet = new Set(gNodes.map((n) => n.id));
+    // membentuk edge
     const gLinks: GraphLink[] = displayEdges
       .map((e) => ({
         source: Number(e.source),
         target: Number(e.target),
         weight: Number(e.weight || 1),
+        edgeBetweenness: Number(e.edge_betweenness || 0),
         sharedReferences: e.details?.shared_references || [],
         sharedReferenceMatches: e.details?.shared_reference_matches || [],
         sharedKeywords: e.details?.shared_keywords || [],
@@ -371,6 +377,7 @@ export default function CitationGraphPage() {
     if (!graphIdentity || autoFocusedGraphRef.current === graphIdentity) return;
 
     autoFocusedGraphRef.current = graphIdentity;
+    // memilih node dengan degree terbesar
     const mostConnectedNode = [...graphModel.gNodes]
       .filter((node) => node.degree > 0)
       .sort((left, right) => right.degree - left.degree)[0];
@@ -388,6 +395,7 @@ export default function CitationGraphPage() {
     [nodeById, selectedNodeId],
   );
 
+  // menampilkan detail relasi
   const selectedRelations = useMemo(() => {
     if (selectedNodeId === null) {
       return { connected: [] };

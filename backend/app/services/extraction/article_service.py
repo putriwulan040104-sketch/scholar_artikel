@@ -62,7 +62,6 @@ VISIBLE_KEYWORD_STOP_PATTERN = re.compile(
     re.I,
 )
 
-
 class _ArticleMetadataParser(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
