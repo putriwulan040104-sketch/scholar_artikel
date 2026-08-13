@@ -236,7 +236,6 @@ def scrape_and_collect_google_scholar(
         while max_results is None or scraped_count < max_results:
             if pages_to_collect is not None and pages_collected >= pages_to_collect:
                 break
-
             if not helpers.is_session_alive(driver):
                 if driver_restarts >= MAX_DRIVER_RESTART:
                     logger.log_error("❌ Batas restart driver tercapai di awal iterasi, hentikan scraping.")
@@ -317,6 +316,8 @@ def scrape_and_collect_google_scholar(
             result_data = _snapshot_scholar_results(results)
             page_valid_start = scraped_count
 
+            
+#Kriteria metadata valid: title, year, source, abstract. Jika salah satu tidak valid, skip dan catat alasan.
             for rd in result_data:
                 if max_results is not None and scraped_count >= max_results:
                     break

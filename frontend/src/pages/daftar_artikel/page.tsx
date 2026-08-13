@@ -46,8 +46,8 @@ interface StoredFilters {
 }
 
 function getScoreColor(score: number) {
-  if (score >= 0.45) return "text-green-600";
-  if (score >= 0.3) return "text-amber-500";
+  if (score >= 0.7) return "text-green-600";
+  if (score >= 0.4) return "text-amber-500";
   return "text-red-500";
 }
 

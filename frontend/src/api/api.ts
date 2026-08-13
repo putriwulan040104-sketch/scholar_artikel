@@ -626,7 +626,7 @@ export function createSearchProgressSource(params: {
 }) {
   const queryParams = new URLSearchParams({
     query: params.query,
-    target: String(params.target || 10),
+    target: String(params.target || 5),
   });
 
   if (params.kategori && params.kategori.trim()) {

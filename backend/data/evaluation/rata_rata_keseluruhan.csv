@@ -1,0 +1,4 @@
+Metrik,Nilai,Persentase
+Mean P@5,0.9,90.0
+Mean P@10,0.8667,86.67
+Mean P@20,0.8167,81.67
